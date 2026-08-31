@@ -56,6 +56,14 @@ structure IsAdmissibleAt (configuration : SixPointConfiguration) (s : ℝ) : Pro
   sibling_distance : ∀ color,
     2 * s ≤ dist (configuration color .left) (configuration color .right)
 
+/-- Raising the separation parameter only shrinks the admissible configuration class. -/
+theorem IsAdmissibleAt.mono {configuration : SixPointConfiguration} {s t : ℝ}
+    (hst : s ≤ t) (h : configuration.IsAdmissibleAt t) : configuration.IsAdmissibleAt s where
+  root_distance := h.root_distance
+  child_distance := h.child_distance
+  sibling_distance color := (mul_le_mul_of_nonneg_left hst (by norm_num)).trans
+    (h.sibling_distance color)
+
 end SixPointConfiguration
 
 end Bescovitch
