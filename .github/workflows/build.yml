@@ -28,9 +28,13 @@ jobs:
 
       - name: Build the project and challenge
         run: >-
-          lake build Bescovitch Challenge Bescovitch.BPC.Basic
-          Bescovitch.Rectifiability.Basic Bescovitch.Sigma.Basic
-          Bescovitch.SixPoint.Packing
+          lake build Bescovitch Challenge Bescovitch.BPC.Extraction
+          Bescovitch.BPC.PackingMeasure Bescovitch.BPC.Parameters
+          Bescovitch.BPC.RootBalls Bescovitch.Certificates.Krawczyk
+          Bescovitch.Rectifiability.Selection Bescovitch.Sigma.Basic
+          Bescovitch.SixPoint.AlgebraicBasic Bescovitch.SixPoint.FiniteProperty
+          Bescovitch.SixPoint.Normalization Bescovitch.SixPoint.Realization
+          Bescovitch.SixPoint.Scaling
 
       - name: Check source hygiene
         shell: bash
@@ -43,6 +47,12 @@ jobs:
             lines=$(wc -l < "$file")
             if (( lines > 1500 )); then
               echo "$file has $lines lines"
+              exit 1
+            fi
+            if awk 'length($0) > 100 { exit 1 }' "$file"; then
+              :
+            else
+              echo "$file has a line longer than 100 characters"
               exit 1
             fi
           done < <(find . -path './.lake' -prune -o -name '*.lean' -print)
