@@ -25,7 +25,9 @@ namespace Bescovitch
 
 /-- A nonempty closed interval with rational endpoints. -/
 structure RationalInterval where
+  /-- The lower rational endpoint. -/
   lower : ℚ
+  /-- The upper rational endpoint. -/
   upper : ℚ
   lower_le_upper : lower ≤ upper
 

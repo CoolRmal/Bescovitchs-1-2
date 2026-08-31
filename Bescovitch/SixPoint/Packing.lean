@@ -24,8 +24,10 @@ namespace Bescovitch
 
 /-- A supported radius assignment with disjoint same-color balls. -/
 structure SixPointPacking (configuration : SixPointConfiguration) where
+  /-- The centers retained by the packing. -/
   support : Finset SixPointIndex
   meets_color : ∀ color, ∃ label, (color, label) ∈ support
+  /-- The radius at each retained center. -/
   radius : support → Set.Icc (0 : ℝ) 1
   same_color_disjoint : ∀ i j : support, i ≠ j → i.1.1 = j.1.1 →
     (radius i : ℝ) + radius j ≤ dist (configuration i.1.1 i.1.2) (configuration j.1.1 j.1.2)

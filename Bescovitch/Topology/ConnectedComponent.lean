@@ -40,7 +40,7 @@ theorem IsPreconnected.preimage_subtype_of_subset {X : Type*} [TopologicalSpace 
   exact isPreconnected_univ
 
 /-- A connected component cut out inside a compact set is compact. -/
-theorem isCompact_connectedComponentIn {X : Type*} [TopologicalSpace X] [T2Space X]
+theorem isCompact_connectedComponentIn {X : Type*} [TopologicalSpace X]
     {K : Set X} (hK : IsCompact K) (x : X) : IsCompact (connectedComponentIn K x) := by
   by_cases hx : x ∈ K
   · rw [connectedComponentIn_eq_image hx]
