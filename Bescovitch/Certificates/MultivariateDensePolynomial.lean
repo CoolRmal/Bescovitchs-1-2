@@ -217,6 +217,14 @@ def Fits : {n : ℕ} → (Fin n → BernsteinDegree) →
       Coefficients.length p ≤ (degrees 0).value + 1 ∧
         Coefficients.All (Fits (Fin.tail degrees)) p
 
+/-- Decide whether a polynomial fits a coordinatewise Bernstein degree profile. -/
+def fits : {n : ℕ} → (Fin n → BernsteinDegree) →
+    MultivariateDensePolynomial n → Bool
+  | 0, _, .base _ => true
+  | _n + 1, degrees, .ofCoefficients p =>
+      decide (Coefficients.length p ≤ (degrees 0).value + 1) &&
+        Coefficients.all (fits (Fin.tail degrees)) p
+
 /-- Evaluate a coefficient sequence in one Bernstein coordinate. -/
 def Coefficients.bernsteinEval {n : ℕ} (zero : MultivariateDensePolynomial n)
     (evalPolynomial : MultivariateDensePolynomial n → ℝ) (degree : BernsteinDegree)
@@ -704,6 +712,17 @@ private theorem coefficients_all_eq_true {n : ℕ}
   induction p using Coefficients.recList with
   | nil => simp [Coefficients.all, Coefficients.All]
   | cons p ps hps => simp [Coefficients.all, Coefficients.All, hps]
+
+/-- A successful Boolean degree-profile check proves the corresponding exact property. -/
+theorem fits_sound {n : ℕ} (degrees : Fin n → BernsteinDegree)
+    (p : MultivariateDensePolynomial n) (h : fits degrees p = true) : Fits degrees p := by
+  induction n with
+  | zero => cases p; trivial
+  | succ n ih =>
+      cases p with
+      | ofCoefficients p =>
+          rw [fits, Bool.and_eq_true, decide_eq_true_eq, coefficients_all_eq_true] at h
+          exact ⟨h.1, Coefficients.All.imp h.2 fun q hq ↦ ih _ q hq⟩
 
 /-- The Boolean coefficient check reflects the corresponding exact sign property. -/
 theorem allNonpositive_sound {n : ℕ} (p : MultivariateDensePolynomial n)

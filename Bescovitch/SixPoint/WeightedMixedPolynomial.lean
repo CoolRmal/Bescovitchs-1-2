@@ -170,6 +170,15 @@ def polynomialOfLeaf (sideP sideW : ℚ) (lower upper : Fin 6 → ℚ)
     (fun i ↦ data.supportSlopeNumerator i / 4096)
     (fun i ↦ data.slackNumerator i / 4096)
 
+/-- Every mixed leaf polynomial fits the degree profile used by its Bernstein checker. -/
+theorem polynomialOfLeaf_fits (sideP sideW : ℚ) (lower upper : Fin 6 → ℚ)
+    (data : WeightedMixedLeaf) :
+    MultivariateDensePolynomial.Fits degreeProfile
+      (polynomialOfLeaf sideP sideW lower upper data) := by
+  set_option maxRecDepth 100000 in
+    apply MultivariateDensePolynomial.fits_sound
+    rfl
+
 private theorem eval_sub (p q : Polynomial) (x : Fin 6 → ℝ) :
     MultivariateDensePolynomial.eval (sub p q) x =
       MultivariateDensePolynomial.eval p x - MultivariateDensePolynomial.eval q x := by
