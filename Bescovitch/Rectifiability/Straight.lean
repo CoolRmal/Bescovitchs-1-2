@@ -31,13 +31,15 @@ namespace Bescovitch
 variable {X : Type*} [MetricSpace X] [MeasurableSpace X] [BorelSpace X]
 
 /-- Straightness passes to a smaller measure. -/
-theorem IsStraightMeasure.mono {μ ν : Measure (EuclideanSpace ℝ (Fin 2))} (hμ : IsStraightMeasure μ)
+theorem IsStraightMeasure.mono {μ ν : Measure (EuclideanSpace ℝ (Fin 2))}
+    (hμ : IsStraightMeasure μ)
     (hν : ν ≤ μ) : IsStraightMeasure ν := by
   intro s hs
   exact (hν s).trans (hμ s hs)
 
 /-- Every restriction of a straight measure is straight. -/
-theorem IsStraightMeasure.restrict {μ : Measure (EuclideanSpace ℝ (Fin 2))} (hμ : IsStraightMeasure μ)
+theorem IsStraightMeasure.restrict {μ : Measure (EuclideanSpace ℝ (Fin 2))}
+    (hμ : IsStraightMeasure μ)
     (s : Set (EuclideanSpace ℝ (Fin 2))) : IsStraightMeasure (μ.restrict s) :=
   hμ.mono Measure.restrict_le_self
 
@@ -72,10 +74,12 @@ private theorem tendsto_hausdorffPre (s : Set X) :
     simp only [Measure.hausdorffMeasure, ENNReal.rpow_one]
 
 /-- An atomless finite measure on the plane has measurable subsets of every prescribed fraction. -/
-private theorem exists_subset_measure_eq_mul {μ : Measure (EuclideanSpace ℝ (Fin 2))} [IsFiniteMeasure μ]
+private theorem exists_subset_measure_eq_mul
+    {μ : Measure (EuclideanSpace ℝ (Fin 2))} [IsFiniteMeasure μ]
     [NullSingletonClass μ] {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : MeasurableSet s) {q : ℝ}
     (hq_zero : 0 ≤ q) (hq_one : q ≤ 1) :
-    ∃ t : Set (EuclideanSpace ℝ (Fin 2)), MeasurableSet t ∧ t ⊆ s ∧ μ t = ENNReal.ofReal q * μ s := by
+    ∃ t : Set (EuclideanSpace ℝ (Fin 2)),
+      MeasurableSet t ∧ t ⊆ s ∧ μ t = ENNReal.ofReal q * μ s := by
   rcases eq_or_lt_of_le hq_zero with rfl | hq_pos
   · exact ⟨∅, MeasurableSet.empty, empty_subset s, by simp⟩
   rcases hq_one.eq_or_lt with rfl | hq_lt
@@ -251,7 +255,8 @@ private theorem tsum_lossWeight : ∑' n : ℕ, lossWeight n = (4 : ℝ≥0∞)�
 
 /-- The first ball in a dense enumeration that reaches a point. -/
 private def metricCell (r : ℝ≥0) (n : ℕ) : Set (EuclideanSpace ℝ (Fin 2)) :=
-  ball (denseSeq (EuclideanSpace ℝ (Fin 2)) n) r \ ⋃ k : Fin n, ball (denseSeq (EuclideanSpace ℝ (Fin 2)) k) r
+  ball (denseSeq (EuclideanSpace ℝ (Fin 2)) n) r \
+    ⋃ k : Fin n, ball (denseSeq (EuclideanSpace ℝ (Fin 2)) k) r
 
 private theorem measurableSet_metricCell (r : ℝ≥0) (n : ℕ) :
     MeasurableSet (metricCell r n) :=
@@ -275,7 +280,8 @@ private theorem iUnion_metricCell (r : ℝ≥0) (hr : 0 < r) :
   apply eq_univ_of_forall
   intro x
   have hex : ∃ n : ℕ, x ∈ ball (denseSeq (EuclideanSpace ℝ (Fin 2)) n) r := by
-    obtain ⟨n, hn⟩ : ∃ n : ℕ, dist x (denseSeq (EuclideanSpace ℝ (Fin 2)) n) < (r : ℝ) :=
+    obtain ⟨n, hn⟩ :
+        ∃ n : ℕ, dist x (denseSeq (EuclideanSpace ℝ (Fin 2)) n) < (r : ℝ) :=
       (denseRange_denseSeq (EuclideanSpace ℝ (Fin 2))).exists_dist_lt x hr
     exact ⟨n, Metric.mem_ball.mpr hn⟩
   let n := Nat.find hex
@@ -285,7 +291,8 @@ private theorem iUnion_metricCell (r : ℝ≥0) (hr : 0 < r) :
   obtain ⟨k, hk⟩ := mem_iUnion.1 hx
   exact (Nat.not_lt_of_ge (Nat.find_min' hex hk)) k.isLt
 
-private theorem cells_meeting_subset_thickening (r : ℝ≥0) (s : Set (EuclideanSpace ℝ (Fin 2))) :
+private theorem cells_meeting_subset_thickening
+    (r : ℝ≥0) (s : Set (EuclideanSpace ℝ (Fin 2))) :
     (⋃ k : {n // (metricCell r n ∩ s).Nonempty}, metricCell r k) ⊆
       thickening (2 * r) s := by
   intro x hx
@@ -294,7 +301,9 @@ private theorem cells_meeting_subset_thickening (r : ℝ≥0) (s : Set (Euclidea
   rw [Metric.mem_thickening_iff]
   refine ⟨z, hzs, ?_⟩
   calc
-    dist x z ≤ dist x (denseSeq (EuclideanSpace ℝ (Fin 2)) k) + dist z (denseSeq (EuclideanSpace ℝ (Fin 2)) k) :=
+    dist x z ≤
+        dist x (denseSeq (EuclideanSpace ℝ (Fin 2)) k) +
+          dist z (denseSeq (EuclideanSpace ℝ (Fin 2)) k) :=
       dist_triangle_right _ _ _
     _ < r + r := add_lt_add hxk.1 hzk.1
     _ = 2 * r := (two_mul (r : ℝ)).symm
@@ -356,11 +365,13 @@ private theorem exists_descendingRadius_interval {R : ℕ → ℝ≥0} {d : ℝ�
 
 /-- A finite Hausdorff set has an arbitrarily large subset that is straight up to any prescribed
 factor larger than one, uniformly below some scale. -/
-private theorem exists_large_almostStraightSubset {e : Set (EuclideanSpace ℝ (Fin 2))} (he : MeasurableSet e)
+private theorem exists_large_almostStraightSubset
+    {e : Set (EuclideanSpace ℝ (Fin 2))} (he : MeasurableSet e)
     (he_fin : μH[1] e < ∞) {c d : ℝ≥0∞} (hd : d < μH[1] e)
     (hc_pos : 0 < c) (hc_one : c < 1) :
     ∃ a : Set (EuclideanSpace ℝ (Fin 2)), MeasurableSet a ∧ a ⊆ e ∧ d < μH[1] a ∧
-      ∃ r : ℝ≥0∞, 0 < r ∧ ∀ s : Set (EuclideanSpace ℝ (Fin 2)), MeasurableSet s → Metric.ediam s ≤ r →
+      ∃ r : ℝ≥0∞, 0 < r ∧ ∀ s : Set (EuclideanSpace ℝ (Fin 2)),
+        MeasurableSet s → Metric.ediam s ≤ r →
         μH[1] (a ∩ s) ≤ c⁻¹ * Metric.ediam s := by
   let μ : Measure (EuclideanSpace ℝ (Fin 2)) := μH[1].restrict e
   have hμe : μ e = μH[1] e := Measure.restrict_apply_self μH[1] e
@@ -502,7 +513,8 @@ private theorem exists_large_almostStraightSubset {e : Set (EuclideanSpace ℝ (
 
 /-- A positive finite Hausdorff set has a positive subset with asymptotically sharp bounds at a
 sequence of scales. -/
-private theorem exists_multiscaleAlmostStraightSubset {e : Set (EuclideanSpace ℝ (Fin 2))} (he : MeasurableSet e)
+private theorem exists_multiscaleAlmostStraightSubset
+    {e : Set (EuclideanSpace ℝ (Fin 2))} (he : MeasurableSet e)
     (he_pos : 0 < μH[1] e) (he_fin : μH[1] e < ∞) :
     ∃ a : Set (EuclideanSpace ℝ (Fin 2)), MeasurableSet a ∧ a ⊆ e ∧ 0 < μH[1] a ∧
       ∀ n : ℕ, ∃ r : ℝ≥0∞, 0 < r ∧ ∀ s : Set (EuclideanSpace ℝ (Fin 2)),
@@ -578,7 +590,8 @@ private theorem exists_multiscaleAlmostStraightSubset {e : Set (EuclideanSpace �
     (hlocal n s hs hsr)
 
 /-- Every measurable set of positive finite Hausdorff one-measure has a positive straight piece. -/
-theorem exists_straight_measure_restrict_subset {e : Set (EuclideanSpace ℝ (Fin 2))} (he : MeasurableSet e)
+theorem exists_straight_measure_restrict_subset
+    {e : Set (EuclideanSpace ℝ (Fin 2))} (he : MeasurableSet e)
     (he_pos : 0 < μH[1] e) (he_fin : μH[1] e < ∞) :
     ∃ a : Set (EuclideanSpace ℝ (Fin 2)), MeasurableSet a ∧ a ⊆ e ∧ 0 < μH[1] a ∧
       IsStraightMeasure (μH[1].restrict a) := by
@@ -632,7 +645,8 @@ theorem exists_straight_measure_restrict_subset {e : Set (EuclideanSpace ℝ (Fi
     exact div_pos (mul_pos (ENNReal.toNNReal_pos (lossWeight_pos n).ne'
       (lossWeight_lt_one n).ne_top) (hρ_pos (n + 1))) (by norm_num)
   have hselect (n k : ℕ) :
-      ∃ t : Set (EuclideanSpace ℝ (Fin 2)), MeasurableSet t ∧ t ⊆ E ∩ metricCell (mesh n) k ∧
+      ∃ t : Set (EuclideanSpace ℝ (Fin 2)),
+        MeasurableSet t ∧ t ⊆ E ∩ metricCell (mesh n) k ∧
         μ t = (thinningFraction n : ℝ≥0∞) *
           μ (E ∩ metricCell (mesh n) k) := by
     simpa only [ENNReal.ofReal_coe_nnreal] using exists_subset_measure_eq_mul

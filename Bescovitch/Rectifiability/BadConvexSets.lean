@@ -26,12 +26,15 @@ open scoped ENNReal MeasureTheory
 namespace Bescovitch
 
 /-- Open convex sets meeting `F` whose mass outside `F` exceeds `alpha` times their diameter. -/
-def badConvexSets (mu : Measure (EuclideanSpace ℝ (Fin 2))) (F : Set (EuclideanSpace ℝ (Fin 2))) (alpha : ℝ) : Set (Set (EuclideanSpace ℝ (Fin 2))) :=
+def badConvexSets (mu : Measure (EuclideanSpace ℝ (Fin 2)))
+    (F : Set (EuclideanSpace ℝ (Fin 2))) (alpha : ℝ) :
+    Set (Set (EuclideanSpace ℝ (Fin 2))) :=
   {V | IsOpen V ∧ Convex ℝ V ∧ (V ∩ F).Nonempty ∧
     ENNReal.ofReal alpha * Metric.ediam V < mu (V \ F)}
 
 @[simp]
-theorem mem_badConvexSets {mu : Measure (EuclideanSpace ℝ (Fin 2))} {F V : Set (EuclideanSpace ℝ (Fin 2))} {alpha : ℝ} :
+theorem mem_badConvexSets {mu : Measure (EuclideanSpace ℝ (Fin 2))}
+    {F V : Set (EuclideanSpace ℝ (Fin 2))} {alpha : ℝ} :
     V ∈ badConvexSets mu F alpha ↔ IsOpen V ∧ Convex ℝ V ∧ (V ∩ F).Nonempty ∧
       ENNReal.ofReal alpha * Metric.ediam V < mu (V \ F) :=
   Iff.rfl
@@ -80,7 +83,8 @@ theorem diam_lt_measure_univ_div_of_mem_badConvexSets {mu : Measure (EuclideanSp
 
 /-- A BPC witness becomes bad after replacing it by its open convex hull and lowering the
 coefficient. -/
-theorem openConvexHull_mem_badConvexSets {mu : Measure (EuclideanSpace ℝ (Fin 2))} {F U : Set (EuclideanSpace ℝ (Fin 2))}
+theorem openConvexHull_mem_badConvexSets {mu : Measure (EuclideanSpace ℝ (Fin 2))}
+    {F U : Set (EuclideanSpace ℝ (Fin 2))}
     {alpha tau : ℝ} (halpha_tau : alpha ≤ tau) (hU_open : IsOpen U)
     (hUF : (U ∩ F).Nonempty)
     (hleakage : ENNReal.ofReal tau * Metric.ediam U < mu (U \ F)) :
@@ -98,7 +102,8 @@ theorem openConvexHull_mem_badConvexSets {mu : Measure (EuclideanSpace ℝ (Fin 
       measure_mono (sdiff_subset_sdiff hsubset Subset.rfl)
 
 /-- The bad convex sets have a countable disjoint scale-dominating subfamily. -/
-theorem exists_countable_disjoint_badConvexSets {mu : Measure (EuclideanSpace ℝ (Fin 2))} [IsFiniteMeasure mu]
+theorem exists_countable_disjoint_badConvexSets
+    {mu : Measure (EuclideanSpace ℝ (Fin 2))} [IsFiniteMeasure mu]
     (F : Set (EuclideanSpace ℝ (Fin 2))) {alpha : ℝ} (halpha : 0 < alpha) :
     ∃ chosen ⊆ badConvexSets mu F alpha, chosen.PairwiseDisjoint id ∧ chosen.Countable ∧
       ∀ V ∈ badConvexSets mu F alpha, ∃ W ∈ chosen,

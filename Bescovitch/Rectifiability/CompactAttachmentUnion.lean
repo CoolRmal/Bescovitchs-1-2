@@ -25,7 +25,9 @@ open scoped ENNReal Topology
 namespace Bescovitch
 
 /-- The compact core together with all convex pieces attached along selected holes. -/
-def compactAttachmentUnion (F : Set (EuclideanSpace ℝ (Fin 2))) (chosen : Set (Set (EuclideanSpace ℝ (Fin 2)))) : Set (EuclideanSpace ℝ (Fin 2)) :=
+def compactAttachmentUnion (F : Set (EuclideanSpace ℝ (Fin 2)))
+    (chosen : Set (Set (EuclideanSpace ℝ (Fin 2)))) :
+    Set (EuclideanSpace ℝ (Fin 2)) :=
   F ∪ ⋃ V : chosen, convexAttachment F (V : Set (EuclideanSpace ℝ (Fin 2)))
 
 /-- Finite total hole diameter makes the full attachment union compact. -/
@@ -51,7 +53,8 @@ theorem isCompact_compactAttachmentUnion {mu : MeasureTheory.Measure (EuclideanS
       (ENNReal.ofReal_ne_zero_iff.mpr (by positivity))
   letI : Fintype large := hlarge_finite.fintype
   have hattachment_compact (V : large) :
-      IsCompact (convexAttachment F (V : Set (EuclideanSpace ℝ (Fin 2)))) := isCompact_convexAttachment hF
+      IsCompact (convexAttachment F (V : Set (EuclideanSpace ℝ (Fin 2)))) :=
+    isCompact_convexAttachment hF
   have hattachment_cover (V : large) :
       convexAttachment F (V : Set (EuclideanSpace ℝ (Fin 2))) ⊆ ⋃ i, U i := by
     intro x hx
@@ -65,9 +68,11 @@ theorem isCompact_compactAttachmentUnion {mu : MeasureTheory.Measure (EuclideanS
     have hVbad := hchosen V.property
     have hVbounded := isBounded_of_mem_badConvexSets halpha hVbad
     have hVdiam := diam_pos_of_mem_badConvexSets halpha hVbad
-    have hedV : Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2))) < ENNReal.ofReal (epsilon / 5) := by
+    have hedV :
+        Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2))) < ENNReal.ofReal (epsilon / 5) := by
       exact lt_of_not_ge hVsmall
-    have hattachment_ediam : Metric.ediam (convexAttachment F (V : Set (EuclideanSpace ℝ (Fin 2)))) <
+    have hattachment_ediam :
+        Metric.ediam (convexAttachment F (V : Set (EuclideanSpace ℝ (Fin 2)))) <
         ENNReal.ofReal epsilon := by
       calc
         Metric.ediam (convexAttachment F (V : Set (EuclideanSpace ℝ (Fin 2)))) ≤

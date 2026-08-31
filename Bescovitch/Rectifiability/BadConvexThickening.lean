@@ -30,19 +30,24 @@ theorem measure_iUnion_diameterThickening_le {mu : Measure (EuclideanSpace ℝ (
     {F : Set (EuclideanSpace ℝ (Fin 2))} {chosen : Set (Set (EuclideanSpace ℝ (Fin 2)))}
     (hchosen : chosen ⊆ badConvexSets mu F alpha) (hcountable : chosen.Countable) :
     mu (⋃ V : chosen, diameterThickening p (V : Set (EuclideanSpace ℝ (Fin 2)))) ≤
-      ENNReal.ofReal (2 * p + 1) * ∑' V : chosen, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2))) := by
+      ENNReal.ofReal (2 * p + 1) *
+        ∑' V : chosen, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2))) := by
   letI : Countable chosen := hcountable.to_subtype
   calc
     mu (⋃ V : chosen, diameterThickening p (V : Set (EuclideanSpace ℝ (Fin 2)))) ≤
-        ∑' V : chosen, mu (diameterThickening p (V : Set (EuclideanSpace ℝ (Fin 2)))) := measure_iUnion_le _
-    _ ≤ ∑' V : chosen, Metric.ediam (diameterThickening p (V : Set (EuclideanSpace ℝ (Fin 2)))) :=
+        ∑' V : chosen, mu (diameterThickening p (V : Set (EuclideanSpace ℝ (Fin 2)))) :=
+      measure_iUnion_le _
+    _ ≤ ∑' V : chosen,
+        Metric.ediam (diameterThickening p (V : Set (EuclideanSpace ℝ (Fin 2)))) :=
       ENNReal.tsum_le_tsum fun V ↦
         hmu _ (isOpen_diameterThickening p (V : Set (EuclideanSpace ℝ (Fin 2)))).measurableSet
-    _ ≤ ∑' V : chosen, ENNReal.ofReal (2 * p + 1) * Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2))) :=
+    _ ≤ ∑' V : chosen,
+        ENNReal.ofReal (2 * p + 1) * Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2))) :=
       ENNReal.tsum_le_tsum fun V ↦
         ediam_diameterThickening_le hp (isBounded_of_mem_badConvexSets halpha
           (hchosen V.property))
-    _ = ENNReal.ofReal (2 * p + 1) * ∑' V : chosen, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2))) :=
+    _ = ENNReal.ofReal (2 * p + 1) *
+        ∑' V : chosen, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2))) :=
       ENNReal.tsum_mul_left
 
 /-- The seven-diameter enlargements have less mass than the retained core. -/
@@ -57,7 +62,8 @@ theorem measure_iUnion_sevenDiameterThickening_lt {mu : Measure (EuclideanSpace 
     hchosen hcountable hdisjoint houtside
   calc
     mu (⋃ V : chosen, diameterThickening 7 (V : Set (EuclideanSpace ℝ (Fin 2)))) ≤
-        ENNReal.ofReal 15 * ∑' V : chosen, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2))) := by
+        ENNReal.ofReal 15 *
+          ∑' V : chosen, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2))) := by
       convert measure_iUnion_diameterThickening_le hmu halpha
         (by norm_num : (0 : ℝ) ≤ 7) hchosen hcountable using 1
       all_goals norm_num
@@ -75,10 +81,12 @@ theorem exists_mem_not_mem_sevenDiameterThickening {mu : Measure (EuclideanSpace
     (hchosen : chosen ⊆ badConvexSets mu F alpha) (hcountable : chosen.Countable)
     (hdisjoint : chosen.PairwiseDisjoint id)
     (houtside : mu Fᶜ < ENNReal.ofReal (alpha / 15) * mu F) :
-    ∃ z ∈ F, ∀ V : chosen, z ∉ diameterThickening 7 (V : Set (EuclideanSpace ℝ (Fin 2))) := by
+    ∃ z ∈ F,
+      ∀ V : chosen, z ∉ diameterThickening 7 (V : Set (EuclideanSpace ℝ (Fin 2))) := by
   have hmeasure := measure_iUnion_sevenDiameterThickening_lt hmu hF halpha hchosen hcountable
     hdisjoint houtside
-  have hnot_subset : ¬F ⊆ ⋃ V : chosen, diameterThickening 7 (V : Set (EuclideanSpace ℝ (Fin 2))) := by
+  have hnot_subset :
+      ¬F ⊆ ⋃ V : chosen, diameterThickening 7 (V : Set (EuclideanSpace ℝ (Fin 2))) := by
     intro hsubset
     exact (not_le_of_gt hmeasure) (measure_mono hsubset)
   obtain ⟨z, hzF, hz⟩ := Set.not_subset.mp hnot_subset

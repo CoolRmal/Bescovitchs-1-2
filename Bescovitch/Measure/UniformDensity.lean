@@ -27,7 +27,8 @@ namespace Bescovitch
 /-- Ball mass is a measurable function of the center for an s-finite measure on the plane. -/
 theorem measurable_measure_ball (mu : Measure (EuclideanSpace ℝ (Fin 2))) [SFinite mu] (r : ℝ) :
     Measurable fun x ↦ mu (Metric.ball x r) := by
-  let ballRelation : Set ((EuclideanSpace ℝ (Fin 2)) × (EuclideanSpace ℝ (Fin 2))) := {p | dist p.1 p.2 < r}
+  let ballRelation : Set ((EuclideanSpace ℝ (Fin 2)) × (EuclideanSpace ℝ (Fin 2))) :=
+    {p | dist p.1 p.2 < r}
   have relation_measurable : MeasurableSet ballRelation := by
     exact measurableSet_lt measurable_dist measurable_const
   have h := measurable_measure_prodMk_left (ν := mu) relation_measurable
@@ -39,7 +40,9 @@ theorem measurable_measure_ball (mu : Measure (EuclideanSpace ℝ (Fin 2))) [SFi
   rw [dist_comm]
 
 /-- Points with a uniform rational-radius lower mass bound. -/
-def uniformDensitySet (mu : Measure (EuclideanSpace ℝ (Fin 2))) (A : Set (EuclideanSpace ℝ (Fin 2))) (γ : ℝ) (m : ℕ) : Set (EuclideanSpace ℝ (Fin 2)) :=
+def uniformDensitySet (mu : Measure (EuclideanSpace ℝ (Fin 2)))
+    (A : Set (EuclideanSpace ℝ (Fin 2))) (γ : ℝ) (m : ℕ) :
+    Set (EuclideanSpace ℝ (Fin 2)) :=
   {x ∈ A | ∀ q : ℚ, 0 < (q : ℝ) → (q : ℝ) < 1 / (m + 1 : ℝ) →
     ENNReal.ofReal (2 * γ * (q : ℝ)) ≤ mu (Metric.ball x q)}
 
@@ -57,7 +60,8 @@ theorem measurableSet_uniformDensitySet (mu : Measure (EuclideanSpace ℝ (Fin 2
   exact measurableSet_le measurable_const (measurable_measure_ball mu q)
 
 /-- A strict lower-density bound places a point in some uniform density set. -/
-theorem exists_mem_uniformDensitySet_of_lt_lowerOneDensity {A : Set (EuclideanSpace ℝ (Fin 2))} {x : (EuclideanSpace ℝ (Fin 2))} {γ : ℝ}
+theorem exists_mem_uniformDensitySet_of_lt_lowerOneDensity
+    {A : Set (EuclideanSpace ℝ (Fin 2))} {x : (EuclideanSpace ℝ (Fin 2))} {γ : ℝ}
     (hx : x ∈ A) (hγ : 0 ≤ γ) (hdensity : ENNReal.ofReal γ < lowerOneDensity A x) :
     ∃ m : ℕ, x ∈ uniformDensitySet (μH[1].restrict A) A γ m := by
   obtain ⟨scale, hscale, hmass⟩ :=
@@ -68,7 +72,8 @@ theorem exists_mem_uniformDensitySet_of_lt_lowerOneDensity {A : Set (EuclideanSp
   exact (hmass q hq (hq_small.trans hm)).le
 
 /-- Membership at level `γ` gives strict ball bounds at every lower nonnegative level. -/
-theorem uniformDensitySet_ball_measure_gt {mu : Measure (EuclideanSpace ℝ (Fin 2))} {A : Set (EuclideanSpace ℝ (Fin 2))} {β γ : ℝ}
+theorem uniformDensitySet_ball_measure_gt {mu : Measure (EuclideanSpace ℝ (Fin 2))}
+    {A : Set (EuclideanSpace ℝ (Fin 2))} {β γ : ℝ}
     {m : ℕ} {x : (EuclideanSpace ℝ (Fin 2))} (hβ : 0 ≤ β) (hβγ : β < γ)
     (hx : x ∈ uniformDensitySet mu A γ m) {r : ℝ} (hr : 0 < r)
     (hr_small : r < 1 / (m + 1 : ℝ)) :

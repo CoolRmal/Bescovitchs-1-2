@@ -38,7 +38,8 @@ theorem IsStraightMeasure.measure_closedBall_le {mu : Measure (EuclideanSpace �
 /-- A lower ball-mass bound and a small loss outside the core leave a core point in the outer
 annulus. -/
 theorem annulus_inter_nonempty {mu : Measure (EuclideanSpace ℝ (Fin 2))} [IsFiniteMeasure mu]
-    (hmu : IsStraightMeasure mu) {F : Set (EuclideanSpace ℝ (Fin 2))} {z : (EuclideanSpace ℝ (Fin 2))} {sigma alpha rho : ℝ}
+    (hmu : IsStraightMeasure mu) {F : Set (EuclideanSpace ℝ (Fin 2))}
+    {z : (EuclideanSpace ℝ (Fin 2))} {sigma alpha rho : ℝ}
     (hsigma : 0 < sigma) (halpha_pos : 0 < alpha) (halpha : alpha < 28) (hrho : 0 < rho)
     (hball : ENNReal.ofReal (2 * sigma * rho) < mu (Metric.ball z rho))
     (hloss : mu (Metric.ball z rho \ F) < ENNReal.ofReal (sigma * alpha / 28 * rho)) :
@@ -82,8 +83,10 @@ theorem annulus_inter_nonempty {mu : Measure (EuclideanSpace ℝ (Fin 2))} [IsFi
 
 /-- At a density point of `F`, straightness makes the mass outside `F` smaller than any prescribed
 positive linear function of the radius. -/
-theorem exists_scale_measure_ball_sdiff_lt {mu : Measure (EuclideanSpace ℝ (Fin 2))} [IsFiniteMeasure mu]
-    (hmu : IsStraightMeasure mu) {F : Set (EuclideanSpace ℝ (Fin 2))} {z : (EuclideanSpace ℝ (Fin 2))}
+theorem exists_scale_measure_ball_sdiff_lt
+    {mu : Measure (EuclideanSpace ℝ (Fin 2))} [IsFiniteMeasure mu]
+    (hmu : IsStraightMeasure mu) {F : Set (EuclideanSpace ℝ (Fin 2))}
+    {z : (EuclideanSpace ℝ (Fin 2))}
     (hdensity : Tendsto
       (fun r ↦ mu (Fᶜ ∩ Metric.closedBall z r) / mu (Metric.closedBall z r))
       (𝓝[>] 0) (𝓝 0)) {k : ℝ} (hk : 0 < k) :
@@ -127,13 +130,16 @@ theorem exists_scale_measure_ball_sdiff_lt {mu : Measure (EuclideanSpace ℝ (Fi
 
 /-- One may choose the point outside all seven-diameter enlargements to be a density point of the
 compact core. -/
-theorem exists_densityPoint_not_mem_sevenDiameterThickening {mu : Measure (EuclideanSpace ℝ (Fin 2))}
+theorem exists_densityPoint_not_mem_sevenDiameterThickening
+    {mu : Measure (EuclideanSpace ℝ (Fin 2))}
     [IsFiniteMeasure mu] (hmu : IsStraightMeasure mu) {F : Set (EuclideanSpace ℝ (Fin 2))}
     (hF : MeasurableSet F) {alpha : ℝ} (halpha : 0 < alpha)
-    {chosen : Set (Set (EuclideanSpace ℝ (Fin 2)))} (hchosen : chosen ⊆ badConvexSets mu F alpha)
+    {chosen : Set (Set (EuclideanSpace ℝ (Fin 2)))}
+    (hchosen : chosen ⊆ badConvexSets mu F alpha)
     (hcountable : chosen.Countable) (hdisjoint : chosen.PairwiseDisjoint id)
     (houtside : mu Fᶜ < ENNReal.ofReal (alpha / 15) * mu F) {k : ℝ} (hk : 0 < k) :
-    ∃ z ∈ F, (∀ V : chosen, z ∉ diameterThickening 7 (V : Set (EuclideanSpace ℝ (Fin 2)))) ∧
+    ∃ z ∈ F,
+      (∀ V : chosen, z ∉ diameterThickening 7 (V : Set (EuclideanSpace ℝ (Fin 2)))) ∧
       ∃ scale : ℝ, 0 < scale ∧ ∀ r : ℝ, 0 < r → r < scale →
         mu (Metric.ball z r \ F) < ENNReal.ofReal (k * r) := by
   let U := ⋃ V : chosen, diameterThickening 7 (V : Set (EuclideanSpace ℝ (Fin 2)))
