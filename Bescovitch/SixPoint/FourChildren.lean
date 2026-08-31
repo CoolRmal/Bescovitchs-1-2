@@ -83,6 +83,235 @@ def fourChildrenCrossMaximum (L M x y B11 B12 B21 B22 : ℝ) : ℝ :=
 def fourChildrenSplitDiameter (L M x y B11 B12 B21 B22 : ℝ) : ℝ :=
   max (2 * L) (max (2 * M) (fourChildrenCrossMaximum L M x y B11 B12 B21 B22))
 
+/-- The total radius of the four-child packing is the sum of the two sibling lengths. -/
+theorem fourChildrenPacking_totalRadius
+    (configuration : SixPointConfiguration) {L M x y : ℝ}
+    (hLdist : dist (configuration .red .left) (configuration .red .right) = L)
+    (hMdist : dist (configuration .blue .left) (configuration .blue .right) = M)
+    (hL : 1 ≤ L) (hx_lower : L - 1 ≤ x) (hx_upper : x ≤ 1)
+    (hM : 1 ≤ M) (hy_lower : M - 1 ≤ y) (hy_upper : y ≤ 1) :
+    (fourChildrenPacking configuration hLdist hMdist hL hx_lower hx_upper hM hy_lower
+      hy_upper).totalRadius = L + M := by
+  let packing := fourChildrenPacking configuration hLdist hMdist hL hx_lower hx_upper hM
+    hy_lower hy_upper
+  let value : SixPointIndex → ℝ
+    | (.red, .root) | (.blue, .root) => 0
+    | (.red, .left) => x
+    | (.red, .right) => L - x
+    | (.blue, .left) => y
+    | (.blue, .right) => M - y
+  rw [SixPointPacking.totalRadius]
+  calc
+    _ = ∑ i ∈ packing.support.attach, value i := by
+      apply Finset.sum_congr rfl
+      rintro ⟨⟨color, label⟩, hi⟩ -
+      cases color <;> cases label <;>
+        simp [fourChildrenPacking, value] at hi ⊢
+    _ = ∑ i ∈ packing.support, value i := Finset.sum_attach _ _
+    _ = _ := by
+      simp [packing, fourChildrenPacking, value]
+      ring
+
+private theorem fourChildren_sameColorPair_le
+    {configuration : SixPointConfiguration} (packing : SixPointPacking configuration)
+    (i j : packing.support) (hcolor : i.1.1 = j.1.1) {bound : ℝ}
+    (hbound : 1 ≤ bound)
+    (hdist : dist (configuration i.1.1 i.1.2) (configuration j.1.1 j.1.2) ≤ bound) :
+    dist (configuration i.1.1 i.1.2) (configuration j.1.1 j.1.2) +
+      packing.radius i + packing.radius j ≤ 2 * bound := by
+  by_cases hij : i = j
+  · subst j
+    simp only [dist_self, zero_add]
+    nlinarith [(packing.radius i).property.2]
+  · nlinarith [packing.same_color_disjoint i j hij hcolor]
+
+/-- The virtual diameter of the four-child packing is its explicit split minimax. -/
+theorem fourChildrenPacking_virtualDiameter
+    (configuration : SixPointConfiguration) {L M x y : ℝ}
+    (hLdist : dist (configuration .red .left) (configuration .red .right) = L)
+    (hMdist : dist (configuration .blue .left) (configuration .blue .right) = M)
+    (hL : 1 ≤ L) (hx_lower : L - 1 ≤ x) (hx_upper : x ≤ 1)
+    (hM : 1 ≤ M) (hy_lower : M - 1 ≤ y) (hy_upper : y ≤ 1) :
+    (fourChildrenPacking configuration hLdist hMdist hL hx_lower hx_upper hM hy_lower
+      hy_upper).virtualDiameter =
+      fourChildrenSplitDiameter L M x y
+        (dist (configuration .red .left) (configuration .blue .left))
+        (dist (configuration .red .left) (configuration .blue .right))
+        (dist (configuration .red .right) (configuration .blue .left))
+        (dist (configuration .red .right) (configuration .blue .right)) := by
+  let packing := fourChildrenPacking configuration hLdist hMdist hL hx_lower hx_upper hM
+    hy_lower hy_upper
+  let target := fourChildrenSplitDiameter L M x y
+    (dist (configuration .red .left) (configuration .blue .left))
+    (dist (configuration .red .left) (configuration .blue .right))
+    (dist (configuration .red .right) (configuration .blue .left))
+    (dist (configuration .red .right) (configuration .blue .right))
+  have htwoL : 2 * L ≤ target := le_max_left _ _
+  have htwoM : 2 * M ≤ target := le_max_of_le_right (le_max_left _ _)
+  have h11 : dist (configuration .red .left) (configuration .blue .left) + x + y ≤
+      target := le_max_of_le_right <| le_max_of_le_right <| le_max_left _ _
+  have h12 :
+      dist (configuration .red .left) (configuration .blue .right) + x + (M - y) ≤
+        target := le_max_of_le_right <| le_max_of_le_right <| le_max_of_le_right <|
+          le_max_left _ _
+  have h21 :
+      dist (configuration .red .right) (configuration .blue .left) + (L - x) + y ≤
+        target := le_max_of_le_right <| le_max_of_le_right <| le_max_of_le_right <|
+          le_max_of_le_right <| le_max_left _ _
+  have h22 :
+      dist (configuration .red .right) (configuration .blue .right) +
+          (L - x) + (M - y) ≤ target :=
+    le_max_of_le_right <| le_max_of_le_right <| le_max_of_le_right <|
+      le_max_of_le_right <| le_max_right _ _
+  have hredLeftRadius (hmem : (.red, .left) ∈ packing.support) :
+      (packing.radius ⟨(.red, .left), hmem⟩ : ℝ) = x := by
+    rfl
+  have hredRightRadius (hmem : (.red, .right) ∈ packing.support) :
+      (packing.radius ⟨(.red, .right), hmem⟩ : ℝ) = L - x := by
+    rfl
+  have hblueLeftRadius (hmem : (.blue, .left) ∈ packing.support) :
+      (packing.radius ⟨(.blue, .left), hmem⟩ : ℝ) = y := by
+    rfl
+  have hblueRightRadius (hmem : (.blue, .right) ∈ packing.support) :
+      (packing.radius ⟨(.blue, .right), hmem⟩ : ℝ) = M - y := by
+    rfl
+  have hpair (i j : packing.support) :
+      dist (configuration i.1.1 i.1.2) (configuration j.1.1 j.1.2) +
+        packing.radius i + packing.radius j ≤ target := by
+    rcases i with ⟨⟨leftColor, leftLabel⟩, hleft⟩
+    rcases j with ⟨⟨rightColor, rightLabel⟩, hright⟩
+    cases leftColor <;> cases rightColor
+    · have hleftMem := hleft
+      have hrightMem := hright
+      cases leftLabel <;> cases rightLabel
+      all_goals simp [packing, fourChildrenPacking] at hleft hright
+      · exact (fourChildren_sameColorPair_le packing ⟨_, hleftMem⟩ ⟨_, hrightMem⟩ rfl
+          hL (by simp; linarith)).trans htwoL
+      · exact (fourChildren_sameColorPair_le packing ⟨_, hleftMem⟩ ⟨_, hrightMem⟩ rfl
+          hL
+          (by rw [hLdist])).trans htwoL
+      · exact (fourChildren_sameColorPair_le packing ⟨_, hleftMem⟩ ⟨_, hrightMem⟩ rfl
+          hL
+          (by rw [dist_comm, hLdist])).trans htwoL
+      · exact (fourChildren_sameColorPair_le packing ⟨_, hleftMem⟩ ⟨_, hrightMem⟩ rfl
+          hL (by simp; linarith)).trans htwoL
+    · have hleftMem := hleft
+      have hrightMem := hright
+      cases leftLabel <;> cases rightLabel
+      all_goals simp [packing, fourChildrenPacking] at hleft hright
+      · simpa [hredLeftRadius hleftMem, hblueLeftRadius hrightMem] using h11
+      · simpa [hredLeftRadius hleftMem, hblueRightRadius hrightMem] using h12
+      · simpa [hredRightRadius hleftMem, hblueLeftRadius hrightMem] using h21
+      · simpa [hredRightRadius hleftMem, hblueRightRadius hrightMem] using h22
+    · have hleftMem := hleft
+      have hrightMem := hright
+      cases leftLabel <;> cases rightLabel
+      all_goals simp [packing, fourChildrenPacking] at hleft hright
+      · rw [hblueLeftRadius hleftMem, hredLeftRadius hrightMem, dist_comm]
+        linarith [h11]
+      · rw [hblueLeftRadius hleftMem, hredRightRadius hrightMem, dist_comm]
+        linarith [h21]
+      · rw [hblueRightRadius hleftMem, hredLeftRadius hrightMem, dist_comm]
+        linarith [h12]
+      · rw [hblueRightRadius hleftMem, hredRightRadius hrightMem, dist_comm]
+        linarith [h22]
+    · have hleftMem := hleft
+      have hrightMem := hright
+      cases leftLabel <;> cases rightLabel
+      all_goals simp [packing, fourChildrenPacking] at hleft hright
+      · exact (fourChildren_sameColorPair_le packing ⟨_, hleftMem⟩ ⟨_, hrightMem⟩ rfl
+          hM (by simp; linarith)).trans htwoM
+      · exact (fourChildren_sameColorPair_le packing ⟨_, hleftMem⟩ ⟨_, hrightMem⟩ rfl
+          hM
+          (by rw [hMdist])).trans htwoM
+      · exact (fourChildren_sameColorPair_le packing ⟨_, hleftMem⟩ ⟨_, hrightMem⟩ rfl
+          hM
+          (by rw [dist_comm, hMdist])).trans htwoM
+      · exact (fourChildren_sameColorPair_le packing ⟨_, hleftMem⟩ ⟨_, hrightMem⟩ rfl
+          hM (by simp; linarith)).trans htwoM
+  apply le_antisymm
+  · unfold SixPointPacking.virtualDiameter
+    apply Finset.sup'_le
+    intro i hi
+    apply Finset.sup'_le
+    intro j hj
+    exact hpair i j
+  · let redLeft : packing.support := ⟨(.red, .left), by
+      simp [packing, fourChildrenPacking]⟩
+    let redRight : packing.support := ⟨(.red, .right), by
+      simp [packing, fourChildrenPacking]⟩
+    let blueLeft : packing.support := ⟨(.blue, .left), by
+      simp [packing, fourChildrenPacking]⟩
+    let blueRight : packing.support := ⟨(.blue, .right), by
+      simp [packing, fourChildrenPacking]⟩
+    have hdiameterL : 2 * L ≤ packing.virtualDiameter := by
+      have hp := packing.pair_le_virtualDiameter redLeft redRight
+      rw [hredLeftRadius redLeft.property, hredRightRadius redRight.property,
+        hLdist] at hp
+      linarith
+    have hdiameterM : 2 * M ≤ packing.virtualDiameter := by
+      have hp := packing.pair_le_virtualDiameter blueLeft blueRight
+      rw [hblueLeftRadius blueLeft.property, hblueRightRadius blueRight.property,
+        hMdist] at hp
+      linarith
+    have hdiameter11 :
+        dist (configuration .red .left) (configuration .blue .left) + x + y ≤
+          packing.virtualDiameter := by
+      have hp := packing.pair_le_virtualDiameter redLeft blueLeft
+      change dist (configuration .red .left) (configuration .blue .left) +
+        packing.radius redLeft + packing.radius blueLeft ≤ packing.virtualDiameter at hp
+      rw [hredLeftRadius redLeft.property, hblueLeftRadius blueLeft.property] at hp
+      exact hp
+    have hdiameter12 :
+        dist (configuration .red .left) (configuration .blue .right) + x + (M - y) ≤
+          packing.virtualDiameter := by
+      have hp := packing.pair_le_virtualDiameter redLeft blueRight
+      change dist (configuration .red .left) (configuration .blue .right) +
+        packing.radius redLeft + packing.radius blueRight ≤ packing.virtualDiameter at hp
+      rw [hredLeftRadius redLeft.property, hblueRightRadius blueRight.property] at hp
+      exact hp
+    have hdiameter21 :
+        dist (configuration .red .right) (configuration .blue .left) + (L - x) + y ≤
+          packing.virtualDiameter := by
+      have hp := packing.pair_le_virtualDiameter redRight blueLeft
+      change dist (configuration .red .right) (configuration .blue .left) +
+        packing.radius redRight + packing.radius blueLeft ≤ packing.virtualDiameter at hp
+      rw [hredRightRadius redRight.property, hblueLeftRadius blueLeft.property] at hp
+      exact hp
+    have hdiameter22 :
+        dist (configuration .red .right) (configuration .blue .right) +
+            (L - x) + (M - y) ≤ packing.virtualDiameter := by
+      have hp := packing.pair_le_virtualDiameter redRight blueRight
+      change dist (configuration .red .right) (configuration .blue .right) +
+        packing.radius redRight + packing.radius blueRight ≤ packing.virtualDiameter at hp
+      rw [hredRightRadius redRight.property, hblueRightRadius blueRight.property] at hp
+      exact hp
+    simp only [fourChildrenSplitDiameter, fourChildrenCrossMaximum, max_le_iff]
+    exact ⟨hdiameterL, hdiameterM, hdiameter11, hdiameter12, hdiameter21, hdiameter22⟩
+
+/-- A split below `c(L+M)` gives the four-child packing nonnegative score at `c/2`. -/
+theorem fourChildrenPacking_score_nonnegative
+    (configuration : SixPointConfiguration) {c L M x y : ℝ}
+    (hLdist : dist (configuration .red .left) (configuration .red .right) = L)
+    (hMdist : dist (configuration .blue .left) (configuration .blue .right) = M)
+    (hL : 1 ≤ L) (hx_lower : L - 1 ≤ x) (hx_upper : x ≤ 1)
+    (hM : 1 ≤ M) (hy_lower : M - 1 ≤ y) (hy_upper : y ≤ 1)
+    (hc : 0 < c)
+    (hdiameter : fourChildrenSplitDiameter L M x y
+      (dist (configuration .red .left) (configuration .blue .left))
+      (dist (configuration .red .left) (configuration .blue .right))
+      (dist (configuration .red .right) (configuration .blue .left))
+      (dist (configuration .red .right) (configuration .blue .right)) ≤ c * (L + M)) :
+    0 ≤ (fourChildrenPacking configuration hLdist hMdist hL hx_lower hx_upper hM
+      hy_lower hy_upper).score (c / 2) := by
+  rw [SixPointPacking.score,
+    fourChildrenPacking_totalRadius configuration hLdist hMdist hL hx_lower hx_upper hM
+      hy_lower hy_upper,
+    fourChildrenPacking_virtualDiameter configuration hLdist hMdist hL hx_lower hx_upper hM
+      hy_lower hy_upper,
+    show 2 * (c / 2) = c by ring]
+  exact sub_nonneg.mpr ((div_le_iff₀ hc).2 (by simpa [mul_comm] using hdiameter))
+
 /-- The routing bounds admit a split whose four cross terms are all below the target. -/
 theorem exists_fourChildren_split_of_routing_bounds
     {L M T B11 B12 B21 B22 : ℝ} (hL : L ≤ 2) (hM : M ≤ 2)
