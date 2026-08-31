@@ -30,7 +30,7 @@ def compactAttachmentUnion (F : Set Plane) (chosen : Set (Set Plane)) : Set Plan
 
 /-- Finite total hole diameter makes the full attachment union compact. -/
 theorem isCompact_compactAttachmentUnion {mu : MeasureTheory.Measure Plane}
-    [MeasureTheory.IsFiniteMeasure mu] {F : Set Plane} (hF : IsCompact F)
+    {F : Set Plane} (hF : IsCompact F)
     {alpha : ℝ} (halpha : 0 < alpha) {chosen : Set (Set Plane)}
     (hchosen : chosen ⊆ badConvexSets mu F alpha)
     (hsum : ∑' V : chosen, Metric.ediam (V : Set Plane) ≠ ∞) :

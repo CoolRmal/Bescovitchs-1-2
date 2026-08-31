@@ -63,7 +63,7 @@ theorem subset_ball_two_mul_of_diameterThickening_three_inter {V C : Set Plane}
 
 /-- The selected holes touching the local continuum charge only the doubled ball. -/
 theorem mul_tsum_ediam_touchingBadConvexSets_le {mu : MeasureTheory.Measure Plane}
-    [MeasureTheory.IsFiniteMeasure mu] {F : Set Plane} (hF : MeasurableSet F)
+    {F : Set Plane} (hF : MeasurableSet F)
     {alpha : ℝ} (halpha : 0 < alpha) {chosen : Set (Set Plane)}
     (hchosen : chosen ⊆ badConvexSets mu F alpha) (hcountable : chosen.Countable)
     (hdisjoint : chosen.PairwiseDisjoint id) {C : Set Plane} {z : Plane} {rho : ℝ}
@@ -91,7 +91,7 @@ theorem mul_tsum_ediam_touchingBadConvexSets_le {mu : MeasureTheory.Measure Plan
 /-- The three-diameter enlargements touching the local continuum have total diameter smaller than
 the continuum itself. -/
 theorem tsum_ediam_touchingBadConvexSets_lt_ediam {mu : MeasureTheory.Measure Plane}
-    [MeasureTheory.IsFiniteMeasure mu] {F : Set Plane} (hF : MeasurableSet F)
+    {F : Set Plane} (hF : MeasurableSet F)
     {alpha sigma : ℝ} (halpha : 0 < alpha) (hsigma : 0 < sigma)
     {chosen : Set (Set Plane)} (hchosen : chosen ⊆ badConvexSets mu F alpha)
     (hcountable : chosen.Countable) (hdisjoint : chosen.PairwiseDisjoint id)

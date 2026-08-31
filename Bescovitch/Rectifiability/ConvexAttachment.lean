@@ -98,7 +98,7 @@ theorem convexAttachment_subset_diameterThickening_three {F V : Set Plane}
 
 /-- A bad hole has a nonempty compact connected attachment. -/
 theorem convexAttachment_isCompact_isConnected {mu : MeasureTheory.Measure Plane}
-    [MeasureTheory.IsFiniteMeasure mu] {F V : Set Plane} {alpha : ℝ} (hF : IsCompact F)
+    {F V : Set Plane} {alpha : ℝ} (hF : IsCompact F)
     (halpha : 0 < alpha) (hV : V ∈ badConvexSets mu F alpha) :
     IsCompact (convexAttachment F V) ∧ IsConnected (convexAttachment F V) := by
   have hdiam := diam_pos_of_mem_badConvexSets halpha hV
