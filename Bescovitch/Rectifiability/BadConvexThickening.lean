@@ -25,7 +25,7 @@ open scoped ENNReal MeasureTheory
 namespace Bescovitch
 
 /-- Straightness bounds the mass of all diameter thickenings by their total expanded diameter. -/
-theorem measure_iUnion_diameterThickening_le {mu : Measure Plane} [IsFiniteMeasure mu]
+theorem measure_iUnion_diameterThickening_le {mu : Measure Plane}
     (hmu : IsStraightMeasure mu) {alpha p : ℝ} (halpha : 0 < alpha) (hp : 0 ≤ p)
     {F : Set Plane} {chosen : Set (Set Plane)}
     (hchosen : chosen ⊆ badConvexSets mu F alpha) (hcountable : chosen.Countable) :
@@ -46,7 +46,7 @@ theorem measure_iUnion_diameterThickening_le {mu : Measure Plane} [IsFiniteMeasu
       ENNReal.tsum_mul_left
 
 /-- The seven-diameter enlargements have less mass than the retained core. -/
-theorem measure_iUnion_sevenDiameterThickening_lt {mu : Measure Plane} [IsFiniteMeasure mu]
+theorem measure_iUnion_sevenDiameterThickening_lt {mu : Measure Plane}
     (hmu : IsStraightMeasure mu) {F : Set Plane} (hF : MeasurableSet F)
     {alpha : ℝ} (halpha : 0 < alpha) {chosen : Set (Set Plane)}
     (hchosen : chosen ⊆ badConvexSets mu F alpha) (hcountable : chosen.Countable)
@@ -69,7 +69,7 @@ theorem measure_iUnion_sevenDiameterThickening_lt {mu : Measure Plane} [IsFinite
 
 /-- Consequently, some point of the retained core lies outside every seven-diameter
 enlargement. -/
-theorem exists_mem_not_mem_sevenDiameterThickening {mu : Measure Plane} [IsFiniteMeasure mu]
+theorem exists_mem_not_mem_sevenDiameterThickening {mu : Measure Plane}
     (hmu : IsStraightMeasure mu) {F : Set Plane} (hF : MeasurableSet F)
     {alpha : ℝ} (halpha : 0 < alpha) {chosen : Set (Set Plane)}
     (hchosen : chosen ⊆ badConvexSets mu F alpha) (hcountable : chosen.Countable)

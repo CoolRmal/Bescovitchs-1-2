@@ -36,8 +36,8 @@ theorem mem_badConvexSets {mu : Measure Plane} {F V : Set Plane} {alpha : ℝ} :
       ENNReal.ofReal alpha * Metric.ediam V < mu (V \ F) :=
   Iff.rfl
 
-/-- A bad convex set for a finite measure is bounded. -/
-theorem isBounded_of_mem_badConvexSets {mu : Measure Plane} [IsFiniteMeasure mu]
+/-- A bad convex set with positive leakage coefficient is bounded. -/
+theorem isBounded_of_mem_badConvexSets {mu : Measure Plane}
     {F V : Set Plane} {alpha : ℝ} (halpha : 0 < alpha)
     (hV : V ∈ badConvexSets mu F alpha) : IsBounded V := by
   rcases hV with ⟨_, _, _, hleakage⟩
@@ -49,8 +49,8 @@ theorem isBounded_of_mem_badConvexSets {mu : Measure Plane} [IsFiniteMeasure mu]
   rw [hproduct] at hleakage
   exact (not_lt_of_ge le_top) hleakage
 
-/-- A bad convex set for a finite measure has positive diameter. -/
-theorem diam_pos_of_mem_badConvexSets {mu : Measure Plane} [IsFiniteMeasure mu]
+/-- A nonempty open bad convex set has positive diameter. -/
+theorem diam_pos_of_mem_badConvexSets {mu : Measure Plane}
     {F V : Set Plane} {alpha : ℝ} (halpha : 0 < alpha)
     (hV : V ∈ badConvexSets mu F alpha) : 0 < Metric.diam V := by
   have hV_nonempty : V.Nonempty := hV.2.2.1.mono inter_subset_left
