@@ -23,6 +23,31 @@ open scoped ENNReal MeasureTheory
 
 namespace Bescovitch
 
+/-- Disjoint bad convex sets contained in an ambient set charge only its mass outside the core. -/
+theorem mul_tsum_ediam_badConvexSets_le_measure {mu : Measure Plane} {F ambient : Set Plane}
+    (hF : MeasurableSet F) {alpha : ℝ} {chosen : Set (Set Plane)}
+    (hchosen : chosen ⊆ badConvexSets mu F alpha) (hcountable : chosen.Countable)
+    (hdisjoint : chosen.PairwiseDisjoint id)
+    (hcontained : ∀ V ∈ chosen, V ⊆ ambient) :
+    ENNReal.ofReal alpha * ∑' V : chosen, Metric.ediam (V : Set Plane) ≤ mu (ambient \ F) := by
+  letI : Countable chosen := hcountable.to_subtype
+  have hpair : Pairwise fun V W : chosen ↦
+      Disjoint ((V : Set Plane) \ F) ((W : Set Plane) \ F) := by
+    intro V W hVW
+    have hne : (V : Set Plane) ≠ (W : Set Plane) := fun h ↦ hVW (Subtype.ext h)
+    exact (hdisjoint V.property W.property hne).mono sdiff_subset sdiff_subset
+  have hmeasurable (V : chosen) : MeasurableSet ((V : Set Plane) \ F) :=
+    (hchosen V.property).1.measurableSet.diff hF
+  rw [← ENNReal.tsum_mul_left]
+  calc
+    (∑' V : chosen, ENNReal.ofReal alpha * Metric.ediam (V : Set Plane)) ≤
+        ∑' V : chosen, mu ((V : Set Plane) \ F) :=
+      ENNReal.tsum_le_tsum fun V ↦ (hchosen V.property).2.2.2.le
+    _ = mu (⋃ V : chosen, (V : Set Plane) \ F) :=
+      (measure_iUnion hpair hmeasurable).symm
+    _ ≤ mu (ambient \ F) := measure_mono <| iUnion_subset fun V x hx ↦
+      ⟨hcontained V V.property hx.1, hx.2⟩
+
 /-- Disjoint bad convex sets have total extended diameter controlled by the mass outside the
 compact core. -/
 theorem mul_tsum_ediam_badConvexSets_le {mu : Measure Plane} {F : Set Plane}
