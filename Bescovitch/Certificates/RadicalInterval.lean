@@ -75,6 +75,13 @@ def enclosureWithin {n : ℕ} (f : RadicalExpression n) (X : Fin n → RationalI
   let I ← f.enclosure X
   if target.lower ≤ I.lower ∧ I.upper ≤ target.upper then some target else none
 
+/-- Decide whether the computed enclosure lies in a given rational target interval. -/
+def certifiesWithin {n : ℕ} (f : RadicalExpression n) (X : Fin n → RationalInterval)
+    (target : RationalInterval) : Bool :=
+  match f.enclosure X with
+  | none => false
+  | some I => decide (target.lower ≤ I.lower ∧ I.upper ≤ target.upper)
+
 /-- Every successful radical enclosure contains the real value of the expression. -/
 theorem enclosure_sound {n : ℕ} {f : RadicalExpression n}
     {X : Fin n → RationalInterval} {x : Fin n → ℝ}
@@ -181,6 +188,24 @@ theorem enclosureWithin_sound {n : ℕ} {f : RadicalExpression n}
         · have hupper : (I.upper : ℝ) ≤ target.upper := by exact_mod_cast hsub.2
           exact hvalue.2.trans hupper
       · contradiction
+
+/-- A successful Boolean certificate encloses the real value of the expression. -/
+theorem certifiesWithin_sound {n : ℕ} {f : RadicalExpression n}
+    {X : Fin n → RationalInterval} {x : Fin n → ℝ} (hx : ∀ i, (X i).Contains (x i))
+    {target : RationalInterval} (h : f.certifiesWithin X target = true) :
+    target.Contains (f.eval x) := by
+  unfold certifiesWithin at h
+  cases hI : f.enclosure X with
+  | none => simp [hI] at h
+  | some I =>
+      rw [hI] at h
+      have hsub := of_decide_eq_true h
+      have hvalue := enclosure_sound hx hI
+      constructor
+      · have hlower : (target.lower : ℝ) ≤ I.lower := by exact_mod_cast hsub.1
+        exact hlower.trans hvalue.1
+      · have hupper : (I.upper : ℝ) ≤ target.upper := by exact_mod_cast hsub.2
+        exact hvalue.2.trans hupper
 
 end RadicalExpression
 
