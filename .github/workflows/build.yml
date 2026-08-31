@@ -1,0 +1,45 @@
+name: Lean build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Configure Lean and restore the Mathlib cache
+        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1.5.0
+        with:
+          auto-config: false
+          use-github-cache: true
+          use-mathlib-cache: true
+
+      - name: Build the project and challenge
+        run: lake build Bescovitch Challenge Bescovitch.BPC.Basic
+
+      - name: Check source hygiene
+        shell: bash
+        run: |
+          if rg -n '\badmit\b|native_decide|Lean\.ofReduceBool|^\s*axiom\b' \
+              --glob '*.lean' --glob '!.lake/**' .; then
+            exit 1
+          fi
+          while IFS= read -r file; do
+            lines=$(wc -l < "$file")
+            if (( lines > 1500 )); then
+              echo "$file has $lines lines"
+              exit 1
+            fi
+          done < <(find . -path './.lake' -prune -o -name '*.lean' -print)
