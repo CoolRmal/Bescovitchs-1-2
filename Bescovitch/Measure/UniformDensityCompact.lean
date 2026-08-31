@@ -113,4 +113,52 @@ theorem exists_compact_uniformDensitySet_measure_sdiff_lt {A : Set Plane}
     _ < epsilon / 2 + epsilon / 2 := ENNReal.add_lt_add hm hGF
     _ = epsilon := ENNReal.add_halves epsilon
 
+/-- The compact core can be chosen so that the discarded mass is a prescribed fraction of it. -/
+theorem exists_compact_uniformDensitySet_measure_sdiff_lt_mul {A : Set Plane}
+    (hA : MeasurableSet A) (hA_pos : 0 < μH[1] A) (hA_finite : μH[1] A ≠ ∞)
+    {gamma alpha : ℝ} (hgamma : 0 ≤ gamma) (halpha : 0 < alpha)
+    (hdensity : ∀ᵐ x ∂μH[1].restrict A,
+      ENNReal.ofReal gamma < lowerOneDensity A x) :
+    ∃ (m : ℕ) (F : Set Plane), IsCompact F ∧
+      F ⊆ uniformDensitySet (μH[1].restrict A) A gamma m ∧
+        μH[1] (A \ F) < ENNReal.ofReal alpha * μH[1] F := by
+  let mass := μH[1] A
+  let coefficient := ENNReal.ofReal alpha
+  let halfMass := mass / 2
+  let tolerance := min halfMass (coefficient * halfMass)
+  have hhalf_pos : 0 < halfMass :=
+    ENNReal.div_pos hA_pos.ne' (by norm_num)
+  have hcoefficient_pos : 0 < coefficient := ENNReal.ofReal_pos.2 halpha
+  have htolerance_pos : 0 < tolerance := by
+    rw [lt_min_iff]
+    exact ⟨hhalf_pos, ENNReal.mul_pos hcoefficient_pos.ne' hhalf_pos.ne'⟩
+  obtain ⟨m, F, hF_compact, hFG, herror⟩ :=
+    exists_compact_uniformDensitySet_measure_sdiff_lt hA hgamma hdensity hA_finite
+      htolerance_pos
+  refine ⟨m, F, hF_compact, hFG, ?_⟩
+  have hFA : F ⊆ A := fun _ hx ↦ (hFG hx).1
+  have hF_measurable : MeasurableSet F := hF_compact.isClosed.measurableSet
+  have herror_half : μH[1] (A \ F) < halfMass := herror.trans_le (min_le_left _ _)
+  have herror_scaled : μH[1] (A \ F) < coefficient * halfMass :=
+    herror.trans_le (min_le_right _ _)
+  have hdecomposition : μH[1] (A \ F) + μH[1] F = mass := by
+    simpa only [mass, inter_eq_right.mpr hFA] using
+      (measure_sdiff_add_inter (μ := μH[1]) A hF_measurable)
+  have hhalf_lt : halfMass < μH[1] F := by
+    by_contra h
+    have hF_le : μH[1] F ≤ halfMass := le_of_not_gt h
+    have hF_finite : μH[1] F ≠ ∞ :=
+      ne_top_of_le_ne_top hA_finite (measure_mono hFA)
+    have hsum_lt : μH[1] (A \ F) + μH[1] F < halfMass + halfMass :=
+      ENNReal.add_lt_add_of_lt_of_le hF_finite herror_half hF_le
+    have : mass < mass := by
+      calc
+        mass = μH[1] (A \ F) + μH[1] F := hdecomposition.symm
+        _ < halfMass + halfMass := hsum_lt
+        _ = mass := ENNReal.add_halves mass
+    exact this.false
+  have hcoefficient_finite : coefficient ≠ ∞ := ENNReal.ofReal_ne_top
+  exact herror_scaled.trans <|
+    ENNReal.mul_lt_mul_right hcoefficient_pos.ne' hcoefficient_finite hhalf_lt
+
 end Bescovitch
