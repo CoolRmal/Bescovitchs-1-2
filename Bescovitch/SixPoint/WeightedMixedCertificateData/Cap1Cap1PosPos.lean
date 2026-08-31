@@ -18,349 +18,562 @@ Every numerical leaf stores exact integer numerators with common denominator `40
 
 namespace Bescovitch
 
-/-- Assemble one exact q12 leaf for chart `(1, 1, 1, 1)`. -/
-def weightedMixedLeafCap1Cap1SidePosSidePos
-    (r0 r1 r2 r3 r4 r5 : ℕ) (s0 s1 s2 s3 : ℤ) (e0 e1 e2 e3 : ℕ) :
-    WeightedMixedLeaf where
-  rhoNumerator
-    | 0 => r0
-    | 1 => r1
-    | 2 => r2
-    | 3 => r3
-    | 4 => r4
-    | 5 => r5
-  supportSlopeNumerator
-    | 0 => s0
-    | 1 => s1
-    | 2 => s2
-    | 3 => s3
-  slackNumerator
-    | 0 => e0
-    | 1 => e1
-    | 2 => e2
-    | 3 => e3
-
 set_option maxRecDepth 20000 in
 /-- The exact mixed-certificate tree for chart `(1, 1, 1, 1)`. -/
 def weightedMixedTreeCap1Cap1SidePosSidePos : WeightedMixedTree :=
-  (.split
-    (.split
-      (.split
-        (.split
-          (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 645 4803 3228 8436 3567 7681 107 (-3329) (-7333) 20286 8662 0 8744 1)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 645 1931 3055 8044 2886 2696 107 1023 (-7333) (-4595) 744 0 10260 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 645 1931 2854 5979 3232 4856 107 (-1023) (-7333) 4595 2902 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 645 4803 3592 9081 3449 5003 107 3329 (-7333) (-20286) 0 0 9282 301))))
-          (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 645 4934 3759 8164 3049 7849 107 (-3112) (-7333) 30584 8953 0 9500 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 645 2235 3662 7428 2295 2208 107 1167 (-7333) (-4025) 3286 0 10022 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 645 2235 3442 5589 2649 5118 107 (-1167) (-7333) 4025 4827 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 645 4934 4120 8541 2972 4758 107 3112 (-7333) (-30584) 0 0 8617 0)))))
-        (.split
-          (.split
-            (.split
-              (.split
-                (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2525 4803 1226 5797 5115 6903 1382 (-3329) (-2697) 20286 0 0 7050 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3691 4803 1980 7031 6480 7076 2360 (-3329) (-4159) 20286 0 0 9060 4748)))
-                (.split
-                  (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2110 4803 1404 6162 4593 6948 1107 (-3329) (-3027) 20286 1 0 4592 0)) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3326 5517 1614 5887 6159 6733 1850 (-4066) (-2112) 34349 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3326 4051 2048 4515 5951 5574 1850 (-2709) (-2112) 11980 0 0 0 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3326 4829 854 5087 5700 6335 1850 (-3267) (-2112) 21882 0 0 22735 0))))
-                  (.split (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3311 5517 2230 8020 6388 7610 1973 (-4066) (-4769) 34349 0 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3311 5023 1901 5931 6088 7034 1973 (-3926) (-4769) 7335 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3311 2736 670 7417 5719 5010 1973 (-1568) (-4769) 36828 0 0 0 0)))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3311 4829 1470 7218 5867 7019 1973 (-3267) (-4769) 21882 0 0 15597 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4323 4803 2225 6508 7089 6563 2858 (-3329) (-3457) 20286 0 0 8314 4489)))))
-              (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3172 1931 4440 6844 2151 1241 1852 1023 (-3198) (-4595) 0 0 0 451)))
-            (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3172 1931 1608 3722 5918 4486 1852 (-1023) (-3198) 4595 0 0 2787 6394)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3172 4803 6120 7265 4730 2735 1852 3329 (-3198) (-20286) 0 0 5097 1882))))
-          (.split
-            (.split
-              (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2525 4934 1655 5655 4501 7292 1382 (-3112) (-2697) 30584 0 0 5738 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3691 4934 1916 6806 5883 7355 2360 (-3112) (-4159) 30584 0 0 9885 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2763 4934 1353 5445 4636 6978 1490 (-3112) (-2520) 30584 0 0 6014 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3311 4934 1543 7030 5412 7207 1973 (-3112) (-4769) 30584 0 0 9883 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4323 4934 1975 6266 6486 6864 2858 (-3112) (-3457) 30584 0 0 11946 0)))))
-              (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2525 2235 4971 6207 1099 1282 1382 1167 (-2697) (-4025) 0 0 4342 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3691 2235 4894 6609 2520 942 2360 1167 (-4159) (-4025) 0 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2763 2235 5279 5898 1013 1111 1490 1167 (-2520) (-4025) 0 0 4256 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3311 2235 5013 6572 1956 1068 1973 1167 (-4769) (-4025) 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4323 2235 5349 6062 2987 2048 2858 1167 (-3457) (-4025) 0 0 0 0))))))
-            (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3172 2235 1720 3372 5316 4978 1852 (-1167) (-3198) 4025 0 0 6995 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3172 4934 6564 6678 4568 2536 1852 3112 (-3198) (-30584) 0 0 7006 0))))))
-      (.split
-        (.split
-          (.split
-            (.split
-              (.split
-                (.split
-                  (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 1999 4803 2065 9648 4822 7019 1024 (-3329) 415428 20286 0 0 3295 101)) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3432 5517 2591 9991 6612 8221 2130 (-4066) (-17933) 34349 0 0 3014 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3432 4051 1159 8816 6193 6745 2130 (-2709) (-17933) 11980 0 0 0 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3432 4829 1822 9207 6063 7489 2130 (-3267) (-17933) 21882 0 0 14294 0))))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3366 5517 1906 10869 6315 7554 1941 (-4066) 18265 34349 7517 1 12134 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3366 5023 1618 9516 6148 7288 1941 (-3926) 18265 7335 4090 1 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3366 2736 995 10174 5659 4978 1941 (-1568) 18265 36828 12405 1 0 0)))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3366 5557 1873 10633 6016 7454 1941 (-3880) 18265 46509 7117 1 12183 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3366 4104 2048 9708 5731 6062 1941 (-2645) 18265 12671 4483 1134 0 0))))
-                    (.split (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 6418 4582 10614 8329 9560 3291 (-5871) (-296565) 13310 1834 2420 3670 1537)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 4187 1714 11010 7322 6900 3291 (-2586) (-296565) (-40831) 10123 0 2839 6884))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 4051 2234 9904 7663 7010 3291 (-2709) (-296565) 11980 3592 6379 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 5557 3097 10775 7730 8410 3291 (-3880) (-296565) 46509 3230 5156 9910 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 4104 1975 9680 7353 6951 3291 (-2645) (-296565) 12671 10685 1 0 0))))))
-                (.split
-                  (.split
-                    (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 1866 4803 1912 9356 4613 6715 976 (-3329) 153667 20286 0 0 3108 0))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3439 5517 2286 9748 6519 7907 2072 (-4066) (-19430) 34349 0 0 10818 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3439 5023 1987 7944 6213 7454 2072 (-3926) (-19430) 7335 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3439 2736 704 9089 5851 5093 2072 (-1568) (-19430) 36828 0 0 0 0)))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3439 5557 2247 9568 6225 7913 2072 (-3880) (-19430) 46509 0 0 9123 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3439 5147 1979 7811 5916 7552 2072 (-3840) (-19430) 7633 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3439 2683 715 8820 5539 4969 2072 (-1517) (-19430) 43458 0 0 0 0))))))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3289 5517 1600 10589 6119 7240 1824 (-4066) 15945 34349 9434 0 7477 5074)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3289 4051 2048 9703 5911 5870 1824 (-2709) 15945 11980 6039 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3289 5557 1585 10350 5816 7142 1824 (-3880) 15945 46509 8933 0 12195 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3289 4104 2048 9443 5597 5748 1824 (-2645) 15945 12671 5620 0 0 0))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 5517 3032 10757 7949 8154 3136 (-4066) 240421 34349 9534 0 9112 1)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 4051 2105 9707 7643 6709 3136 (-2709) 240421 11980 7029 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 5557 2845 10550 7650 8103 3136 (-3880) 240421 46509 8805 0 10415 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 4104 1824 9478 7332 6646 3136 (-2645) 240421 12671 11254 0 0 0)))))))
-              (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3434 1931 4550 7866 2346 4317 2049 1023 210751 (-4595) 6632 3973 0 0)))
-            (.split
-              (.split
-                (.split
-                  (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 1999 1931 1710 7797 4682 4121 1024 (-1023) 415428 4595 0 0 10707 0)) (.split (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3432 3691 789 6829 5812 6371 2130 (-2360) (-17933) 4159 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3432 1340 1889 8651 6211 4112 2130 (-512) (-17933) 10279 0 0 0 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3432 1192 1917 6828 6379 3793 2130 (-600) (-17933) 3910 0 0 2045 7931))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3432 2678 2048 7519 5797 5278 2130 (-1514) (-17933) 5803 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3432 1363 1874 6569 6079 3806 2130 (-699) (-17933) 3676 0 0 9797 0)))))
-                  (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3366 1931 1827 8757 6149 4171 1941 (-1023) 18265 4595 10013 4514 4983 5823)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 1931 2013 8392 7483 4822 3291 (-1023) (-296565) 4595 11208 1646 9064 1))))
-                (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2683 1931 1653 7289 5442 4048 1517 (-1023) (-43458) 4595 0 0 12068 1)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4152 1931 2060 8439 6906 4231 2453 (-1023) 31130 4595 12804 0 4499 5093))))
-              (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2736 4803 5577 9666 4590 6710 1568 3329 (-36828) (-20286) 0 0 8141 1)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3366 4803 6375 9943 4765 8160 1941 3329 18265 (-20286) 3448 3564 6601 1)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 4803 7505 10343 6492 7619 3291 3329 (-296565) (-20286) 4524 2805 6745 0)))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2683 4803 5676 9367 4353 6524 1517 3329 (-43458) (-20286) 0 0 8443 1)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4152 4803 7082 9928 5457 7778 2453 3329 31130 (-20286) 7786 0 7759 0))))))
-          (.split
-            (.split
-              (.split
-                (.split
-                  (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2736 4934 1981 9130 4921 7293 1568 (-3112) (-36828) 30584 0 0 13439 0))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3366 5314 1590 10195 5626 7071 1941 (-3723) 18265 78227 0 7555 14072 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3366 4181 2048 9454 5418 5954 1941 (-2591) 18265 13664 4548 572 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3366 5775 2098 9254 5374 7674 1941 (-5156) 18265 21155 0 184 9576 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3366 3068 1211 9398 4669 4504 1941 (-2243) 18265 (-19478) 233 0 5897 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3366 5441 1738 8938 5244 7290 1941 (-3711) 18265 8633 0 0 3596 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3366 2685 1443 9273 4734 4237 1941 (-1438) 18265 92016 7144 0 1281 0)))))
-                    (.split
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 6343 4127 10069 7633 9342 3291 (-5353) (-296565) 17324 250 890 7646 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 3835 1024 10315 6678 6320 3291 (-2340) (-296565) (-24394) 2260 10548 15571 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 5287 2988 9013 7082 8192 3291 (-3770) (-296565) 8042 7 1500 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 2665 1356 9736 6737 5321 3291 (-1474) (-296565) 56339 6950 425 0 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 5775 3301 9225 6969 8634 3291 (-5156) (-296565) 21155 1180 1 15862 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 3068 866 9641 6382 5482 3291 (-2243) (-296565) (-19478) 2719 10204 24132 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 5441 2920 8875 6797 8259 3291 (-3711) (-296565) 8633 867 2557 2857 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4908 2685 1146 9456 6426 5150 3291 (-1438) (-296565) 92016 8138 0 0 0)))))))
-                (.split
-                  (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2683 4934 1756 8854 4778 6985 1517 (-3112) (-43458) 30584 0 0 14493 0))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3289 5314 1337 9912 5434 6760 1824 (-3723) 15945 78227 8563 0 15645 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3289 4181 2048 9185 5283 5640 1824 (-2591) 15945 13664 5107 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3289 4643 865 9168 4993 5921 1824 (-3590) 15945 359378 9000 0 33550 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3289 5441 1460 8678 5146 6977 1824 (-3711) 15945 8633 0 0 5397 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3289 2685 1757 8988 4558 3923 1824 (-1438) 15945 92016 5886 0 0 0)))))
-                    (.split
-                      (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 5314 2416 10113 7259 7758 3136 (-3723) 240421 78227 9868 0 11966 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 5287 2755 8822 7094 7887 3136 (-3770) 240421 8042 2332 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 2665 1502 9506 6673 5016 3136 (-1474) 240421 56339 6654 0 0 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 5775 3043 9022 6959 8327 3136 (-5156) 240421 21155 2042 0 16464 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 3068 1006 9401 6302 5171 3136 (-2243) 240421 (-19478) 10487 0 19356 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 5441 2667 8676 6803 7951 3136 (-3711) 240421 8633 3805 0 2516 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 2685 1342 9224 6365 4841 3136 (-1438) 240421 92016 6930 0 0 0))))))))
-              (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2736 2235 4514 7409 1790 3692 1568 1167 (-36828) (-4025) 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4187 2235 5586 7657 2633 4945 2586 1167 40831 (-4025) 5875 3093 9059 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2683 2235 4757 7096 1493 3510 1517 1167 (-43458) (-4025) 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4152 2235 5784 7354 2440 4811 2453 1167 31130 (-4025) 8914 0 0 0)))))
-            (.split (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2736 2235 1653 7002 4798 4343 1568 (-1167) (-36828) 4025 0 0 10897 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4187 2235 1553 8079 6267 4306 2586 (-1167) 40831 4025 11020 0 12344 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3417 2235 1737 7313 5572 3947 2002 (-1167) 121757 4025 12417 0 12434 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2736 4934 6015 9214 4359 6605 1568 3112 (-36828) (-30584) 0 0 7400 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4187 4934 7409 9824 5534 7896 2586 3112 40831 (-30584) 3829 2163 6733 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3417 4934 6816 9211 4744 7096 2002 3112 121757 (-30584) 7319 0 7511 0))))))
-        (.split
-          (.split
-            (.split
-              (.split
-                (.split
-                  (.split (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4580 5517 3492 9402 7830 8289 3308 (-4066) (-9065) 34349 0 0 5279 1)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4580 4051 2245 8144 7360 6829 3308 (-2709) (-9065) 11980 0 0 0 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4580 4829 2690 8605 7266 7610 3308 (-3267) (-9065) 21882 0 0 11694 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5388 4803 3734 8008 8273 7459 4565 (-3329) (-6189) 20286 0 0 10149 0)))
-                  (.split
-                    (.split (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 6418 6061 10151 9491 9872 4922 (-5871) (-18880) 13310 5040 0 4945 1579)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 4187 3184 10881 8705 7424 4922 (-2586) (-18880) (-40831) 4696 4194 7485 1))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 4051 3659 9465 8799 7415 4922 (-2709) (-18880) 11980 4669 0 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 6516 5972 10052 9244 9951 4922 (-5587) (-18880) 14934 3009 0 6643 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 4152 2897 10641 8394 7314 4922 (-2453) (-18880) (-31130) 8486 1 8606 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 4104 3425 9273 8497 7413 4922 (-2645) (-18880) 12671 5041 4047 0 0))))
-                    (.split (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 6418 7182 9532 10205 9863 6930 (-5871) (-10440) 13310 5726 0 3976 1)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 4187 4291 10509 9651 7633 6930 (-2586) (-10440) (-40831) 5666 2667 6936 1))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 4051 4704 8871 9495 7528 6930 (-2709) (-10440) 11980 4145 285 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 5557 5722 10002 9859 9032 6930 (-3880) (-10440) 46509 7152 1 7267 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 4104 4500 8706 9204 7572 6930 (-2645) (-10440) 12671 5971 2301 0 0))))))
-                (.split
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 5517 3309 9231 7855 7993 3233 (-4066) (-9486) 34349 0 0 9054 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 4051 2150 7998 7441 6531 3233 (-2709) (-9486) 11980 0 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 5557 3166 9075 7564 8037 3233 (-3880) (-9486) 46509 0 0 9188 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 4104 1924 7817 7133 6584 3233 (-2645) (-9486) 12671 0 0 0 0))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5538 5517 4375 8642 8830 7866 4465 (-4066) (-6421) 34349 0 0 5946 2080)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5538 4051 3226 7362 8321 6433 4465 (-2709) (-6421) 11980 0 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5538 5557 4215 8502 8546 7940 4465 (-3880) (-6421) 46509 0 0 8059 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5538 4104 3006 7198 8019 6524 4465 (-2645) (-6421) 12671 0 0 0 0)))))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 5517 4613 10510 9325 8616 4694 (-4066) (-22158) 34349 8488 0 5492 1917)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 4051 3601 9340 8868 7141 4694 (-2709) (-22158) 11980 4621 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 5557 4420 10333 9035 8608 4694 (-3880) (-22158) 46509 7832 0 8369 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 4104 3350 9140 8563 7133 4694 (-2645) (-22158) 12671 9081 0 0 0))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 5517 5826 10062 10224 8756 6573 (-4066) (-11469) 34349 7618 0 5515 1101)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 4051 4701 8812 9627 7286 6573 (-2709) (-11469) 11980 4534 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 5557 5650 9909 9947 8786 6573 (-3880) (-11469) 46509 7857 0 6568 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 4104 4481 8637 9332 7321 6573 (-2645) (-11469) 12671 7957 0 0 0)))))))
-              (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5768 1931 5312 8194 4993 3169 4780 1023 (-10282) (-4595) 8164 678 0 0)))
-            (.split
-              (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5023 1931 1699 5915 7373 4713 3926 (-1023) (-7335) 4595 0 0 8150 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6418 1931 2965 7369 8584 5302 5871 (-1023) (-13310) 4595 9566 0 3427 950))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5825 1931 2471 6594 8151 4676 4692 (-1023) (-10722) 4595 11583 0 2960 0)))
-              (.split
-                (.split
-                  (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5023 4803 7262 8965 6941 4954 3926 3329 (-7335) (-20286) 0 0 7416 0))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 4051 7417 9970 7243 6213 4922 2709 (-18880) (-11980) 5202 1 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 4187 7709 10697 9268 5977 4922 2586 (-18880) 40831 4973 1037 4309 2339)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 6418 9380 10692 7838 8791 4922 5871 (-18880) (-13310) 4427 944 5945 244)))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 4104 7552 9714 7136 6093 4922 2645 (-18880) (-12671) 5310 1206 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 4152 7737 10411 9097 5766 4922 2453 (-18880) 31130 4685 1203 6606 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 6516 9557 10516 7824 8782 4922 5587 (-18880) (-14934) 5373 1 5685 0)))))
-                    (.split
-                      (.split
-                        (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 4051 7695 9737 8242 5459 6930 2709 (-10440) (-11980) 5258 1004 0 0))
-                        (.split
-                          (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 4187 7895 10194 10107 5142 6930 2586 (-10440) 40831 5943 820 3671 2332))
-                          (.split
-                            (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6364 6418 9517 10189 8496 7644 6389 5871 (-9066) (-13310) 0 0 5360 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6912 6418 10042 10880 9017 8578 7051 5871 (-12951) (-13310) 4788 758 5235 0)) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 7179 6042 9811 10516 9079 7839 8364 5439 (-10341) (-11256) 4873 188 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 7179 6751 10488 11068 9806 8565 8364 6460 (-10341) (-14945) 4936 1 4965 223))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 7179 6441 10212 10685 9416 8175 8364 5794 (-10341) (-13665) 4904 1 5509 0)))))
-                            (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6424 6418 9611 10104 8499 7645 6227 5871 (-9407) (-13310) 0 0 4667 811)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 7109 6418 10208 10731 9236 8383 7450 5871 (-12029) (-13310) 5411 0 5276 1))))))
-                      (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 4104 7785 9462 8109 5300 6930 2645 (-10440) (-12671) 6473 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 4152 7875 9897 9913 4903 6930 2453 (-10440) 31130 6130 0 6691 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 6516 10008 10255 8829 7974 6930 5587 (-10440) (-14934) 5236 30 5665 0)))))))
-                (.split
-                  (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 4803 7193 8988 6383 5332 3233 3329 (-9486) (-20286) 0 0 7468 0)) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5538 4051 6986 8339 6798 3978 4465 2709 (-6421) (-11980) 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5538 5517 8337 9058 8180 5324 4465 4066 (-6421) (-34349) 0 0 5814 1))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5538 4104 7129 8055 6683 3839 4465 2645 (-6421) (-12671) 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5538 5557 8457 8797 8085 5220 4465 3880 (-6421) (-46509) 0 0 5636 0)))))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 4051 7603 9753 7194 6150 4694 2709 (-22158) (-11980) 5052 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 5517 8949 10689 8605 7547 4694 4066 (-22158) (-34349) 5644 0 5339 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 4104 7747 9501 7099 6045 4694 2645 (-22158) (-12671) 6257 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 5557 9072 10460 8526 7461 4694 3880 (-22158) (-46509) 5469 0 5429 0))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 4051 7919 9573 8266 5454 6573 2709 (-11469) (-11980) 6011 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 4187 8136 10106 10195 5171 6573 2586 (-11469) 40831 6495 0 3812 2194)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 6418 10047 10294 8876 8022 6573 5871 (-11469) (-13310) 5655 0 5225 0)))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 4104 8018 9302 8144 5311 6573 2645 (-11469) (-12671) 6185 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 4152 8124 9812 10009 4945 6573 2453 (-11469) 31130 6598 0 5940 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 6516 10201 10099 8850 7995 6573 5587 (-11469) (-14934) 5672 0 4978 0))))))))))
-          (.split
-            (.split
-              (.split
-                (.split
-                  (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4580 4934 2521 8382 6823 7712 3308 (-3112) (-9065) 30584 0 0 12060 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5388 4934 3446 7747 7697 7659 4565 (-3112) (-6189) 30584 0 0 10318 0)))
-                  (.split
-                    (.split
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 6343 5600 9668 8807 9747 4922 (-5353) (-18880) 17324 2982 0 7412 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 3835 2487 10203 8043 6924 4922 (-2340) (-18880) (-24394) 4186 5077 9779 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 5287 4466 8551 8134 8641 4922 (-3770) (-18880) 8042 3523 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 2665 2324 9489 7994 5821 4922 (-1474) (-18880) 56339 5940 1 0 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 5775 4768 8828 8086 9112 4922 (-5156) (-18880) 21155 3287 0 13676 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 3068 2001 9464 7677 6082 4922 (-2243) (-18880) (-19478) 4426 5367 17376 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 5441 4390 8457 7869 8754 4922 (-3711) (-18880) 8633 1953 1678 3323 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 2685 2012 9233 7680 5715 4922 (-1438) (-18880) 92016 8131 1579 0 0)))))
-                    (.split
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 6343 6750 9100 9538 9817 6930 (-5353) (-10440) 17324 4519 0 6293 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 3835 3594 9851 8972 7210 6930 (-2340) (-10440) (-24394) 7591 0 8688 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 4181 4309 8549 8914 7629 6930 (-2591) (-10440) 13664 5921 2690 0 0)))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 5775 5926 8274 8773 9252 6930 (-5156) (-10440) 21155 3843 695 11167 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 3068 2975 9073 8537 6390 6930 (-2243) (-10440) (-19478) 7264 0 15757 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 5441 5545 7894 8521 8913 6930 (-3711) (-10440) 8633 4928 1 2152 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 2685 2867 8808 8499 6008 6930 (-1438) (-10440) 92016 4143 3257 0 0)))))))
-                (.split
-                  (.split
-                    (.split
-                      (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 5314 2762 8655 7158 7793 3233 (-3723) (-9486) 78227 0 0 10341 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 5287 3027 7081 6837 7766 3233 (-3770) (-9486) 8042 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 2665 1048 8096 6556 5100 3233 (-1474) (-9486) 56339 0 0 0 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 5775 3379 7377 6741 8256 3233 (-5156) (-9486) 21155 0 0 7941 0)) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4298 3068 2048 7881 5843 5510 2896 (-2243) (-7796) (-19478) 0 0 4794 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5000 3068 910 8441 6580 5580 3618 (-2243) (-11354) (-19478) 0 0 24884 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4699 3068 619 8056 6223 5376 3217 (-2243) (-9614) (-19478) 0 0 33845 0)))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 5441 2994 7001 6556 7922 3233 (-3711) (-9486) 8633 0 0 1041 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 2685 815 7853 6243 5070 3233 (-1438) (-9486) 92016 0 0 0 0)))))
-                    (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5538 4934 3342 7634 7816 7375 4465 (-3112) (-6421) 30584 0 0 10637 0)))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 5314 3987 9904 8627 8306 4694 (-3723) (-22158) 78227 8557 0 9123 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 4181 3110 8947 8258 7138 4694 (-2591) (-22158) 13664 9567 0 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 5775 4613 8692 8159 8833 4694 (-5156) (-22158) 21155 3244 0 14072 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 3068 2016 9284 7689 5786 4694 (-2243) (-22158) (-19478) 9607 0 16447 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 5441 4241 8325 7954 8472 4694 (-3711) (-22158) 8633 3597 0 3082 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 2685 2085 9061 7708 5421 4694 (-1438) (-22158) 92016 5819 0 0 0)))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 5314 5223 9491 9525 8524 6573 (-3723) (-11469) 78227 7662 0 7894 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 4181 4272 8471 9039 7370 6573 (-2591) (-11469) 13664 8489 0 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 5775 5849 8200 8907 9007 6573 (-5156) (-11469) 21155 4427 0 11355 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 3068 2994 8950 8616 6114 6573 (-2243) (-11469) (-19478) 6927 0 14546 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 4279 4078 8313 8747 7433 6573 (-2547) (-11469) 15204 8866 0 4268 0)))))))
-              (.split
-                (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5023 2235 5249 7292 3982 2118 3926 1167 (-7335) (-4025) 0 0 0 0)) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 2146 5852 8322 4956 3948 4922 1135 (-18880) (-4181) 6494 1263 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 2614 6324 8196 5171 4132 4922 1197 (-18880) (-3858) 7468 1 7558 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 2146 5856 8296 5990 3309 6930 1135 (-10440) (-4181) 6571 1168 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 2614 6315 8110 6156 3386 6930 1197 (-10440) (-3858) 6497 1004 7601 0)))))
-                (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 2235 5441 7130 3387 2371 3233 1167 (-9486) (-4025) 0 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5538 2146 5492 7058 4521 1802 4465 1135 (-6421) (-4181) 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5538 2614 5964 6826 4720 1894 4465 1197 (-6421) (-3858) 0 0 0 0)))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 2235 6201 7927 4845 3803 4694 1167 (-22158) (-4025) 7662 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 2146 6121 8082 5995 3249 6573 1135 (-11469) (-4181) 7502 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 2614 6583 7909 6183 3369 6573 1197 (-11469) (-3858) 7238 0 0 0)))))))
-            (.split
-              (.split
-                (.split
-                  (.split
-                    (.split (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4580 4043 1742 5802 6163 6818 3308 (-2472) (-9065) 3853 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4580 1190 1965 7415 6754 3948 3308 (-596) (-9065) 9237 0 0 0 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4580 1800 1287 5685 6606 4446 3308 (-786) (-9065) 3421 0 0 13652 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4580 4243 1727 5718 5862 7005 3308 (-2516) (-9065) 3642 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4580 1233 1853 7150 6451 3910 3308 (-629) (-9065) 8578 0 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4580 3961 1342 5345 5760 6704 3308 (-1672) (-9065) 2107 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4580 867 2226 6948 6568 3526 3308 45 (-9065) 4890 0 0 10238 0)))))
-                    (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5388 2146 1505 5236 7171 4927 4565 (-1135) (-6189) 4181 0 0 4426 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5388 2939 1519 5684 6921 5722 4565 (-1594) (-6189) 5233 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5388 2614 1309 5352 6877 5392 4565 (-863) (-6189) 3146 0 0 13075 0)))))
-                  (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 2146 2175 7394 7851 5215 4922 (-1135) (-18880) 4181 10265 636 5446 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 2614 1921 7434 7552 5599 4922 (-1197) (-18880) 3858 7020 4699 1 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 2146 2828 6700 8301 5478 6930 (-1135) (-10440) 4181 8213 0 1512 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 2614 2746 6799 8054 5908 6930 (-1197) (-10440) 3858 10538 1 0 0)))))
-                (.split
-                  (.split
-                    (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 2146 1286 5894 6728 4534 3233 (-1135) (-9486) 4181 0 0 13452 0)) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 4243 1522 5577 6028 6696 3233 (-2516) (-9486) 3642 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 1233 2159 6994 6555 3598 3233 (-629) (-9486) 8578 0 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 3961 1140 5209 5943 6394 3233 (-1672) (-9486) 2107 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4673 867 2534 6805 6688 3215 3233 45 (-9486) 4890 0 0 9761 0)))))
-                    (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5538 2146 1711 5201 7391 4623 4465 (-1135) (-6421) 4181 0 0 7824 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5538 2939 1583 5611 7116 5420 4465 (-1594) (-6421) 5233 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5538 2614 1443 5291 7086 5087 4465 (-863) (-6421) 3146 0 0 12724 0)))))
-                  (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 2235 2160 7190 7837 4938 4694 (-1167) (-22158) 4025 9559 0 8978 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 2235 2797 6572 8336 5248 6573 (-1167) (-11469) 4025 9863 0 2775 0)))))
-              (.split
-                (.split
-                  (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5023 4934 7563 8427 6746 4726 3926 3112 (-7335) (-30584) 0 0 6797 0))
-                  (.split
-                    (.split
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 2665 6320 9584 7699 4504 4922 1474 (-18880) (-56339) 4998 1429 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 5287 8601 9127 6347 7308 4922 3770 (-18880) (-8042) 5111 1022 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 3835 7473 9998 8671 5329 4922 2340 (-18880) 24394 4694 1449 6982 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 6343 9496 10088 7516 8477 4922 5353 (-18880) (-17324) 5682 1 5670 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 2685 6384 9285 7518 4268 4922 1438 (-18880) (-92016) 5241 1379 2625 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 5441 8816 8943 6361 7324 4922 3711 (-18880) (-8633) 5047 1046 5333 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 3068 6760 9412 7840 4537 4922 2243 (-18880) 19478 6183 0 12443 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6017 5775 9097 9260 6745 7708 4922 5156 (-18880) (-21155) 4881 850 9889 0)))))
-                    (.split
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 2665 6391 9206 8575 3795 6930 1474 (-10440) (-56339) 6312 387 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 5287 8917 8942 7331 6476 6930 3770 (-10440) (-8042) 5385 553 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 3835 7560 9501 9479 4464 6930 2340 (-10440) 24394 5999 519 7125 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 6343 9898 9819 8497 7642 6930 5353 (-10440) (-17324) 5532 1 5744 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 2685 6397 8898 8369 3521 6930 1438 (-10440) (-92016) 6571 294 1470 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 5441 9101 8727 7313 6459 6930 3711 (-10440) (-8633) 5387 572 4944 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 3068 6782 8983 8667 3730 6930 2243 (-10440) 19478 6159 442 12759 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6736 5775 9413 9016 7698 6844 6930 5156 (-10440) (-21155) 5350 258 10089 0)))))))
-                (.split
-                  (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5147 4934 7811 8242 6780 4751 3840 3112 (-7633) (-30584) 0 0 6947 0))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 4181 7901 9253 7017 5954 4694 2591 (-22158) (-13664) 6392 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 3835 7697 9844 8700 5313 4694 2340 (-22158) 24394 5978 0 6940 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 6343 9648 9878 7474 8437 4694 5353 (-22158) (-17324) 5461 0 5730 0)))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 4279 8065 9009 6949 5879 4694 2547 (-22158) (-15204) 6423 0 5548 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 3068 6998 9241 7864 4504 4694 2243 (-22158) 19478 5965 0 12314 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6087 5775 9270 9046 6720 7683 4694 5156 (-22158) (-21155) 5503 0 9768 0)))))
-                    (.split
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 2665 6648 9080 8649 3766 6573 1474 (-11469) (-56339) 6444 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 5287 9136 8765 7360 6506 6573 3770 (-11469) (-8042) 5724 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 3835 7817 9411 9576 4506 6573 2340 (-11469) 24394 6236 0 7102 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 6343 10102 9664 8529 7675 6573 5353 (-11469) (-17324) 5269 0 5714 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 2685 6662 8774 8451 3505 6573 1438 (-11469) (-92016) 6748 0 1947 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 5441 9326 8557 7356 6504 6573 3711 (-11469) (-8633) 5728 0 5098 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 3068 7046 8871 8757 3742 6573 2243 (-11469) 19478 6327 0 12757 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6857 5775 9633 8854 7741 6890 6573 5156 (-11469) (-21155) 5340 0 10019 0)))))))))))))
-    (.split
-      (.split
-        (.split
-          (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2048 4803 3002 7844 3197 7103 242 (-3329) (-6314) 20286 9228 0 6268 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2048 1931 3678 7436 2461 2079 242 1023 (-6314) (-4595) 10978 0 1670 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2048 1931 3224 5457 3407 4325 242 (-1023) (-6314) 4595 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2048 4803 3940 8455 2838 4530 242 3329 (-6314) (-20286) 0 0 8803 0))))
-          (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2048 4934 3583 7558 2630 7293 242 (-3112) (-6314) 30584 9031 0 5935 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2048 2235 4279 6818 1926 1627 242 1167 (-6314) (-4025) 2783 0 11414 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2048 2235 3772 5038 2881 4630 242 (-1167) (-6314) 4025 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2048 4934 4506 7917 2389 4341 242 3112 (-6314) (-30584) 0 0 8708 0)))))
-        (.split
-          (.split
-            (.split
-              (.split
-                (.split
-                  (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2549 4803 989 6175 4983 6611 1198 (-3329) (-2807) 20286 7617 0 935 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3759 4803 1015 5302 6290 5966 1952 (-3329) (-1931) 20286 0 0 10446 9128)))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3466 5517 1982 7831 6433 7301 2020 (-4066) (-4568) 34349 0 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3466 5023 1720 5796 6249 6728 2020 (-3926) (-4568) 7335 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3466 2736 984 7218 5776 4696 2020 (-1568) (-4568) 36828 0 0 0 0)))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3466 5557 1934 7694 6134 7399 2020 (-3880) (-4568) 46509 0 0 1424 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3466 4104 2048 6385 5841 6026 2020 (-2645) (-4568) 12671 0 0 0 0))))
-                    (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4531 4783 2276 6487 7403 6202 2914 (-3398) (-3309) 19014 0 0 7974 4698)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4531 4829 2078 6340 7098 6336 2914 (-3267) (-3309) 21882 0 0 13409 0)))))
-                (.split
-                  (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3961 4803 1205 6259 6514 6074 1672 (-3329) (-2107) 20286 7114 0 201 0))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3642 5517 1755 7651 6493 6992 2060 (-4066) (-4317) 34349 3068 0 7199 5094)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3642 5023 1582 5675 6421 6422 2060 (-3926) (-4317) 7335 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3642 2736 1298 7027 5848 4382 2060 (-1568) (-4317) 36828 0 0 0 0)))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3642 5557 1674 7505 6190 7088 2060 (-3880) (-4317) 46509 0 0 11837 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3642 4104 2048 6222 5969 5712 2060 (-2645) (-4317) 12671 0 0 0 0))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4750 5517 2816 7048 7752 6597 2963 (-4066) (-3123) 34349 4069 0 3827 1695)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4750 4051 1898 5797 7468 5239 2963 (-2709) (-3123) 11980 0 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4750 5557 2632 6903 7452 6713 2963 (-3880) (-3123) 46509 0 0 7863 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4750 4104 1613 5619 7156 5384 2963 (-2645) (-3123) 12671 0 0 0 0)))))))
-              (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3489 1931 4911 6394 2005 770 1979 1023 (-2899) (-4595) 0 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3961 1931 5234 6219 2318 555 1672 1023 (-2107) (-4595) 2262 0 11993 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4243 1931 5272 6372 2703 837 2516 1023 (-3642) (-4595) 5352 0 0 0)))))
-            (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3602 1931 2146 3608 6428 3875 2016 (-1023) (-2783) 4595 0 0 7792 1)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3489 4803 6545 6914 4769 2741 1979 3329 (-2899) (-20286) 0 0 7002 1)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3961 4803 6980 6942 5167 3135 2051 3329 (-2658) (-20286) 0 0 8192 1)))))
-          (.split
-            (.split
-              (.split
-                (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3200 4934 979 5489 5054 6652 1586 (-3112) (-2323) 30584 0 0 9379 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3466 4934 1234 6828 5483 6893 2020 (-3112) (-4568) 30584 0 0 17676 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4531 4934 1843 6143 6641 6561 2914 (-3112) (-3309) 30584 0 0 14521 0))))
-                (.split
-                  (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3961 4934 938 5979 5893 6373 1672 (-3112) (-2107) 30584 8998 0 11262 0))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3642 5314 1342 7091 5810 6911 2060 (-3723) (-4317) 78227 0 0 15425 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3642 4181 2048 6058 5655 5846 2060 (-2591) (-4317) 13664 0 0 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3642 5775 1898 5786 5624 7294 2060 (-5156) (-4317) 21155 0 0 7993 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3642 3068 1295 6590 4847 4895 2060 (-2243) (-4317) (-19478) 0 0 4141 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3642 4279 2048 5905 5341 5993 2060 (-2547) (-4317) 15204 0 0 0 0))))
-                    (.split
-                      (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4750 5314 2205 6491 7064 6566 2963 (-3723) (-3123) 78227 0 0 11753 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4750 5287 2538 4880 6933 6417 2963 (-3770) (-3123) 8042 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4750 2665 1449 5950 6481 4246 2963 (-1474) (-3123) 56339 0 0 0 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4750 5775 2832 5182 6788 6913 2963 (-5156) (-3123) 21155 0 0 7878 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4750 3068 967 6001 6106 4713 2963 (-2243) (-3123) (-19478) 0 0 10733 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4750 5441 2454 4805 6639 6635 2963 (-3711) (-3123) 8633 0 0 1060 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4750 2685 1333 5723 6174 4353 2963 (-1438) (-3123) 92016 0 0 0 0))))))))
-              (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3602 2235 5661 5617 1776 2048 2016 1167 (-2783) (-4025) 0 0 0 0)))
-            (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3602 2235 2123 3173 5838 4382 2016 (-1167) (-2783) 4025 0 0 6745 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3602 4934 7148 6229 4712 2704 2016 3112 (-2783) (-30584) 0 0 8285 0))))))
-      (.split
-        (.split
-          (.split
-            (.split
-              (.split
-                (.split
-                  (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 1780 4803 1802 9065 4415 6412 936 (-3329) 85181 20286 0 0 3176 0)) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3473 5517 1985 9510 6440 7594 2025 (-4066) (-21723) 34349 0 0 11852 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3473 5023 1725 7750 6256 7143 2025 (-3926) (-21723) 7335 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3473 2736 985 8846 5783 4780 2025 (-1568) (-21723) 36828 0 0 0 0)))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3473 5557 1936 9324 6142 7599 2025 (-3880) (-21723) 46509 0 0 11941 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3473 4104 2048 8167 5848 6124 2025 (-2645) (-21723) 12671 0 0 0 0)))))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2936 5517 1422 10170 5685 6951 1724 (-4066) 13879 34349 10610 0 8388 4437)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2936 4051 2048 9272 5507 5555 1724 (-2709) 13879 11980 6349 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2936 5557 1493 9934 5381 6867 1724 (-3880) 13879 46509 9627 0 4832 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2936 4104 2048 9013 5193 5449 1724 (-2645) 13879 12671 5950 0 0 0))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4632 5517 2594 10318 7583 7776 3005 (-4066) 77852 34349 10840 0 5966 4253)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4632 4051 1718 9272 7330 6322 3005 (-2709) 77852 11980 10619 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4632 5557 2409 10111 7281 7733 3005 (-3880) 77852 46509 11248 0 10680 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4632 4104 1424 9041 7017 6269 3005 (-2645) 77852 12671 13922 0 0 0))))))
-                (.split
-                  (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 1746 4803 1742 8777 4232 6111 903 (-3329) 53692 20286 3965 0 4024 0)) (.split (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3536 6418 2921 8875 6796 8260 1986 (-5871) (-25662) 13310 0 0 1809 1432)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3536 4187 2048 9389 5590 5833 1986 (-2586) (-25662) (-40831) 1888 0 0 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3536 4051 2048 8169 6169 5806 1986 (-2709) (-25662) 11980 4475 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3536 5557 1626 9085 6073 7285 1986 (-3880) (-25662) 46509 0 0 13485 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3536 4104 2048 7951 5855 5810 1986 (-2645) (-25662) 12671 4887 0 0 0)))))
-                  (.split
-                    (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2132 4803 1359 8938 4557 6013 1638 (-3329) 12041 20286 11025 0 0 0))
-                    (.split
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3911 6418 3154 9173 7181 8345 2892 (-5871) 43689 13310 9619 0 2945 1)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3911 4187 2048 9606 5947 5835 2892 (-2586) 43689 (-40831) 9676 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3911 5023 1772 7882 6691 6901 2892 (-3926) 43689 7335 9901 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3911 2736 1441 8866 6113 4515 2892 (-1568) 43689 36828 10139 0 0 0))))
-                      (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3911 5557 1738 9342 6451 7311 2892 (-3880) 43689 46509 23240 0 12592 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3911 5147 1649 7723 6386 6979 2892 (-3840) 43689 7633 12088 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3911 2683 1416 8585 5808 4364 2892 (-1517) 43689 43458 8816 0 0 0))))))))
-              (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3408 1931 4990 7244 1797 3962 1884 1023 47770 (-4595) 10753 0 0 0)))
-            (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3408 1931 2170 7565 6249 3607 1884 (-1023) 47770 4595 13699 0 8964 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3403 4803 6477 9334 4679 6981 1920 3329 61525 (-20286) 9365 0 7486 1)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3068 4803 6269 8909 4208 6520 1850 3329 38256 (-20286) 10084 0 8761 0)))))
-          (.split
-            (.split
-              (.split
-                (.split
-                  (.split
-                    (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 1780 4934 2326 8630 3811 6367 936 (-3112) 85181 30584 0 0 2905 0))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3473 5314 1632 8893 5750 7311 2025 (-3723) (-21723) 78227 0 0 13891 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3473 4181 2048 7963 5535 6146 2025 (-2591) (-21723) 13664 0 0 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3473 5775 2161 7715 5488 7822 2025 (-5156) (-21723) 21155 0 0 9060 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3473 3068 1101 8251 4794 4835 2025 (-2243) (-21723) (-19478) 0 0 6998 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3473 5441 1794 7356 5355 7468 2025 (-3711) (-21723) 8633 0 0 4814 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3473 2685 1350 8037 4857 4460 2025 (-1438) (-21723) 92016 0 0 0 0))))))
-                  (.split
-                    (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2936 4934 1171 9093 4769 6042 1724 (-3112) 13879 30584 11241 0 10342 0))
-                    (.split
-                      (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4632 5314 1982 9674 6898 7397 3005 (-3723) 77852 78227 11651 0 13958 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4632 5287 2316 8389 6814 7511 3005 (-3770) 77852 8042 5423 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4632 2665 1482 9067 6320 4641 3005 (-1474) 77852 56339 6881 0 0 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4632 5775 2609 8586 6657 7958 3005 (-5156) 77852 21155 4460 0 18345 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4632 3068 1029 8963 5937 4819 3005 (-2243) 77852 (-19478) 6665 0 15313 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4632 5441 2231 8241 6518 7584 3005 (-3711) 77852 8633 6730 0 2259 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4632 2685 1411 8785 6015 4479 3005 (-1438) 77852 92016 6799 0 0 0)))))))
-                (.split
-                  (.split
-                    (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 1746 4934 2313 8335 3619 6076 903 (-3112) 53692 30584 3784 0 3658 0))
-                    (.split (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3536 6343 2580 8342 6097 8136 1986 (-5353) (-25662) 17324 17 0 3919 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3536 3835 729 8701 4960 5359 1986 (-2340) (-25662) (-24394) 0 0 5840 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3536 4181 2048 7740 5541 5832 1986 (-2591) (-25662) 13664 5306 0 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3536 5775 1851 7498 5512 7509 1986 (-5156) (-25662) 21155 0 0 11768 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3536 3068 1367 7993 4730 4524 1986 (-2243) (-25662) (-19478) 0 0 6261 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3536 4279 2048 7536 5227 5871 1986 (-2547) (-25662) 15204 5733 0 0 0)))))
-                  (.split
-                    (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 2132 4934 1928 8478 3937 5940 1638 (-3112) 12041 30584 6569 0 0 0))
-                    (.split (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3911 6343 2744 8628 6482 8189 2892 (-5353) 43689 17324 15159 0 3953 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3911 3835 2048 8914 5325 5327 2892 (-2340) 43689 (-24394) 7688 0 1 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3911 4181 2048 8020 5926 5836 2892 (-2591) 43689 13664 5474 0 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3911 5775 1957 7784 5895 7535 2892 (-5156) 43689 21155 13748 0 13494 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3911 3068 1231 8224 5110 4485 2892 (-2243) 43689 (-19478) 5539 0 10410 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3911 4279 2048 7808 5612 5854 2892 (-2547) 43689 15204 5097 0 1179 0)))))))
-              (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3403 2235 5473 6880 1664 4009 1920 1167 61525 (-4025) 11581 0 0 0)) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 1746 2235 4855 6289 831 3495 903 1167 53692 (-4025) 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3536 2235 5596 6571 1738 2894 1986 1167 (-25662) (-4025) 3358 0 0 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3068 2235 5490 6513 1192 3563 2243 1167 19478 (-4025) 18870 0 0 0)))))
-            (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3408 2235 2207 7012 5664 3476 1884 (-1167) 47770 4025 13395 0 7966 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 3408 4934 7003 8787 4498 6897 1884 3112 47770 (-30584) 9415 0 6365 0)))))
-        (.split
-          (.split
-            (.split
-              (.split
-                (.split
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 5517 3147 9068 7892 7699 3172 (-4066) (-10073) 34349 0 0 9372 1)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 4051 2099 7862 7535 6234 3172 (-2709) (-10073) 11980 0 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 5557 2982 8904 7596 7739 3172 (-3880) (-10073) 46509 0 0 9597 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 4104 1841 7672 7225 6283 3172 (-2645) (-10073) 12671 0 0 0 0))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 5517 4319 8555 8946 7604 4383 (-4066) (-6735) 34349 0 0 5811 2355)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 4051 3252 7304 8482 6163 4383 (-2709) (-6735) 11980 0 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 5557 4141 8405 8658 7672 4383 (-3880) (-6735) 46509 0 0 8236 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 4104 3010 7128 8178 6247 4383 (-2645) (-6735) 12671 0 0 0 0)))))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 5517 4211 10093 9051 8192 4503 (-4066) (-27613) 34349 9116 0 8048 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 4051 3264 8937 8652 6717 4503 (-2709) (-27613) 11980 5235 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 5557 4008 9913 8757 8190 4503 (-3880) (-27613) 46509 9434 0 8173 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 4104 2998 8733 8344 6714 4503 (-2645) (-27613) 12671 9711 0 0 0))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 5517 5479 9688 10035 8318 6281 (-4066) (-12898) 34349 7974 0 7124 1)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 4051 4413 8459 9496 6848 6281 (-2709) (-12898) 11980 4771 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 5557 5291 9529 9753 8349 6281 (-3880) (-12898) 46509 8256 0 7115 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 4104 4178 8277 9196 6886 6281 (-2645) (-12898) 12671 8257 0 0 0))))))
-                (.split
-                  (.split
-                    (.split (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 6418 4335 8429 8294 8295 3122 (-5871) (-10945) 13310 99 0 2085 951)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 4187 1516 9138 7181 6047 3122 (-2586) (-10945) (-40831) 0 0 2126 8119))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 4051 2093 7736 7641 5939 3122 (-2709) (-10945) 11980 5488 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 5557 2820 8740 7641 7442 3122 (-3880) (-10945) 46509 2312 0 10146 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 4104 1810 7537 7329 5983 3122 (-2645) (-10945) 12671 1514 0 0 0))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 5517 4286 8478 9072 7346 4315 (-4066) (-7181) 34349 4742 0 5883 2390)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 4051 3308 7259 8652 5898 4315 (-2709) (-7181) 11980 5249 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 5557 4089 8319 8779 7407 4315 (-3880) (-7181) 46509 4453 0 8382 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 4104 3048 7072 8345 5973 4315 (-2645) (-7181) 12671 4074 0 0 0)))))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5262 5517 3367 9253 8321 7559 4343 (-4066) (-38370) 34349 18383 0 5738 3067)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5262 4051 2478 8093 8002 6085 4343 (-2709) (-38370) 11980 11758 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5262 5557 3165 9075 8022 7580 4343 (-3880) (-38370) 46509 19179 0 9062 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5262 4104 2196 7889 7691 6111 4343 (-2645) (-38370) 12671 20624 0 0 0))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 5517 4671 8854 9424 7577 6039 (-4066) (-14999) 34349 15634 0 5562 1989)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 4051 3684 7641 8976 6117 6039 (-2709) (-14999) 11980 8752 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 5557 4472 8691 9133 7625 6039 (-3880) (-14999) 46509 16297 0 7611 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 4104 3428 7453 8670 6176 6039 (-2645) (-14999) 12671 15602 0 0 0)))))))
-              (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6016 1931 5847 7701 4922 2980 4475 1023 (-12657) (-4595) 6654 0 0 0)))
-            (.split
-              (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6016 1931 2774 6552 8440 4255 4475 (-1023) (-12657) 4595 10733 0 5489 1))
-              (.split
-                (.split
-                  (.split
-                    (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 4803 7410 8769 6357 5295 3172 3329 (-10073) (-20286) 0 0 7169 0))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 4051 7246 8158 6841 3995 4383 2709 (-6735) (-11980) 0 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 4187 7569 8600 8907 3777 4383 2586 (-6735) 40831 0 0 6932 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 6418 9132 8876 7428 6574 4383 5871 (-6735) (-13310) 0 0 5530 532)))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 4104 7396 7879 6740 3879 4383 2645 (-6735) (-12671) 0 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 4152 7613 8305 8743 3584 4383 2453 (-6735) 31130 0 0 6905 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 6516 9318 8668 7420 6567 4383 5587 (-6735) (-14934) 0 0 5788 0))))))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 4051 7561 9315 6852 5799 4503 2709 (-27613) (-11980) 5113 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 5517 8874 10256 8278 7214 4503 4066 (-27613) (-34349) 6382 0 5217 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 4104 7721 9063 6770 5707 4503 2645 (-27613) (-12671) 6394 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 5557 9011 10028 8210 7140 4503 3880 (-27613) (-46509) 6218 0 4958 0))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 4051 7948 9149 7997 5161 6281 2709 (-12898) (-11980) 5598 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 4187 8198 9729 10002 4917 6281 2586 (-12898) 40831 6590 0 6298 1)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 6418 10002 9871 8592 7737 6281 5871 (-12898) (-13310) 5704 0 5443 0)))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 4104 8063 8881 7889 5036 6281 2645 (-12898) (-12671) 6149 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 4152 8202 9438 9826 4708 6281 2453 (-12898) 31130 6691 0 6234 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 6516 10167 9678 8578 7725 6281 5587 (-12898) (-14934) 5717 0 5197 0)))))))
-                (.split
-                  (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 4803 7634 8555 6346 5276 3122 3329 (-10945) (-20286) 4428 0 7220 0)) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 4051 7510 7986 6899 4037 4315 2709 (-7181) (-11980) 5147 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 5517 8833 8786 8319 5452 4315 4066 (-7181) (-34349) 4919 0 5598 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 4104 7667 7712 6811 3944 4315 2645 (-7181) (-12671) 5627 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 4152 7895 8228 8873 3695 4315 2453 (-7181) 31130 5349 0 6701 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 6516 9546 8505 7472 6623 4315 5587 (-7181) (-14934) 5243 0 5740 0))))))
-                  (.split
-                    (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5262 4803 7905 8844 6731 5661 4343 3329 (-38370) (-20286) 13320 0 6729 0))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 4051 7721 8314 7276 4417 6039 2709 (-14999) (-11980) 10292 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 4187 8032 8893 9383 4234 6039 2586 (-14999) 40831 13051 0 6316 1)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 6418 9627 9036 7848 6995 6039 5871 (-14999) (-13310) 10407 0 5353 316)))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 4104 7866 8044 7185 4319 6039 2645 (-14999) (-12671) 10930 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 4152 8069 8604 9223 4053 6039 2453 (-14999) 31130 13205 0 6251 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 6516 9812 8840 7851 7001 6039 5587 (-14999) (-14934) 10327 0 5300 0))))))))))
-          (.split
-            (.split
-              (.split
-                (.split
-                  (.split
-                    (.split
-                      (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 5314 2564 8480 7198 7490 3172 (-3723) (-10073) 78227 0 0 10939 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 5287 2866 6948 6960 7470 3172 (-3770) (-10073) 8042 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 2665 1266 7913 6604 4790 3172 (-1474) (-10073) 56339 0 0 0 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 5775 3188 7227 6843 7958 3172 (-5156) (-10073) 21155 0 0 8936 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 3068 770 7908 6248 5142 3172 (-2243) (-10073) (-19478) 0 0 27025 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 5441 2806 6856 6673 7622 3172 (-3711) (-10073) 8633 0 0 739 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 2685 1078 7664 6293 4758 3172 (-1438) (-10073) 92016 0 0 0 0)))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 5314 3714 7989 8248 7457 4383 (-3723) (-6735) 78227 0 0 9048 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 4181 2783 6962 7873 6344 4383 (-2591) (-6735) 13664 0 0 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 5775 4341 6691 7773 7885 4383 (-5156) (-6735) 21155 0 0 8305 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 3068 1635 7469 7313 5246 4383 (-2243) (-6735) (-19478) 0 0 17797 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 5441 3963 6314 7569 7568 4383 (-3711) (-6735) 8633 0 0 658 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 2685 1700 7204 7328 4861 4383 (-1438) (-6735) 92016 0 0 0 0))))))
-                  (.split
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 5314 3573 9483 8356 7893 4503 (-3723) (-27613) 78227 10397 0 9013 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 4181 2742 8536 8036 6725 4503 (-2591) (-27613) 13664 10615 0 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 5775 4197 8284 7950 8413 4503 (-5156) (-27613) 21155 5103 0 14980 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 3068 1785 8854 7409 5388 4503 (-2243) (-27613) (-19478) 11749 0 15191 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 5441 3829 7919 7762 8055 4503 (-3711) (-27613) 8633 5619 0 2735 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 2685 1929 8635 7445 5019 4503 (-1438) (-27613) 92016 6256 0 0 0)))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 5314 4860 9108 9336 8089 6281 (-3723) (-12898) 78227 8099 0 8573 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 4181 3953 8103 8898 6937 6281 (-2591) (-12898) 13664 9040 0 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 5775 5486 7836 8778 8569 6281 (-5156) (-12898) 21155 7321 0 8652 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 3068 2747 8550 8414 5691 6281 (-2243) (-12898) (-19478) 10261 0 11268 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 4279 3741 7938 8601 7003 6281 (-2547) (-12898) 15204 9509 0 3979 0))))))
-                (.split
-                  (.split
-                    (.split
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 6343 3852 7931 7596 8233 3122 (-5353) (-10945) 17324 883 0 5419 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 3835 873 8462 6550 5640 3122 (-2340) (-10945) (-24394) 0 0 17132 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 5287 2732 6826 7094 7175 3122 (-3770) (-10945) 8042 557 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 2665 1518 7738 6667 4481 3122 (-1474) (-10945) 56339 7713 0 0 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 5775 3018 7089 6957 7662 3122 (-5156) (-10945) 21155 1222 0 10339 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 3068 1023 7717 6294 4830 3122 (-2243) (-10945) (-19478) 388 0 19749 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 5441 2642 6722 6803 7324 3122 (-3711) (-10945) 8633 526 0 705 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 2685 1363 7482 6358 4445 3122 (-1438) (-10945) 92016 8759 0 0 0)))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 5314 3656 7898 8376 7184 4315 (-3723) (-7181) 78227 4142 0 9232 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 4181 2799 6895 8039 6064 4315 (-2591) (-7181) 13664 3703 0 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 5775 4281 6630 7948 7622 4315 (-5156) (-7181) 21155 3013 0 9048 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 3068 1784 7347 7432 4945 4315 (-2243) (-7181) (-19478) 2900 0 16923 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 5441 3910 6256 7755 7300 4315 (-3711) (-7181) 8633 2040 0 660 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 2685 1904 7093 7462 4561 4315 (-1438) (-7181) 92016 7505 0 0 0))))))
-                  (.split
-                    (.split
-                      (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5262 5314 2730 8646 7630 7309 4343 (-3723) (-38370) 78227 19105 0 11586 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5262 5287 3092 7186 7441 7320 4343 (-3770) (-38370) 8042 9221 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5262 2665 1757 8064 7043 4568 4343 (-1474) (-38370) 56339 9006 0 0 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5262 5775 3356 7440 7314 7801 4343 (-5156) (-38370) 21155 10619 0 13137 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5262 3068 1264 8030 6674 4887 4343 (-2243) (-38370) (-19478) 22959 0 15957 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5262 5441 2985 7075 7152 7455 4343 (-3711) (-38370) 8633 10386 0 2284 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5262 2685 1549 7804 6734 4506 4343 (-1438) (-38370) 92016 8338 0 0 0)))))
-                    (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 5314 4037 8269 8727 7385 6039 (-3723) (-14999) 78227 15938 0 9379 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 4181 3182 7273 8365 6250 6039 (-2591) (-14999) 13664 17929 0 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 5775 4662 7010 8268 7842 6039 (-5156) (-14999) 21155 9318 0 12077 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 3068 2118 7706 7787 5076 6039 (-2243) (-14999) (-19478) 20108 0 13196 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 4279 2949 7103 8061 6339 6039 (-2547) (-14999) 15204 19187 0 3647 0)))))))
-              (.split
-                (.split
-                  (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 2146 5599 7003 3390 2356 3172 1135 (-10073) (-4181) 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 2614 6060 6826 3646 2580 3172 1197 (-10073) (-3858) 0 0 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 1800 5485 6742 4153 1411 4383 786 (-6735) (-3421) 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 2794 6348 7013 5240 2392 4383 1557 (-6735) (-5547) 0 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 2614 6263 6600 4777 1915 4383 863 (-6735) (-3146) 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 2939 6549 6715 5146 2280 4383 1594 (-6735) (-5233) 0 0 0 0)))))
-                  (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 2235 6282 7492 4509 3451 4503 1167 (-27613) (-4025) 7983 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 2146 6242 7644 5711 2913 6281 1135 (-12898) (-4181) 7853 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 2614 6709 7473 5924 3076 6281 1197 (-12898) (-3858) 7524 0 0 0)))))
-                (.split
-                  (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 2146 5887 6730 3362 2300 3122 1135 (-10945) (-4181) 5200 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 2614 6345 6562 3652 2576 3122 1197 (-10945) (-3858) 5345 0 0 0))) (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 1800 5789 6497 4191 1364 4315 786 (-7181) (-3421) 1024 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 2794 6640 6804 5305 2439 4315 1557 (-7181) (-5547) 3781 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 2614 6563 6382 4853 1987 4315 863 (-7181) (-3146) 1739 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 2939 6845 6510 5229 2366 4315 1594 (-7181) (-5233) 5477 0 0 0)))))
-                  (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5262 2235 6173 6784 3714 2644 4343 1167 (-38370) (-4025) 14478 0 0 0)) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 2146 6212 6857 4978 2130 6039 1135 (-14999) (-4181) 13891 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 2614 6684 6669 5225 2357 6039 1197 (-14999) (-3858) 13025 0 0 0)))))))
-            (.split
-              (.split (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 2235 1468 5686 6754 4278 3172 (-1167) (-10073) 4025 0 0 13217 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 2235 1791 5079 7461 4400 4383 (-1167) (-6735) 4025 0 0 8059 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6343 2235 2377 6532 8056 4703 5353 (-1167) (-17324) 4025 11821 0 5960 0))) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5775 2235 2052 5716 7647 4137 4414 (-1167) (-13633) 4025 14086 0 6710 0)))
-              (.split
-                (.split
-                  (.split
-                    (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4784 4934 7777 8265 6232 5157 3172 3112 (-10073) (-30584) 0 0 6515 0))
-                    (.split
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 2665 6230 7602 7330 2288 4383 1474 (-6735) (-56339) 0 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 5287 8411 7381 5950 5102 4383 3770 (-6735) (-8042) 0 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 3835 7369 7906 8320 3152 4383 2340 (-6735) 24394 0 0 7466 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 6343 9274 8231 7118 6270 4383 5353 (-6735) (-17324) 0 0 5605 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 2685 6314 7294 7156 2052 4383 1438 (-6735) (-92016) 0 0 2365 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 5441 8636 7157 5973 5133 4383 3711 (-6735) (-8633) 0 0 5375 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 3068 6684 7379 7484 2336 4383 2243 (-6735) 19478 0 0 13593 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5702 5775 8906 7436 6356 5515 4383 5156 (-6735) (-21155) 0 0 9520 0))))))
-                  (.split
-                    (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5881 4934 8597 9178 7401 6326 4503 3112 (-27613) (-30584) 7145 0 6094 0))
-                    (.split
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 2665 6747 8677 8439 3456 6281 1474 (-12898) (-56339) 6641 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 5287 9152 8336 7100 6249 6281 3770 (-12898) (-8042) 5738 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 3835 7912 9033 9397 4271 6281 2340 (-12898) 24394 6336 0 7441 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 6343 10086 9245 8269 7418 6281 5353 (-12898) (-17324) 5305 0 5960 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 2685 6781 8373 8253 3213 6281 1438 (-12898) (-92016) 6963 0 2092 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 5441 9354 8131 7112 6265 6281 3711 (-12898) (-8633) 5776 0 4970 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 3068 7163 8478 8570 3478 6281 2243 (-12898) 19478 7385 0 11733 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6715 5775 9649 8431 7496 6650 6281 5156 (-12898) (-21155) 6051 0 9010 0)))))))
-                (.split
-                  (.split
-                    (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 4912 4934 8015 8062 6252 5175 3122 3112 (-10945) (-30584) 3845 0 6492 0))
-                    (.split
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 2665 6523 7476 7442 2325 4315 1474 (-7181) (-56339) 5928 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 5287 8666 7193 6019 5179 4315 3770 (-7181) (-8042) 5336 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 3835 7657 7822 8454 3272 4315 2340 (-7181) 24394 5429 0 7343 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 6343 9512 8070 7184 6341 4315 5353 (-7181) (-17324) 5069 0 5558 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 2685 6612 7170 7279 2120 4315 1438 (-7181) (-92016) 6195 0 2310 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 5441 8896 6977 6058 5227 4315 3711 (-7181) (-8633) 5566 0 5272 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 3068 6980 7270 7615 2437 4315 2243 (-7181) 19478 5936 0 13106 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5878 5775 9159 7265 6439 5607 4315 5156 (-7181) (-21155) 5361 0 9418 0))))))
-                  (.split
-                    (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 5262 4934 8268 8363 6636 5559 4343 3112 (-38370) (-30584) 13156 0 6042 0))
-                    (.split
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 2665 6668 7832 7800 2704 6039 1474 (-14999) (-56339) 12943 0 0 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 5287 8893 7509 6393 5551 6039 3770 (-14999) (-8042) 10009 0 0 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 3835 7815 8196 8801 3625 6039 2340 (-14999) 24394 12333 0 7574 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 6343 9765 8406 7559 6714 6039 5353 (-14999) (-17324) 9487 0 5947 0))))
-                      (.split (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 2685 6741 7528 7632 2492 6039 1438 (-14999) (-92016) 13615 0 2399 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 5441 9115 7300 6427 5593 6039 3711 (-14999) (-8633) 10002 0 5233 0))) (.split (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 3068 7114 7635 7964 2798 6039 2243 (-14999) 19478 12534 0 13851 0)) (.certified (weightedMixedLeafCap1Cap1SidePosSidePos 6196 5775 9388 7595 6809 5973 6039 5156 (-14999) (-21155) 10925 0 8703 0))))))))))))))
+  let certify := weightedMixedCertified
+  let split := WeightedMixedTree.split
+  (split (split (split (split (split (split (certify 645 4803 3228 8436 3567 7681 107 (-3329)
+    (-7333) 20286 8662 0 8744 1) (certify 645 1931 3055 8044 2886 2696 107 1023 (-7333) (-4595)
+    744 0 10260 0)) (split (certify 645 1931 2854 5979 3232 4856 107 (-1023) (-7333) 4595 2902 0 0
+    0) (certify 645 4803 3592 9081 3449 5003 107 3329 (-7333) (-20286) 0 0 9282 301))) (split
+    (split (certify 645 4934 3759 8164 3049 7849 107 (-3112) (-7333) 30584 8953 0 9500 0) (certify
+    645 2235 3662 7428 2295 2208 107 1167 (-7333) (-4025) 3286 0 10022 0)) (split (certify 645
+    2235 3442 5589 2649 5118 107 (-1167) (-7333) 4025 4827 0 0 0) (certify 645 4934 4120 8541 2972
+    4758 107 3112 (-7333) (-30584) 0 0 8617 0)))) (split (split (split (split (split (certify 2525
+    4803 1226 5797 5115 6903 1382 (-3329) (-2697) 20286 0 0 7050 0) (certify 3691 4803 1980 7031
+    6480 7076 2360 (-3329) (-4159) 20286 0 0 9060 4748)) (split (split (certify 2110 4803 1404
+    6162 4593 6948 1107 (-3329) (-3027) 20286 1 0 4592 0) (split (split (certify 3326 5517 1614
+    5887 6159 6733 1850 (-4066) (-2112) 34349 0 0 0 0) (certify 3326 4051 2048 4515 5951 5574 1850
+    (-2709) (-2112) 11980 0 0 0 0)) (certify 3326 4829 854 5087 5700 6335 1850 (-3267) (-2112)
+    21882 0 0 22735 0))) (split (split (split (certify 3311 5517 2230 8020 6388 7610 1973 (-4066)
+    (-4769) 34349 0 0 0 0) (split (certify 3311 5023 1901 5931 6088 7034 1973 (-3926) (-4769) 7335
+    0 0 0 0) (certify 3311 2736 670 7417 5719 5010 1973 (-1568) (-4769) 36828 0 0 0 0))) (certify
+    3311 4829 1470 7218 5867 7019 1973 (-3267) (-4769) 21882 0 0 15597 0)) (certify 4323 4803 2225
+    6508 7089 6563 2858 (-3329) (-3457) 20286 0 0 8314 4489)))) (certify 3172 1931 4440 6844 2151
+    1241 1852 1023 (-3198) (-4595) 0 0 0 451)) (split (certify 3172 1931 1608 3722 5918 4486 1852
+    (-1023) (-3198) 4595 0 0 2787 6394) (certify 3172 4803 6120 7265 4730 2735 1852 3329 (-3198)
+    (-20286) 0 0 5097 1882))) (split (split (split (split (certify 2525 4934 1655 5655 4501 7292
+    1382 (-3112) (-2697) 30584 0 0 5738 0) (certify 3691 4934 1916 6806 5883 7355 2360 (-3112)
+    (-4159) 30584 0 0 9885 0)) (split (certify 2763 4934 1353 5445 4636 6978 1490 (-3112) (-2520)
+    30584 0 0 6014 0) (split (certify 3311 4934 1543 7030 5412 7207 1973 (-3112) (-4769) 30584 0 0
+    9883 0) (certify 4323 4934 1975 6266 6486 6864 2858 (-3112) (-3457) 30584 0 0 11946 0))))
+    (split (split (certify 2525 2235 4971 6207 1099 1282 1382 1167 (-2697) (-4025) 0 0 4342 0)
+    (certify 3691 2235 4894 6609 2520 942 2360 1167 (-4159) (-4025) 0 0 0 0)) (split (certify 2763
+    2235 5279 5898 1013 1111 1490 1167 (-2520) (-4025) 0 0 4256 0) (split (certify 3311 2235 5013
+    6572 1956 1068 1973 1167 (-4769) (-4025) 0 0 0 0) (certify 4323 2235 5349 6062 2987 2048 2858
+    1167 (-3457) (-4025) 0 0 0 0))))) (split (certify 3172 2235 1720 3372 5316 4978 1852 (-1167)
+    (-3198) 4025 0 0 6995 0) (certify 3172 4934 6564 6678 4568 2536 1852 3112 (-3198) (-30584) 0 0
+    7006 0))))) (split (split (split (split (split (split (split (certify 1999 4803 2065 9648 4822
+    7019 1024 (-3329) 415428 20286 0 0 3295 101) (split (split (certify 3432 5517 2591 9991 6612
+    8221 2130 (-4066) (-17933) 34349 0 0 3014 0) (certify 3432 4051 1159 8816 6193 6745 2130
+    (-2709) (-17933) 11980 0 0 0 0)) (certify 3432 4829 1822 9207 6063 7489 2130 (-3267) (-17933)
+    21882 0 0 14294 0))) (split (split (split (certify 3366 5517 1906 10869 6315 7554 1941 (-4066)
+    18265 34349 7517 1 12134 0) (split (certify 3366 5023 1618 9516 6148 7288 1941 (-3926) 18265
+    7335 4090 1 0 0) (certify 3366 2736 995 10174 5659 4978 1941 (-1568) 18265 36828 12405 1 0
+    0))) (split (certify 3366 5557 1873 10633 6016 7454 1941 (-3880) 18265 46509 7117 1 12183 0)
+    (certify 3366 4104 2048 9708 5731 6062 1941 (-2645) 18265 12671 4483 1134 0 0))) (split (split
+    (split (certify 4908 6418 4582 10614 8329 9560 3291 (-5871) (-296565) 13310 1834 2420 3670
+    1537) (certify 4908 4187 1714 11010 7322 6900 3291 (-2586) (-296565) (-40831) 10123 0 2839
+    6884)) (certify 4908 4051 2234 9904 7663 7010 3291 (-2709) (-296565) 11980 3592 6379 0 0))
+    (split (certify 4908 5557 3097 10775 7730 8410 3291 (-3880) (-296565) 46509 3230 5156 9910 0)
+    (certify 4908 4104 1975 9680 7353 6951 3291 (-2645) (-296565) 12671 10685 1 0 0))))) (split
+    (split (certify 1866 4803 1912 9356 4613 6715 976 (-3329) 153667 20286 0 0 3108 0) (split
+    (split (certify 3439 5517 2286 9748 6519 7907 2072 (-4066) (-19430) 34349 0 0 10818 0) (split
+    (certify 3439 5023 1987 7944 6213 7454 2072 (-3926) (-19430) 7335 0 0 0 0) (certify 3439 2736
+    704 9089 5851 5093 2072 (-1568) (-19430) 36828 0 0 0 0))) (split (certify 3439 5557 2247 9568
+    6225 7913 2072 (-3880) (-19430) 46509 0 0 9123 0) (split (certify 3439 5147 1979 7811 5916
+    7552 2072 (-3840) (-19430) 7633 0 0 0 0) (certify 3439 2683 715 8820 5539 4969 2072 (-1517)
+    (-19430) 43458 0 0 0 0))))) (split (split (split (certify 3289 5517 1600 10589 6119 7240 1824
+    (-4066) 15945 34349 9434 0 7477 5074) (certify 3289 4051 2048 9703 5911 5870 1824 (-2709)
+    15945 11980 6039 0 0 0)) (split (certify 3289 5557 1585 10350 5816 7142 1824 (-3880) 15945
+    46509 8933 0 12195 0) (certify 3289 4104 2048 9443 5597 5748 1824 (-2645) 15945 12671 5620 0 0
+    0))) (split (split (certify 4912 5517 3032 10757 7949 8154 3136 (-4066) 240421 34349 9534 0
+    9112 1) (certify 4912 4051 2105 9707 7643 6709 3136 (-2709) 240421 11980 7029 0 0 0)) (split
+    (certify 4912 5557 2845 10550 7650 8103 3136 (-3880) 240421 46509 8805 0 10415 0) (certify
+    4912 4104 1824 9478 7332 6646 3136 (-2645) 240421 12671 11254 0 0 0)))))) (certify 3434 1931
+    4550 7866 2346 4317 2049 1023 210751 (-4595) 6632 3973 0 0)) (split (split (split (split
+    (certify 1999 1931 1710 7797 4682 4121 1024 (-1023) 415428 4595 0 0 10707 0) (split (split
+    (split (certify 3432 3691 789 6829 5812 6371 2130 (-2360) (-17933) 4159 0 0 0 0) (certify 3432
+    1340 1889 8651 6211 4112 2130 (-512) (-17933) 10279 0 0 0 0)) (certify 3432 1192 1917 6828
+    6379 3793 2130 (-600) (-17933) 3910 0 0 2045 7931)) (split (certify 3432 2678 2048 7519 5797
+    5278 2130 (-1514) (-17933) 5803 0 0 0 0) (certify 3432 1363 1874 6569 6079 3806 2130 (-699)
+    (-17933) 3676 0 0 9797 0)))) (split (certify 3366 1931 1827 8757 6149 4171 1941 (-1023) 18265
+    4595 10013 4514 4983 5823) (certify 4908 1931 2013 8392 7483 4822 3291 (-1023) (-296565) 4595
+    11208 1646 9064 1))) (split (certify 2683 1931 1653 7289 5442 4048 1517 (-1023) (-43458) 4595
+    0 0 12068 1) (certify 4152 1931 2060 8439 6906 4231 2453 (-1023) 31130 4595 12804 0 4499
+    5093))) (split (split (certify 2736 4803 5577 9666 4590 6710 1568 3329 (-36828) (-20286) 0 0
+    8141 1) (split (certify 3366 4803 6375 9943 4765 8160 1941 3329 18265 (-20286) 3448 3564 6601
+    1) (certify 4908 4803 7505 10343 6492 7619 3291 3329 (-296565) (-20286) 4524 2805 6745 0)))
+    (split (certify 2683 4803 5676 9367 4353 6524 1517 3329 (-43458) (-20286) 0 0 8443 1) (certify
+    4152 4803 7082 9928 5457 7778 2453 3329 31130 (-20286) 7786 0 7759 0))))) (split (split (split
+    (split (certify 2736 4934 1981 9130 4921 7293 1568 (-3112) (-36828) 30584 0 0 13439 0) (split
+    (split (split (certify 3366 5314 1590 10195 5626 7071 1941 (-3723) 18265 78227 0 7555 14072 0)
+    (certify 3366 4181 2048 9454 5418 5954 1941 (-2591) 18265 13664 4548 572 0 0)) (split (split
+    (certify 3366 5775 2098 9254 5374 7674 1941 (-5156) 18265 21155 0 184 9576 0) (certify 3366
+    3068 1211 9398 4669 4504 1941 (-2243) 18265 (-19478) 233 0 5897 0)) (split (certify 3366 5441
+    1738 8938 5244 7290 1941 (-3711) 18265 8633 0 0 3596 0) (certify 3366 2685 1443 9273 4734 4237
+    1941 (-1438) 18265 92016 7144 0 1281 0)))) (split (split (split (certify 4908 6343 4127 10069
+    7633 9342 3291 (-5353) (-296565) 17324 250 890 7646 0) (certify 4908 3835 1024 10315 6678 6320
+    3291 (-2340) (-296565) (-24394) 2260 10548 15571 0)) (split (certify 4908 5287 2988 9013 7082
+    8192 3291 (-3770) (-296565) 8042 7 1500 0 0) (certify 4908 2665 1356 9736 6737 5321 3291
+    (-1474) (-296565) 56339 6950 425 0 0))) (split (split (certify 4908 5775 3301 9225 6969 8634
+    3291 (-5156) (-296565) 21155 1180 1 15862 0) (certify 4908 3068 866 9641 6382 5482 3291
+    (-2243) (-296565) (-19478) 2719 10204 24132 0)) (split (certify 4908 5441 2920 8875 6797 8259
+    3291 (-3711) (-296565) 8633 867 2557 2857 0) (certify 4908 2685 1146 9456 6426 5150 3291
+    (-1438) (-296565) 92016 8138 0 0 0)))))) (split (certify 2683 4934 1756 8854 4778 6985 1517
+    (-3112) (-43458) 30584 0 0 14493 0) (split (split (split (certify 3289 5314 1337 9912 5434
+    6760 1824 (-3723) 15945 78227 8563 0 15645 0) (certify 3289 4181 2048 9185 5283 5640 1824
+    (-2591) 15945 13664 5107 0 0 0)) (split (certify 3289 4643 865 9168 4993 5921 1824 (-3590)
+    15945 359378 9000 0 33550 0) (split (certify 3289 5441 1460 8678 5146 6977 1824 (-3711) 15945
+    8633 0 0 5397 0) (certify 3289 2685 1757 8988 4558 3923 1824 (-1438) 15945 92016 5886 0 0
+    0)))) (split (split (certify 4912 5314 2416 10113 7259 7758 3136 (-3723) 240421 78227 9868 0
+    11966 0) (split (certify 4912 5287 2755 8822 7094 7887 3136 (-3770) 240421 8042 2332 0 0 0)
+    (certify 4912 2665 1502 9506 6673 5016 3136 (-1474) 240421 56339 6654 0 0 0))) (split (split
+    (certify 4912 5775 3043 9022 6959 8327 3136 (-5156) 240421 21155 2042 0 16464 0) (certify 4912
+    3068 1006 9401 6302 5171 3136 (-2243) 240421 (-19478) 10487 0 19356 0)) (split (certify 4912
+    5441 2667 8676 6803 7951 3136 (-3711) 240421 8633 3805 0 2516 0) (certify 4912 2685 1342 9224
+    6365 4841 3136 (-1438) 240421 92016 6930 0 0 0))))))) (split (split (certify 2736 2235 4514
+    7409 1790 3692 1568 1167 (-36828) (-4025) 0 0 0 0) (certify 4187 2235 5586 7657 2633 4945 2586
+    1167 40831 (-4025) 5875 3093 9059 0)) (split (certify 2683 2235 4757 7096 1493 3510 1517 1167
+    (-43458) (-4025) 0 0 0 0) (certify 4152 2235 5784 7354 2440 4811 2453 1167 31130 (-4025) 8914
+    0 0 0)))) (split (split (split (certify 2736 2235 1653 7002 4798 4343 1568 (-1167) (-36828)
+    4025 0 0 10897 0) (certify 4187 2235 1553 8079 6267 4306 2586 (-1167) 40831 4025 11020 0 12344
+    0)) (certify 3417 2235 1737 7313 5572 3947 2002 (-1167) 121757 4025 12417 0 12434 0)) (split
+    (split (certify 2736 4934 6015 9214 4359 6605 1568 3112 (-36828) (-30584) 0 0 7400 0) (certify
+    4187 4934 7409 9824 5534 7896 2586 3112 40831 (-30584) 3829 2163 6733 0)) (certify 3417 4934
+    6816 9211 4744 7096 2002 3112 121757 (-30584) 7319 0 7511 0))))) (split (split (split (split
+    (split (split (split (split (certify 4580 5517 3492 9402 7830 8289 3308 (-4066) (-9065) 34349
+    0 0 5279 1) (certify 4580 4051 2245 8144 7360 6829 3308 (-2709) (-9065) 11980 0 0 0 0))
+    (certify 4580 4829 2690 8605 7266 7610 3308 (-3267) (-9065) 21882 0 0 11694 0)) (certify 5388
+    4803 3734 8008 8273 7459 4565 (-3329) (-6189) 20286 0 0 10149 0)) (split (split (split (split
+    (certify 6017 6418 6061 10151 9491 9872 4922 (-5871) (-18880) 13310 5040 0 4945 1579) (certify
+    6017 4187 3184 10881 8705 7424 4922 (-2586) (-18880) (-40831) 4696 4194 7485 1)) (certify 6017
+    4051 3659 9465 8799 7415 4922 (-2709) (-18880) 11980 4669 0 0 0)) (split (split (certify 6017
+    6516 5972 10052 9244 9951 4922 (-5587) (-18880) 14934 3009 0 6643 0) (certify 6017 4152 2897
+    10641 8394 7314 4922 (-2453) (-18880) (-31130) 8486 1 8606 0)) (certify 6017 4104 3425 9273
+    8497 7413 4922 (-2645) (-18880) 12671 5041 4047 0 0))) (split (split (split (certify 6736 6418
+    7182 9532 10205 9863 6930 (-5871) (-10440) 13310 5726 0 3976 1) (certify 6736 4187 4291 10509
+    9651 7633 6930 (-2586) (-10440) (-40831) 5666 2667 6936 1)) (certify 6736 4051 4704 8871 9495
+    7528 6930 (-2709) (-10440) 11980 4145 285 0 0)) (split (certify 6736 5557 5722 10002 9859 9032
+    6930 (-3880) (-10440) 46509 7152 1 7267 0) (certify 6736 4104 4500 8706 9204 7572 6930 (-2645)
+    (-10440) 12671 5971 2301 0 0))))) (split (split (split (split (certify 4673 5517 3309 9231
+    7855 7993 3233 (-4066) (-9486) 34349 0 0 9054 0) (certify 4673 4051 2150 7998 7441 6531 3233
+    (-2709) (-9486) 11980 0 0 0 0)) (split (certify 4673 5557 3166 9075 7564 8037 3233 (-3880)
+    (-9486) 46509 0 0 9188 0) (certify 4673 4104 1924 7817 7133 6584 3233 (-2645) (-9486) 12671 0
+    0 0 0))) (split (split (certify 5538 5517 4375 8642 8830 7866 4465 (-4066) (-6421) 34349 0 0
+    5946 2080) (certify 5538 4051 3226 7362 8321 6433 4465 (-2709) (-6421) 11980 0 0 0 0)) (split
+    (certify 5538 5557 4215 8502 8546 7940 4465 (-3880) (-6421) 46509 0 0 8059 0) (certify 5538
+    4104 3006 7198 8019 6524 4465 (-2645) (-6421) 12671 0 0 0 0)))) (split (split (split (certify
+    6087 5517 4613 10510 9325 8616 4694 (-4066) (-22158) 34349 8488 0 5492 1917) (certify 6087
+    4051 3601 9340 8868 7141 4694 (-2709) (-22158) 11980 4621 0 0 0)) (split (certify 6087 5557
+    4420 10333 9035 8608 4694 (-3880) (-22158) 46509 7832 0 8369 0) (certify 6087 4104 3350 9140
+    8563 7133 4694 (-2645) (-22158) 12671 9081 0 0 0))) (split (split (certify 6857 5517 5826
+    10062 10224 8756 6573 (-4066) (-11469) 34349 7618 0 5515 1101) (certify 6857 4051 4701 8812
+    9627 7286 6573 (-2709) (-11469) 11980 4534 0 0 0)) (split (certify 6857 5557 5650 9909 9947
+    8786 6573 (-3880) (-11469) 46509 7857 0 6568 0) (certify 6857 4104 4481 8637 9332 7321 6573
+    (-2645) (-11469) 12671 7957 0 0 0)))))) (certify 5768 1931 5312 8194 4993 3169 4780 1023
+    (-10282) (-4595) 8164 678 0 0)) (split (split (split (certify 5023 1931 1699 5915 7373 4713
+    3926 (-1023) (-7335) 4595 0 0 8150 0) (certify 6418 1931 2965 7369 8584 5302 5871 (-1023)
+    (-13310) 4595 9566 0 3427 950)) (certify 5825 1931 2471 6594 8151 4676 4692 (-1023) (-10722)
+    4595 11583 0 2960 0)) (split (split (certify 5023 4803 7262 8965 6941 4954 3926 3329 (-7335)
+    (-20286) 0 0 7416 0) (split (split (split (certify 6017 4051 7417 9970 7243 6213 4922 2709
+    (-18880) (-11980) 5202 1 0 0) (split (certify 6017 4187 7709 10697 9268 5977 4922 2586
+    (-18880) 40831 4973 1037 4309 2339) (certify 6017 6418 9380 10692 7838 8791 4922 5871 (-18880)
+    (-13310) 4427 944 5945 244))) (split (certify 6017 4104 7552 9714 7136 6093 4922 2645 (-18880)
+    (-12671) 5310 1206 0 0) (split (certify 6017 4152 7737 10411 9097 5766 4922 2453 (-18880)
+    31130 4685 1203 6606 0) (certify 6017 6516 9557 10516 7824 8782 4922 5587 (-18880) (-14934)
+    5373 1 5685 0)))) (split (split (certify 6736 4051 7695 9737 8242 5459 6930 2709 (-10440)
+    (-11980) 5258 1004 0 0) (split (certify 6736 4187 7895 10194 10107 5142 6930 2586 (-10440)
+    40831 5943 820 3671 2332) (split (split (certify 6364 6418 9517 10189 8496 7644 6389 5871
+    (-9066) (-13310) 0 0 5360 0) (split (certify 6912 6418 10042 10880 9017 8578 7051 5871
+    (-12951) (-13310) 4788 758 5235 0) (split (split (certify 7179 6042 9811 10516 9079 7839 8364
+    5439 (-10341) (-11256) 4873 188 0 0) (certify 7179 6751 10488 11068 9806 8565 8364 6460
+    (-10341) (-14945) 4936 1 4965 223)) (certify 7179 6441 10212 10685 9416 8175 8364 5794
+    (-10341) (-13665) 4904 1 5509 0)))) (split (certify 6424 6418 9611 10104 8499 7645 6227 5871
+    (-9407) (-13310) 0 0 4667 811) (certify 7109 6418 10208 10731 9236 8383 7450 5871 (-12029)
+    (-13310) 5411 0 5276 1))))) (split (certify 6736 4104 7785 9462 8109 5300 6930 2645 (-10440)
+    (-12671) 6473 0 0 0) (split (certify 6736 4152 7875 9897 9913 4903 6930 2453 (-10440) 31130
+    6130 0 6691 0) (certify 6736 6516 10008 10255 8829 7974 6930 5587 (-10440) (-14934) 5236 30
+    5665 0)))))) (split (split (certify 4673 4803 7193 8988 6383 5332 3233 3329 (-9486) (-20286) 0
+    0 7468 0) (split (split (certify 5538 4051 6986 8339 6798 3978 4465 2709 (-6421) (-11980) 0 0
+    0 0) (certify 5538 5517 8337 9058 8180 5324 4465 4066 (-6421) (-34349) 0 0 5814 1)) (split
+    (certify 5538 4104 7129 8055 6683 3839 4465 2645 (-6421) (-12671) 0 0 0 0) (certify 5538 5557
+    8457 8797 8085 5220 4465 3880 (-6421) (-46509) 0 0 5636 0)))) (split (split (split (certify
+    6087 4051 7603 9753 7194 6150 4694 2709 (-22158) (-11980) 5052 0 0 0) (certify 6087 5517 8949
+    10689 8605 7547 4694 4066 (-22158) (-34349) 5644 0 5339 0)) (split (certify 6087 4104 7747
+    9501 7099 6045 4694 2645 (-22158) (-12671) 6257 0 0 0) (certify 6087 5557 9072 10460 8526 7461
+    4694 3880 (-22158) (-46509) 5469 0 5429 0))) (split (split (certify 6857 4051 7919 9573 8266
+    5454 6573 2709 (-11469) (-11980) 6011 0 0 0) (split (certify 6857 4187 8136 10106 10195 5171
+    6573 2586 (-11469) 40831 6495 0 3812 2194) (certify 6857 6418 10047 10294 8876 8022 6573 5871
+    (-11469) (-13310) 5655 0 5225 0))) (split (certify 6857 4104 8018 9302 8144 5311 6573 2645
+    (-11469) (-12671) 6185 0 0 0) (split (certify 6857 4152 8124 9812 10009 4945 6573 2453
+    (-11469) 31130 6598 0 5940 0) (certify 6857 6516 10201 10099 8850 7995 6573 5587 (-11469)
+    (-14934) 5672 0 4978 0))))))))) (split (split (split (split (split (certify 4580 4934 2521
+    8382 6823 7712 3308 (-3112) (-9065) 30584 0 0 12060 0) (certify 5388 4934 3446 7747 7697 7659
+    4565 (-3112) (-6189) 30584 0 0 10318 0)) (split (split (split (split (certify 6017 6343 5600
+    9668 8807 9747 4922 (-5353) (-18880) 17324 2982 0 7412 0) (certify 6017 3835 2487 10203 8043
+    6924 4922 (-2340) (-18880) (-24394) 4186 5077 9779 0)) (split (certify 6017 5287 4466 8551
+    8134 8641 4922 (-3770) (-18880) 8042 3523 0 0 0) (certify 6017 2665 2324 9489 7994 5821 4922
+    (-1474) (-18880) 56339 5940 1 0 0))) (split (split (certify 6017 5775 4768 8828 8086 9112 4922
+    (-5156) (-18880) 21155 3287 0 13676 0) (certify 6017 3068 2001 9464 7677 6082 4922 (-2243)
+    (-18880) (-19478) 4426 5367 17376 0)) (split (certify 6017 5441 4390 8457 7869 8754 4922
+    (-3711) (-18880) 8633 1953 1678 3323 0) (certify 6017 2685 2012 9233 7680 5715 4922 (-1438)
+    (-18880) 92016 8131 1579 0 0)))) (split (split (split (certify 6736 6343 6750 9100 9538 9817
+    6930 (-5353) (-10440) 17324 4519 0 6293 0) (certify 6736 3835 3594 9851 8972 7210 6930 (-2340)
+    (-10440) (-24394) 7591 0 8688 0)) (certify 6736 4181 4309 8549 8914 7629 6930 (-2591) (-10440)
+    13664 5921 2690 0 0)) (split (split (certify 6736 5775 5926 8274 8773 9252 6930 (-5156)
+    (-10440) 21155 3843 695 11167 0) (certify 6736 3068 2975 9073 8537 6390 6930 (-2243) (-10440)
+    (-19478) 7264 0 15757 0)) (split (certify 6736 5441 5545 7894 8521 8913 6930 (-3711) (-10440)
+    8633 4928 1 2152 0) (certify 6736 2685 2867 8808 8499 6008 6930 (-1438) (-10440) 92016 4143
+    3257 0 0)))))) (split (split (split (split (certify 4673 5314 2762 8655 7158 7793 3233 (-3723)
+    (-9486) 78227 0 0 10341 0) (split (certify 4673 5287 3027 7081 6837 7766 3233 (-3770) (-9486)
+    8042 0 0 0 0) (certify 4673 2665 1048 8096 6556 5100 3233 (-1474) (-9486) 56339 0 0 0 0)))
+    (split (split (certify 4673 5775 3379 7377 6741 8256 3233 (-5156) (-9486) 21155 0 0 7941 0)
+    (split (split (certify 4298 3068 2048 7881 5843 5510 2896 (-2243) (-7796) (-19478) 0 0 4794 0)
+    (certify 5000 3068 910 8441 6580 5580 3618 (-2243) (-11354) (-19478) 0 0 24884 0)) (certify
+    4699 3068 619 8056 6223 5376 3217 (-2243) (-9614) (-19478) 0 0 33845 0))) (split (certify 4673
+    5441 2994 7001 6556 7922 3233 (-3711) (-9486) 8633 0 0 1041 0) (certify 4673 2685 815 7853
+    6243 5070 3233 (-1438) (-9486) 92016 0 0 0 0)))) (certify 5538 4934 3342 7634 7816 7375 4465
+    (-3112) (-6421) 30584 0 0 10637 0)) (split (split (split (certify 6087 5314 3987 9904 8627
+    8306 4694 (-3723) (-22158) 78227 8557 0 9123 0) (certify 6087 4181 3110 8947 8258 7138 4694
+    (-2591) (-22158) 13664 9567 0 0 0)) (split (split (certify 6087 5775 4613 8692 8159 8833 4694
+    (-5156) (-22158) 21155 3244 0 14072 0) (certify 6087 3068 2016 9284 7689 5786 4694 (-2243)
+    (-22158) (-19478) 9607 0 16447 0)) (split (certify 6087 5441 4241 8325 7954 8472 4694 (-3711)
+    (-22158) 8633 3597 0 3082 0) (certify 6087 2685 2085 9061 7708 5421 4694 (-1438) (-22158)
+    92016 5819 0 0 0)))) (split (split (certify 6857 5314 5223 9491 9525 8524 6573 (-3723)
+    (-11469) 78227 7662 0 7894 0) (certify 6857 4181 4272 8471 9039 7370 6573 (-2591) (-11469)
+    13664 8489 0 0 0)) (split (split (certify 6857 5775 5849 8200 8907 9007 6573 (-5156) (-11469)
+    21155 4427 0 11355 0) (certify 6857 3068 2994 8950 8616 6114 6573 (-2243) (-11469) (-19478)
+    6927 0 14546 0)) (certify 6857 4279 4078 8313 8747 7433 6573 (-2547) (-11469) 15204 8866 0
+    4268 0)))))) (split (split (certify 5023 2235 5249 7292 3982 2118 3926 1167 (-7335) (-4025) 0
+    0 0 0) (split (split (certify 6017 2146 5852 8322 4956 3948 4922 1135 (-18880) (-4181) 6494
+    1263 0 0) (certify 6017 2614 6324 8196 5171 4132 4922 1197 (-18880) (-3858) 7468 1 7558 0))
+    (split (certify 6736 2146 5856 8296 5990 3309 6930 1135 (-10440) (-4181) 6571 1168 0 0)
+    (certify 6736 2614 6315 8110 6156 3386 6930 1197 (-10440) (-3858) 6497 1004 7601 0)))) (split
+    (split (certify 4673 2235 5441 7130 3387 2371 3233 1167 (-9486) (-4025) 0 0 0 0) (split
+    (certify 5538 2146 5492 7058 4521 1802 4465 1135 (-6421) (-4181) 0 0 0 0) (certify 5538 2614
+    5964 6826 4720 1894 4465 1197 (-6421) (-3858) 0 0 0 0))) (split (certify 6087 2235 6201 7927
+    4845 3803 4694 1167 (-22158) (-4025) 7662 0 0 0) (split (certify 6857 2146 6121 8082 5995 3249
+    6573 1135 (-11469) (-4181) 7502 0 0 0) (certify 6857 2614 6583 7909 6183 3369 6573 1197
+    (-11469) (-3858) 7238 0 0 0)))))) (split (split (split (split (split (split (split (certify
+    4580 4043 1742 5802 6163 6818 3308 (-2472) (-9065) 3853 0 0 0 0) (certify 4580 1190 1965 7415
+    6754 3948 3308 (-596) (-9065) 9237 0 0 0 0)) (certify 4580 1800 1287 5685 6606 4446 3308
+    (-786) (-9065) 3421 0 0 13652 0)) (split (split (certify 4580 4243 1727 5718 5862 7005 3308
+    (-2516) (-9065) 3642 0 0 0 0) (certify 4580 1233 1853 7150 6451 3910 3308 (-629) (-9065) 8578
+    0 0 0 0)) (split (certify 4580 3961 1342 5345 5760 6704 3308 (-1672) (-9065) 2107 0 0 0 0)
+    (certify 4580 867 2226 6948 6568 3526 3308 45 (-9065) 4890 0 0 10238 0)))) (split (certify
+    5388 2146 1505 5236 7171 4927 4565 (-1135) (-6189) 4181 0 0 4426 0) (split (certify 5388 2939
+    1519 5684 6921 5722 4565 (-1594) (-6189) 5233 0 0 0 0) (certify 5388 2614 1309 5352 6877 5392
+    4565 (-863) (-6189) 3146 0 0 13075 0)))) (split (split (certify 6017 2146 2175 7394 7851 5215
+    4922 (-1135) (-18880) 4181 10265 636 5446 0) (certify 6017 2614 1921 7434 7552 5599 4922
+    (-1197) (-18880) 3858 7020 4699 1 0)) (split (certify 6736 2146 2828 6700 8301 5478 6930
+    (-1135) (-10440) 4181 8213 0 1512 0) (certify 6736 2614 2746 6799 8054 5908 6930 (-1197)
+    (-10440) 3858 10538 1 0 0)))) (split (split (split (certify 4673 2146 1286 5894 6728 4534 3233
+    (-1135) (-9486) 4181 0 0 13452 0) (split (split (certify 4673 4243 1522 5577 6028 6696 3233
+    (-2516) (-9486) 3642 0 0 0 0) (certify 4673 1233 2159 6994 6555 3598 3233 (-629) (-9486) 8578
+    0 0 0 0)) (split (certify 4673 3961 1140 5209 5943 6394 3233 (-1672) (-9486) 2107 0 0 0 0)
+    (certify 4673 867 2534 6805 6688 3215 3233 45 (-9486) 4890 0 0 9761 0)))) (split (certify 5538
+    2146 1711 5201 7391 4623 4465 (-1135) (-6421) 4181 0 0 7824 0) (split (certify 5538 2939 1583
+    5611 7116 5420 4465 (-1594) (-6421) 5233 0 0 0 0) (certify 5538 2614 1443 5291 7086 5087 4465
+    (-863) (-6421) 3146 0 0 12724 0)))) (split (certify 6087 2235 2160 7190 7837 4938 4694 (-1167)
+    (-22158) 4025 9559 0 8978 0) (certify 6857 2235 2797 6572 8336 5248 6573 (-1167) (-11469) 4025
+    9863 0 2775 0)))) (split (split (certify 5023 4934 7563 8427 6746 4726 3926 3112 (-7335)
+    (-30584) 0 0 6797 0) (split (split (split (split (certify 6017 2665 6320 9584 7699 4504 4922
+    1474 (-18880) (-56339) 4998 1429 0 0) (certify 6017 5287 8601 9127 6347 7308 4922 3770
+    (-18880) (-8042) 5111 1022 0 0)) (split (certify 6017 3835 7473 9998 8671 5329 4922 2340
+    (-18880) 24394 4694 1449 6982 0) (certify 6017 6343 9496 10088 7516 8477 4922 5353 (-18880)
+    (-17324) 5682 1 5670 0))) (split (split (certify 6017 2685 6384 9285 7518 4268 4922 1438
+    (-18880) (-92016) 5241 1379 2625 0) (certify 6017 5441 8816 8943 6361 7324 4922 3711 (-18880)
+    (-8633) 5047 1046 5333 0)) (split (certify 6017 3068 6760 9412 7840 4537 4922 2243 (-18880)
+    19478 6183 0 12443 0) (certify 6017 5775 9097 9260 6745 7708 4922 5156 (-18880) (-21155) 4881
+    850 9889 0)))) (split (split (split (certify 6736 2665 6391 9206 8575 3795 6930 1474 (-10440)
+    (-56339) 6312 387 0 0) (certify 6736 5287 8917 8942 7331 6476 6930 3770 (-10440) (-8042) 5385
+    553 0 0)) (split (certify 6736 3835 7560 9501 9479 4464 6930 2340 (-10440) 24394 5999 519 7125
+    0) (certify 6736 6343 9898 9819 8497 7642 6930 5353 (-10440) (-17324) 5532 1 5744 0))) (split
+    (split (certify 6736 2685 6397 8898 8369 3521 6930 1438 (-10440) (-92016) 6571 294 1470 0)
+    (certify 6736 5441 9101 8727 7313 6459 6930 3711 (-10440) (-8633) 5387 572 4944 0)) (split
+    (certify 6736 3068 6782 8983 8667 3730 6930 2243 (-10440) 19478 6159 442 12759 0) (certify
+    6736 5775 9413 9016 7698 6844 6930 5156 (-10440) (-21155) 5350 258 10089 0)))))) (split
+    (certify 5147 4934 7811 8242 6780 4751 3840 3112 (-7633) (-30584) 0 0 6947 0) (split (split
+    (split (certify 6087 4181 7901 9253 7017 5954 4694 2591 (-22158) (-13664) 6392 0 0 0) (split
+    (certify 6087 3835 7697 9844 8700 5313 4694 2340 (-22158) 24394 5978 0 6940 0) (certify 6087
+    6343 9648 9878 7474 8437 4694 5353 (-22158) (-17324) 5461 0 5730 0))) (split (certify 6087
+    4279 8065 9009 6949 5879 4694 2547 (-22158) (-15204) 6423 0 5548 0) (split (certify 6087 3068
+    6998 9241 7864 4504 4694 2243 (-22158) 19478 5965 0 12314 0) (certify 6087 5775 9270 9046 6720
+    7683 4694 5156 (-22158) (-21155) 5503 0 9768 0)))) (split (split (split (certify 6857 2665
+    6648 9080 8649 3766 6573 1474 (-11469) (-56339) 6444 0 0 0) (certify 6857 5287 9136 8765 7360
+    6506 6573 3770 (-11469) (-8042) 5724 0 0 0)) (split (certify 6857 3835 7817 9411 9576 4506
+    6573 2340 (-11469) 24394 6236 0 7102 0) (certify 6857 6343 10102 9664 8529 7675 6573 5353
+    (-11469) (-17324) 5269 0 5714 0))) (split (split (certify 6857 2685 6662 8774 8451 3505 6573
+    1438 (-11469) (-92016) 6748 0 1947 0) (certify 6857 5441 9326 8557 7356 6504 6573 3711
+    (-11469) (-8633) 5728 0 5098 0)) (split (certify 6857 3068 7046 8871 8757 3742 6573 2243
+    (-11469) 19478 6327 0 12757 0) (certify 6857 5775 9633 8854 7741 6890 6573 5156 (-11469)
+    (-21155) 5340 0 10019 0)))))))))))) (split (split (split (split (split (certify 2048 4803 3002
+    7844 3197 7103 242 (-3329) (-6314) 20286 9228 0 6268 0) (certify 2048 1931 3678 7436 2461 2079
+    242 1023 (-6314) (-4595) 10978 0 1670 0)) (split (certify 2048 1931 3224 5457 3407 4325 242
+    (-1023) (-6314) 4595 0 0 0 0) (certify 2048 4803 3940 8455 2838 4530 242 3329 (-6314) (-20286)
+    0 0 8803 0))) (split (split (certify 2048 4934 3583 7558 2630 7293 242 (-3112) (-6314) 30584
+    9031 0 5935 0) (certify 2048 2235 4279 6818 1926 1627 242 1167 (-6314) (-4025) 2783 0 11414
+    0)) (split (certify 2048 2235 3772 5038 2881 4630 242 (-1167) (-6314) 4025 0 0 0 0) (certify
+    2048 4934 4506 7917 2389 4341 242 3112 (-6314) (-30584) 0 0 8708 0)))) (split (split (split
+    (split (split (split (certify 2549 4803 989 6175 4983 6611 1198 (-3329) (-2807) 20286 7617 0
+    935 0) (certify 3759 4803 1015 5302 6290 5966 1952 (-3329) (-1931) 20286 0 0 10446 9128))
+    (split (split (split (certify 3466 5517 1982 7831 6433 7301 2020 (-4066) (-4568) 34349 0 0 0
+    0) (split (certify 3466 5023 1720 5796 6249 6728 2020 (-3926) (-4568) 7335 0 0 0 0) (certify
+    3466 2736 984 7218 5776 4696 2020 (-1568) (-4568) 36828 0 0 0 0))) (split (certify 3466 5557
+    1934 7694 6134 7399 2020 (-3880) (-4568) 46509 0 0 1424 0) (certify 3466 4104 2048 6385 5841
+    6026 2020 (-2645) (-4568) 12671 0 0 0 0))) (split (certify 4531 4783 2276 6487 7403 6202 2914
+    (-3398) (-3309) 19014 0 0 7974 4698) (certify 4531 4829 2078 6340 7098 6336 2914 (-3267)
+    (-3309) 21882 0 0 13409 0)))) (split (certify 3961 4803 1205 6259 6514 6074 1672 (-3329)
+    (-2107) 20286 7114 0 201 0) (split (split (split (certify 3642 5517 1755 7651 6493 6992 2060
+    (-4066) (-4317) 34349 3068 0 7199 5094) (split (certify 3642 5023 1582 5675 6421 6422 2060
+    (-3926) (-4317) 7335 0 0 0 0) (certify 3642 2736 1298 7027 5848 4382 2060 (-1568) (-4317)
+    36828 0 0 0 0))) (split (certify 3642 5557 1674 7505 6190 7088 2060 (-3880) (-4317) 46509 0 0
+    11837 0) (certify 3642 4104 2048 6222 5969 5712 2060 (-2645) (-4317) 12671 0 0 0 0))) (split
+    (split (certify 4750 5517 2816 7048 7752 6597 2963 (-4066) (-3123) 34349 4069 0 3827 1695)
+    (certify 4750 4051 1898 5797 7468 5239 2963 (-2709) (-3123) 11980 0 0 0 0)) (split (certify
+    4750 5557 2632 6903 7452 6713 2963 (-3880) (-3123) 46509 0 0 7863 0) (certify 4750 4104 1613
+    5619 7156 5384 2963 (-2645) (-3123) 12671 0 0 0 0)))))) (split (certify 3489 1931 4911 6394
+    2005 770 1979 1023 (-2899) (-4595) 0 0 0 0) (split (certify 3961 1931 5234 6219 2318 555 1672
+    1023 (-2107) (-4595) 2262 0 11993 0) (certify 4243 1931 5272 6372 2703 837 2516 1023 (-3642)
+    (-4595) 5352 0 0 0)))) (split (certify 3602 1931 2146 3608 6428 3875 2016 (-1023) (-2783) 4595
+    0 0 7792 1) (split (certify 3489 4803 6545 6914 4769 2741 1979 3329 (-2899) (-20286) 0 0 7002
+    1) (certify 3961 4803 6980 6942 5167 3135 2051 3329 (-2658) (-20286) 0 0 8192 1)))) (split
+    (split (split (split (certify 3200 4934 979 5489 5054 6652 1586 (-3112) (-2323) 30584 0 0 9379
+    0) (split (certify 3466 4934 1234 6828 5483 6893 2020 (-3112) (-4568) 30584 0 0 17676 0)
+    (certify 4531 4934 1843 6143 6641 6561 2914 (-3112) (-3309) 30584 0 0 14521 0))) (split
+    (certify 3961 4934 938 5979 5893 6373 1672 (-3112) (-2107) 30584 8998 0 11262 0) (split (split
+    (split (certify 3642 5314 1342 7091 5810 6911 2060 (-3723) (-4317) 78227 0 0 15425 0) (certify
+    3642 4181 2048 6058 5655 5846 2060 (-2591) (-4317) 13664 0 0 0 0)) (split (split (certify 3642
+    5775 1898 5786 5624 7294 2060 (-5156) (-4317) 21155 0 0 7993 0) (certify 3642 3068 1295 6590
+    4847 4895 2060 (-2243) (-4317) (-19478) 0 0 4141 0)) (certify 3642 4279 2048 5905 5341 5993
+    2060 (-2547) (-4317) 15204 0 0 0 0))) (split (split (certify 4750 5314 2205 6491 7064 6566
+    2963 (-3723) (-3123) 78227 0 0 11753 0) (split (certify 4750 5287 2538 4880 6933 6417 2963
+    (-3770) (-3123) 8042 0 0 0 0) (certify 4750 2665 1449 5950 6481 4246 2963 (-1474) (-3123)
+    56339 0 0 0 0))) (split (split (certify 4750 5775 2832 5182 6788 6913 2963 (-5156) (-3123)
+    21155 0 0 7878 0) (certify 4750 3068 967 6001 6106 4713 2963 (-2243) (-3123) (-19478) 0 0
+    10733 0)) (split (certify 4750 5441 2454 4805 6639 6635 2963 (-3711) (-3123) 8633 0 0 1060 0)
+    (certify 4750 2685 1333 5723 6174 4353 2963 (-1438) (-3123) 92016 0 0 0 0))))))) (certify 3602
+    2235 5661 5617 1776 2048 2016 1167 (-2783) (-4025) 0 0 0 0)) (split (certify 3602 2235 2123
+    3173 5838 4382 2016 (-1167) (-2783) 4025 0 0 6745 0) (certify 3602 4934 7148 6229 4712 2704
+    2016 3112 (-2783) (-30584) 0 0 8285 0))))) (split (split (split (split (split (split (split
+    (certify 1780 4803 1802 9065 4415 6412 936 (-3329) 85181 20286 0 0 3176 0) (split (split
+    (certify 3473 5517 1985 9510 6440 7594 2025 (-4066) (-21723) 34349 0 0 11852 0) (split
+    (certify 3473 5023 1725 7750 6256 7143 2025 (-3926) (-21723) 7335 0 0 0 0) (certify 3473 2736
+    985 8846 5783 4780 2025 (-1568) (-21723) 36828 0 0 0 0))) (split (certify 3473 5557 1936 9324
+    6142 7599 2025 (-3880) (-21723) 46509 0 0 11941 0) (certify 3473 4104 2048 8167 5848 6124 2025
+    (-2645) (-21723) 12671 0 0 0 0)))) (split (split (split (certify 2936 5517 1422 10170 5685
+    6951 1724 (-4066) 13879 34349 10610 0 8388 4437) (certify 2936 4051 2048 9272 5507 5555 1724
+    (-2709) 13879 11980 6349 0 0 0)) (split (certify 2936 5557 1493 9934 5381 6867 1724 (-3880)
+    13879 46509 9627 0 4832 0) (certify 2936 4104 2048 9013 5193 5449 1724 (-2645) 13879 12671
+    5950 0 0 0))) (split (split (certify 4632 5517 2594 10318 7583 7776 3005 (-4066) 77852 34349
+    10840 0 5966 4253) (certify 4632 4051 1718 9272 7330 6322 3005 (-2709) 77852 11980 10619 0 0
+    0)) (split (certify 4632 5557 2409 10111 7281 7733 3005 (-3880) 77852 46509 11248 0 10680 0)
+    (certify 4632 4104 1424 9041 7017 6269 3005 (-2645) 77852 12671 13922 0 0 0))))) (split (split
+    (certify 1746 4803 1742 8777 4232 6111 903 (-3329) 53692 20286 3965 0 4024 0) (split (split
+    (split (certify 3536 6418 2921 8875 6796 8260 1986 (-5871) (-25662) 13310 0 0 1809 1432)
+    (certify 3536 4187 2048 9389 5590 5833 1986 (-2586) (-25662) (-40831) 1888 0 0 0)) (certify
+    3536 4051 2048 8169 6169 5806 1986 (-2709) (-25662) 11980 4475 0 0 0)) (split (certify 3536
+    5557 1626 9085 6073 7285 1986 (-3880) (-25662) 46509 0 0 13485 0) (certify 3536 4104 2048 7951
+    5855 5810 1986 (-2645) (-25662) 12671 4887 0 0 0)))) (split (certify 2132 4803 1359 8938 4557
+    6013 1638 (-3329) 12041 20286 11025 0 0 0) (split (split (split (certify 3911 6418 3154 9173
+    7181 8345 2892 (-5871) 43689 13310 9619 0 2945 1) (certify 3911 4187 2048 9606 5947 5835 2892
+    (-2586) 43689 (-40831) 9676 0 0 0)) (split (certify 3911 5023 1772 7882 6691 6901 2892 (-3926)
+    43689 7335 9901 0 0 0) (certify 3911 2736 1441 8866 6113 4515 2892 (-1568) 43689 36828 10139 0
+    0 0))) (split (certify 3911 5557 1738 9342 6451 7311 2892 (-3880) 43689 46509 23240 0 12592 0)
+    (split (certify 3911 5147 1649 7723 6386 6979 2892 (-3840) 43689 7633 12088 0 0 0) (certify
+    3911 2683 1416 8585 5808 4364 2892 (-1517) 43689 43458 8816 0 0 0))))))) (certify 3408 1931
+    4990 7244 1797 3962 1884 1023 47770 (-4595) 10753 0 0 0)) (split (certify 3408 1931 2170 7565
+    6249 3607 1884 (-1023) 47770 4595 13699 0 8964 0) (split (certify 3403 4803 6477 9334 4679
+    6981 1920 3329 61525 (-20286) 9365 0 7486 1) (certify 3068 4803 6269 8909 4208 6520 1850 3329
+    38256 (-20286) 10084 0 8761 0)))) (split (split (split (split (split (certify 1780 4934 2326
+    8630 3811 6367 936 (-3112) 85181 30584 0 0 2905 0) (split (split (certify 3473 5314 1632 8893
+    5750 7311 2025 (-3723) (-21723) 78227 0 0 13891 0) (certify 3473 4181 2048 7963 5535 6146 2025
+    (-2591) (-21723) 13664 0 0 0 0)) (split (split (certify 3473 5775 2161 7715 5488 7822 2025
+    (-5156) (-21723) 21155 0 0 9060 0) (certify 3473 3068 1101 8251 4794 4835 2025 (-2243)
+    (-21723) (-19478) 0 0 6998 0)) (split (certify 3473 5441 1794 7356 5355 7468 2025 (-3711)
+    (-21723) 8633 0 0 4814 0) (certify 3473 2685 1350 8037 4857 4460 2025 (-1438) (-21723) 92016 0
+    0 0 0))))) (split (certify 2936 4934 1171 9093 4769 6042 1724 (-3112) 13879 30584 11241 0
+    10342 0) (split (split (certify 4632 5314 1982 9674 6898 7397 3005 (-3723) 77852 78227 11651 0
+    13958 0) (split (certify 4632 5287 2316 8389 6814 7511 3005 (-3770) 77852 8042 5423 0 0 0)
+    (certify 4632 2665 1482 9067 6320 4641 3005 (-1474) 77852 56339 6881 0 0 0))) (split (split
+    (certify 4632 5775 2609 8586 6657 7958 3005 (-5156) 77852 21155 4460 0 18345 0) (certify 4632
+    3068 1029 8963 5937 4819 3005 (-2243) 77852 (-19478) 6665 0 15313 0)) (split (certify 4632
+    5441 2231 8241 6518 7584 3005 (-3711) 77852 8633 6730 0 2259 0) (certify 4632 2685 1411 8785
+    6015 4479 3005 (-1438) 77852 92016 6799 0 0 0)))))) (split (split (certify 1746 4934 2313 8335
+    3619 6076 903 (-3112) 53692 30584 3784 0 3658 0) (split (split (split (certify 3536 6343 2580
+    8342 6097 8136 1986 (-5353) (-25662) 17324 17 0 3919 0) (certify 3536 3835 729 8701 4960 5359
+    1986 (-2340) (-25662) (-24394) 0 0 5840 0)) (certify 3536 4181 2048 7740 5541 5832 1986
+    (-2591) (-25662) 13664 5306 0 0 0)) (split (split (certify 3536 5775 1851 7498 5512 7509 1986
+    (-5156) (-25662) 21155 0 0 11768 0) (certify 3536 3068 1367 7993 4730 4524 1986 (-2243)
+    (-25662) (-19478) 0 0 6261 0)) (certify 3536 4279 2048 7536 5227 5871 1986 (-2547) (-25662)
+    15204 5733 0 0 0)))) (split (certify 2132 4934 1928 8478 3937 5940 1638 (-3112) 12041 30584
+    6569 0 0 0) (split (split (split (certify 3911 6343 2744 8628 6482 8189 2892 (-5353) 43689
+    17324 15159 0 3953 0) (certify 3911 3835 2048 8914 5325 5327 2892 (-2340) 43689 (-24394) 7688
+    0 1 0)) (certify 3911 4181 2048 8020 5926 5836 2892 (-2591) 43689 13664 5474 0 0 0)) (split
+    (split (certify 3911 5775 1957 7784 5895 7535 2892 (-5156) 43689 21155 13748 0 13494 0)
+    (certify 3911 3068 1231 8224 5110 4485 2892 (-2243) 43689 (-19478) 5539 0 10410 0)) (certify
+    3911 4279 2048 7808 5612 5854 2892 (-2547) 43689 15204 5097 0 1179 0)))))) (split (certify
+    3403 2235 5473 6880 1664 4009 1920 1167 61525 (-4025) 11581 0 0 0) (split (split (certify 1746
+    2235 4855 6289 831 3495 903 1167 53692 (-4025) 0 0 0 0) (certify 3536 2235 5596 6571 1738 2894
+    1986 1167 (-25662) (-4025) 3358 0 0 0)) (certify 3068 2235 5490 6513 1192 3563 2243 1167 19478
+    (-4025) 18870 0 0 0)))) (split (certify 3408 2235 2207 7012 5664 3476 1884 (-1167) 47770 4025
+    13395 0 7966 0) (certify 3408 4934 7003 8787 4498 6897 1884 3112 47770 (-30584) 9415 0 6365
+    0)))) (split (split (split (split (split (split (split (split (certify 4784 5517 3147 9068
+    7892 7699 3172 (-4066) (-10073) 34349 0 0 9372 1) (certify 4784 4051 2099 7862 7535 6234 3172
+    (-2709) (-10073) 11980 0 0 0 0)) (split (certify 4784 5557 2982 8904 7596 7739 3172 (-3880)
+    (-10073) 46509 0 0 9597 0) (certify 4784 4104 1841 7672 7225 6283 3172 (-2645) (-10073) 12671
+    0 0 0 0))) (split (split (certify 5702 5517 4319 8555 8946 7604 4383 (-4066) (-6735) 34349 0 0
+    5811 2355) (certify 5702 4051 3252 7304 8482 6163 4383 (-2709) (-6735) 11980 0 0 0 0)) (split
+    (certify 5702 5557 4141 8405 8658 7672 4383 (-3880) (-6735) 46509 0 0 8236 0) (certify 5702
+    4104 3010 7128 8178 6247 4383 (-2645) (-6735) 12671 0 0 0 0)))) (split (split (split (certify
+    5881 5517 4211 10093 9051 8192 4503 (-4066) (-27613) 34349 9116 0 8048 0) (certify 5881 4051
+    3264 8937 8652 6717 4503 (-2709) (-27613) 11980 5235 0 0 0)) (split (certify 5881 5557 4008
+    9913 8757 8190 4503 (-3880) (-27613) 46509 9434 0 8173 0) (certify 5881 4104 2998 8733 8344
+    6714 4503 (-2645) (-27613) 12671 9711 0 0 0))) (split (split (certify 6715 5517 5479 9688
+    10035 8318 6281 (-4066) (-12898) 34349 7974 0 7124 1) (certify 6715 4051 4413 8459 9496 6848
+    6281 (-2709) (-12898) 11980 4771 0 0 0)) (split (certify 6715 5557 5291 9529 9753 8349 6281
+    (-3880) (-12898) 46509 8256 0 7115 0) (certify 6715 4104 4178 8277 9196 6886 6281 (-2645)
+    (-12898) 12671 8257 0 0 0))))) (split (split (split (split (split (certify 4912 6418 4335 8429
+    8294 8295 3122 (-5871) (-10945) 13310 99 0 2085 951) (certify 4912 4187 1516 9138 7181 6047
+    3122 (-2586) (-10945) (-40831) 0 0 2126 8119)) (certify 4912 4051 2093 7736 7641 5939 3122
+    (-2709) (-10945) 11980 5488 0 0 0)) (split (certify 4912 5557 2820 8740 7641 7442 3122 (-3880)
+    (-10945) 46509 2312 0 10146 0) (certify 4912 4104 1810 7537 7329 5983 3122 (-2645) (-10945)
+    12671 1514 0 0 0))) (split (split (certify 5878 5517 4286 8478 9072 7346 4315 (-4066) (-7181)
+    34349 4742 0 5883 2390) (certify 5878 4051 3308 7259 8652 5898 4315 (-2709) (-7181) 11980 5249
+    0 0 0)) (split (certify 5878 5557 4089 8319 8779 7407 4315 (-3880) (-7181) 46509 4453 0 8382
+    0) (certify 5878 4104 3048 7072 8345 5973 4315 (-2645) (-7181) 12671 4074 0 0 0)))) (split
+    (split (split (certify 5262 5517 3367 9253 8321 7559 4343 (-4066) (-38370) 34349 18383 0 5738
+    3067) (certify 5262 4051 2478 8093 8002 6085 4343 (-2709) (-38370) 11980 11758 0 0 0)) (split
+    (certify 5262 5557 3165 9075 8022 7580 4343 (-3880) (-38370) 46509 19179 0 9062 0) (certify
+    5262 4104 2196 7889 7691 6111 4343 (-2645) (-38370) 12671 20624 0 0 0))) (split (split
+    (certify 6196 5517 4671 8854 9424 7577 6039 (-4066) (-14999) 34349 15634 0 5562 1989) (certify
+    6196 4051 3684 7641 8976 6117 6039 (-2709) (-14999) 11980 8752 0 0 0)) (split (certify 6196
+    5557 4472 8691 9133 7625 6039 (-3880) (-14999) 46509 16297 0 7611 0) (certify 6196 4104 3428
+    7453 8670 6176 6039 (-2645) (-14999) 12671 15602 0 0 0)))))) (certify 6016 1931 5847 7701 4922
+    2980 4475 1023 (-12657) (-4595) 6654 0 0 0)) (split (certify 6016 1931 2774 6552 8440 4255
+    4475 (-1023) (-12657) 4595 10733 0 5489 1) (split (split (split (certify 4784 4803 7410 8769
+    6357 5295 3172 3329 (-10073) (-20286) 0 0 7169 0) (split (split (certify 5702 4051 7246 8158
+    6841 3995 4383 2709 (-6735) (-11980) 0 0 0 0) (split (certify 5702 4187 7569 8600 8907 3777
+    4383 2586 (-6735) 40831 0 0 6932 0) (certify 5702 6418 9132 8876 7428 6574 4383 5871 (-6735)
+    (-13310) 0 0 5530 532))) (split (certify 5702 4104 7396 7879 6740 3879 4383 2645 (-6735)
+    (-12671) 0 0 0 0) (split (certify 5702 4152 7613 8305 8743 3584 4383 2453 (-6735) 31130 0 0
+    6905 0) (certify 5702 6516 9318 8668 7420 6567 4383 5587 (-6735) (-14934) 0 0 5788 0)))))
+    (split (split (split (certify 5881 4051 7561 9315 6852 5799 4503 2709 (-27613) (-11980) 5113 0
+    0 0) (certify 5881 5517 8874 10256 8278 7214 4503 4066 (-27613) (-34349) 6382 0 5217 0))
+    (split (certify 5881 4104 7721 9063 6770 5707 4503 2645 (-27613) (-12671) 6394 0 0 0) (certify
+    5881 5557 9011 10028 8210 7140 4503 3880 (-27613) (-46509) 6218 0 4958 0))) (split (split
+    (certify 6715 4051 7948 9149 7997 5161 6281 2709 (-12898) (-11980) 5598 0 0 0) (split (certify
+    6715 4187 8198 9729 10002 4917 6281 2586 (-12898) 40831 6590 0 6298 1) (certify 6715 6418
+    10002 9871 8592 7737 6281 5871 (-12898) (-13310) 5704 0 5443 0))) (split (certify 6715 4104
+    8063 8881 7889 5036 6281 2645 (-12898) (-12671) 6149 0 0 0) (split (certify 6715 4152 8202
+    9438 9826 4708 6281 2453 (-12898) 31130 6691 0 6234 0) (certify 6715 6516 10167 9678 8578 7725
+    6281 5587 (-12898) (-14934) 5717 0 5197 0)))))) (split (split (certify 4912 4803 7634 8555
+    6346 5276 3122 3329 (-10945) (-20286) 4428 0 7220 0) (split (split (certify 5878 4051 7510
+    7986 6899 4037 4315 2709 (-7181) (-11980) 5147 0 0 0) (certify 5878 5517 8833 8786 8319 5452
+    4315 4066 (-7181) (-34349) 4919 0 5598 0)) (split (certify 5878 4104 7667 7712 6811 3944 4315
+    2645 (-7181) (-12671) 5627 0 0 0) (split (certify 5878 4152 7895 8228 8873 3695 4315 2453
+    (-7181) 31130 5349 0 6701 0) (certify 5878 6516 9546 8505 7472 6623 4315 5587 (-7181) (-14934)
+    5243 0 5740 0))))) (split (certify 5262 4803 7905 8844 6731 5661 4343 3329 (-38370) (-20286)
+    13320 0 6729 0) (split (split (certify 6196 4051 7721 8314 7276 4417 6039 2709 (-14999)
+    (-11980) 10292 0 0 0) (split (certify 6196 4187 8032 8893 9383 4234 6039 2586 (-14999) 40831
+    13051 0 6316 1) (certify 6196 6418 9627 9036 7848 6995 6039 5871 (-14999) (-13310) 10407 0
+    5353 316))) (split (certify 6196 4104 7866 8044 7185 4319 6039 2645 (-14999) (-12671) 10930 0
+    0 0) (split (certify 6196 4152 8069 8604 9223 4053 6039 2453 (-14999) 31130 13205 0 6251 0)
+    (certify 6196 6516 9812 8840 7851 7001 6039 5587 (-14999) (-14934) 10327 0 5300 0)))))))))
+    (split (split (split (split (split (split (split (certify 4784 5314 2564 8480 7198 7490 3172
+    (-3723) (-10073) 78227 0 0 10939 0) (split (certify 4784 5287 2866 6948 6960 7470 3172 (-3770)
+    (-10073) 8042 0 0 0 0) (certify 4784 2665 1266 7913 6604 4790 3172 (-1474) (-10073) 56339 0 0
+    0 0))) (split (split (certify 4784 5775 3188 7227 6843 7958 3172 (-5156) (-10073) 21155 0 0
+    8936 0) (certify 4784 3068 770 7908 6248 5142 3172 (-2243) (-10073) (-19478) 0 0 27025 0))
+    (split (certify 4784 5441 2806 6856 6673 7622 3172 (-3711) (-10073) 8633 0 0 739 0) (certify
+    4784 2685 1078 7664 6293 4758 3172 (-1438) (-10073) 92016 0 0 0 0)))) (split (split (certify
+    5702 5314 3714 7989 8248 7457 4383 (-3723) (-6735) 78227 0 0 9048 0) (certify 5702 4181 2783
+    6962 7873 6344 4383 (-2591) (-6735) 13664 0 0 0 0)) (split (split (certify 5702 5775 4341 6691
+    7773 7885 4383 (-5156) (-6735) 21155 0 0 8305 0) (certify 5702 3068 1635 7469 7313 5246 4383
+    (-2243) (-6735) (-19478) 0 0 17797 0)) (split (certify 5702 5441 3963 6314 7569 7568 4383
+    (-3711) (-6735) 8633 0 0 658 0) (certify 5702 2685 1700 7204 7328 4861 4383 (-1438) (-6735)
+    92016 0 0 0 0))))) (split (split (split (certify 5881 5314 3573 9483 8356 7893 4503 (-3723)
+    (-27613) 78227 10397 0 9013 0) (certify 5881 4181 2742 8536 8036 6725 4503 (-2591) (-27613)
+    13664 10615 0 0 0)) (split (split (certify 5881 5775 4197 8284 7950 8413 4503 (-5156) (-27613)
+    21155 5103 0 14980 0) (certify 5881 3068 1785 8854 7409 5388 4503 (-2243) (-27613) (-19478)
+    11749 0 15191 0)) (split (certify 5881 5441 3829 7919 7762 8055 4503 (-3711) (-27613) 8633
+    5619 0 2735 0) (certify 5881 2685 1929 8635 7445 5019 4503 (-1438) (-27613) 92016 6256 0 0
+    0)))) (split (split (certify 6715 5314 4860 9108 9336 8089 6281 (-3723) (-12898) 78227 8099 0
+    8573 0) (certify 6715 4181 3953 8103 8898 6937 6281 (-2591) (-12898) 13664 9040 0 0 0)) (split
+    (split (certify 6715 5775 5486 7836 8778 8569 6281 (-5156) (-12898) 21155 7321 0 8652 0)
+    (certify 6715 3068 2747 8550 8414 5691 6281 (-2243) (-12898) (-19478) 10261 0 11268 0))
+    (certify 6715 4279 3741 7938 8601 7003 6281 (-2547) (-12898) 15204 9509 0 3979 0))))) (split
+    (split (split (split (split (certify 4912 6343 3852 7931 7596 8233 3122 (-5353) (-10945) 17324
+    883 0 5419 0) (certify 4912 3835 873 8462 6550 5640 3122 (-2340) (-10945) (-24394) 0 0 17132
+    0)) (split (certify 4912 5287 2732 6826 7094 7175 3122 (-3770) (-10945) 8042 557 0 0 0)
+    (certify 4912 2665 1518 7738 6667 4481 3122 (-1474) (-10945) 56339 7713 0 0 0))) (split (split
+    (certify 4912 5775 3018 7089 6957 7662 3122 (-5156) (-10945) 21155 1222 0 10339 0) (certify
+    4912 3068 1023 7717 6294 4830 3122 (-2243) (-10945) (-19478) 388 0 19749 0)) (split (certify
+    4912 5441 2642 6722 6803 7324 3122 (-3711) (-10945) 8633 526 0 705 0) (certify 4912 2685 1363
+    7482 6358 4445 3122 (-1438) (-10945) 92016 8759 0 0 0)))) (split (split (certify 5878 5314
+    3656 7898 8376 7184 4315 (-3723) (-7181) 78227 4142 0 9232 0) (certify 5878 4181 2799 6895
+    8039 6064 4315 (-2591) (-7181) 13664 3703 0 0 0)) (split (split (certify 5878 5775 4281 6630
+    7948 7622 4315 (-5156) (-7181) 21155 3013 0 9048 0) (certify 5878 3068 1784 7347 7432 4945
+    4315 (-2243) (-7181) (-19478) 2900 0 16923 0)) (split (certify 5878 5441 3910 6256 7755 7300
+    4315 (-3711) (-7181) 8633 2040 0 660 0) (certify 5878 2685 1904 7093 7462 4561 4315 (-1438)
+    (-7181) 92016 7505 0 0 0))))) (split (split (split (certify 5262 5314 2730 8646 7630 7309 4343
+    (-3723) (-38370) 78227 19105 0 11586 0) (split (certify 5262 5287 3092 7186 7441 7320 4343
+    (-3770) (-38370) 8042 9221 0 0 0) (certify 5262 2665 1757 8064 7043 4568 4343 (-1474) (-38370)
+    56339 9006 0 0 0))) (split (split (certify 5262 5775 3356 7440 7314 7801 4343 (-5156) (-38370)
+    21155 10619 0 13137 0) (certify 5262 3068 1264 8030 6674 4887 4343 (-2243) (-38370) (-19478)
+    22959 0 15957 0)) (split (certify 5262 5441 2985 7075 7152 7455 4343 (-3711) (-38370) 8633
+    10386 0 2284 0) (certify 5262 2685 1549 7804 6734 4506 4343 (-1438) (-38370) 92016 8338 0 0
+    0)))) (split (split (certify 6196 5314 4037 8269 8727 7385 6039 (-3723) (-14999) 78227 15938 0
+    9379 0) (certify 6196 4181 3182 7273 8365 6250 6039 (-2591) (-14999) 13664 17929 0 0 0))
+    (split (split (certify 6196 5775 4662 7010 8268 7842 6039 (-5156) (-14999) 21155 9318 0 12077
+    0) (certify 6196 3068 2118 7706 7787 5076 6039 (-2243) (-14999) (-19478) 20108 0 13196 0))
+    (certify 6196 4279 2949 7103 8061 6339 6039 (-2547) (-14999) 15204 19187 0 3647 0)))))) (split
+    (split (split (split (certify 4784 2146 5599 7003 3390 2356 3172 1135 (-10073) (-4181) 0 0 0
+    0) (certify 4784 2614 6060 6826 3646 2580 3172 1197 (-10073) (-3858) 0 0 0 0)) (split (split
+    (certify 5702 1800 5485 6742 4153 1411 4383 786 (-6735) (-3421) 0 0 0 0) (certify 5702 2794
+    6348 7013 5240 2392 4383 1557 (-6735) (-5547) 0 0 0 0)) (split (certify 5702 2614 6263 6600
+    4777 1915 4383 863 (-6735) (-3146) 0 0 0 0) (certify 5702 2939 6549 6715 5146 2280 4383 1594
+    (-6735) (-5233) 0 0 0 0)))) (split (certify 5881 2235 6282 7492 4509 3451 4503 1167 (-27613)
+    (-4025) 7983 0 0 0) (split (certify 6715 2146 6242 7644 5711 2913 6281 1135 (-12898) (-4181)
+    7853 0 0 0) (certify 6715 2614 6709 7473 5924 3076 6281 1197 (-12898) (-3858) 7524 0 0 0))))
+    (split (split (split (certify 4912 2146 5887 6730 3362 2300 3122 1135 (-10945) (-4181) 5200 0
+    0 0) (certify 4912 2614 6345 6562 3652 2576 3122 1197 (-10945) (-3858) 5345 0 0 0)) (split
+    (split (certify 5878 1800 5789 6497 4191 1364 4315 786 (-7181) (-3421) 1024 0 0 0) (certify
+    5878 2794 6640 6804 5305 2439 4315 1557 (-7181) (-5547) 3781 0 0 0)) (split (certify 5878 2614
+    6563 6382 4853 1987 4315 863 (-7181) (-3146) 1739 0 0 0) (certify 5878 2939 6845 6510 5229
+    2366 4315 1594 (-7181) (-5233) 5477 0 0 0)))) (split (certify 5262 2235 6173 6784 3714 2644
+    4343 1167 (-38370) (-4025) 14478 0 0 0) (split (certify 6196 2146 6212 6857 4978 2130 6039
+    1135 (-14999) (-4181) 13891 0 0 0) (certify 6196 2614 6684 6669 5225 2357 6039 1197 (-14999)
+    (-3858) 13025 0 0 0)))))) (split (split (split (split (certify 4784 2235 1468 5686 6754 4278
+    3172 (-1167) (-10073) 4025 0 0 13217 0) (certify 5702 2235 1791 5079 7461 4400 4383 (-1167)
+    (-6735) 4025 0 0 8059 0)) (certify 6343 2235 2377 6532 8056 4703 5353 (-1167) (-17324) 4025
+    11821 0 5960 0)) (certify 5775 2235 2052 5716 7647 4137 4414 (-1167) (-13633) 4025 14086 0
+    6710 0)) (split (split (split (certify 4784 4934 7777 8265 6232 5157 3172 3112 (-10073)
+    (-30584) 0 0 6515 0) (split (split (split (certify 5702 2665 6230 7602 7330 2288 4383 1474
+    (-6735) (-56339) 0 0 0 0) (certify 5702 5287 8411 7381 5950 5102 4383 3770 (-6735) (-8042) 0 0
+    0 0)) (split (certify 5702 3835 7369 7906 8320 3152 4383 2340 (-6735) 24394 0 0 7466 0)
+    (certify 5702 6343 9274 8231 7118 6270 4383 5353 (-6735) (-17324) 0 0 5605 0))) (split (split
+    (certify 5702 2685 6314 7294 7156 2052 4383 1438 (-6735) (-92016) 0 0 2365 0) (certify 5702
+    5441 8636 7157 5973 5133 4383 3711 (-6735) (-8633) 0 0 5375 0)) (split (certify 5702 3068 6684
+    7379 7484 2336 4383 2243 (-6735) 19478 0 0 13593 0) (certify 5702 5775 8906 7436 6356 5515
+    4383 5156 (-6735) (-21155) 0 0 9520 0))))) (split (certify 5881 4934 8597 9178 7401 6326 4503
+    3112 (-27613) (-30584) 7145 0 6094 0) (split (split (split (certify 6715 2665 6747 8677 8439
+    3456 6281 1474 (-12898) (-56339) 6641 0 0 0) (certify 6715 5287 9152 8336 7100 6249 6281 3770
+    (-12898) (-8042) 5738 0 0 0)) (split (certify 6715 3835 7912 9033 9397 4271 6281 2340 (-12898)
+    24394 6336 0 7441 0) (certify 6715 6343 10086 9245 8269 7418 6281 5353 (-12898) (-17324) 5305
+    0 5960 0))) (split (split (certify 6715 2685 6781 8373 8253 3213 6281 1438 (-12898) (-92016)
+    6963 0 2092 0) (certify 6715 5441 9354 8131 7112 6265 6281 3711 (-12898) (-8633) 5776 0 4970
+    0)) (split (certify 6715 3068 7163 8478 8570 3478 6281 2243 (-12898) 19478 7385 0 11733 0)
+    (certify 6715 5775 9649 8431 7496 6650 6281 5156 (-12898) (-21155) 6051 0 9010 0)))))) (split
+    (split (certify 4912 4934 8015 8062 6252 5175 3122 3112 (-10945) (-30584) 3845 0 6492 0)
+    (split (split (split (certify 5878 2665 6523 7476 7442 2325 4315 1474 (-7181) (-56339) 5928 0
+    0 0) (certify 5878 5287 8666 7193 6019 5179 4315 3770 (-7181) (-8042) 5336 0 0 0)) (split
+    (certify 5878 3835 7657 7822 8454 3272 4315 2340 (-7181) 24394 5429 0 7343 0) (certify 5878
+    6343 9512 8070 7184 6341 4315 5353 (-7181) (-17324) 5069 0 5558 0))) (split (split (certify
+    5878 2685 6612 7170 7279 2120 4315 1438 (-7181) (-92016) 6195 0 2310 0) (certify 5878 5441
+    8896 6977 6058 5227 4315 3711 (-7181) (-8633) 5566 0 5272 0)) (split (certify 5878 3068 6980
+    7270 7615 2437 4315 2243 (-7181) 19478 5936 0 13106 0) (certify 5878 5775 9159 7265 6439 5607
+    4315 5156 (-7181) (-21155) 5361 0 9418 0))))) (split (certify 5262 4934 8268 8363 6636 5559
+    4343 3112 (-38370) (-30584) 13156 0 6042 0) (split (split (split (certify 6196 2665 6668 7832
+    7800 2704 6039 1474 (-14999) (-56339) 12943 0 0 0) (certify 6196 5287 8893 7509 6393 5551 6039
+    3770 (-14999) (-8042) 10009 0 0 0)) (split (certify 6196 3835 7815 8196 8801 3625 6039 2340
+    (-14999) 24394 12333 0 7574 0) (certify 6196 6343 9765 8406 7559 6714 6039 5353 (-14999)
+    (-17324) 9487 0 5947 0))) (split (split (certify 6196 2685 6741 7528 7632 2492 6039 1438
+    (-14999) (-92016) 13615 0 2399 0) (certify 6196 5441 9115 7300 6427 5593 6039 3711 (-14999)
+    (-8633) 10002 0 5233 0)) (split (certify 6196 3068 7114 7635 7964 2798 6039 2243 (-14999)
+    19478 12534 0 13851 0) (certify 6196 5775 9388 7595 6809 5973 6039 5156 (-14999) (-21155)
+    10925 0 8703 0)))))))))))))
 
 end Bescovitch
