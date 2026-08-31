@@ -85,4 +85,81 @@ theorem norm_sq_eq_inner_sq_add_inner_quarterTurn_sq (e x : Plane) (he : ‖e‖
     _ = (x 0 * e 0 + x 1 * e 1) ^ 2 +
         (-(x 0 * e 1) + x 1 * e 0) ^ 2 := by ring
 
+/-- Coordinates relative to a unit first axis, with either choice of transverse orientation. -/
+def orientedCoordinates (e : Plane) (orientation : ℝ) (x : Plane) : Plane :=
+  !₂[⟪e, x⟫_ℝ, orientation * ⟪quarterTurn e, x⟫_ℝ]
+
+@[simp]
+theorem orientedCoordinates_apply_zero (e : Plane) (orientation : ℝ) (x : Plane) :
+    orientedCoordinates e orientation x 0 = ⟪e, x⟫_ℝ := by
+  rfl
+
+@[simp]
+theorem orientedCoordinates_apply_one (e : Plane) (orientation : ℝ) (x : Plane) :
+    orientedCoordinates e orientation x 1 = orientation * ⟪quarterTurn e, x⟫_ℝ := by
+  rfl
+
+/-- Oriented coordinates preserve norms when the first axis is unit and the orientation is a
+sign. -/
+theorem norm_orientedCoordinates (e : Plane) {orientation : ℝ} (x : Plane)
+    (he : ‖e‖ = 1) (horientation : orientation ^ 2 = 1) :
+    ‖orientedCoordinates e orientation x‖ = ‖x‖ := by
+  rw [← sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)]
+  rw [norm_sq_eq_inner_sq_add_inner_quarterTurn_sq e x he]
+  simp only [EuclideanSpace.real_norm_sq_eq, orientedCoordinates, Fin.sum_univ_two,
+    Matrix.cons_val_zero, Matrix.cons_val_one]
+  nlinarith
+
+@[simp]
+theorem orientedCoordinates_add (e : Plane) (orientation : ℝ) (x y : Plane) :
+    orientedCoordinates e orientation (x + y) =
+      orientedCoordinates e orientation x + orientedCoordinates e orientation y := by
+  ext i
+  fin_cases i
+  · simp [orientedCoordinates, inner_add_right]
+  · simp [orientedCoordinates, inner_add_right]
+    ring
+
+@[simp]
+theorem orientedCoordinates_sub (e : Plane) (orientation : ℝ) (x y : Plane) :
+    orientedCoordinates e orientation (x - y) =
+      orientedCoordinates e orientation x - orientedCoordinates e orientation y := by
+  ext i
+  fin_cases i
+  · simp [orientedCoordinates, inner_sub_right]
+  · simp [orientedCoordinates, inner_sub_right]
+    ring
+
+@[simp]
+theorem orientedCoordinates_smul (e : Plane) (orientation a : ℝ) (x : Plane) :
+    orientedCoordinates e orientation (a • x) = a • orientedCoordinates e orientation x := by
+  ext i
+  fin_cases i
+  · simp [orientedCoordinates, real_inner_smul_right]
+  · simp [orientedCoordinates, real_inner_smul_right]
+    ring
+
+/-- The chosen unit first axis has coordinates `(1,0)`. -/
+theorem orientedCoordinates_self (e : Plane) (orientation : ℝ) (he : ‖e‖ = 1) :
+    orientedCoordinates e orientation e = !₂[1, 0] := by
+  ext i
+  fin_cases i
+  · simp [orientedCoordinates, he]
+  · simp [orientedCoordinates]
+
+/-- Taking oriented coordinates is a linear isometry. -/
+def orientedCoordinateIsometry (e : Plane) (orientation : ℝ) (he : ‖e‖ = 1)
+    (horientation : orientation ^ 2 = 1) : Plane →ₗᵢ[ℝ] Plane where
+  toFun := orientedCoordinates e orientation
+  map_add' := orientedCoordinates_add e orientation
+  map_smul' := orientedCoordinates_smul e orientation
+  norm_map' := fun x ↦ norm_orientedCoordinates e x he horientation
+
+@[simp]
+theorem orientedCoordinateIsometry_apply (e : Plane) (orientation : ℝ) (he : ‖e‖ = 1)
+    (horientation : orientation ^ 2 = 1) (x : Plane) :
+    orientedCoordinateIsometry e orientation he horientation x =
+      orientedCoordinates e orientation x := by
+  rfl
+
 end Bescovitch

@@ -93,6 +93,22 @@ theorem exists_stereographicDirection (n : Plane) (hn : ‖n‖ = 1) :
       rw [hcircleDen]
       ring
 
+/-- On the upper half-circle, the stereographic parameter can be chosen in `[0,1]`. -/
+theorem exists_stereographicDirection_nonnegative (n : Plane) (hn : ‖n‖ = 1)
+    (hnUpper : 0 ≤ n 1) :
+    ∃ side z : ℝ, (side = 1 ∨ side = -1) ∧ 0 ≤ z ∧ z ≤ 1 ∧
+      stereographicDirection side z = n := by
+  obtain ⟨side, z, hside, -, hzUpper, hz⟩ := exists_stereographicDirection n hn
+  have hcomponent := congrArg (fun x : Plane ↦ x 1) hz
+  simp only [stereographicDirection, Matrix.cons_val_one, Matrix.cons_val_zero] at hcomponent
+  have hden : 0 < 1 + z ^ 2 := by positivity
+  have hquotient : 0 ≤ 2 * z / (1 + z ^ 2) := by rw [hcomponent]; exact hnUpper
+  have hproduct := mul_nonneg hquotient hden.le
+  have hzZero : 0 ≤ z := by
+    field_simp [hden.ne'] at hproduct
+    nlinarith
+  exact ⟨side, z, hside, hzZero, hzUpper, hz⟩
+
 /-- The first endpoint of the chord with longitudinal coordinate `a` and transverse coordinate
 `h`. -/
 def chordChartFirst (side a h z : ℝ) : Plane :=
@@ -159,6 +175,38 @@ theorem exists_chordChart {p q : Plane} {c : ℝ} (hc : 0 < c) (hpq : ‖p - q�
     simp
   obtain ⟨side, z, hside, hzLower, hzUpper, hnChart⟩ :=
     exists_stereographicDirection n hn
+  let a := ⟪n, p⟫_ℝ
+  let h := ⟪quarterTurn n, p⟫_ℝ
+  have hp : p = a • n + h • quarterTurn n := by
+    simpa [a, h] using plane_eq_inner_smul_add_inner_quarterTurn_smul n p hn
+  refine ⟨side, z, a, h, hside, hzLower, hzUpper, ?_, ?_⟩
+  · rw [chordChartFirst, hnChart]
+    exact hp
+  · rw [chordChartSecond, hnChart]
+    calc
+      q = p - (p - q) := by abel
+      _ = p - c • n := by rw [hchord]
+      _ = (a - c) • n + h • quarterTurn n := by rw [hp]; module
+
+/-- A chord whose direction lies in the upper half-plane has a chart with `z ∈ [0,1]`. -/
+theorem exists_chordChart_nonnegative {p q : Plane} {c : ℝ} (hc : 0 < c)
+    (hpq : ‖p - q‖ = c) (hupper : 0 ≤ (c⁻¹ • (p - q) : Plane) 1) :
+    ∃ side z a h : ℝ,
+      (side = 1 ∨ side = -1) ∧ 0 ≤ z ∧ z ≤ 1 ∧
+        p = chordChartFirst side a h z ∧ q = chordChartSecond side c a h z := by
+  let n : Plane := c⁻¹ • (p - q)
+  have hn : ‖n‖ = 1 := by
+    dsimp only [n]
+    rw [norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hc), hpq]
+    field_simp [hc.ne']
+  have hnUpper : 0 ≤ n 1 := by simpa [n] using hupper
+  have hchord : p - q = c • n := by
+    dsimp only [n]
+    rw [← mul_smul]
+    field_simp [hc.ne']
+    simp
+  obtain ⟨side, z, hside, hzLower, hzUpper, hnChart⟩ :=
+    exists_stereographicDirection_nonnegative n hn hnUpper
   let a := ⟪n, p⟫_ℝ
   let h := ⟪quarterTurn n, p⟫_ℝ
   have hp : p = a • n + h • quarterTurn n := by
