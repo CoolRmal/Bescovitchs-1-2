@@ -27,7 +27,10 @@ jobs:
           use-mathlib-cache: true
 
       - name: Build the project and challenge
-        run: lake build Bescovitch Challenge Bescovitch.BPC.Basic
+        run: >-
+          lake build Bescovitch Challenge Bescovitch.BPC.Basic
+          Bescovitch.Rectifiability.Basic Bescovitch.Sigma.Basic
+          Bescovitch.SixPoint.Packing
 
       - name: Check source hygiene
         shell: bash

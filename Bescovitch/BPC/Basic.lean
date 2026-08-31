@@ -17,7 +17,7 @@ This file develops the elementary set-distance API needed by the six-point trans
 
 noncomputable section
 
-open Set
+open MeasureTheory Set
 open scoped ENNReal
 
 namespace Bescovitch
@@ -64,5 +64,31 @@ theorem exists_edist_lt_of_setEDist_lt {r : ℝ≥0∞} (h : setEDist s t < r) :
   rw [iInf_lt_iff] at hy
   obtain ⟨hyt, hy⟩ := hy
   exact ⟨x, hxs, y, hyt, hy⟩
+
+/-- Raising the density parameter preserves the Besicovitch pair condition. -/
+theorem BesicovitchPairCondition.mono {β γ : ℝ} (hβγ : β ≤ γ)
+    (hβ : BesicovitchPairCondition β) : BesicovitchPairCondition γ := by
+  intro μ hμ
+  obtain ⟨τ, hτ, hβ⟩ := hβ μ hμ
+  refine ⟨τ, hτ, fun scale hscale ↦ ?_⟩
+  obtain ⟨δ, hδ, hβ⟩ := hβ scale hscale
+  refine ⟨δ, hδ, fun e₁ e₂ he₁ he₂ he₁n he₂n hpos hlt hdensity ↦ ?_⟩
+  apply hβ e₁ e₂ he₁ he₂ he₁n he₂n hpos hlt
+  intro x hx r hr hrscale
+  refine lt_of_le_of_lt (ENNReal.ofReal_le_ofReal ?_) (hdensity x hx r hr hrscale)
+  exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hβγ (by norm_num)) hr.le
+
+/-- A straight set whose mass exceeds `a` contains two points more than `a` apart. -/
+theorem IsStraightMeasure.exists_dist_gt {μ : Measure Plane} (hμ : IsStraightMeasure μ)
+    {s : Set Plane} (hs : MeasurableSet s) {a : ℝ} (ha : ENNReal.ofReal a < μ s) :
+    ∃ x ∈ s, ∃ y ∈ s, a < dist x y := by
+  by_contra h
+  have hall : ∀ x ∈ s, ∀ y ∈ s, dist x y ≤ a := by
+    intro x hx y hy
+    by_contra hxy
+    exact h ⟨x, hx, y, hy, lt_of_not_ge hxy⟩
+  have hed : Metric.ediam s ≤ ENNReal.ofReal a :=
+    Metric.ediam_le_of_forall_dist_le hall
+  exact (not_lt_of_ge hed) (ha.trans_le (hμ s hs))
 
 end Bescovitch
