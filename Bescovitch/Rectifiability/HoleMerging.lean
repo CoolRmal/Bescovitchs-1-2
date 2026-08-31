@@ -30,13 +30,16 @@ open scoped ENNReal
 
 namespace Bescovitch
 
-private def clusterUnion (U : ℕ → Set (EuclideanSpace ℝ (Fin 2))) (s : Finset ℕ) : Set (EuclideanSpace ℝ (Fin 2)) :=
+private def clusterUnion (U : ℕ → Set (EuclideanSpace ℝ (Fin 2)))
+    (s : Finset ℕ) : Set (EuclideanSpace ℝ (Fin 2)) :=
   ⋃ i ∈ s, U i
 
-private def clusterHull (U : ℕ → Set (EuclideanSpace ℝ (Fin 2))) (s : Finset ℕ) : Set (EuclideanSpace ℝ (Fin 2)) :=
+private def clusterHull (U : ℕ → Set (EuclideanSpace ℝ (Fin 2)))
+    (s : Finset ℕ) : Set (EuclideanSpace ℝ (Fin 2)) :=
   openConvexHull (clusterUnion U s)
 
-private theorem isOpen_clusterUnion {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hU : ∀ i, IsOpen (U i))
+private theorem isOpen_clusterUnion {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hU : ∀ i, IsOpen (U i))
     (s : Finset ℕ) : IsOpen (clusterUnion U s) := by
   exact isOpen_biUnion fun i _ ↦ hU i
 
@@ -61,7 +64,8 @@ private theorem clusterHull_mono {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} 
     obtain ⟨i, hi, hxi⟩ := hx
     exact ⟨i, hst hi, hxi⟩))
 
-private theorem ediam_clusterHull {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hU : ∀ i, IsOpen (U i))
+private theorem ediam_clusterHull {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hU : ∀ i, IsOpen (U i))
     (s : Finset ℕ) : Metric.ediam (clusterHull U s) = Metric.ediam (clusterUnion U s) :=
   ediam_openConvexHull (isOpen_clusterUnion hU s)
 
@@ -73,7 +77,8 @@ private theorem isBounded_clusterHull {U : ℕ → Set (EuclideanSpace ℝ (Fin 
     (hU : ∀ i, IsBounded (U i)) (s : Finset ℕ) : IsBounded (clusterHull U s) := by
   exact (isBounded_convexHull.mpr (isBounded_clusterUnion hU s)).subset interior_subset
 
-private theorem clusterUnion_union (U : ℕ → Set (EuclideanSpace ℝ (Fin 2))) (s t : Finset ℕ) :
+private theorem clusterUnion_union (U : ℕ → Set (EuclideanSpace ℝ (Fin 2)))
+    (s t : Finset ℕ) :
     clusterUnion U (s ∪ t) = clusterUnion U s ∪ clusterUnion U t := by
   ext x
   simp only [clusterUnion, mem_iUnion, Finset.mem_union, exists_prop]
@@ -188,7 +193,8 @@ private theorem card_mergeParts {s : Finset ℕ} (P : Finpartition s) {a b : Fin
     (Finset.mem_erase.mpr ⟨hab.symm, hb⟩), Finset.card_erase_of_mem ha]
   omega
 
-private theorem good_mergeParts {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hUopen : ∀ i, IsOpen (U i))
+private theorem good_mergeParts {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hUopen : ∀ i, IsOpen (U i))
     {s : Finset ℕ} {P : Finpartition s} (hP : GoodPartition U P) {a b : Finset ℕ}
     (ha : a ∈ P.parts) (hb : b ∈ P.parts) (hab : a ≠ b)
     (hinter : (clusterHull U a ∩ clusterHull U b).Nonempty) :
@@ -237,7 +243,8 @@ private theorem exists_separated_coarsening {U : ℕ → Set (EuclideanSpace ℝ
           ih P'.parts.card hcard P' (good_mergeParts hUopen hP ha hb hab hinter') rfl
         exact ⟨Q, (le_mergeParts P ha hb hab).trans hP'Q, hQgood, hQsep⟩
 
-private theorem good_extendRange {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hUopen : ∀ i, IsOpen (U i))
+private theorem good_extendRange {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hUopen : ∀ i, IsOpen (U i))
     {n : ℕ} (P : Finpartition (Finset.range n)) (hP : GoodPartition U P) :
     GoodPartition U (P.extendOfLE (Finset.range_mono n.le_succ)) := by
   intro t ht
@@ -261,7 +268,8 @@ private def initialHoleStage (U : ℕ → Set (EuclideanSpace ℝ (Fin 2))) : Ho
   good := by simp [GoodPartition]
   separated := by simp [SeparatedPartition]
 
-private noncomputable def nextHoleStage {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hUopen : ∀ i, IsOpen (U i))
+private noncomputable def nextHoleStage {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hUopen : ∀ i, IsOpen (U i))
     {n : ℕ} (S : HoleStage U n) : HoleStage U (n + 1) := by
   let P := S.partition.extendOfLE (Finset.range_mono n.le_succ)
   have hP : GoodPartition U P := good_extendRange hUopen S.partition S.good
@@ -271,7 +279,8 @@ private noncomputable def nextHoleStage {U : ℕ → Set (EuclideanSpace ℝ (Fi
     good := (Classical.choose_spec (exists_separated_coarsening hUopen P hP)).2.1
     separated := (Classical.choose_spec (exists_separated_coarsening hUopen P hP)).2.2 }
 
-private theorem extend_le_nextHoleStage {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hUopen : ∀ i, IsOpen (U i))
+private theorem extend_le_nextHoleStage {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hUopen : ∀ i, IsOpen (U i))
     {n : ℕ} (S : HoleStage U n) :
     S.partition.extendOfLE (Finset.range_mono n.le_succ) ≤
       (nextHoleStage hUopen S).partition := by
@@ -279,12 +288,14 @@ private theorem extend_le_nextHoleStage {U : ℕ → Set (EuclideanSpace ℝ (Fi
     (S.partition.extendOfLE (Finset.range_mono n.le_succ))
     (good_extendRange hUopen S.partition S.good))).1
 
-private noncomputable def holeStages (U : ℕ → Set (EuclideanSpace ℝ (Fin 2))) (hUopen : ∀ i, IsOpen (U i)) :
+private noncomputable def holeStages (U : ℕ → Set (EuclideanSpace ℝ (Fin 2)))
+    (hUopen : ∀ i, IsOpen (U i)) :
     (n : ℕ) → HoleStage U n
   | 0 => initialHoleStage U
   | n + 1 => nextHoleStage hUopen (holeStages U hUopen n)
 
-private theorem stage_part_subset_succ {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hUopen : ∀ i, IsOpen (U i))
+private theorem stage_part_subset_succ {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hUopen : ∀ i, IsOpen (U i))
     {n i : ℕ} (hi : i < n) :
     (holeStages U hUopen n).partition.part i ⊆
       (holeStages U hUopen (n + 1)).partition.part i := by
@@ -302,7 +313,8 @@ private theorem stage_part_subset_succ {U : ℕ → Set (EuclideanSpace ℝ (Fin
   have hpart : Q.part i = t := Q.part_eq_of_mem htQ hit
   rwa [hpart]
 
-private theorem stage_part_mono {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hUopen : ∀ i, IsOpen (U i))
+private theorem stage_part_mono {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hUopen : ∀ i, IsOpen (U i))
     {n m i : ℕ} (hi : i < n) (hnm : n ≤ m) :
     (holeStages U hUopen n).partition.part i ⊆
       (holeStages U hUopen m).partition.part i := by
@@ -321,7 +333,8 @@ private theorem stage_part_subset_succ_all {U : ℕ → Set (EuclideanSpace ℝ 
     rw [(holeStages U hUopen n).partition.part_eq_empty.mpr hi']
     exact Finset.empty_subset _
 
-private theorem stage_part_mono_all {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hUopen : ∀ i, IsOpen (U i))
+private theorem stage_part_mono_all {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hUopen : ∀ i, IsOpen (U i))
     {n m : ℕ} (i : ℕ) (hnm : n ≤ m) :
     (holeStages U hUopen n).partition.part i ⊆
       (holeStages U hUopen m).partition.part i := by
@@ -329,27 +342,32 @@ private theorem stage_part_mono_all {U : ℕ → Set (EuclideanSpace ℝ (Fin 2)
   | base => exact Subset.rfl
   | succ m _ ih => exact ih.trans (stage_part_subset_succ_all hUopen m i)
 
-private theorem stage_cluster_mono {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hUopen : ∀ i, IsOpen (U i))
+private theorem stage_cluster_mono {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hUopen : ∀ i, IsOpen (U i))
     {n m : ℕ} (i : ℕ) (hnm : n ≤ m) :
     clusterHull U ((holeStages U hUopen n).partition.part i) ⊆
       clusterHull U ((holeStages U hUopen m).partition.part i) :=
   clusterHull_mono (stage_part_mono_all hUopen i hnm)
 
-private def mergedHole (U : ℕ → Set (EuclideanSpace ℝ (Fin 2))) (hUopen : ∀ i, IsOpen (U i)) (i : ℕ) :
+private def mergedHole (U : ℕ → Set (EuclideanSpace ℝ (Fin 2)))
+    (hUopen : ∀ i, IsOpen (U i)) (i : ℕ) :
     Set (EuclideanSpace ℝ (Fin 2)) :=
   ⋃ n, clusterHull U ((holeStages U hUopen n).partition.part i)
 
-private theorem isOpen_mergedHole {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hUopen : ∀ i, IsOpen (U i))
+private theorem isOpen_mergedHole {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hUopen : ∀ i, IsOpen (U i))
     (i : ℕ) : IsOpen (mergedHole U hUopen i) := by
   exact isOpen_iUnion fun _ ↦ isOpen_clusterHull _ _
 
-private theorem convex_mergedHole {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hUopen : ∀ i, IsOpen (U i))
+private theorem convex_mergedHole {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hUopen : ∀ i, IsOpen (U i))
     (i : ℕ) : Convex ℝ (mergedHole U hUopen i) := by
   apply (monotone_nat_of_le_succ fun n ↦
     stage_cluster_mono hUopen i n.le_succ).directed_le.convex_iUnion
   exact fun _ ↦ convex_clusterHull _ _
 
-private theorem subset_mergedHole {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hUopen : ∀ i, IsOpen (U i))
+private theorem subset_mergedHole {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hUopen : ∀ i, IsOpen (U i))
     (i : ℕ) : U i ⊆ mergedHole U hUopen i := by
   intro x hx
   apply mem_iUnion.mpr
@@ -357,7 +375,8 @@ private theorem subset_mergedHole {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
   simp only [clusterUnion, mem_iUnion]
   exact ⟨i, (holeStages U hUopen (i + 1)).partition.mem_part (by simp), hx⟩
 
-private theorem stage_part_eq_of_inter {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hUopen : ∀ i, IsOpen (U i))
+private theorem stage_part_eq_of_inter {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hUopen : ∀ i, IsOpen (U i))
     {n i j : ℕ} (hi : i < n) (hj : j < n)
     (hinter : (clusterHull U ((holeStages U hUopen n).partition.part i) ∩
       clusterHull U ((holeStages U hUopen n).partition.part j)).Nonempty) :
@@ -373,7 +392,8 @@ private theorem stage_part_eq_of_inter {U : ℕ → Set (EuclideanSpace ℝ (Fin
   obtain ⟨x, hxi, hxj⟩ := hinter
   exact Set.disjoint_left.mp hd hxi hxj
 
-private theorem stage_part_eq_mono {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} (hUopen : ∀ i, IsOpen (U i))
+private theorem stage_part_eq_mono {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    (hUopen : ∀ i, IsOpen (U i))
     {n m i j : ℕ} (hi : i < n) (hj : j < n) (hnm : n ≤ m)
     (heq : (holeStages U hUopen n).partition.part i =
       (holeStages U hUopen n).partition.part j) :
@@ -491,15 +511,19 @@ private theorem ediam_mergedHole_le_fiber {U : ℕ → Set (EuclideanSpace ℝ (
     _ ≤ ∑' j, if mergedHole U hUopen j = mergedHole U hUopen i
         then Metric.ediam (U j) else 0 := ENNReal.sum_le_tsum _
 
-private theorem tsum_range_ediam_le (W : ℕ → Set (EuclideanSpace ℝ (Fin 2))) (d : ℕ → ℝ≥0∞)
+private theorem tsum_range_ediam_le
+    (W : ℕ → Set (EuclideanSpace ℝ (Fin 2))) (d : ℕ → ℝ≥0∞)
     (hW : ∀ i, Metric.ediam (W i) ≤ ∑' j, if W j = W i then d j else 0) :
-    (∑' V : Set.range W, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2)))) ≤ ∑' i, d i := by
+    (∑' V : Set.range W, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2)))) ≤
+      ∑' i, d i := by
   calc
-    _ ≤ ∑' V : Set.range W, ∑' j, if W j = (V : Set (EuclideanSpace ℝ (Fin 2))) then d j else 0 := by
+    _ ≤ ∑' V : Set.range W,
+        ∑' j, if W j = (V : Set (EuclideanSpace ℝ (Fin 2))) then d j else 0 := by
       apply ENNReal.tsum_le_tsum
       rintro ⟨V, i, rfl⟩
       exact hW i
-    _ = ∑' j, ∑' V : Set.range W, if W j = (V : Set (EuclideanSpace ℝ (Fin 2))) then d j else 0 :=
+    _ = ∑' j, ∑' V : Set.range W,
+        if W j = (V : Set (EuclideanSpace ℝ (Fin 2))) then d j else 0 :=
       ENNReal.tsum_comm
     _ = ∑' j, d j := by
       congr 1
@@ -520,10 +544,12 @@ theorem exists_pairwiseDisjoint_convex_hole_cover (U : ℕ → Set (EuclideanSpa
     (hsum : (∑' i, Metric.ediam (U i)) ≠ ∞) :
     ∃ W : Set (Set (EuclideanSpace ℝ (Fin 2))),
       W.Countable ∧ W.PairwiseDisjoint id ∧
-        (∀ V : W, IsOpen (V : Set (EuclideanSpace ℝ (Fin 2))) ∧ Convex ℝ (V : Set (EuclideanSpace ℝ (Fin 2))) ∧
+        (∀ V : W, IsOpen (V : Set (EuclideanSpace ℝ (Fin 2))) ∧
+          Convex ℝ (V : Set (EuclideanSpace ℝ (Fin 2))) ∧
           IsBounded (V : Set (EuclideanSpace ℝ (Fin 2)))) ∧
         (⋃ i, U i) ⊆ ⋃ V : W, (V : Set (EuclideanSpace ℝ (Fin 2))) ∧
-        (∑' V : W, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2)))) ≤ ∑' i, Metric.ediam (U i) := by
+        (∑' V : W, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2)))) ≤
+          ∑' i, Metric.ediam (U i) := by
   let Wfun : ℕ → Set (EuclideanSpace ℝ (Fin 2)) := mergedHole U hUopen
   let W : Set (Set (EuclideanSpace ℝ (Fin 2))) := Set.range Wfun
   have hdisjoint : W.PairwiseDisjoint id := by
@@ -531,7 +557,8 @@ theorem exists_pairwiseDisjoint_convex_hole_cover (U : ℕ → Set (EuclideanSpa
     apply Set.disjoint_left.mpr
     intro x hxi hxj
     exact hne (mergedHole_eq_of_inter hUopen ⟨x, hxi, hxj⟩)
-  have hproperties : ∀ V : W, IsOpen (V : Set (EuclideanSpace ℝ (Fin 2))) ∧ Convex ℝ (V : Set (EuclideanSpace ℝ (Fin 2))) ∧
+  have hproperties : ∀ V : W, IsOpen (V : Set (EuclideanSpace ℝ (Fin 2))) ∧
+      Convex ℝ (V : Set (EuclideanSpace ℝ (Fin 2))) ∧
       IsBounded (V : Set (EuclideanSpace ℝ (Fin 2))) := by
     rintro ⟨V, i, rfl⟩
     refine ⟨isOpen_mergedHole hUopen i, convex_mergedHole hUopen i, ?_⟩

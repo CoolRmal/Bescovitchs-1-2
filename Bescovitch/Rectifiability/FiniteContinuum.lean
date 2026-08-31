@@ -84,28 +84,35 @@ private theorem exists_short_closed_walk {V : Type*} [Fintype V] (G : SimpleGrap
       omega
 
 /-- The polygonal chain through `x :: l`, with one unit of time allotted to each edge. -/
-private def polygonalChain (x : (EuclideanSpace ℝ (Fin 2))) : List (EuclideanSpace ℝ (Fin 2)) → ℝ → (EuclideanSpace ℝ (Fin 2))
+private def polygonalChain (x : (EuclideanSpace ℝ (Fin 2))) :
+    List (EuclideanSpace ℝ (Fin 2)) → ℝ → (EuclideanSpace ℝ (Fin 2))
   | [], _ => x
   | y :: l, t =>
       if t < 1 then AffineMap.lineMap x y t else polygonalChain y l (t - 1)
 
 @[simp]
-private theorem polygonalChain_nil (x : (EuclideanSpace ℝ (Fin 2))) : polygonalChain x [] = fun _ ↦ x := rfl
+private theorem polygonalChain_nil (x : (EuclideanSpace ℝ (Fin 2))) :
+    polygonalChain x [] = fun _ ↦ x := rfl
 
 @[simp]
-private theorem polygonalChain_zero (x : (EuclideanSpace ℝ (Fin 2))) (l : List (EuclideanSpace ℝ (Fin 2))) :
+private theorem polygonalChain_zero (x : (EuclideanSpace ℝ (Fin 2)))
+    (l : List (EuclideanSpace ℝ (Fin 2))) :
     polygonalChain x l 0 = x := by
   cases l <;> simp [polygonalChain]
 
-private theorem polygonalChain_cons_of_lt (x y : (EuclideanSpace ℝ (Fin 2))) (l : List (EuclideanSpace ℝ (Fin 2))) {t : ℝ}
+private theorem polygonalChain_cons_of_lt (x y : (EuclideanSpace ℝ (Fin 2)))
+    (l : List (EuclideanSpace ℝ (Fin 2))) {t : ℝ}
     (ht : t < 1) : polygonalChain x (y :: l) t = AffineMap.lineMap x y t := by
   simp [polygonalChain, ht]
 
-private theorem polygonalChain_cons_of_one_le (x y : (EuclideanSpace ℝ (Fin 2))) (l : List (EuclideanSpace ℝ (Fin 2))) {t : ℝ}
+private theorem polygonalChain_cons_of_one_le (x y : (EuclideanSpace ℝ (Fin 2)))
+    (l : List (EuclideanSpace ℝ (Fin 2))) {t : ℝ}
     (ht : 1 ≤ t) : polygonalChain x (y :: l) t = polygonalChain y l (t - 1) := by
   simp [polygonalChain, ht.not_gt]
 
-private theorem polygonalChain_dist_le_crossing {x y : (EuclideanSpace ℝ (Fin 2))} {l : List (EuclideanSpace ℝ (Fin 2))} {δ : ℝ≥0}
+private theorem polygonalChain_dist_le_crossing
+    {x y : (EuclideanSpace ℝ (Fin 2))}
+    {l : List (EuclideanSpace ℝ (Fin 2))} {δ : ℝ≥0}
     (hxy : dist x y ≤ δ)
     (htail : LipschitzOnWith δ (polygonalChain y l) (Icc (0 : ℝ) l.length))
     {a b : ℝ} (ha_one : a < 1) (hb_one : 1 ≤ b)
@@ -137,7 +144,8 @@ private theorem polygonalChain_dist_le_crossing {x y : (EuclideanSpace ℝ (Fin 
       rw [Real.dist_eq, abs_of_nonpos (sub_nonpos.mpr (ha_one.le.trans hb_one))]
       ring
 
-private theorem mem_range_polygonalChain {x z : (EuclideanSpace ℝ (Fin 2))} {l : List (EuclideanSpace ℝ (Fin 2))} (hz : z ∈ x :: l) :
+private theorem mem_range_polygonalChain {x z : (EuclideanSpace ℝ (Fin 2))}
+    {l : List (EuclideanSpace ℝ (Fin 2))} (hz : z ∈ x :: l) :
     ∃ t ∈ Icc (0 : ℝ) l.length, polygonalChain x l t = z := by
   induction l generalizing x with
   | nil =>
@@ -159,7 +167,8 @@ private theorem mem_range_polygonalChain {x z : (EuclideanSpace ℝ (Fin 2))} {l
             add_sub_cancel_right]
           exact htz
 
-private theorem polygonalChain_lipschitzOn {x : (EuclideanSpace ℝ (Fin 2))} {l : List (EuclideanSpace ℝ (Fin 2))} {δ : ℝ≥0}
+private theorem polygonalChain_lipschitzOn {x : (EuclideanSpace ℝ (Fin 2))}
+    {l : List (EuclideanSpace ℝ (Fin 2))} {δ : ℝ≥0}
     (hchain : List.IsChain (fun a b : (EuclideanSpace ℝ (Fin 2)) ↦ dist a b ≤ δ) (x :: l)) :
     LipschitzOnWith δ (polygonalChain x l) (Icc (0 : ℝ) l.length) := by
   induction l generalizing x with
@@ -195,8 +204,11 @@ private theorem polygonalChain_lipschitzOn {x : (EuclideanSpace ℝ (Fin 2))} {l
             constructor <;> linarith) (b - 1) (by
               constructor <;> linarith)
 
-private theorem polygonalChain_near_vertex {x : (EuclideanSpace ℝ (Fin 2))} {l : List (EuclideanSpace ℝ (Fin 2))} {δ : ℝ}
-    (hδ : 0 ≤ δ) (hchain : List.IsChain (fun a b : (EuclideanSpace ℝ (Fin 2)) ↦ dist a b ≤ δ) (x :: l))
+private theorem polygonalChain_near_vertex {x : (EuclideanSpace ℝ (Fin 2))}
+    {l : List (EuclideanSpace ℝ (Fin 2))} {δ : ℝ}
+    (hδ : 0 ≤ δ)
+    (hchain : List.IsChain
+      (fun a b : (EuclideanSpace ℝ (Fin 2)) ↦ dist a b ≤ δ) (x :: l))
     {t : ℝ} (ht : t ∈ Icc (0 : ℝ) l.length) :
     ∃ z ∈ x :: l, dist (polygonalChain x l t) z ≤ δ := by
   induction l generalizing x t with
@@ -221,10 +233,12 @@ private theorem polygonalChain_near_vertex {x : (EuclideanSpace ℝ (Fin 2))} {l
         rwa [polygonalChain_cons_of_one_le _ _ _ ht_one']
 
 /-- The polygonal chain rescaled to the unit interval. -/
-private def unitPolygonalChain (x : (EuclideanSpace ℝ (Fin 2))) (l : List (EuclideanSpace ℝ (Fin 2))) (t : I) : (EuclideanSpace ℝ (Fin 2)) :=
+private def unitPolygonalChain (x : (EuclideanSpace ℝ (Fin 2)))
+    (l : List (EuclideanSpace ℝ (Fin 2))) (t : I) : (EuclideanSpace ℝ (Fin 2)) :=
   polygonalChain x l (l.length * (t : ℝ))
 
-private theorem unitPolygonalChain_lipschitz {x : (EuclideanSpace ℝ (Fin 2))} {l : List (EuclideanSpace ℝ (Fin 2))} {δ : ℝ≥0}
+private theorem unitPolygonalChain_lipschitz {x : (EuclideanSpace ℝ (Fin 2))}
+    {l : List (EuclideanSpace ℝ (Fin 2))} {δ : ℝ≥0}
     (hchain : List.IsChain (fun a b : (EuclideanSpace ℝ (Fin 2)) ↦ dist a b ≤ δ) (x :: l)) :
     LipschitzWith (δ * l.length) (unitPolygonalChain x l) := by
   have hpoly := polygonalChain_lipschitzOn hchain
@@ -254,7 +268,8 @@ private theorem unitPolygonalChain_lipschitz {x : (EuclideanSpace ℝ (Fin 2))} 
       rw [Real.dist_eq]
       ring
 
-private theorem vertex_mem_range_unitPolygonalChain {x z : (EuclideanSpace ℝ (Fin 2))} {l : List (EuclideanSpace ℝ (Fin 2))}
+private theorem vertex_mem_range_unitPolygonalChain
+    {x z : (EuclideanSpace ℝ (Fin 2))} {l : List (EuclideanSpace ℝ (Fin 2))}
     (hz : z ∈ x :: l) : z ∈ range (unitPolygonalChain x l) := by
   obtain ⟨t, ht, htz⟩ := mem_range_polygonalChain hz
   by_cases hl : l.length = 0
@@ -274,8 +289,11 @@ private theorem vertex_mem_range_unitPolygonalChain {x z : (EuclideanSpace ℝ (
     dsimp only [u]
     field_simp
 
-private theorem unitPolygonalChain_near_vertex {x : (EuclideanSpace ℝ (Fin 2))} {l : List (EuclideanSpace ℝ (Fin 2))} {δ : ℝ}
-    (hδ : 0 ≤ δ) (hchain : List.IsChain (fun a b : (EuclideanSpace ℝ (Fin 2)) ↦ dist a b ≤ δ) (x :: l))
+private theorem unitPolygonalChain_near_vertex {x : (EuclideanSpace ℝ (Fin 2))}
+    {l : List (EuclideanSpace ℝ (Fin 2))} {δ : ℝ}
+    (hδ : 0 ≤ δ)
+    (hchain : List.IsChain
+      (fun a b : (EuclideanSpace ℝ (Fin 2)) ↦ dist a b ≤ δ) (x :: l))
     (t : I) : ∃ z ∈ x :: l, dist (unitPolygonalChain x l t) z ≤ δ := by
   apply polygonalChain_near_vertex hδ hchain
   constructor
@@ -438,7 +456,8 @@ private theorem exists_finite_separated_cover (s : Set X) (hsc : IsCompact s) {�
   exact ⟨F, hFfin, Metric.maximalSeparatedSet_subset, Metric.isSeparated_maximalSeparatedSet,
     Metric.isCover_maximalSeparatedSet hpacking⟩
 
-private theorem exists_short_polygonal_tour {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : IsConnected s)
+private theorem exists_short_polygonal_tour
+    {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : IsConnected s)
     (hsc : IsCompact s) {a b : (EuclideanSpace ℝ (Fin 2))} (ha : a ∈ s) (hb : b ∈ s)
     (hmeasure : μH[1] s ≠ ∞) {ε : ℝ≥0} (hεpos : 0 < ε)
     (hεdiam : (ε : ℝ) ≤ dist a b) :
@@ -449,7 +468,8 @@ private theorem exists_short_polygonal_tour {s : Set (EuclideanSpace ℝ (Fin 2)
       (6 * (ε : ℝ)) * l.length ≤ 24 * (μH[1] s).toReal := by
   obtain ⟨F, hFfin, hFs, hFsep, hFcover⟩ := exists_finite_separated_cover s hsc hεpos
   letI : Fintype F := hFfin.fintype
-  let G : SimpleGraph F := SimpleGraph.fromRel fun x y ↦ dist (x : (EuclideanSpace ℝ (Fin 2))) y < 6 * ε
+  let G : SimpleGraph F := SimpleGraph.fromRel fun x y ↦
+    dist (x : (EuclideanSpace ℝ (Fin 2))) y < 6 * ε
   have hG : G.Connected := proximityGraph_connected hs hFs hεpos hFcover
   obtain ⟨v, p, hp, hp_len⟩ := exists_short_closed_walk G hG
   let l : List (EuclideanSpace ℝ (Fin 2)) := p.support.tail.map Subtype.val
@@ -459,7 +479,9 @@ private theorem exists_short_polygonal_tour {s : Set (EuclideanSpace ℝ (Fin 2)
   have hlist : (v : (EuclideanSpace ℝ (Fin 2))) :: l = p.support.map Subtype.val := by
     rw [← p.cons_tail_support]
     rfl
-  have hchain : List.IsChain (fun x y : (EuclideanSpace ℝ (Fin 2)) ↦ dist x y ≤ 6 * ε) ((v : (EuclideanSpace ℝ (Fin 2))) :: l) := by
+  have hchain : List.IsChain
+      (fun x y : (EuclideanSpace ℝ (Fin 2)) ↦ dist x y ≤ 6 * ε)
+      ((v : (EuclideanSpace ℝ (Fin 2))) :: l) := by
     rw [hlist, List.isChain_map]
     apply p.isChain_adj_support.imp
     intro x y hxy
@@ -471,7 +493,8 @@ private theorem exists_short_polygonal_tour {s : Set (EuclideanSpace ℝ (Fin 2)
     rw [hlist] at hx
     obtain ⟨w, -, rfl⟩ := List.mem_map.mp hx
     exact hFs w.2
-  have hnet : ∀ x ∈ s, ∃ y ∈ (v : (EuclideanSpace ℝ (Fin 2))) :: l, dist x y ≤ 2 * ε := by
+  have hnet : ∀ x ∈ s,
+      ∃ y ∈ (v : (EuclideanSpace ℝ (Fin 2))) :: l, dist x y ≤ 2 * ε := by
     intro x hx
     have hxcover := hFcover.subset_iUnion_closedBall hx
     simp only [Set.mem_iUnion] at hxcover
@@ -494,7 +517,8 @@ private theorem exists_short_polygonal_tour {s : Set (EuclideanSpace ℝ (Fin 2)
     _ ≤ 12 * (2 * (μH[1] s).toReal) := mul_le_mul_of_nonneg_left hcard (by norm_num)
     _ = 24 * (μH[1] s).toReal := by ring
 
-private theorem exists_uniform_lipschitz_approximation {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : IsConnected s)
+private theorem exists_uniform_lipschitz_approximation
+    {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : IsConnected s)
     (hsc : IsCompact s) {a b : (EuclideanSpace ℝ (Fin 2))} (ha : a ∈ s) (hb : b ∈ s)
     (hmeasure : μH[1] s ≠ ∞) {ε : ℝ≥0} (hεpos : 0 < ε)
     (hεdiam : (ε : ℝ) ≤ dist a b) :
@@ -527,7 +551,8 @@ private theorem exists_uniform_lipschitz_approximation {s : Set (EuclideanSpace 
     obtain ⟨x, hxlist, htx⟩ := unitPolygonalChain_near_vertex (by positivity) hchain t
     exact ⟨x, hvertices x hxlist, htx⟩
 
-private theorem exists_lipschitz_uniform_subsequence (F : ℕ → I →ᵇ (EuclideanSpace ℝ (Fin 2))) {K : ℝ≥0}
+private theorem exists_lipschitz_uniform_subsequence
+    (F : ℕ → I →ᵇ (EuclideanSpace ℝ (Fin 2))) {K : ℝ≥0}
     (hF : ∀ n, LipschitzWith K (F n)) {a : (EuclideanSpace ℝ (Fin 2))} {R : ℝ}
     (hball : ∀ n t, F n t ∈ Metric.closedBall a R) :
     ∃ g : I →ᵇ (EuclideanSpace ℝ (Fin 2)), ∃ ψ : ℕ → ℕ, StrictMono ψ ∧
@@ -557,9 +582,11 @@ private theorem exists_lipschitz_uniform_subsequence (F : ℕ → I →ᵇ (Eucl
   apply isClosed_Iic.mem_of_tendsto ((hψlim.eval_const t).dist (hψlim.eval_const u))
   exact Filter.Eventually.of_forall fun n ↦ (hF (ψ n)).dist_le_mul t u
 
-private theorem range_uniform_limit_subset_of_near {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : IsClosed s)
+private theorem range_uniform_limit_subset_of_near
+    {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : IsClosed s)
     {ε : ℕ → ℝ≥0} (hε : Tendsto (fun n ↦ (ε n : ℝ)) atTop (𝓝 0))
-    {F : ℕ → I →ᵇ (EuclideanSpace ℝ (Fin 2))} {g : I →ᵇ (EuclideanSpace ℝ (Fin 2))} (hF : Tendsto F atTop (𝓝 g))
+    {F : ℕ → I →ᵇ (EuclideanSpace ℝ (Fin 2))}
+    {g : I →ᵇ (EuclideanSpace ℝ (Fin 2))} (hF : Tendsto F atTop (𝓝 g))
     (hnear : ∀ n t, ∃ x ∈ s, dist (F n t) x ≤ 6 * ε n) : range g ⊆ s := by
   intro z hz
   obtain ⟨t, rfl⟩ := hz
@@ -577,8 +604,10 @@ private theorem range_uniform_limit_subset_of_near {s : Set (EuclideanSpace ℝ 
       add_lt_add (by simpa [dist_comm] using hnclose) (hdist.trans_lt (by nlinarith [hnsmall]))
     _ = r := add_halves r
 
-private theorem subset_range_uniform_limit_of_dense {s : Set (EuclideanSpace ℝ (Fin 2))} {ε : ℕ → ℝ≥0}
-    (hε : Tendsto (fun n ↦ (ε n : ℝ)) atTop (𝓝 0)) {F : ℕ → I →ᵇ (EuclideanSpace ℝ (Fin 2))}
+private theorem subset_range_uniform_limit_of_dense
+    {s : Set (EuclideanSpace ℝ (Fin 2))} {ε : ℕ → ℝ≥0}
+    (hε : Tendsto (fun n ↦ (ε n : ℝ)) atTop (𝓝 0))
+    {F : ℕ → I →ᵇ (EuclideanSpace ℝ (Fin 2))}
     {g : I →ᵇ (EuclideanSpace ℝ (Fin 2))} (hF : Tendsto F atTop (𝓝 g))
     (hcover : ∀ n x, x ∈ s → ∃ t, dist x (F n t) ≤ 2 * ε n) : s ⊆ range g := by
   intro x hx
@@ -601,7 +630,8 @@ private theorem subset_range_uniform_limit_of_dense {s : Set (EuclideanSpace ℝ
   exact ⟨u, tendsto_nhds_unique hcurve_lim hpoint_lim⟩
 
 private theorem exists_unitInterval_lipschitz_surjection_of_not_subsingleton
-    {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : IsConnected s) (hsc : IsCompact s) (hss : ¬s.Subsingleton)
+    {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : IsConnected s)
+    (hsc : IsCompact s) (hss : ¬s.Subsingleton)
     (hmeasure : μH[1] s ≠ ∞) :
     ∃ f : I → (EuclideanSpace ℝ (Fin 2)),
       LipschitzWith (Real.toNNReal (24 * (μH[1] s).toReal)) f ∧ range f = s := by
@@ -653,9 +683,11 @@ private theorem exists_unitInterval_lipschitz_surjection_of_not_subsingleton
 
 /-- **Eilenberg--Harrold.** A compact connected planar set of finite length is the range of a
 global Lipschitz curve. -/
-theorem IsConnected.exists_lipschitzWith_range_eq {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : IsConnected s)
+theorem IsConnected.exists_lipschitzWith_range_eq
+    {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : IsConnected s)
     (hsc : IsCompact s) (hmeasure : μH[1] s ≠ ∞) :
-    ∃ K : ℝ≥0, ∃ f : ℝ → (EuclideanSpace ℝ (Fin 2)), LipschitzWith K f ∧ range f = s := by
+    ∃ K : ℝ≥0, ∃ f : ℝ → (EuclideanSpace ℝ (Fin 2)),
+      LipschitzWith K f ∧ range f = s := by
   by_cases hss : s.Subsingleton
   · obtain ⟨a, ha⟩ := hs.nonempty
     have hs_eq : s = {a} := Set.eq_singleton_iff_unique_mem.mpr ⟨ha, fun _ hx ↦ hss hx ha⟩
