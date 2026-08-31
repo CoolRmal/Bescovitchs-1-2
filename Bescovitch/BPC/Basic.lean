@@ -52,6 +52,27 @@ theorem setEDist_ne_top {Y : Type*} [PseudoMetricSpace Y] {u v : Set Y}
   obtain ⟨y, hy⟩ := hv
   exact ne_top_of_le_ne_top (edist_ne_top x y) (setEDist_le_edist_of_mem hx hy)
 
+/-- For nonempty metric sets, converting the set distance to a real loses no information. -/
+theorem ofReal_setEDist_toReal {Y : Type*} [PseudoMetricSpace Y] {u v : Set Y}
+    (hu : u.Nonempty) (hv : v.Nonempty) :
+    ENNReal.ofReal (setEDist u v).toReal = setEDist u v := by
+  exact ENNReal.ofReal_toReal (setEDist_ne_top hu hv)
+
+/-- A positive finite set distance has a positive real value. -/
+theorem setEDist_toReal_pos {Y : Type*} [PseudoMetricSpace Y] {u v : Set Y}
+    (hu : u.Nonempty) (hv : v.Nonempty) (hpos : 0 < setEDist u v) :
+    0 < (setEDist u v).toReal := by
+  exact ENNReal.toReal_pos hpos.ne' (setEDist_ne_top hu hv)
+
+/-- The real set distance is no larger than any distance between the two sets. -/
+theorem setEDist_toReal_le_dist {Y : Type*} [PseudoMetricSpace Y] {u v : Set Y}
+    (hu : u.Nonempty) (hv : v.Nonempty) {x y : Y} (hx : x ∈ u) (hy : y ∈ v) :
+    (setEDist u v).toReal ≤ dist x y := by
+  have h := setEDist_le_edist_of_mem hx hy
+  have hfinite := setEDist_ne_top hu hv
+  rw [← ENNReal.toReal_le_toReal hfinite (edist_ne_top x y)] at h
+  simpa [edist_dist] using h
+
 /-- A strict upper bound on set distance is witnessed by an actual pair of points. -/
 theorem exists_edist_lt_of_setEDist_lt {r : ℝ≥0∞} (h : setEDist s t < r) :
     ∃ x ∈ s, ∃ y ∈ t, edist x y < r := by
@@ -64,6 +85,20 @@ theorem exists_edist_lt_of_setEDist_lt {r : ℝ≥0∞} (h : setEDist s t < r) :
   rw [iInf_lt_iff] at hy
   obtain ⟨hyt, hy⟩ := hy
   exact ⟨x, hxs, y, hyt, hy⟩
+
+/-- A real number above the finite set distance bounds some actual pair distance. -/
+theorem exists_dist_lt_of_setEDist_toReal_lt {Y : Type*} [PseudoMetricSpace Y]
+    {u v : Set Y} (hu : u.Nonempty) (hv : v.Nonempty) {r : ℝ}
+    (h : (setEDist u v).toReal < r) : ∃ x ∈ u, ∃ y ∈ v, dist x y < r := by
+  have hr : 0 < r := (ENNReal.toReal_nonneg.trans_lt h)
+  have hfinite := setEDist_ne_top hu hv
+  have hed : setEDist u v < ENNReal.ofReal r := by
+    rw [← ENNReal.toReal_lt_toReal hfinite (by simp)]
+    simpa [ENNReal.toReal_ofReal hr.le] using h
+  obtain ⟨x, hx, y, hy, hxy⟩ := exists_edist_lt_of_setEDist_lt hed
+  refine ⟨x, hx, y, hy, ?_⟩
+  rw [edist_dist, ENNReal.ofReal_lt_ofReal_iff hr] at hxy
+  exact hxy
 
 /-- Raising the density parameter preserves the Besicovitch pair condition. -/
 theorem BesicovitchPairCondition.mono {β γ : ℝ} (hβγ : β ≤ γ)
