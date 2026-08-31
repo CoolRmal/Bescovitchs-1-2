@@ -1228,5 +1228,3 @@ theorem blue_root_red_triangle_score_nonnegative_of_column_obstruction
   exact blueRootRedTriangle_score_nonnegative_of_endpoint_bounds configuration h hleft hright
 
 end Bescovitch
-
-#redundant_imports
