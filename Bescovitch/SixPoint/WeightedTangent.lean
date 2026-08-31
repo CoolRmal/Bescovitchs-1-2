@@ -23,6 +23,11 @@ open scoped InnerProductSpace
 
 namespace Bescovitch
 
+/-- The quadratic lower support for the norm in a chosen direction. -/
+def quadraticNormSupport
+    {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] (u v : E) : ℝ :=
+  ⟪u, v⟫_ℝ + (‖u‖ ^ 2 * ‖v‖ ^ 2 - ⟪u, v⟫_ℝ ^ 2) / 2
+
 /-- A linear norm support strengthened by half of its Gram remainder. -/
 theorem inner_add_half_gram_remainder_le_norm
     {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] (u v : E)
@@ -41,5 +46,12 @@ theorem inner_add_half_gram_remainder_le_norm
   have hfactor : 0 ≤ (‖v‖ - ⟪u, v⟫_ℝ) * (2 - ‖v‖ - ⟪u, v⟫_ℝ) := by
     apply mul_nonneg <;> linarith
   nlinarith
+
+/-- The quadratic norm support is valid when both vectors lie in the unit ball. -/
+theorem quadraticNormSupport_le_norm
+    {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] (u v : E)
+    (hu : ‖u‖ ≤ 1) (hv : ‖v‖ ≤ 1) :
+    quadraticNormSupport u v ≤ ‖v‖ := by
+  exact inner_add_half_gram_remainder_le_norm u v hu hv
 
 end Bescovitch
