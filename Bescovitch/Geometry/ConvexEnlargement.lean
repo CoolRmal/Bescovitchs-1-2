@@ -43,6 +43,17 @@ theorem diam_diameterThickening_le {p : ℝ} (hp : 0 ≤ p) (s : Set Plane) :
       Metric.diam_thickening_le s (mul_nonneg hp Metric.diam_nonneg)
     _ = (2 * p + 1) * Metric.diam s := by ring
 
+/-- The extended diameter of a nonnegative diameter thickening obeys the same linear bound. -/
+theorem ediam_diameterThickening_le {p : ℝ} (hp : 0 ≤ p) {s : Set Plane}
+    (hs : IsBounded s) :
+    Metric.ediam (diameterThickening p s) ≤
+      ENNReal.ofReal (2 * p + 1) * Metric.ediam s := by
+  have hthickening : IsBounded (diameterThickening p s) := hs.thickening
+  rw [← ENNReal.ofReal_toReal hthickening.ediam_ne_top,
+    ← ENNReal.ofReal_toReal hs.ediam_ne_top]
+  rw [← ENNReal.ofReal_mul (by positivity : 0 ≤ 2 * p + 1)]
+  exact ENNReal.ofReal_le_ofReal (diam_diameterThickening_le hp s)
+
 /-- A set is contained in every positive-radius diameter thickening. -/
 theorem subset_diameterThickening {p : ℝ} {s : Set Plane}
     (hpositive : 0 < p * Metric.diam s) : s ⊆ diameterThickening p s := by
