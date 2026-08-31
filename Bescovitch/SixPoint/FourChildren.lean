@@ -244,12 +244,3 @@ theorem fourChildren_row_column_or_matching
   · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (by nlinarith)))))
 
 end Bescovitch
-
--- AUTO_AXIOM_CHECK_MARKER_DO_NOT_COMMIT
-#print axioms Bescovitch.fourChildrenPacking
-#print axioms Bescovitch.fourChildrenCrossMaximum
-#print axioms Bescovitch.fourChildrenSplitDiameter
-#print axioms Bescovitch.exists_fourChildren_split_of_routing_bounds
-#print axioms Bescovitch.exists_fourChildren_split_iff_routing_bounds
-#print axioms Bescovitch.fourChildren_routing
-#print axioms Bescovitch.fourChildren_row_column_or_matching
