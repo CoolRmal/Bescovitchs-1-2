@@ -31,8 +31,16 @@ jobs:
           lake build Bescovitch Challenge Bescovitch.BPC.Extraction
           Bescovitch.BPC.PackingMeasure Bescovitch.BPC.Parameters
           Bescovitch.BPC.RootBalls Bescovitch.Certificates.Krawczyk
+          Bescovitch.Certificates.BernsteinPass
+          Bescovitch.Certificates.RawDenseBernstein
+          Bescovitch.Certificates.RawDensePolynomial
+          Bescovitch.Certificates.RawRat
+          Bescovitch.Certificates.RelMaterializedExpr
           Bescovitch.Rectifiability.Selection Bescovitch.Sigma.Basic
           Bescovitch.SixPoint.AlgebraicBasic Bescovitch.SixPoint.FiniteProperty
+          Bescovitch.SixPoint.WeightedMixedBernsteinPass
+          Bescovitch.SixPoint.WeightedMixedRootAssembly
+          Bescovitch.SixPoint.WeightedMixedStrictCertificate
           Bescovitch.SixPoint.Normalization Bescovitch.SixPoint.Realization
           Bescovitch.SixPoint.Scaling
 
