@@ -74,6 +74,13 @@ theorem convex_openConvexHull (s : Set Plane) : Convex ℝ (openConvexHull s) :=
 theorem subset_openConvexHull {s : Set Plane} (hs : IsOpen s) : s ⊆ openConvexHull s := by
   exact hs.subset_interior_iff.mpr (subset_convexHull ℝ s)
 
+/-- Passing from an open set to its open convex hull does not change its extended diameter. -/
+theorem ediam_openConvexHull {s : Set Plane} (hs : IsOpen s) :
+    Metric.ediam (openConvexHull s) = Metric.ediam s := by
+  apply le_antisymm
+  · exact (Metric.ediam_mono interior_subset).trans_eq (convexHull_ediam s)
+  · exact Metric.ediam_mono (subset_openConvexHull hs)
+
 /-- Passing from an open set to its open convex hull does not change its diameter. -/
 theorem diam_openConvexHull {s : Set Plane} (hs : IsOpen s) :
     Metric.diam (openConvexHull s) = Metric.diam s := by
