@@ -10,7 +10,7 @@ public import Bescovitch.SixPoint.SiblingIncidenceLedger
 /-!
 # Analytic separators for sibling lens cells
 
-The off-matching coincident endpoint cell admits a short global proof. Three norm tangents
+The off-matching coincident endpoint cell has a short global proof. Three norm tangents
 preserve the correlation between its cross distances. A rational two-by-two Gram majorant then
 separates the two colors, leaving a convex quadratic on the three radial vertices.
 -/

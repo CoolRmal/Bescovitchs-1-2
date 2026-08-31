@@ -312,7 +312,7 @@ theorem fourChildrenPacking_score_nonnegative
     show 2 * (c / 2) = c by ring]
   exact sub_nonneg.mpr ((div_le_iff₀ hc).2 (by simpa [mul_comm] using hdiameter))
 
-/-- The routing bounds admit a split whose four cross terms are all below the target. -/
+/-- The routing bounds give a split whose four cross terms are all below the target. -/
 theorem exists_fourChildren_split_of_routing_bounds
     {L M T B11 B12 B21 B22 : ℝ} (hL : L ≤ 2) (hM : M ≤ 2)
     (h11 : L + M + B11 - 2 ≤ T) (h12 : L + M + B12 - 2 ≤ T)

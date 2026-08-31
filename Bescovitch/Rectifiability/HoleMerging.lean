@@ -537,7 +537,7 @@ private theorem tsum_range_ediam_le
         apply hV
         exact Subtype.ext h.symm
 
-/-- A countable family of open holes with finite total diameter admits a pairwise-disjoint
+/-- A countable family of open holes with finite total diameter has a pairwise-disjoint
 open convex enlargement without any increase in total diameter. -/
 theorem exists_pairwiseDisjoint_convex_hole_cover (U : ℕ → Set (EuclideanSpace ℝ (Fin 2)))
     (hUopen : ∀ i, IsOpen (U i))
