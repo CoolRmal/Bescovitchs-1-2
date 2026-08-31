@@ -49,6 +49,17 @@ theorem isBounded_of_mem_badConvexSets {mu : Measure Plane} [IsFiniteMeasure mu]
   rw [hproduct] at hleakage
   exact (not_lt_of_ge le_top) hleakage
 
+/-- A bad convex set for a finite measure has positive diameter. -/
+theorem diam_pos_of_mem_badConvexSets {mu : Measure Plane} [IsFiniteMeasure mu]
+    {F V : Set Plane} {alpha : ℝ} (halpha : 0 < alpha)
+    (hV : V ∈ badConvexSets mu F alpha) : 0 < Metric.diam V := by
+  have hV_nonempty : V.Nonempty := hV.2.2.1.mono inter_subset_left
+  obtain ⟨x, hx⟩ := hV_nonempty
+  obtain ⟨y, hy, hyx⟩ :=
+    preperfect_iff_nhds.mp hV.1.preperfect x hx univ (by simp)
+  exact Metric.diam_pos (nontrivial_of_mem_mem_ne hx hy.2 hyx.symm)
+    (isBounded_of_mem_badConvexSets halpha hV)
+
 /-- The total mass supplies a uniform real diameter bound for all bad convex sets. -/
 theorem diam_lt_measure_univ_div_of_mem_badConvexSets {mu : Measure Plane}
     [IsFiniteMeasure mu] {F V : Set Plane} {alpha : ℝ} (halpha : 0 < alpha)
