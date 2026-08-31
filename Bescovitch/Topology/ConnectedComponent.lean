@@ -39,6 +39,16 @@ theorem IsPreconnected.preimage_subtype_of_subset {X : Type*} [TopologicalSpace 
   letI : PreconnectedSpace A := Subtype.preconnectedSpace hA
   exact isPreconnected_univ
 
+/-- A connected component cut out inside a compact set is compact. -/
+theorem isCompact_connectedComponentIn {X : Type*} [TopologicalSpace X] [T2Space X]
+    {K : Set X} (hK : IsCompact K) (x : X) : IsCompact (connectedComponentIn K x) := by
+  by_cases hx : x ∈ K
+  · rw [connectedComponentIn_eq_image hx]
+    letI : CompactSpace K := isCompact_iff_compactSpace.mp hK
+    exact isClosed_connectedComponent.isCompact.image continuous_subtype_val
+  · rw [connectedComponentIn_eq_empty hx]
+    exact isCompact_empty
+
 /-- In a compact Hausdorff space, a connected component contained in an open set has a clopen
 neighborhood contained in that open set. -/
 theorem exists_isClopen_between_connectedComponent {X : Type*} [TopologicalSpace X]
