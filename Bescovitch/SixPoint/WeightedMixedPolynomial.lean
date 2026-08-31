@@ -170,14 +170,15 @@ def polynomialOfLeaf (sideP sideW : ℚ) (lower upper : Fin 6 → ℚ)
     (fun i ↦ data.supportSlopeNumerator i / 4096)
     (fun i ↦ data.slackNumerator i / 4096)
 
+set_option maxHeartbeats 2000000 in
+set_option maxRecDepth 100000 in
 /-- Every mixed leaf polynomial fits the degree profile used by its Bernstein checker. -/
-theorem polynomialOfLeaf_fits (sideP sideW : ℚ) (lower upper : Fin 6 → ℚ)
+theorem polynomial_of_leaf_fits (sideP sideW : ℚ) (lower upper : Fin 6 → ℚ)
     (data : WeightedMixedLeaf) :
     MultivariateDensePolynomial.Fits degreeProfile
       (polynomialOfLeaf sideP sideW lower upper data) := by
-  set_option maxRecDepth 100000 in
-    apply MultivariateDensePolynomial.fits_sound
-    rfl
+  apply MultivariateDensePolynomial.fits_sound
+  rfl
 
 private theorem eval_sub (p q : Polynomial) (x : Fin 6 → ℝ) :
     MultivariateDensePolynomial.eval (sub p q) x =
@@ -200,7 +201,7 @@ private theorem Vector.eval_smul (p : Polynomial) (v : Vector) (x : Fin 6 → �
   ext i
   fin_cases i <;> simp [Vector.smul, Vector.eval, MultivariateDensePolynomial.eval_mul]
 
-private theorem eval_normSq (v : Vector) (x : Fin 6 → ℝ) :
+private theorem eval_norm_sq (v : Vector) (x : Fin 6 → ℝ) :
     MultivariateDensePolynomial.eval v.normSq x = ‖v.eval x‖ ^ 2 := by
   simp [Vector.normSq, MultivariateDensePolynomial.eval_add,
     MultivariateDensePolynomial.eval_pow, Vector.eval, EuclideanSpace.real_norm_sq_eq,
@@ -212,7 +213,7 @@ private theorem eval_denominator (z : Polynomial) (x : Fin 6 → ℝ) :
   simp [denominator, MultivariateDensePolynomial.eval_add,
     MultivariateDensePolynomial.eval_pow]
 
-private theorem eval_chordNumerator (side : ℚ) (a h z : Polynomial)
+private theorem eval_chord_numerator (side : ℚ) (a h z : Polynomial)
     (x : Fin 6 → ℝ) :
     (chordNumerator side a h z).eval x =
       (1 + MultivariateDensePolynomial.eval z x ^ 2) •
@@ -227,55 +228,55 @@ private theorem eval_chordNumerator (side : ℚ) (a h z : Polynomial)
     have hden : (1 : ℝ) + MultivariateDensePolynomial.eval z x ^ 2 ≠ 0 := by positivity
     field_simp [hden] <;> ring
 
-private theorem eval_chordNumerator_second (side c : ℚ) (a h z : Polynomial)
+private theorem eval_chord_numerator_second (side c : ℚ) (a h z : Polynomial)
     (x : Fin 6 → ℝ) :
     (chordNumerator side (sub a (C c)) h z).eval x =
       (1 + MultivariateDensePolynomial.eval z x ^ 2) •
         chordChartSecond side c (MultivariateDensePolynomial.eval a x)
           (MultivariateDensePolynomial.eval h x) (MultivariateDensePolynomial.eval z x) := by
-  rw [eval_chordNumerator, eval_sub]
+  rw [eval_chord_numerator, eval_sub]
   simp only [MultivariateDensePolynomial.eval_constant]
   rfl
 
-private theorem eval_rootNumerator (d : Polynomial) (x : Fin 6 → ℝ) :
+private theorem eval_root_numerator (d : Polynomial) (x : Fin 6 → ℝ) :
     (rootNumerator d).eval x = MultivariateDensePolynomial.eval d x • !₂[1, 0] := by
   ext i
   fin_cases i <;> simp [rootNumerator, Vector.eval]
 
-private theorem eval_singleDifference (d : Polynomial) (v : Vector) (x : Fin 6 → ℝ) :
+private theorem eval_single_difference (d : Polynomial) (v : Vector) (x : Fin 6 → ℝ) :
     (singleDifference d v).eval x =
       MultivariateDensePolynomial.eval d x • !₂[1, 0] - v.eval x := by
-  rw [singleDifference, Vector.eval_sub, eval_rootNumerator]
+  rw [singleDifference, Vector.eval_sub, eval_root_numerator]
 
-private theorem eval_singleDifference_of_scaled (d : Polynomial) (v : Vector)
+private theorem eval_single_difference_of_scaled (d : Polynomial) (v : Vector)
     (x : Fin 6 → ℝ) (dval : ℝ) (p : Plane)
     (hd : MultivariateDensePolynomial.eval d x = dval)
     (hv : v.eval x = dval • p) :
     (singleDifference d v).eval x = dval • (!₂[1, 0] - p) := by
-  rw [eval_singleDifference, hd, hv]
+  rw [eval_single_difference, hd, hv]
   module
 
-private theorem eval_mixedDifference (dP dW : Polynomial) (p w : Vector)
+private theorem eval_mixed_difference (dP dW : Polynomial) (p w : Vector)
     (x : Fin 6 → ℝ) :
     (mixedDifference dP dW p w).eval x =
       (MultivariateDensePolynomial.eval dP x * MultivariateDensePolynomial.eval dW x) •
         !₂[1, 0] -
       (MultivariateDensePolynomial.eval dW x • p.eval x +
         MultivariateDensePolynomial.eval dP x • w.eval x) := by
-  rw [mixedDifference, Vector.eval_sub, eval_rootNumerator, Vector.eval_add,
+  rw [mixedDifference, Vector.eval_sub, eval_root_numerator, Vector.eval_add,
     Vector.eval_smul, Vector.eval_smul, MultivariateDensePolynomial.eval_mul]
 
-private theorem eval_mixedDifference_of_scaled (dP dW : Polynomial) (p w : Vector)
+private theorem eval_mixed_difference_of_scaled (dP dW : Polynomial) (p w : Vector)
     (x : Fin 6 → ℝ) (dPval dWval : ℝ) (pval wval : Plane)
     (hdP : MultivariateDensePolynomial.eval dP x = dPval)
     (hdW : MultivariateDensePolynomial.eval dW x = dWval)
     (hp : p.eval x = dPval • pval) (hw : w.eval x = dWval • wval) :
     (mixedDifference dP dW p w).eval x =
       (dPval * dWval) • (!₂[1, 0] - pval - wval) := by
-  rw [eval_mixedDifference, hdP, hdW, hp, hw]
+  rw [eval_mixed_difference, hdP, hdW, hp, hw]
   module
 
-private theorem eval_positiveTerm (weight rho : ℚ) (v : Vector)
+private theorem eval_positive_term (weight rho : ℚ) (v : Vector)
     (d factor : Polynomial) (x : Fin 6 → ℝ) :
     MultivariateDensePolynomial.eval (positiveTerm weight rho v d factor) x =
       (weight / (2 * rho) : ℚ) *
@@ -284,10 +285,10 @@ private theorem eval_positiveTerm (weight rho : ℚ) (v : Vector)
         MultivariateDensePolynomial.eval factor x := by
   simp [positiveTerm, MultivariateDensePolynomial.eval_scale,
     MultivariateDensePolynomial.eval_mul, MultivariateDensePolynomial.eval_add,
-    MultivariateDensePolynomial.eval_pow, eval_normSq]
+    MultivariateDensePolynomial.eval_pow, eval_norm_sq]
   ring
 
-private theorem eval_positiveTerm_of_scaled (weight rho : ℚ) (v : Vector)
+private theorem eval_positive_term_of_scaled (weight rho : ℚ) (v : Vector)
     (d factor : Polynomial) (x : Fin 6 → ℝ) (dval factorVal : ℝ) (q : Plane)
     (hrho : (rho : ℝ) ≠ 0)
     (hd : MultivariateDensePolynomial.eval d x = dval)
@@ -295,13 +296,13 @@ private theorem eval_positiveTerm_of_scaled (weight rho : ℚ) (v : Vector)
     (hv : v.eval x = dval • q) :
     MultivariateDensePolynomial.eval (positiveTerm weight rho v d factor) x =
       dval ^ 2 * factorVal * quadraticNormTangent weight rho (‖q‖ ^ 2) := by
-  rw [eval_positiveTerm, hd, hfactor, hv, norm_smul, Real.norm_eq_abs,
+  rw [eval_positive_term, hd, hfactor, hv, norm_smul, Real.norm_eq_abs,
     quadraticNormTangent]
   simp only [mul_pow, sq_abs]
   push_cast
   field_simp [hrho]
 
-private theorem eval_supportNumerator (slope : ℚ) (v : Vector) (d : Polynomial)
+private theorem eval_support_numerator (slope : ℚ) (v : Vector) (d : Polynomial)
     (x : Fin 6 → ℝ) :
     MultivariateDensePolynomial.eval (supportNumerator slope v d) x =
       ((supportFirst slope : ℝ) * (v.eval x) 0 +
@@ -314,7 +315,7 @@ private theorem eval_supportNumerator (slope : ℚ) (v : Vector) (d : Polynomial
     MultivariateDensePolynomial.eval_pow]
   ring
 
-private theorem quadraticNormSupport_stereographic (slope : ℚ) (v : Plane) :
+private theorem quadratic_norm_support_stereographic (slope : ℚ) (v : Plane) :
     quadraticNormSupport (stereographicDirection 1 slope) v =
       (supportFirst slope : ℝ) * v 0 + (supportSecond slope : ℝ) * v 1 +
         ((-(supportSecond slope : ℝ)) * v 0 +
@@ -334,17 +335,17 @@ private theorem quadraticNormSupport_stereographic (slope : ℚ) (v : Plane) :
   field_simp [hden]
   ring
 
-private theorem eval_supportNumerator_of_scaled (slope : ℚ) (v : Vector)
+private theorem eval_support_numerator_of_scaled (slope : ℚ) (v : Vector)
     (d : Polynomial) (x : Fin 6 → ℝ) (dval : ℝ) (p : Plane)
     (hd : MultivariateDensePolynomial.eval d x = dval)
     (hv : v.eval x = dval • p) :
     MultivariateDensePolynomial.eval (supportNumerator slope v d) x =
       dval ^ 2 * quadraticNormSupport (stereographicDirection 1 slope) p := by
-  rw [eval_supportNumerator, hd, hv, quadraticNormSupport_stereographic]
+  rw [eval_support_numerator, hd, hv, quadratic_norm_support_stereographic]
   simp
   ring
 
-private theorem eval_negativeTerm (weight slope : ℚ) (v : Vector)
+private theorem eval_negative_term (weight slope : ℚ) (v : Vector)
     (d factor : Polynomial) (x : Fin 6 → ℝ) :
     MultivariateDensePolynomial.eval (negativeTerm weight slope v d factor) x =
       weight * MultivariateDensePolynomial.eval (supportNumerator slope v d) x *
@@ -353,7 +354,7 @@ private theorem eval_negativeTerm (weight slope : ℚ) (v : Vector)
     MultivariateDensePolynomial.eval_mul]
   ring
 
-private theorem eval_singlePositive (weight rho : ℚ) (dP dW : Polynomial)
+private theorem eval_single_positive (weight rho : ℚ) (dP dW : Polynomial)
     (p : Vector) (x : Fin 6 → ℝ) (dPval dWval : ℝ) (pval : Plane)
     (hrho : (rho : ℝ) ≠ 0)
     (hdP : MultivariateDensePolynomial.eval dP x = dPval)
@@ -363,13 +364,13 @@ private theorem eval_singlePositive (weight rho : ℚ) (dP dW : Polynomial)
         (positiveTerm weight rho (singleDifference dP p) dP (dW ^ₚ 2)) x =
       (dPval * dWval) ^ 2 * quadraticNormTangent weight rho
         (‖(!₂[1, 0] : Plane) - pval‖ ^ 2) := by
-  rw [eval_positiveTerm_of_scaled weight rho _ dP (dW ^ₚ 2) x dPval (dWval ^ 2)
+  rw [eval_positive_term_of_scaled weight rho _ dP (dW ^ₚ 2) x dPval (dWval ^ 2)
     ((!₂[1, 0] : Plane) - pval) hrho hdP]
   · ring
   · simp [MultivariateDensePolynomial.eval_pow, hdW]
-  · exact eval_singleDifference_of_scaled dP p x dPval pval hdP hp
+  · exact eval_single_difference_of_scaled dP p x dPval pval hdP hp
 
-private theorem eval_mixedPositive (weight rho : ℚ) (dP dW : Polynomial)
+private theorem eval_mixed_positive (weight rho : ℚ) (dP dW : Polynomial)
     (p w : Vector) (x : Fin 6 → ℝ) (dPval dWval : ℝ) (pval wval : Plane)
     (hrho : (rho : ℝ) ≠ 0)
     (hdP : MultivariateDensePolynomial.eval dP x = dPval)
@@ -379,15 +380,15 @@ private theorem eval_mixedPositive (weight rho : ℚ) (dP dW : Polynomial)
         (positiveTerm weight rho (mixedDifference dP dW p w) (dP *ₚ dW) (C 1)) x =
       (dPval * dWval) ^ 2 * quadraticNormTangent weight rho
         (‖(!₂[1, 0] : Plane) - pval - wval‖ ^ 2) := by
-  rw [eval_positiveTerm_of_scaled weight rho _ (dP *ₚ dW) (C 1) x
+  rw [eval_positive_term_of_scaled weight rho _ (dP *ₚ dW) (C 1) x
     (dPval * dWval) 1 ((!₂[1, 0] : Plane) - pval - wval) hrho]
   · ring
   · simp [MultivariateDensePolynomial.eval_mul, hdP, hdW]
   · simp
-  · exact eval_mixedDifference_of_scaled dP dW p w x dPval dWval pval wval
+  · exact eval_mixed_difference_of_scaled dP dW p w x dPval dWval pval wval
       hdP hdW hp hw
 
-private theorem eval_clearedSupport (weight slope : ℚ) (dP dW : Polynomial)
+private theorem eval_cleared_support (weight slope : ℚ) (dP dW : Polynomial)
     (p : Vector) (x : Fin 6 → ℝ) (dPval dWval : ℝ) (pval : Plane)
     (hdP : MultivariateDensePolynomial.eval dP x = dPval)
     (hdW : MultivariateDensePolynomial.eval dW x = dWval)
@@ -395,12 +396,12 @@ private theorem eval_clearedSupport (weight slope : ℚ) (dP dW : Polynomial)
     MultivariateDensePolynomial.eval (negativeTerm weight slope p dP (dW ^ₚ 2)) x =
       (dPval * dWval) ^ 2 * weight *
         quadraticNormSupport (stereographicDirection 1 slope) pval := by
-  rw [eval_negativeTerm, eval_supportNumerator_of_scaled slope p dP x dPval pval hdP hp]
+  rw [eval_negative_term, eval_support_numerator_of_scaled slope p dP x dPval pval hdP hp]
   simp only [MultivariateDensePolynomial.eval_pow, hdW]
   ring
 
 @[simp]
-theorem eval_affineCoordinate (i : Fin 6) (lower upper : ℚ) (x : Fin 6 → ℝ) :
+theorem eval_affine_coordinate (i : Fin 6) (lower upper : ℚ) (x : Fin 6 → ℝ) :
     MultivariateDensePolynomial.eval (affineCoordinate i lower upper) x =
       (lower + upper) / 2 + (upper - lower) / 2 * x i := by
   simp [affineCoordinate, MultivariateDensePolynomial.eval_add,
@@ -408,7 +409,7 @@ theorem eval_affineCoordinate (i : Fin 6) (lower upper : ℚ) (x : Fin 6 → ℝ
 
 /-- The exact polynomial is the quadratic geometric majorant with its positive denominator
 cleared. -/
-theorem eval_leafPolynomial_eq_clearedMajorant
+theorem eval_leaf_polynomial_eq_cleared_majorant
     (sideP sideW : ℚ) (a h z b k w : Polynomial)
     (rho : Fin 6 → ℚ) (slope eta : Fin 4 → ℚ) (x : Fin 6 → ℝ)
     (A H Z B K W : ℝ)
@@ -446,32 +447,32 @@ theorem eval_leafPolynomial_eq_clearedMajorant
   have hdW : MultivariateDensePolynomial.eval dW x = 1 + W ^ 2 := by
     simp [dW, eval_denominator, hw]
   have hp₁ : p₁.eval x = (1 + Z ^ 2) • chordChartFirst sideP A H Z := by
-    simpa [p₁, ha, hh, hz] using eval_chordNumerator sideP a h z x
+    simpa [p₁, ha, hh, hz] using eval_chord_numerator sideP a h z x
   have hc : ((13866128436518096 / 10 ^ 16 : ℚ) : ℝ) = certificateChord := by
     norm_num [certificateChord]
   have hp₂ : p₂.eval x = (1 + Z ^ 2) •
       chordChartSecond sideP ((13866128436518096 / 10 ^ 16 : ℚ) : ℝ) A H Z := by
     dsimp [p₂]
-    rw [eval_chordNumerator_second, ha, hh, hz]
+    rw [eval_chord_numerator_second, ha, hh, hz]
   rw [hc] at hp₂
   have hw₁ : w₁.eval x = (1 + W ^ 2) • chordChartFirst sideW B K W := by
-    simpa [w₁, hb, hk, hw] using eval_chordNumerator sideW b k w x
+    simpa [w₁, hb, hk, hw] using eval_chord_numerator sideW b k w x
   have hw₂ : w₂.eval x = (1 + W ^ 2) •
       chordChartSecond sideW ((13866128436518096 / 10 ^ 16 : ℚ) : ℝ) B K W := by
     dsimp [w₂]
-    rw [eval_chordNumerator_second, hb, hk, hw]
+    rw [eval_chord_numerator_second, hb, hk, hw]
   rw [hc] at hw₂
-  have hP := eval_singlePositive (92883833887540 / 10 ^ 14 / 2) (rho 0)
+  have hP := eval_single_positive (92883833887540 / 10 ^ 14 / 2) (rho 0)
     dP dW p₁ x (1 + Z ^ 2) (1 + W ^ 2) _ (hrho 0) hdP hdW hp₁
-  have hW := eval_singlePositive (92883833887540 / 10 ^ 14 / 2) (rho 1)
+  have hW := eval_single_positive (92883833887540 / 10 ^ 14 / 2) (rho 1)
     dW dP w₁ x (1 + W ^ 2) (1 + Z ^ 2) _ (hrho 1) hdW hdP hw₁
-  have h₁₁ := eval_mixedPositive (1 + 8947642540885 / 10 ^ 14) (rho 2)
+  have h₁₁ := eval_mixed_positive (1 + 8947642540885 / 10 ^ 14) (rho 2)
     dP dW p₁ w₁ x (1 + Z ^ 2) (1 + W ^ 2) _ _ (hrho 2) hdP hdW hp₁ hw₁
-  have h₂₂ := eval_mixedPositive 1 (rho 3)
+  have h₂₂ := eval_mixed_positive 1 (rho 3)
     dP dW p₂ w₂ x (1 + Z ^ 2) (1 + W ^ 2) _ _ (hrho 3) hdP hdW hp₂ hw₂
-  have h₁₂ := eval_mixedPositive (92883833887540 / 10 ^ 14 / 2) (rho 4)
+  have h₁₂ := eval_mixed_positive (92883833887540 / 10 ^ 14 / 2) (rho 4)
     dP dW p₁ w₂ x (1 + Z ^ 2) (1 + W ^ 2) _ _ (hrho 4) hdP hdW hp₁ hw₂
-  have h₂₁ := eval_mixedPositive (92883833887540 / 10 ^ 14 / 2) (rho 5)
+  have h₂₁ := eval_mixed_positive (92883833887540 / 10 ^ 14 / 2) (rho 5)
     dP dW p₂ w₁ x (1 + Z ^ 2) (1 + W ^ 2) _ _ (hrho 5) hdP hdW hp₂ hw₁
   have hcrossOrder :
       (!₂[1, 0] : Plane) - chordChartSecond sideP certificateChord A H Z -
@@ -480,13 +481,13 @@ theorem eval_leafPolynomial_eq_clearedMajorant
           chordChartSecond sideP certificateChord A H Z := by
     abel
   rw [hcrossOrder] at h₂₁
-  have hsP₁ := eval_clearedSupport (firstPenalty / 2) (slope 0) dP dW p₁ x
+  have hsP₁ := eval_cleared_support (firstPenalty / 2) (slope 0) dP dW p₁ x
     (1 + Z ^ 2) (1 + W ^ 2) _ hdP hdW hp₁
-  have hsW₁ := eval_clearedSupport (firstPenalty / 2) (slope 1) dW dP w₁ x
+  have hsW₁ := eval_cleared_support (firstPenalty / 2) (slope 1) dW dP w₁ x
     (1 + W ^ 2) (1 + Z ^ 2) _ hdW hdP hw₁
-  have hsP₂ := eval_clearedSupport (secondPenalty / 2) (slope 2) dP dW p₂ x
+  have hsP₂ := eval_cleared_support (secondPenalty / 2) (slope 2) dP dW p₂ x
     (1 + Z ^ 2) (1 + W ^ 2) _ hdP hdW hp₂
-  have hsW₂ := eval_clearedSupport (secondPenalty / 2) (slope 3) dW dP w₂ x
+  have hsW₂ := eval_cleared_support (secondPenalty / 2) (slope 3) dW dP w₂ x
     (1 + W ^ 2) (1 + Z ^ 2) _ hdW hdP hw₂
   simp only [leafPolynomial, MultivariateDensePolynomial.eval_add, eval_sub,
     MultivariateDensePolynomial.eval_scale, MultivariateDensePolynomial.eval_mul,
