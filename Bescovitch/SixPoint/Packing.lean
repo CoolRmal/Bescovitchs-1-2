@@ -84,6 +84,18 @@ theorem dist_le_virtualDiameter (i j : packing.support) :
     _ ≤ _ + (packing.radius j : ℝ) := le_add_of_nonneg_right (packing.radius j).property.1
     _ ≤ _ := packing.pair_le_virtualDiameter i j
 
+/-- A lower bound between the two colors is inherited by the virtual diameter. -/
+theorem crossColor_le_virtualDiameter {lower : ℝ}
+    (hcross : ∀ redLabel blueLabel,
+      (.red, redLabel) ∈ packing.support → (.blue, blueLabel) ∈ packing.support →
+        lower ≤ dist (configuration .red redLabel) (configuration .blue blueLabel)) :
+    lower ≤ packing.virtualDiameter := by
+  obtain ⟨redLabel, hred⟩ := packing.meets_color .red
+  obtain ⟨blueLabel, hblue⟩ := packing.meets_color .blue
+  let red : packing.support := ⟨(.red, redLabel), hred⟩
+  let blue : packing.support := ⟨(.blue, blueLabel), hblue⟩
+  exact (hcross redLabel blueLabel hred hblue).trans (packing.dist_le_virtualDiameter red blue)
+
 /-- Twice any supported radius is at most the virtual diameter. -/
 theorem two_mul_radius_le_virtualDiameter (i : packing.support) :
     2 * (packing.radius i : ℝ) ≤ packing.virtualDiameter := by
