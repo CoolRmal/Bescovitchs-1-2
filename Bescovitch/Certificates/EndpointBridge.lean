@@ -18,8 +18,6 @@ identifies the constants defined from that endpoint.
 
 noncomputable section
 
-open Set
-
 namespace Bescovitch
 
 /-- The unique endpoint pair isolated by the exact polynomial certificate. -/
@@ -48,29 +46,6 @@ theorem IsEndpointPair.eq_certifiedEndpointPair {c B : ℝ} (h : IsEndpointPair 
     (c, B) = certifiedEndpointPair :=
   h.isEndpointPolynomialPair.eq_certifiedEndpointPair
 
-/-- The natural radical endpoint system has exactly one solution. -/
-theorem existsUnique_isEndpointPair : ∃! p : ℝ × ℝ, IsEndpointPair p.1 p.2 := by
-  refine ⟨certifiedEndpointPair, certifiedEndpointPair_isEndpointPair, ?_⟩
-  intro p hp
-  exact hp.eq_certifiedEndpointPair
-
-/-- The set of natural radical endpoint pairs is a singleton. -/
-theorem endpointPair_set_eq_singleton :
-    {p : ℝ × ℝ | IsEndpointPair p.1 p.2} = {certifiedEndpointPair} := by
-  ext p
-  constructor
-  · intro hp
-    exact hp.eq_certifiedEndpointPair
-  · intro hp
-    rw [Set.mem_singleton_iff] at hp
-    rw [hp]
-    exact certifiedEndpointPair_isEndpointPair
-
-/-- The natural endpoint-pair set is nonempty. -/
-theorem endpointPair_set_nonempty :
-    ({p : ℝ × ℝ | IsEndpointPair p.1 p.2} : Set (ℝ × ℝ)).Nonempty :=
-  ⟨certifiedEndpointPair, certifiedEndpointPair_isEndpointPair⟩
-
 /-- A natural radical endpoint pair exists. -/
 theorem exists_isEndpointPair : ∃ c B : ℝ, IsEndpointPair c B :=
   ⟨certifiedEndpointPair.1, certifiedEndpointPair.2, certifiedEndpointPair_isEndpointPair⟩
@@ -80,32 +55,6 @@ theorem cStar_eq_certifiedEndpointPair_fst : cStar = certifiedEndpointPair.1 := 
   apply cStar_eq_of_isEndpointPair_of_unique certifiedEndpointPair_isEndpointPair
   intro c B h
   exact congrArg Prod.fst h.eq_certifiedEndpointPair
-
-/-- Half the first coordinate of the certified pair is exactly `sStar`. -/
-theorem sStar_eq_certifiedEndpointPair_fst_div_two :
-    sStar = certifiedEndpointPair.1 / 2 := by
-  apply sStar_eq_of_isEndpointPair_of_unique certifiedEndpointPair_isEndpointPair
-  intro c B h
-  exact congrArg Prod.fst h.eq_certifiedEndpointPair
-
-/-- The endpoint first-coordinate set is the singleton `{cStar}`. -/
-theorem endpoint_first_coordinate_set_eq_singleton :
-    {c : ℝ | ∃ B : ℝ, IsEndpointPair c B} = {cStar} := by
-  ext c
-  constructor
-  · rintro ⟨B, h⟩
-    rw [Set.mem_singleton_iff, cStar_eq_certifiedEndpointPair_fst]
-    exact congrArg Prod.fst h.eq_certifiedEndpointPair
-  · intro hc
-    rw [Set.mem_singleton_iff] at hc
-    rw [hc]
-    exact ⟨certifiedEndpointPair.2, cStar_eq_certifiedEndpointPair_fst.symm ▸
-      certifiedEndpointPair_isEndpointPair⟩
-
-/-- The infimum-defined first coordinate itself has a natural endpoint partner. -/
-theorem exists_isEndpointPair_cStar : ∃ B : ℝ, IsEndpointPair cStar B := by
-  rw [cStar_eq_certifiedEndpointPair_fst]
-  exact ⟨certifiedEndpointPair.2, certifiedEndpointPair_isEndpointPair⟩
 
 /-- The certified endpoint radicands are strictly positive. -/
 theorem certifiedEndpointPair_radicands_pos :

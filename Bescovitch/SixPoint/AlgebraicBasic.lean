@@ -205,12 +205,6 @@ theorem isEndpointPair_of_isEndpointPolynomialPair {c B : ℝ}
   dsimp only [IsEndpointPair]
   exact ⟨hc_lo, hc_hi, hB_lo, hB_hi, hR_eq, hgram', hx, hz, hk⟩
 
-/-- The radical and signed polynomial formulations of an endpoint pair are equivalent. -/
-theorem isEndpointPair_iff_isEndpointPolynomialPair (c B : ℝ) :
-    IsEndpointPair c B ↔ IsEndpointPolynomialPair c B :=
-  ⟨IsEndpointPair.isEndpointPolynomialPair,
-    isEndpointPair_of_isEndpointPolynomialPair⟩
-
 /-- The first coordinates of endpoint pairs have a uniform rational lower bound. -/
 theorem endpoint_first_coordinates_bddBelow :
     BddBelow {c : ℝ | ∃ B : ℝ, IsEndpointPair c B} := by

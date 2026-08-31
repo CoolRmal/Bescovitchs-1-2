@@ -6,6 +6,7 @@ Authors: Yongxi Lin
 module
 
 public import Mathlib.Data.Int.Basic
+public import Mathlib.Data.Rat.Defs
 
 /-!
 # Data for the mixed weighted certificate
@@ -26,6 +27,20 @@ structure WeightedMixedLeaf where
   supportSlopeNumerator : Fin 4 → ℤ
   /-- Numerators of the four nonnegative disk-slack multipliers. -/
   slackNumerator : Fin 4 → ℕ
+
+namespace WeightedMixedLeaf
+
+/-- A positive tangent parameter represented by a leaf. -/
+def rho (data : WeightedMixedLeaf) (i : Fin 6) : ℚ := data.rhoNumerator i / 4096
+
+/-- A stereographic support slope represented by a leaf. -/
+def supportSlope (data : WeightedMixedLeaf) (i : Fin 4) : ℚ :=
+  data.supportSlopeNumerator i / 4096
+
+/-- A nonnegative disk-slack multiplier represented by a leaf. -/
+def slack (data : WeightedMixedLeaf) (i : Fin 4) : ℚ := data.slackNumerator i / 4096
+
+end WeightedMixedLeaf
 
 /-- An adaptive dyadic partition whose leaves are either infeasible or exactly certified. -/
 inductive WeightedMixedTree where

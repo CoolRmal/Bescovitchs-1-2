@@ -209,21 +209,18 @@ def centeredBernstein : {n : ℕ} → (Fin n → BernsteinDegree) →
       .ofCoefficients (centeredBernsteinCoefficients (degrees 0)
         (Coefficients.map (centeredBernstein (Fin.tail degrees)) p))
 
-/-- A polynomial fits the coordinatewise degree profile used for conversion. -/
-def Fits : {n : ℕ} → (Fin n → BernsteinDegree) →
+/-- A coordinatewise natural-number degree bound for a dense polynomial. -/
+inductive DegreeBound : {n : ℕ} → (Fin n → ℕ) →
     MultivariateDensePolynomial n → Prop
-  | 0, _, .base _ => True
-  | _n + 1, degrees, .ofCoefficients p =>
-      Coefficients.length p ≤ (degrees 0).value + 1 ∧
-        Coefficients.All (Fits (Fin.tail degrees)) p
+  | base (degrees : Fin 0 → ℕ) (a : ℚ) : DegreeBound degrees (.base a)
+  | ofCoefficients {n : ℕ} (degrees : Fin (n + 1) → ℕ) (p : Coefficients n)
+      (length_le : p.length ≤ degrees 0 + 1)
+      (coefficients : ∀ k, k < p.length →
+        DegreeBound (Fin.tail degrees) (p.get (zero n) k)) :
+      DegreeBound degrees (.ofCoefficients p)
 
-/-- Decide whether a polynomial fits a coordinatewise Bernstein degree profile. -/
-def fits : {n : ℕ} → (Fin n → BernsteinDegree) →
-    MultivariateDensePolynomial n → Bool
-  | 0, _, .base _ => true
-  | _n + 1, degrees, .ofCoefficients p =>
-      decide (Coefficients.length p ≤ (degrees 0).value + 1) &&
-        Coefficients.all (fits (Fin.tail degrees)) p
+/-- The multidegree of one coordinate variable. -/
+def coordinateDegree {n : ℕ} (i : Fin n) (j : Fin n) : ℕ := if j = i then 1 else 0
 
 /-- Evaluate a coefficient sequence in one Bernstein coordinate. -/
 def Coefficients.bernsteinEval {n : ℕ} (zero : MultivariateDensePolynomial n)
@@ -551,6 +548,262 @@ private theorem Coefficients.All.imp {n : ℕ}
   | cons p ps hps =>
       exact ⟨himp p h.1, hps h.2⟩
 
+private theorem coefficients_all_get_of_lt {n : ℕ}
+    {predicate : MultivariateDensePolynomial n → Prop} {p : Coefficients n}
+    (hp : p.All predicate) (k : ℕ) (hk : k < p.length) :
+    predicate (p.get (zero n) k) := by
+  induction k generalizing p with
+  | zero =>
+      cases p with
+      | nil => simp [Coefficients.length] at hk
+      | cons p ps => exact hp.1
+  | succ k ih =>
+      cases p with
+      | nil => simp [Coefficients.length] at hk
+      | cons p ps => exact ih hp.2 (by simpa [Coefficients.length] using hk)
+
+private theorem coefficients_all_of_get_lt {n : ℕ}
+    {predicate : MultivariateDensePolynomial n → Prop} (p : Coefficients n)
+    (hp : ∀ k, k < p.length → predicate (p.get (zero n) k)) : p.All predicate := by
+  induction p using Coefficients.recList with
+  | nil => trivial
+  | cons p ps ih =>
+      constructor
+      · exact hp 0 (by simp [Coefficients.length])
+      · apply ih
+        intro k hk
+        exact hp (k + 1) (by simpa [Coefficients.length] using hk)
+
+private theorem DegreeBound.length_le {n : ℕ} {degrees : Fin (n + 1) → ℕ}
+    {p : Coefficients n} (hp : DegreeBound degrees (.ofCoefficients p)) :
+    p.length ≤ degrees 0 + 1 := by
+  cases hp with
+  | ofCoefficients _ _ hlength _ => exact hlength
+
+private theorem DegreeBound.all {n : ℕ} {degrees : Fin (n + 1) → ℕ}
+    {p : Coefficients n} (hp : DegreeBound degrees (.ofCoefficients p)) :
+    p.All (DegreeBound (Fin.tail degrees)) := by
+  cases hp with
+  | ofCoefficients _ _ _ hcoefficients => exact coefficients_all_of_get_lt p hcoefficients
+
+private theorem degree_bound_of_all {n : ℕ} {degrees : Fin (n + 1) → ℕ}
+    {p : Coefficients n} (hlength : p.length ≤ degrees 0 + 1)
+    (hcoefficients : p.All (DegreeBound (Fin.tail degrees))) :
+    DegreeBound degrees (.ofCoefficients p) :=
+  .ofCoefficients degrees p hlength (coefficients_all_get_of_lt hcoefficients)
+
+private theorem coefficients_length_add_le {n : ℕ}
+    (operation : MultivariateDensePolynomial n → MultivariateDensePolynomial n →
+      MultivariateDensePolynomial n) (p q : Coefficients n) :
+    (Coefficients.add operation p q).length ≤ max p.length q.length := by
+  induction p using Coefficients.recList generalizing q with
+  | nil => simp [Coefficients.add, Coefficients.length]
+  | cons p ps ih =>
+      cases q with
+      | nil => simp [Coefficients.add, Coefficients.length]
+      | cons q qs =>
+          simp only [Coefficients.add, Coefficients.length]
+          have := ih qs
+          omega
+
+private theorem coefficients_all_add {n : ℕ} {predicate : MultivariateDensePolynomial n → Prop}
+    (operation : MultivariateDensePolynomial n → MultivariateDensePolynomial n →
+      MultivariateDensePolynomial n)
+    (hoperation : ∀ p q, predicate p → predicate q → predicate (operation p q))
+    (p q : Coefficients n) (hp : p.All predicate) (hq : q.All predicate) :
+    (Coefficients.add operation p q).All predicate := by
+  induction p using Coefficients.recList generalizing q with
+  | nil => simpa [Coefficients.add] using hq
+  | cons p ps ih =>
+      cases q with
+      | nil => simpa [Coefficients.add] using hp
+      | cons q qs =>
+          exact ⟨hoperation p q hp.1 hq.1, ih qs hp.2 hq.2⟩
+
+private theorem coefficients_all_map {n : ℕ}
+    {first second : MultivariateDensePolynomial n → Prop}
+    (operation : MultivariateDensePolynomial n → MultivariateDensePolynomial n)
+    (hoperation : ∀ p, first p → second (operation p))
+    (p : Coefficients n) (hp : p.All first) :
+    (Coefficients.map operation p).All second := by
+  induction p using Coefficients.recList with
+  | nil => trivial
+  | cons p ps ih => exact ⟨hoperation p hp.1, ih hp.2⟩
+
+private theorem coefficients_length_mul_le {n : ℕ}
+    (zero : MultivariateDensePolynomial n)
+    (addPolynomial mulPolynomial : MultivariateDensePolynomial n →
+      MultivariateDensePolynomial n → MultivariateDensePolynomial n)
+    (p q : Coefficients n) :
+    (Coefficients.mul zero addPolynomial mulPolynomial p q).length ≤
+      p.length + (q.length - 1) := by
+  induction p using Coefficients.recList generalizing q with
+  | nil => simp [Coefficients.mul, Coefficients.length]
+  | cons p ps ih =>
+      cases q with
+      | nil =>
+          simp only [Coefficients.mul, Coefficients.map, Coefficients.add,
+            Coefficients.length, Nat.zero_sub, Nat.add_zero]
+          exact Nat.succ_le_succ (by simpa [Coefficients.length] using ih .nil)
+      | cons q qs =>
+          rw [Coefficients.mul]
+          refine (coefficients_length_add_le _ _ _).trans ?_
+          rw [coefficients_length_map]
+          simp only [Coefficients.length]
+          have hrec := ih (.cons q qs)
+          simp only [Coefficients.length] at hrec ⊢
+          omega
+
+private theorem coefficients_all_mul {n : ℕ}
+    {first second result : MultivariateDensePolynomial n → Prop}
+    (zero : MultivariateDensePolynomial n)
+    (addPolynomial mulPolynomial : MultivariateDensePolynomial n →
+      MultivariateDensePolynomial n → MultivariateDensePolynomial n)
+    (hzero : result zero)
+    (hadd : ∀ p q, result p → result q → result (addPolynomial p q))
+    (hmul : ∀ p q, first p → second q → result (mulPolynomial p q))
+    (p q : Coefficients n) (hp : p.All first) (hq : q.All second) :
+    (Coefficients.mul zero addPolynomial mulPolynomial p q).All result := by
+  induction p using Coefficients.recList with
+  | nil => trivial
+  | cons p ps ih =>
+      apply coefficients_all_add addPolynomial hadd
+      · exact coefficients_all_map (mulPolynomial p) (fun q hq ↦ hmul p q hp.1 hq) q hq
+      · exact ⟨hzero, ih hp.2⟩
+
+/-- The zero polynomial satisfies every coordinatewise degree bound. -/
+theorem degree_bound_zero {n : ℕ} (degrees : Fin n → ℕ) :
+    DegreeBound degrees (zero n) := by
+  cases n with
+  | zero => exact .base degrees 0
+  | succ n =>
+      exact .ofCoefficients degrees .nil (by simp [Coefficients.length])
+        (fun k hk ↦ by simp [Coefficients.length] at hk)
+
+/-- A constant polynomial satisfies every coordinatewise degree bound. -/
+theorem degree_bound_constant {n : ℕ} (degrees : Fin n → ℕ) (a : ℚ) :
+    DegreeBound degrees (constant n a) := by
+  induction n with
+  | zero => exact .base degrees a
+  | succ n ih =>
+      exact degree_bound_of_all (by simp [Coefficients.length])
+        ⟨ih (Fin.tail degrees), by trivial⟩
+
+/-- Addition preserves a common coordinatewise degree bound. -/
+theorem DegreeBound.add {n : ℕ} {degrees : Fin n → ℕ}
+    {p q : MultivariateDensePolynomial n} (hp : DegreeBound degrees p)
+    (hq : DegreeBound degrees q) : DegreeBound degrees (add n p q) := by
+  induction n with
+  | zero => cases p; cases q; exact .base degrees _
+  | succ n ih =>
+      cases p with
+      | ofCoefficients p =>
+        cases q with
+        | ofCoefficients q =>
+          apply degree_bound_of_all
+          · exact (coefficients_length_add_le _ p q).trans
+              (max_le hp.length_le hq.length_le)
+          · exact coefficients_all_add (MultivariateDensePolynomial.add n)
+              (fun p q hp hq ↦ ih hp hq) p q hp.all hq.all
+
+/-- Additive inverse preserves a coordinatewise degree bound. -/
+theorem DegreeBound.neg {n : ℕ} {degrees : Fin n → ℕ}
+    {p : MultivariateDensePolynomial n} (hp : DegreeBound degrees p) :
+    DegreeBound degrees (neg n p) := by
+  induction n with
+  | zero => cases p; exact .base degrees _
+  | succ n ih =>
+      cases p with
+      | ofCoefficients p =>
+          apply degree_bound_of_all
+          · simpa [coefficients_length_map] using hp.length_le
+          · exact coefficients_all_map (MultivariateDensePolynomial.neg n) (fun p hp ↦ ih hp)
+              p hp.all
+
+/-- Rational scaling preserves a coordinatewise degree bound. -/
+theorem DegreeBound.scale (a : ℚ) {n : ℕ} {degrees : Fin n → ℕ}
+    {p : MultivariateDensePolynomial n} (hp : DegreeBound degrees p) :
+    DegreeBound degrees (scale a n p) := by
+  induction n with
+  | zero => cases p; exact .base degrees _
+  | succ n ih =>
+      cases p with
+      | ofCoefficients p =>
+          apply degree_bound_of_all
+          · simpa [coefficients_length_map] using hp.length_le
+          · exact coefficients_all_map (MultivariateDensePolynomial.scale a n)
+              (fun p hp ↦ ih hp) p hp.all
+
+/-- Multiplication adds coordinatewise degree bounds. -/
+theorem DegreeBound.mul {n : ℕ} {first second : Fin n → ℕ}
+    {p q : MultivariateDensePolynomial n} (hp : DegreeBound first p)
+    (hq : DegreeBound second q) :
+    DegreeBound (fun i ↦ first i + second i) (mul n p q) := by
+  induction n with
+  | zero => cases p; cases q; exact .base _ _
+  | succ n ih =>
+      cases p with
+      | ofCoefficients p =>
+        cases q with
+        | ofCoefficients q =>
+          apply degree_bound_of_all
+          · refine (coefficients_length_mul_le _ _ _ p q).trans ?_
+            have hpLength := hp.length_le
+            have hqLength := hq.length_le
+            change Coefficients.length p ≤ first 0 + 1 at hpLength
+            change Coefficients.length q ≤ second 0 + 1 at hqLength
+            change Coefficients.length p + (Coefficients.length q - 1) ≤
+              first 0 + second 0 + 1
+            omega
+          · exact coefficients_all_mul (zero n) (MultivariateDensePolynomial.add n)
+              (MultivariateDensePolynomial.mul n) (degree_bound_zero _)
+              (fun p q hp hq ↦ hp.add hq) (fun p q hp hq ↦ ih hp hq)
+              p q hp.all hq.all
+
+/-- Natural powers multiply every coordinatewise degree bound by the exponent. -/
+theorem DegreeBound.pow {n : ℕ} {degrees : Fin n → ℕ}
+    {p : MultivariateDensePolynomial n} (hp : DegreeBound degrees p) (k : ℕ) :
+    DegreeBound (fun i ↦ k * degrees i) (pow p k) := by
+  induction k with
+  | zero =>
+      simpa only [MultivariateDensePolynomial.pow, zero_mul] using
+        degree_bound_constant (fun _ ↦ 0) 1
+  | succ k ih =>
+      simpa only [MultivariateDensePolynomial.pow, Nat.succ_mul] using ih.mul hp
+
+/-- A coordinate variable has degree one in its own coordinate and zero elsewhere. -/
+theorem degree_bound_coordinate {n : ℕ} (degrees : Fin n → ℕ) (i : Fin n)
+    (hi : 1 ≤ degrees i) : DegreeBound degrees (coordinate i) := by
+  induction n with
+  | zero => exact Fin.elim0 i
+  | succ n ih =>
+      revert hi
+      refine Fin.cases ?_ (fun j hi ↦ ?_) i
+      · intro hi
+        exact degree_bound_of_all (by simpa [coordinate, Coefficients.length] using hi)
+          ⟨degree_bound_zero _, ⟨degree_bound_constant _ 1, by trivial⟩⟩
+      · exact degree_bound_of_all (by simp [Coefficients.length])
+          ⟨ih (Fin.tail degrees) j hi, by trivial⟩
+
+/-- A coordinate variable satisfies its exact multidegree. -/
+theorem degree_bound_coordinate_degree {n : ℕ} (i : Fin n) :
+    DegreeBound (coordinateDegree i) (coordinate i) :=
+  degree_bound_coordinate _ i (by simp [coordinateDegree])
+
+/-- A coordinatewise larger profile preserves a degree bound. -/
+theorem DegreeBound.mono {n : ℕ} {first second : Fin n → ℕ}
+    {p : MultivariateDensePolynomial n} (hp : DegreeBound first p)
+    (hdegrees : ∀ i, first i ≤ second i) : DegreeBound second p := by
+  induction n with
+  | zero => cases p; exact .base second _
+  | succ n ih =>
+      cases p with
+      | ofCoefficients p =>
+          apply degree_bound_of_all
+          · exact hp.length_le.trans (Nat.add_le_add_right (hdegrees 0) 1)
+          · exact Coefficients.All.imp hp.all fun q hq ↦
+              ih hq (fun i ↦ hdegrees i.succ)
+
 private theorem coefficients_eval_map_of_all {n : ℕ}
     (f : MultivariateDensePolynomial n → MultivariateDensePolynomial n)
     (evalBefore evalAfter : MultivariateDensePolynomial n → ℝ)
@@ -654,9 +907,10 @@ private theorem coefficients_eval_centeredBernsteinQuartic {n : ℕ}
                           simp [Coefficients.length] at hdegree
                           omega
 
-/-- Exact power-to-Bernstein conversion on the centered cube. -/
-theorem eval_centeredBernstein {n : ℕ} (degrees : Fin n → BernsteinDegree)
-    (p : MultivariateDensePolynomial n) (hfits : Fits degrees p) (x : Fin n → I) :
+/-- Exact power-to-Bernstein conversion from a natural multidegree bound. -/
+theorem eval_centeredBernstein_of_degree_bound {n : ℕ}
+    (degrees : Fin n → BernsteinDegree) (p : MultivariateDensePolynomial n)
+    (hbound : DegreeBound (fun i ↦ (degrees i).value) p) (x : Fin n → I) :
     eval p (fun i ↦ 2 * (x i : ℝ) - 1) =
       centeredBernsteinEval degrees (centeredBernstein degrees p) x := by
   induction n with
@@ -670,7 +924,8 @@ theorem eval_centeredBernstein {n : ℕ} (degrees : Fin n → BernsteinDegree)
           have hcoeff : Coefficients.All (fun q ↦
               centeredBernsteinEval tailDegrees (centeredBernstein tailDegrees q) tailX =
                 eval q (fun i ↦ 2 * (tailX i : ℝ) - 1)) p :=
-            Coefficients.All.imp hfits.2 fun q hq ↦ (ih tailDegrees q hq tailX).symm
+            Coefficients.All.imp hbound.all fun q hq ↦
+              (ih tailDegrees q hq tailX).symm
           have hmap :
               Coefficients.eval
                   (fun q ↦ centeredBernsteinEval tailDegrees q tailX)
@@ -694,7 +949,7 @@ theorem eval_centeredBernstein {n : ℕ} (degrees : Fin n → BernsteinDegree)
                 (fun q r ↦ centeredBernsteinEval_add tailDegrees q r tailX)
                 (fun q ↦ centeredBernsteinEval_neg tailDegrees q tailX)
                 transformed (by simpa [transformed, hdegree, BernsteinDegree.value,
-                  coefficients_length_map] using hfits.1) (x 0)
+                  coefficients_length_map] using hbound.length_le) (x 0)
           | quartic =>
               exact coefficients_eval_centeredBernsteinQuartic
                 (fun q ↦ centeredBernsteinEval tailDegrees q tailX)
@@ -703,7 +958,7 @@ theorem eval_centeredBernstein {n : ℕ} (degrees : Fin n → BernsteinDegree)
                 (fun q ↦ centeredBernsteinEval_neg tailDegrees q tailX)
                 (fun a q ↦ centeredBernsteinEval_scale a tailDegrees q tailX)
                 transformed (by simpa [transformed, hdegree, BernsteinDegree.value,
-                  coefficients_length_map] using hfits.1) (x 0)
+                  coefficients_length_map] using hbound.length_le) (x 0)
 
 private theorem coefficients_all_eq_true {n : ℕ}
     (predicate : MultivariateDensePolynomial n → Bool) (p : Coefficients n) :
@@ -712,17 +967,6 @@ private theorem coefficients_all_eq_true {n : ℕ}
   induction p using Coefficients.recList with
   | nil => simp [Coefficients.all, Coefficients.All]
   | cons p ps hps => simp [Coefficients.all, Coefficients.All, hps]
-
-/-- A successful Boolean degree-profile check proves the corresponding exact property. -/
-theorem fits_sound {n : ℕ} (degrees : Fin n → BernsteinDegree)
-    (p : MultivariateDensePolynomial n) (h : fits degrees p = true) : Fits degrees p := by
-  induction n with
-  | zero => cases p; trivial
-  | succ n ih =>
-      cases p with
-      | ofCoefficients p =>
-          rw [fits, Bool.and_eq_true, decide_eq_true_eq, coefficients_all_eq_true] at h
-          exact ⟨h.1, Coefficients.All.imp h.2 fun q hq ↦ ih _ q hq⟩
 
 /-- The Boolean coefficient check reflects the corresponding exact sign property. -/
 theorem allNonpositive_sound {n : ℕ} (p : MultivariateDensePolynomial n)
@@ -793,10 +1037,10 @@ theorem centeredBernsteinEval_nonpos {n : ℕ} (degrees : Fin n → BernsteinDeg
                   (mul_nonpos_of_nonpos_of_nonneg (hcoeff 3) bernstein_nonneg))
                 (mul_nonpos_of_nonpos_of_nonneg (hcoeff 4) bernstein_nonneg)
 
-/-- The exact Boolean Bernstein checker bounds a fitted polynomial on the centered cube. -/
-theorem eval_nonpos_of_centeredBernstein_check {n : ℕ}
+/-- The exact Bernstein checker bounds a degree-bounded polynomial on the centered cube. -/
+theorem eval_nonpos_of_centeredBernstein_check_of_degree_bound {n : ℕ}
     (degrees : Fin n → BernsteinDegree) (p : MultivariateDensePolynomial n)
-    (hfits : Fits degrees p)
+    (hbound : DegreeBound (fun i ↦ (degrees i).value) p)
     (hcheck : allNonpositive (centeredBernstein degrees p) = true)
     (x : Fin n → ℝ) (hx : ∀ i, |x i| ≤ 1) : eval p x ≤ 0 := by
   let u : Fin n → I := fun i ↦
@@ -810,7 +1054,7 @@ theorem eval_nonpos_of_centeredBernstein_check {n : ℕ}
     funext i
     dsimp [u]
     ring
-  rw [← hxcenter, eval_centeredBernstein degrees p hfits u]
+  rw [← hxcenter, eval_centeredBernstein_of_degree_bound degrees p hbound u]
   exact centeredBernsteinEval_nonpos degrees _ u (allNonpositive_sound _ hcheck)
 
 end MultivariateDensePolynomial

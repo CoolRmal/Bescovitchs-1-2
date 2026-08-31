@@ -151,7 +151,8 @@ theorem BesicovitchPairCondition.forcesOneRectifiability
         ring
   have hlocalSum :
       ∑' V : touchingBadConvexSets 3 chosen C,
-        Metric.ediam (diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2)))) < Metric.ediam C :=
+        Metric.ediam (diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2)))) <
+          Metric.ediam C :=
     tsum_ediam_touchingBadConvexSets_lt_ediam hF_measurable halpha hsigma hchosen
       hcountable hdisjoint hrho hzHoles hC_subset_ball hloss_two_rho hCdiam
   have hzQ : z ∈ Q := Or.inl hzF
@@ -212,7 +213,8 @@ theorem BesicovitchPairCondition.forcesOneRectifiability
           μH[1] (D \ (C \ ⋃ V : touchingBadConvexSets 3 chosen C,
             diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2))))) := measure_union_le _ _
       _ = μH[1] (D \ (C \ ⋃ V : touchingBadConvexSets 3 chosen C,
-            diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2))))) := by rw [hcore_null, zero_add]
+            diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2))))) := by
+        rw [hcore_null, zero_add]
       _ < Metric.ediam C := hD_charged
   have hD_lower : Metric.ediam C ≤ μH[1] D := by
     rw [← hD_ediam]

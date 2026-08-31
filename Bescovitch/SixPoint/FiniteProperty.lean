@@ -25,13 +25,6 @@ def SixPointFiniteProperty (s : ℝ) : Prop :=
   ∀ configuration : SixPointConfiguration, configuration.IsAdmissibleAt s →
     ∃ packing : SixPointPacking configuration, 0 ≤ packing.score s
 
-/-- Once the finite property holds, it continues to hold at every larger positive parameter. -/
-theorem SixPointFiniteProperty.mono {s t : ℝ} (hs : 0 < s) (hst : s < t)
-    (h : SixPointFiniteProperty s) : SixPointFiniteProperty t := by
-  intro configuration hconfiguration
-  obtain ⟨packing, hpacking⟩ := h configuration (hconfiguration.mono hst.le)
-  exact ⟨packing, hpacking.trans (packing.score_mono hs hst)⟩
-
 namespace SixPointPacking
 
 variable {configuration : SixPointConfiguration} (packing : SixPointPacking configuration)

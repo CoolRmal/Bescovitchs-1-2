@@ -30,7 +30,8 @@ variable {X : Type*} [MetricSpace X] [MeasurableSpace X] [BorelSpace X]
 
 /-- The lower one-density of `s` at `x`, normalized by the diameter `2 * r` of a ball. -/
 def lowerOneDensity (s : Set X) (x : X) : ℝ≥0∞ :=
-  liminf (fun r : ℝ ↦ μH[1] (s ∩ Metric.ball x r) / ENNReal.ofReal (2 * r)) (𝓝[>] 0)
+  liminf (fun r : ℝ ↦ μH[1] (s ∩ Metric.ball x r) / ENNReal.ofReal (2 * r))
+    (nhdsWithin 0 (Ioi 0))
 
 /-- A set is countably one-rectifiable if Lipschitz curves cover it up to Hausdorff null measure. -/
 def IsCountablyOneRectifiable (s : Set X) : Prop :=

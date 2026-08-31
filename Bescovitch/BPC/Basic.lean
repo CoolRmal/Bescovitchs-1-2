@@ -41,22 +41,12 @@ theorem setEDist_comm (s t : Set X) : setEDist s t = setEDist t s := by
 theorem setEDist_empty_left (t : Set X) : setEDist ∅ t = ∞ := by
   simp [setEDist]
 
-@[simp]
-theorem setEDist_empty_right (s : Set X) : setEDist s ∅ = ∞ := by
-  rw [setEDist_comm, setEDist_empty_left]
-
 /-- Two nonempty sets in a metric space have finite extended distance. -/
 theorem setEDist_ne_top {Y : Type*} [PseudoMetricSpace Y] {u v : Set Y}
     (hu : u.Nonempty) (hv : v.Nonempty) : setEDist u v ≠ ∞ := by
   obtain ⟨x, hx⟩ := hu
   obtain ⟨y, hy⟩ := hv
   exact ne_top_of_le_ne_top (edist_ne_top x y) (setEDist_le_edist_of_mem hx hy)
-
-/-- For nonempty metric sets, converting the set distance to a real loses no information. -/
-theorem ofReal_setEDist_toReal {Y : Type*} [PseudoMetricSpace Y] {u v : Set Y}
-    (hu : u.Nonempty) (hv : v.Nonempty) :
-    ENNReal.ofReal (setEDist u v).toReal = setEDist u v := by
-  exact ENNReal.ofReal_toReal (setEDist_ne_top hu hv)
 
 /-- A positive finite set distance has a positive real value. -/
 theorem setEDist_toReal_pos {Y : Type*} [PseudoMetricSpace Y] {u v : Set Y}
