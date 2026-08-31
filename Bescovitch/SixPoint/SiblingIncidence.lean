@@ -176,7 +176,7 @@ theorem endpointEndpointOrbit_eq_matchedCoincident_iff (redCode blueCode : Fin 4
     rfl
 
 /-- The balanced--balanced classifier is unchanged by color transposition. -/
-@[simp] theorem balancedBalancedOrbit_transpose (redCode blueCode : Fin 4) :
+theorem balancedBalancedOrbit_transpose (redCode blueCode : Fin 4) :
     balancedBalancedOrbit blueCode redCode = balancedBalancedOrbit redCode blueCode := by
   fin_cases redCode <;> fin_cases blueCode <;>
     rfl
