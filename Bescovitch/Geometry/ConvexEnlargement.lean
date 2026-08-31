@@ -25,7 +25,8 @@ open Bornology Set
 namespace Bescovitch
 
 /-- The `p`-diameter thickening of a set. -/
-def diameterThickening (p : ℝ) (s : Set (EuclideanSpace ℝ (Fin 2))) : Set (EuclideanSpace ℝ (Fin 2)) :=
+def diameterThickening (p : ℝ) (s : Set (EuclideanSpace ℝ (Fin 2))) :
+    Set (EuclideanSpace ℝ (Fin 2)) :=
   Metric.thickening (p * Metric.diam s) s
 
 /-- Diameter thickenings are open. -/
@@ -61,7 +62,8 @@ theorem subset_diameterThickening {p : ℝ} {s : Set (EuclideanSpace ℝ (Fin 2)
 
 /-- A bounded set meeting `s` lies in the `p`-diameter thickening of `s` when its diameter is
 smaller than the thickening radius. -/
-theorem subset_diameterThickening_of_inter_nonempty {u s : Set (EuclideanSpace ℝ (Fin 2))} {p : ℝ}
+theorem subset_diameterThickening_of_inter_nonempty
+    {u s : Set (EuclideanSpace ℝ (Fin 2))} {p : ℝ}
     (hu : IsBounded u) (hus : (u ∩ s).Nonempty)
     (hdiam : Metric.diam u < p * Metric.diam s) : u ⊆ diameterThickening p s := by
   obtain ⟨y, hyu, hys⟩ := hus
@@ -78,11 +80,13 @@ theorem isOpen_openConvexHull (s : Set (EuclideanSpace ℝ (Fin 2))) : IsOpen (o
   isOpen_interior
 
 /-- The open convex hull is convex. -/
-theorem convex_openConvexHull (s : Set (EuclideanSpace ℝ (Fin 2))) : Convex ℝ (openConvexHull s) :=
+theorem convex_openConvexHull (s : Set (EuclideanSpace ℝ (Fin 2))) :
+    Convex ℝ (openConvexHull s) :=
   (convex_convexHull ℝ s).interior
 
 /-- An open set is contained in its open convex hull. -/
-theorem subset_openConvexHull {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : IsOpen s) : s ⊆ openConvexHull s := by
+theorem subset_openConvexHull {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : IsOpen s) :
+    s ⊆ openConvexHull s := by
   exact hs.subset_interior_iff.mpr (subset_convexHull ℝ s)
 
 /-- Passing from an open set to its open convex hull does not change its extended diameter. -/

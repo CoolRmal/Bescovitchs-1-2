@@ -28,10 +28,12 @@ def convexAttachment (F V : Set (EuclideanSpace ℝ (Fin 2))) : Set (EuclideanSp
   closure (convexHull ℝ (F ∩ diameterThickening 2 V))
 
 /-- A convex attachment is closed and convex. -/
-theorem isClosed_convexAttachment (F V : Set (EuclideanSpace ℝ (Fin 2))) : IsClosed (convexAttachment F V) :=
+theorem isClosed_convexAttachment (F V : Set (EuclideanSpace ℝ (Fin 2))) :
+    IsClosed (convexAttachment F V) :=
   isClosed_closure
 
-theorem convex_convexAttachment (F V : Set (EuclideanSpace ℝ (Fin 2))) : Convex ℝ (convexAttachment F V) :=
+theorem convex_convexAttachment (F V : Set (EuclideanSpace ℝ (Fin 2))) :
+    Convex ℝ (convexAttachment F V) :=
   (convex_convexHull ℝ (F ∩ diameterThickening 2 V)).closure
 
 /-- Attachments to a compact core are compact. -/
@@ -44,7 +46,8 @@ theorem isCompact_convexAttachment {F V : Set (EuclideanSpace ℝ (Fin 2))} (hF 
   exact hF.isBounded.subset inter_subset_left
 
 /-- Every core point already in a hole belongs to its attachment. -/
-theorem inter_subset_convexAttachment {F V : Set (EuclideanSpace ℝ (Fin 2))} (hdiam : 0 < Metric.diam V) :
+theorem inter_subset_convexAttachment {F V : Set (EuclideanSpace ℝ (Fin 2))}
+    (hdiam : 0 < Metric.diam V) :
     F ∩ V ⊆ convexAttachment F V := by
   intro x hx
   apply subset_closure
@@ -97,7 +100,8 @@ theorem convexAttachment_subset_diameterThickening_three {F V : Set (EuclideanSp
       · nlinarith
 
 /-- A bad hole has a nonempty compact connected attachment. -/
-theorem convexAttachment_isCompact_isConnected {mu : MeasureTheory.Measure (EuclideanSpace ℝ (Fin 2))}
+theorem convexAttachment_isCompact_isConnected
+    {mu : MeasureTheory.Measure (EuclideanSpace ℝ (Fin 2))}
     {F V : Set (EuclideanSpace ℝ (Fin 2))} {alpha : ℝ} (hF : IsCompact F)
     (halpha : 0 < alpha) (hV : V ∈ badConvexSets mu F alpha) :
     IsCompact (convexAttachment F V) ∧ IsConnected (convexAttachment F V) := by

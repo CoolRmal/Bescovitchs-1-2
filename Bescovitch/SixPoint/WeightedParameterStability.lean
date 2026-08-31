@@ -142,7 +142,8 @@ private theorem norm_single_perturbation
 score by at most `10⁻⁸`. -/
 theorem weightedPairScore_le_certificateScore_add
     {E : Type*} [NormedAddCommGroup E] (e p₁ p₂ p₂' w₁ w₂ w₂' : E)
-    (he : ‖e‖ ≤ 1) (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hp₂' : ‖p₂'‖ ≤ 1)
+    (he : ‖e‖ ≤ 1) (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1)
+    (hp₂' : ‖p₂'‖ ≤ 1)
     (hw₁ : ‖w₁‖ ≤ 1) (hw₂ : ‖w₂‖ ≤ 1) (hw₂' : ‖w₂'‖ ≤ 1)
     (hp₂dist : ‖p₂ - p₂'‖ ≤ 1 / 10 ^ 15)
     (hw₂dist : ‖w₂ - w₂'‖ ≤ 1 / 10 ^ 15) :
@@ -264,7 +265,8 @@ theorem weightedPairScore_le_certificateScore_add
         -weightedConstantTerm certificateChord certificateLambda certificateMu + 1 / 10 ^ 10 := by
     linarith [(abs_le.mp hconstant).1]
   rw [weightedPairScore, weightedPairScore]
-  norm_num at hprimary hsecondNorm hpositiveTerms hfirstPenaltyTerm hsecondPenaltyTerm hconstantTerm ⊢
+  norm_num at hprimary hsecondNorm hpositiveTerms hfirstPenaltyTerm hsecondPenaltyTerm
+  norm_num at hconstantTerm ⊢
   linarith only [hprimary, hsecondNorm, hpositiveTerms, hfirstPenaltyTerm,
     hsecondPenaltyTerm, hconstantTerm]
 

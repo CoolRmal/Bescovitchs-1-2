@@ -27,7 +27,8 @@ open scoped ENNReal MeasureTheory Topology
 namespace Bescovitch
 
 /-- An eventual lower ball-mass bound gives the corresponding lower-density bound. -/
-theorem le_lowerOneDensity_of_eventually_ball_measure_ge {s : Set (EuclideanSpace ℝ (Fin 2))} {x : (EuclideanSpace ℝ (Fin 2))}
+theorem le_lowerOneDensity_of_eventually_ball_measure_ge
+    {s : Set (EuclideanSpace ℝ (Fin 2))} {x : (EuclideanSpace ℝ (Fin 2))}
     {beta scale : ℝ} (hbeta : 0 ≤ beta) (hscale : 0 < scale)
     (hmass : ∀ r : ℝ, 0 < r → r < scale →
       ENNReal.ofReal (2 * beta * r) ≤ μH[1] (s ∩ Metric.ball x r)) :

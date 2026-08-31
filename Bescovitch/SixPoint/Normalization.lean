@@ -22,12 +22,14 @@ namespace Bescovitch
 namespace SixPointConfiguration
 
 /-- Translate a configuration by `origin` and divide all coordinates by `scale`. -/
-def normalize (configuration : SixPointConfiguration) (origin : (EuclideanSpace ℝ (Fin 2))) (scale : ℝ) :
+def normalize (configuration : SixPointConfiguration)
+    (origin : (EuclideanSpace ℝ (Fin 2))) (scale : ℝ) :
     SixPointConfiguration :=
   fun color label ↦ scale⁻¹ • (configuration color label - origin)
 
 /-- Normalization by a positive scale divides every pairwise distance by that scale. -/
-theorem dist_normalize (configuration : SixPointConfiguration) (origin : (EuclideanSpace ℝ (Fin 2))) {scale : ℝ}
+theorem dist_normalize (configuration : SixPointConfiguration)
+    (origin : (EuclideanSpace ℝ (Fin 2))) {scale : ℝ}
     (hscale : 0 < scale) (color₁ color₂ : SixPointColor) (label₁ label₂ : SixPointLabel) :
     dist (configuration.normalize origin scale color₁ label₁)
         (configuration.normalize origin scale color₂ label₂) =

@@ -27,7 +27,8 @@ namespace Bescovitch
 def weightedLensCertificateMajorant
     (sideP zP aP hP sideW zW aW hW : ℝ)
     (rhoP rhoW rho₁₁ rho₂₂ rho₁₂ rho₂₁ : ℝ)
-    (uP₁ uW₁ uP₂ uW₂ : (EuclideanSpace ℝ (Fin 2))) (etaP₁ etaP₂ etaW₁ etaW₂ : ℝ) : ℝ :=
+    (uP₁ uW₁ uP₂ uW₂ : (EuclideanSpace ℝ (Fin 2)))
+    (etaP₁ etaP₂ etaW₁ etaW₂ : ℝ) : ℝ :=
   weightedPairScoreTangentMajorant !₂[1, 0]
     certificateChord certificateLambda certificateMu
     (chordChartFirst sideP aP hP zP)
@@ -41,7 +42,8 @@ private theorem norm_le_one_of_sq_le_one {E : Type*} [NormedAddCommGroup E]
     (v : E) (h : ‖v‖ ^ 2 ≤ 1) : ‖v‖ ≤ 1 := by
   exact (sq_le_sq₀ (norm_nonneg v) (by norm_num)).1 (by simpa only [one_pow] using h)
 
-private theorem planeRoot_norm_le_one : ‖(!₂[1, 0] : (EuclideanSpace ℝ (Fin 2)))‖ ≤ 1 := by
+private theorem planeRoot_norm_le_one :
+    ‖(!₂[1, 0] : (EuclideanSpace ℝ (Fin 2)))‖ ≤ 1 := by
   apply norm_le_one_of_sq_le_one
   norm_num [EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_two]
 

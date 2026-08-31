@@ -257,7 +257,8 @@ private theorem s0s3_high_high_constant_neg :
   norm_num at hc ⊢
   nlinarith [sq_nonneg (cStar - 1)]
 
-private theorem s0s3_gramBound_low_low (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
+private theorem s0s3_gramBound_low_low
+    (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
     (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
     (hwsep : cStar ≤ ‖w₁ - w₂‖) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
@@ -274,7 +275,8 @@ private theorem s0s3_gramBound_low_low (e p₁ p₂ w₁ w₂ : (EuclideanSpace 
   rw [he, one_pow] at hgram
   nlinarith only [hgram, hp₂Sq, hw₁Sq, hpsepSq, hwsepSq]
 
-private theorem s0s3_gramBound_low_high (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
+private theorem s0s3_gramBound_low_high
+    (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
     (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
     (hwsep : cStar ≤ ‖w₁ - w₂‖) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
@@ -292,7 +294,8 @@ private theorem s0s3_gramBound_low_high (e p₁ p₂ w₁ w₂ : (EuclideanSpace
   rw [he, one_pow] at hgram
   nlinarith only [hgram, hp₂Sq, hw₁Sq, hpsepSq, hwsepSq]
 
-private theorem s0s3_gramBound_high_low (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
+private theorem s0s3_gramBound_high_low
+    (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
     (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
     (hwsep : cStar ≤ ‖w₁ - w₂‖) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
@@ -310,7 +313,8 @@ private theorem s0s3_gramBound_high_low (e p₁ p₂ w₁ w₂ : (EuclideanSpace
   rw [he, one_pow] at hgram
   nlinarith only [hgram, hp₂Sq, hw₁Sq, hpsepSq, hwsepSq]
 
-private theorem s0s3_gramBound_high_high (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
+private theorem s0s3_gramBound_high_high
+    (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
     (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
     (hwsep : cStar ≤ ‖w₁ - w₂‖) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
@@ -348,7 +352,8 @@ private theorem s0s3_radialBound_of_secants (p₁ p₂ w₁ w₂ : (EuclideanSpa
     _ ≤ _ := add_le_add hhigh hlow
 
 /-- A two-secant rational Gram separator for the `S0/S3` incidence representative. -/
-theorem gramCertificate_s0s3 (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
+theorem gramCertificate_s0s3 (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2)))
+    (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
     (hwsep : cStar ≤ ‖w₁ - w₂‖) :

@@ -27,8 +27,10 @@ namespace Bescovitch
 /-- Removing every three-diameter enlargement which touches `C` leaves only points of the compact
 core `F`. -/
 theorem sdiff_iUnion_touchingBadConvexSets_subset_core
-    {mu : MeasureTheory.Measure (EuclideanSpace ℝ (Fin 2))} {F C : Set (EuclideanSpace ℝ (Fin 2))} {alpha : ℝ} (halpha : 0 < alpha)
-    {chosen : Set (Set (EuclideanSpace ℝ (Fin 2)))} (hchosen : chosen ⊆ badConvexSets mu F alpha)
+    {mu : MeasureTheory.Measure (EuclideanSpace ℝ (Fin 2))}
+    {F C : Set (EuclideanSpace ℝ (Fin 2))} {alpha : ℝ} (halpha : 0 < alpha)
+    {chosen : Set (Set (EuclideanSpace ℝ (Fin 2)))}
+    (hchosen : chosen ⊆ badConvexSets mu F alpha)
     (hC : C ⊆ compactAttachmentUnion F chosen) :
     C \ ⋃ V : touchingBadConvexSets 3 chosen C,
         diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2))) ⊆ F := by

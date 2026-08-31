@@ -47,7 +47,8 @@ theorem exists_orientedCoordinates_upper (e n : (EuclideanSpace ℝ (Fin 2))) :
 
 /-- The oriented coordinate map sends the root vector to `(1,0)` and preserves the weighted
 score. -/
-theorem exists_oriented_weightedPairScore (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1) :
+theorem exists_oriented_weightedPairScore
+    (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1) :
     ∃ orientation : ℝ, (orientation = 1 ∨ orientation = -1) ∧
       0 ≤ orientedCoordinates e orientation (p₁ - p₂) 1 ∧
       orientedCoordinates e orientation e = !₂[1, 0] ∧
@@ -156,21 +157,25 @@ def WeightedLensChartBound : Prop :=
 /-- The chart inequality gives the coordinate-free mixed bound for endpoint-length chords. -/
 theorem weightedPairScore_nonpos_of_lensChartBound (hchart : WeightedLensChartBound)
     (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
-    (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hw₂ : ‖w₂‖ ≤ 1)
+    (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
+    (hw₂ : ‖w₂‖ ≤ 1)
     (hpChord : ‖p₁ - p₂‖ = cStar) (hwChord : ‖w₁ - w₂‖ = cStar) :
     weightedPairScore e cStar endpointLambda endpointMu p₁ p₂ w₁ w₂ ≤ 0 := by
   obtain ⟨sideP, zP, aP, hP, sideW, zW, aW, hW, hsideP, hsideW,
       hzPZero, hzPOne, hzWNegOne, hzWOne, hPFirst, hPSecond, hWFirst, hWSecond,
       hscore⟩ :=
-    exists_weightedPairScore_lensChart e p₁ p₂ w₁ w₂ he hp₁ hp₂ hw₁ hw₂ hpChord hwChord
+    exists_weightedPairScore_lensChart e p₁ p₂ w₁ w₂ he hp₁ hp₂ hw₁ hw₂
+      hpChord hwChord
   rw [← hscore]
   exact hchart sideP zP aP hP sideW zW aW hW hsideP hsideW hzPZero hzPOne
     hzWNegOne hzWOne hPFirst hPSecond hWFirst hWSecond
 
 /-- Radial chord reduction extends the lens-chart bound to sibling distances at least `cStar`. -/
 theorem weightedPairScore_nonpos_of_lensChartBound_of_separated
-    (hchart : WeightedLensChartBound) (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
-    (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hw₂ : ‖w₂‖ ≤ 1)
+    (hchart : WeightedLensChartBound)
+    (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
+    (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
+    (hw₂ : ‖w₂‖ ≤ 1)
     (hpChord : cStar ≤ ‖p₁ - p₂‖) (hwChord : cStar ≤ ‖w₁ - w₂‖) :
     weightedPairScore e cStar endpointLambda endpointMu p₁ p₂ w₁ w₂ ≤ 0 := by
   obtain ⟨p₂', w₂', hpChord', hwChord', hp₂'Norm, hw₂'Norm, hscore⟩ :=

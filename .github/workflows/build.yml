@@ -39,8 +39,9 @@ jobs:
       - name: Check source hygiene
         shell: bash
         run: |
-          if rg -n '\badmit\b|native_decide|Lean\.ofReduceBool|^\s*axiom\b' \
-              --glob '*.lean' --glob '!.lake/**' .; then
+          if grep -REn --include='*.lean' --exclude-dir='.lake' \
+              '(^|[^[:alnum:]_])admit([^[:alnum:]_]|$)|native_decide|Lean\.ofReduceBool|^[[:space:]]*axiom([^[:alnum:]_]|$)' \
+              .; then
             exit 1
           fi
           while IFS= read -r file; do

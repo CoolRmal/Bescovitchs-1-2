@@ -94,7 +94,8 @@ theorem exists_stereographicDirection (n : (EuclideanSpace ℝ (Fin 2))) (hn : �
       ring
 
 /-- On the upper half-circle, the stereographic parameter can be chosen in `[0,1]`. -/
-theorem exists_stereographicDirection_nonnegative (n : (EuclideanSpace ℝ (Fin 2))) (hn : ‖n‖ = 1)
+theorem exists_stereographicDirection_nonnegative (n : (EuclideanSpace ℝ (Fin 2)))
+    (hn : ‖n‖ = 1)
     (hnUpper : 0 ≤ n 1) :
     ∃ side z : ℝ, (side = 1 ∨ side = -1) ∧ 0 ≤ z ∧ z ≤ 1 ∧
       stereographicDirection side z = n := by
@@ -159,7 +160,8 @@ theorem norm_chordChartFirst_sub_second {side c : ℝ} (a h z : ℝ)
     mul_one, Real.norm_eq_abs, abs_of_nonneg hc]
 
 /-- Every positive-length chord in the plane has stereographic chord coordinates. -/
-theorem exists_chordChart {p q : (EuclideanSpace ℝ (Fin 2))} {c : ℝ} (hc : 0 < c) (hpq : ‖p - q‖ = c) :
+theorem exists_chordChart {p q : (EuclideanSpace ℝ (Fin 2))} {c : ℝ}
+    (hc : 0 < c) (hpq : ‖p - q‖ = c) :
     ∃ side z a h : ℝ,
       (side = 1 ∨ side = -1) ∧ -1 ≤ z ∧ z ≤ 1 ∧
         p = chordChartFirst side a h z ∧ q = chordChartSecond side c a h z := by

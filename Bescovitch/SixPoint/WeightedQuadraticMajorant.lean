@@ -94,7 +94,8 @@ theorem weightedPairScoreTangentMajorant_le_quadraticMajorant
 def weightedLensQuadraticCertificateMajorant
     (sideP zP aP hP sideW zW aW hW : ℝ)
     (rhoP rhoW rho₁₁ rho₂₂ rho₁₂ rho₂₁ : ℝ)
-    (uP₁ uW₁ uP₂ uW₂ : (EuclideanSpace ℝ (Fin 2))) (etaP₁ etaP₂ etaW₁ etaW₂ : ℝ) : ℝ :=
+    (uP₁ uW₁ uP₂ uW₂ : (EuclideanSpace ℝ (Fin 2)))
+    (etaP₁ etaP₂ etaW₁ etaW₂ : ℝ) : ℝ :=
   weightedPairScoreQuadraticMajorant !₂[1, 0]
     certificateChord certificateLambda certificateMu
     (chordChartFirst sideP aP hP zP)
