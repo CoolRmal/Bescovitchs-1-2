@@ -73,6 +73,16 @@ theorem setEDist_toReal_le_dist {Y : Type*} [PseudoMetricSpace Y] {u v : Set Y}
   rw [← ENNReal.toReal_le_toReal hfinite (edist_ne_top x y)] at h
   simpa [edist_dist] using h
 
+/-- A ball whose radius is at most the set distance misses the opposite set. -/
+theorem ball_disjoint_of_le_setEDist_toReal {Y : Type*} [PseudoMetricSpace Y]
+    {u v : Set Y} (hu : u.Nonempty) (hv : v.Nonempty) {x : Y} (hx : x ∈ u)
+    {r : ℝ} (hr : r ≤ (setEDist u v).toReal) : Disjoint (Metric.ball x r) v := by
+  rw [Set.disjoint_left]
+  intro y hy hyMem
+  have hlower := setEDist_toReal_le_dist hu hv hx hyMem
+  rw [Metric.mem_ball'] at hy
+  exact (not_lt_of_ge hlower) (hy.trans_le hr)
+
 /-- A strict upper bound on set distance is witnessed by an actual pair of points. -/
 theorem exists_edist_lt_of_setEDist_lt {r : ℝ≥0∞} (h : setEDist s t < r) :
     ∃ x ∈ s, ∃ y ∈ t, edist x y < r := by
