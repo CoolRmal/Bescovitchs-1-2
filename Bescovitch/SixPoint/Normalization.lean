@@ -34,6 +34,16 @@ theorem dist_normalize (configuration : SixPointConfiguration) (origin : Plane) 
       dist (configuration color₁ label₁) (configuration color₂ label₂) / scale := by
   simp [normalize, dist_smul₀, Real.norm_eq_abs, abs_of_pos hscale, div_eq_inv_mul]
 
+/-- Multiplying normalized distances by the positive scale recovers physical distances. -/
+theorem dist_eq_scale_mul_dist_normalize (configuration : SixPointConfiguration)
+    (origin : Plane) {scale : ℝ} (hscale : 0 < scale)
+    (color₁ color₂ : SixPointColor) (label₁ label₂ : SixPointLabel) :
+    dist (configuration color₁ label₁) (configuration color₂ label₂) =
+      scale * dist (configuration.normalize origin scale color₁ label₁)
+        (configuration.normalize origin scale color₂ label₂) := by
+  rw [configuration.dist_normalize origin hscale]
+  field_simp
+
 /-- Distance bounds at scale `scale` give an admissible normalized configuration. -/
 theorem isAdmissibleAt_normalize_of_distances (configuration : SixPointConfiguration)
     (origin : Plane) {scale d γ q s : ℝ} (hscale : 0 < scale)

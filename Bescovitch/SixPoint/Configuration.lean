@@ -38,6 +38,16 @@ abbrev SixPointConfiguration := SixPointColor → SixPointLabel → Plane
 
 namespace SixPointConfiguration
 
+/-- The labelled configuration determined by two roots and two children of each color. -/
+def ofPoints (redRoot redLeft redRight blueRoot blueLeft blueRight : Plane) :
+    SixPointConfiguration
+  | .red, .root => redRoot
+  | .red, .left => redLeft
+  | .red, .right => redRight
+  | .blue, .root => blueRoot
+  | .blue, .left => blueLeft
+  | .blue, .right => blueRight
+
 /-- A normalized configuration at separation parameter `s`. -/
 structure IsAdmissibleAt (configuration : SixPointConfiguration) (s : ℝ) : Prop where
   root_distance : dist (configuration .red .root) (configuration .blue .root) = 1
