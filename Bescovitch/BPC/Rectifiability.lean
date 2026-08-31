@@ -33,7 +33,7 @@ density threshold. -/
 theorem BesicovitchPairCondition.forcesOneRectifiability
     {sigma gamma : ℝ} (hpairCondition : BesicovitchPairCondition sigma)
     (hsigma : 0 < sigma) (hsigma_one : sigma < 1) (hsigma_gamma : sigma < gamma) :
-    ForcesOneRectifiability Plane gamma := by
+    ForcesOneRectifiability (EuclideanSpace ℝ (Fin 2)) (ENNReal.ofReal gamma) := by
   intro E hE hE_finite hE_density
   by_contra hE_not_rectifiable
   obtain ⟨A, hA, hAE, hA_pos, hA_finite, hA_pure, hA_straight, hA_density⟩ :=
@@ -74,11 +74,11 @@ theorem BesicovitchPairCondition.forcesOneRectifiability
   obtain ⟨chosen, hchosen, hdisjoint, hcountable, hselect⟩ :=
     exists_countable_disjoint_badConvexSets (mu := mu) F halpha
   have hsum_lt :
-      (∑' V : chosen, Metric.ediam (V : Set Plane)) <
+      (∑' V : chosen, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2)))) <
         ENNReal.ofReal (1 / 15 : ℝ) * mu F :=
     tsum_ediam_badConvexSets_lt hF_measurable halpha (by norm_num) hchosen
       hcountable hdisjoint houtside
-  have hsum : (∑' V : chosen, Metric.ediam (V : Set Plane)) ≠ ∞ :=
+  have hsum : (∑' V : chosen, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2)))) ≠ ∞ :=
     ne_top_of_lt hsum_lt
   let lossRate := sigma * alpha / 28
   have hlossRate : 0 < lossRate := by
@@ -151,7 +151,7 @@ theorem BesicovitchPairCondition.forcesOneRectifiability
         ring
   have hlocalSum :
       ∑' V : touchingBadConvexSets 3 chosen C,
-        Metric.ediam (diameterThickening 3 (V : Set Plane)) < Metric.ediam C :=
+        Metric.ediam (diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2)))) < Metric.ediam C :=
     tsum_ediam_touchingBadConvexSets_lt_ediam hF_measurable halpha hsigma hchosen
       hcountable hdisjoint hrho hzHoles hC_subset_ball hloss_two_rho hCdiam
   have hzQ : z ∈ Q := Or.inl hzF
@@ -169,8 +169,8 @@ theorem BesicovitchPairCondition.forcesOneRectifiability
   obtain ⟨D, hD_compact, hD_connected, _, _, hD_ediam, _, hD_charged, _, hD_measure⟩ :=
     exists_continuum_surgery_open_holes hC_compact hC_connected hxC hyC hxy
       (fun V : touchingBadConvexSets 3 chosen C ↦
-        diameterThickening 3 (V : Set Plane))
-      (fun V ↦ isOpen_diameterThickening 3 (V : Set Plane)) hlocalSum
+        diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2))))
+      (fun V ↦ isOpen_diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2)))) hlocalSum
   have hC_subset_Q : C ⊆ Q := by
     simpa only [C, localAttachmentComponent, Q] using
       ((connectedComponentIn_subset
@@ -178,13 +178,13 @@ theorem BesicovitchPairCondition.forcesOneRectifiability
           inter_subset_left)
   have hcore_subset_F :
       C \ ⋃ V : touchingBadConvexSets 3 chosen C,
-        diameterThickening 3 (V : Set Plane) ⊆ F :=
+        diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2))) ⊆ F :=
     sdiff_iUnion_touchingBadConvexSets_subset_core halpha hchosen hC_subset_Q
   have hF_finite : μH[1] F ≠ ∞ :=
     ne_top_of_le_ne_top hA_finite.ne (measure_mono hFA)
   have hcore_finite :
       μH[1] (C \ ⋃ V : touchingBadConvexSets 3 chosen C,
-        diameterThickening 3 (V : Set Plane)) ≠ ∞ :=
+        diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2)))) ≠ ∞ :=
     ne_top_of_le_ne_top hF_finite (measure_mono hcore_subset_F)
   have hD_finite : μH[1] D ≠ ∞ := by
     apply ne_top_of_le_ne_top _ hD_measure
@@ -195,7 +195,7 @@ theorem BesicovitchPairCondition.forcesOneRectifiability
       hD_connected hD_compact hD_finite
   have hcore_null :
       μH[1] (D ∩ (C \ ⋃ V : touchingBadConvexSets 3 chosen C,
-        diameterThickening 3 (V : Set Plane))) = 0 := by
+        diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2))))) = 0 := by
     apply measure_mono_null _ (hA_pure D hD_rectifiable)
     rintro q ⟨hqD, hqcore⟩
     exact ⟨hFA (hcore_subset_F hqcore), hqD⟩
@@ -203,16 +203,16 @@ theorem BesicovitchPairCondition.forcesOneRectifiability
     calc
       μH[1] D = μH[1]
           ((D ∩ (C \ ⋃ V : touchingBadConvexSets 3 chosen C,
-            diameterThickening 3 (V : Set Plane))) ∪
+            diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2))))) ∪
           (D \ (C \ ⋃ V : touchingBadConvexSets 3 chosen C,
-            diameterThickening 3 (V : Set Plane)))) := by
+            diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2)))))) := by
         rw [inter_union_sdiff]
       _ ≤ μH[1] (D ∩ (C \ ⋃ V : touchingBadConvexSets 3 chosen C,
-            diameterThickening 3 (V : Set Plane))) +
+            diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2))))) +
           μH[1] (D \ (C \ ⋃ V : touchingBadConvexSets 3 chosen C,
-            diameterThickening 3 (V : Set Plane))) := measure_union_le _ _
+            diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2))))) := measure_union_le _ _
       _ = μH[1] (D \ (C \ ⋃ V : touchingBadConvexSets 3 chosen C,
-            diameterThickening 3 (V : Set Plane))) := by rw [hcore_null, zero_add]
+            diameterThickening 3 (V : Set (EuclideanSpace ℝ (Fin 2))))) := by rw [hcore_null, zero_add]
       _ < Metric.ediam C := hD_charged
   have hD_lower : Metric.ediam C ≤ μH[1] D := by
     rw [← hD_ediam]

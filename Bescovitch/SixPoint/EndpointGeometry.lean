@@ -23,15 +23,15 @@ namespace Bescovitch
 namespace SixPointConfiguration
 
 /-- The displacement from the red root to the blue root. -/
-def rootDisplacement (configuration : SixPointConfiguration) : Plane :=
+def rootDisplacement (configuration : SixPointConfiguration) : (EuclideanSpace ℝ (Fin 2)) :=
   configuration .blue .root - configuration .red .root
 
 /-- A red point, translated relative to the red root. -/
-def redDisplacement (configuration : SixPointConfiguration) (label : SixPointLabel) : Plane :=
+def redDisplacement (configuration : SixPointConfiguration) (label : SixPointLabel) : (EuclideanSpace ℝ (Fin 2)) :=
   configuration .red label - configuration .red .root
 
 /-- A blue point pulled back from the blue root into the red child disk. -/
-def bluePullback (configuration : SixPointConfiguration) (label : SixPointLabel) : Plane :=
+def bluePullback (configuration : SixPointConfiguration) (label : SixPointLabel) : (EuclideanSpace ℝ (Fin 2)) :=
   configuration .blue .root - configuration .blue label
 
 /-- The root displacement of an admissible configuration has unit norm. -/

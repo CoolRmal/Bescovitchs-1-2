@@ -31,18 +31,18 @@ namespace Bescovitch
 variable {X : Type*} [MetricSpace X] [MeasurableSpace X] [BorelSpace X]
 
 /-- Straightness passes to a smaller measure. -/
-theorem IsStraightMeasure.mono {μ ν : Measure Plane} (hμ : IsStraightMeasure μ)
+theorem IsStraightMeasure.mono {μ ν : Measure (EuclideanSpace ℝ (Fin 2))} (hμ : IsStraightMeasure μ)
     (hν : ν ≤ μ) : IsStraightMeasure ν := by
   intro s hs
   exact (hν s).trans (hμ s hs)
 
 /-- Every restriction of a straight measure is straight. -/
-theorem IsStraightMeasure.restrict {μ : Measure Plane} (hμ : IsStraightMeasure μ)
-    (s : Set Plane) : IsStraightMeasure (μ.restrict s) :=
+theorem IsStraightMeasure.restrict {μ : Measure (EuclideanSpace ℝ (Fin 2))} (hμ : IsStraightMeasure μ)
+    (s : Set (EuclideanSpace ℝ (Fin 2))) : IsStraightMeasure (μ.restrict s) :=
   hμ.mono Measure.restrict_le_self
 
 /-- Straightness of a Hausdorff restriction passes to measurable subsets. -/
-theorem isStraightMeasure_restrict_mono {s t : Set Plane}
+theorem isStraightMeasure_restrict_mono {s t : Set (EuclideanSpace ℝ (Fin 2))}
     (hs : IsStraightMeasure (μH[1].restrict s)) (ht : t ⊆ s) :
     IsStraightMeasure (μH[1].restrict t) :=
   hs.mono (Measure.restrict_mono ht le_rfl)
@@ -72,10 +72,10 @@ private theorem tendsto_hausdorffPre (s : Set X) :
     simp only [Measure.hausdorffMeasure, ENNReal.rpow_one]
 
 /-- An atomless finite measure on the plane has measurable subsets of every prescribed fraction. -/
-private theorem exists_subset_measure_eq_mul {μ : Measure Plane} [IsFiniteMeasure μ]
-    [NullSingletonClass μ] {s : Set Plane} (hs : MeasurableSet s) {q : ℝ}
+private theorem exists_subset_measure_eq_mul {μ : Measure (EuclideanSpace ℝ (Fin 2))} [IsFiniteMeasure μ]
+    [NullSingletonClass μ] {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : MeasurableSet s) {q : ℝ}
     (hq_zero : 0 ≤ q) (hq_one : q ≤ 1) :
-    ∃ t : Set Plane, MeasurableSet t ∧ t ⊆ s ∧ μ t = ENNReal.ofReal q * μ s := by
+    ∃ t : Set (EuclideanSpace ℝ (Fin 2)), MeasurableSet t ∧ t ⊆ s ∧ μ t = ENNReal.ofReal q * μ s := by
   rcases eq_or_lt_of_le hq_zero with rfl | hq_pos
   · exact ⟨∅, MeasurableSet.empty, empty_subset s, by simp⟩
   rcases hq_one.eq_or_lt with rfl | hq_lt
@@ -83,8 +83,8 @@ private theorem exists_subset_measure_eq_mul {μ : Measure Plane} [IsFiniteMeasu
   by_cases hμs : μ s = 0
   · exact ⟨∅, MeasurableSet.empty, empty_subset s, by simp [hμs]⟩
   have hμs_pos : 0 < μ s := pos_iff_ne_zero.mpr hμs
-  let f : Plane → ℝ := embeddingReal Plane
-  have hf : MeasurableEmbedding f := measurableEmbedding_embeddingReal Plane
+  let f : (EuclideanSpace ℝ (Fin 2)) → ℝ := embeddingReal (EuclideanSpace ℝ (Fin 2))
+  have hf : MeasurableEmbedding f := measurableEmbedding_embeddingReal (EuclideanSpace ℝ (Fin 2))
   let ν : Measure ℝ := (μ.restrict s).map f
   have hν_univ : ν univ = μ s := by
     simp only [ν, Measure.map_apply hf.measurable MeasurableSet.univ, preimage_univ,
@@ -144,7 +144,7 @@ private theorem exists_subset_measure_eq_mul {μ : Measure Plane} [IsFiniteMeasu
     exact (not_le_of_gt (hx₀.trans hx₁)) (hF_mono (not_le.mp hnot).le)
   obtain ⟨x, -, hx⟩ := intermediate_value_Icc hx_le hF_cont.continuousOn
     ⟨hx₀.le, hx₁.le⟩
-  let t : Set Plane := s ∩ f ⁻¹' Iic x
+  let t : Set (EuclideanSpace ℝ (Fin 2)) := s ∩ f ⁻¹' Iic x
   refine ⟨t, hs.inter (measurableSet_Iic.preimage hf.measurable), inter_subset_left, ?_⟩
   have hmap : ν (Iic x) = μ t := by
     change ((μ.restrict s).map f) (Iic x) = μ t
@@ -250,8 +250,8 @@ private theorem tsum_lossWeight : ∑' n : ℕ, lossWeight n = (4 : ℝ≥0∞)�
   exact ENNReal.inv_mul_cancel (by norm_num) (by norm_num)
 
 /-- The first ball in a dense enumeration that reaches a point. -/
-private def metricCell (r : ℝ≥0) (n : ℕ) : Set Plane :=
-  ball (denseSeq Plane n) r \ ⋃ k : Fin n, ball (denseSeq Plane k) r
+private def metricCell (r : ℝ≥0) (n : ℕ) : Set (EuclideanSpace ℝ (Fin 2)) :=
+  ball (denseSeq (EuclideanSpace ℝ (Fin 2)) n) r \ ⋃ k : Fin n, ball (denseSeq (EuclideanSpace ℝ (Fin 2)) k) r
 
 private theorem measurableSet_metricCell (r : ℝ≥0) (n : ℕ) :
     MeasurableSet (metricCell r n) :=
@@ -274,9 +274,9 @@ private theorem iUnion_metricCell (r : ℝ≥0) (hr : 0 < r) :
   classical
   apply eq_univ_of_forall
   intro x
-  have hex : ∃ n : ℕ, x ∈ ball (denseSeq Plane n) r := by
-    obtain ⟨n, hn⟩ : ∃ n : ℕ, dist x (denseSeq Plane n) < (r : ℝ) :=
-      (denseRange_denseSeq Plane).exists_dist_lt x hr
+  have hex : ∃ n : ℕ, x ∈ ball (denseSeq (EuclideanSpace ℝ (Fin 2)) n) r := by
+    obtain ⟨n, hn⟩ : ∃ n : ℕ, dist x (denseSeq (EuclideanSpace ℝ (Fin 2)) n) < (r : ℝ) :=
+      (denseRange_denseSeq (EuclideanSpace ℝ (Fin 2))).exists_dist_lt x hr
     exact ⟨n, Metric.mem_ball.mpr hn⟩
   let n := Nat.find hex
   apply mem_iUnion.2
@@ -285,7 +285,7 @@ private theorem iUnion_metricCell (r : ℝ≥0) (hr : 0 < r) :
   obtain ⟨k, hk⟩ := mem_iUnion.1 hx
   exact (Nat.not_lt_of_ge (Nat.find_min' hex hk)) k.isLt
 
-private theorem cells_meeting_subset_thickening (r : ℝ≥0) (s : Set Plane) :
+private theorem cells_meeting_subset_thickening (r : ℝ≥0) (s : Set (EuclideanSpace ℝ (Fin 2))) :
     (⋃ k : {n // (metricCell r n ∩ s).Nonempty}, metricCell r k) ⊆
       thickening (2 * r) s := by
   intro x hx
@@ -294,7 +294,7 @@ private theorem cells_meeting_subset_thickening (r : ℝ≥0) (s : Set Plane) :
   rw [Metric.mem_thickening_iff]
   refine ⟨z, hzs, ?_⟩
   calc
-    dist x z ≤ dist x (denseSeq Plane k) + dist z (denseSeq Plane k) :=
+    dist x z ≤ dist x (denseSeq (EuclideanSpace ℝ (Fin 2)) k) + dist z (denseSeq (EuclideanSpace ℝ (Fin 2)) k) :=
       dist_triangle_right _ _ _
     _ < r + r := add_lt_add hxk.1 hzk.1
     _ = 2 * r := (two_mul (r : ℝ)).symm
@@ -356,13 +356,13 @@ private theorem exists_descendingRadius_interval {R : ℕ → ℝ≥0} {d : ℝ�
 
 /-- A finite Hausdorff set has an arbitrarily large subset that is straight up to any prescribed
 factor larger than one, uniformly below some scale. -/
-private theorem exists_large_almostStraightSubset {e : Set Plane} (he : MeasurableSet e)
+private theorem exists_large_almostStraightSubset {e : Set (EuclideanSpace ℝ (Fin 2))} (he : MeasurableSet e)
     (he_fin : μH[1] e < ∞) {c d : ℝ≥0∞} (hd : d < μH[1] e)
     (hc_pos : 0 < c) (hc_one : c < 1) :
-    ∃ a : Set Plane, MeasurableSet a ∧ a ⊆ e ∧ d < μH[1] a ∧
-      ∃ r : ℝ≥0∞, 0 < r ∧ ∀ s : Set Plane, MeasurableSet s → Metric.ediam s ≤ r →
+    ∃ a : Set (EuclideanSpace ℝ (Fin 2)), MeasurableSet a ∧ a ⊆ e ∧ d < μH[1] a ∧
+      ∃ r : ℝ≥0∞, 0 < r ∧ ∀ s : Set (EuclideanSpace ℝ (Fin 2)), MeasurableSet s → Metric.ediam s ≤ r →
         μH[1] (a ∩ s) ≤ c⁻¹ * Metric.ediam s := by
-  let μ : Measure Plane := μH[1].restrict e
+  let μ : Measure (EuclideanSpace ℝ (Fin 2)) := μH[1].restrict e
   have hμe : μ e = μH[1] e := Measure.restrict_apply_self μH[1] e
   have hc_ne_top : c ≠ ∞ := hc_one.ne_top
   have hweight_pos : 0 < 1 - c := tsub_pos_iff_lt.mpr hc_one
@@ -377,14 +377,14 @@ private theorem exists_large_almostStraightSubset {e : Set Plane} (he : Measurab
       _ = (c + (1 - c)) * μH[1] e := (add_mul _ _ _).symm
       _ = μH[1] e := by rw [add_tsub_cancel_of_le hc_one.le, one_mul]
   have hevent : ∀ᶠ r in 𝓝[>] (0 : ℝ≥0∞),
-      c * μH[1] e + (1 - c) * d < hausdorffPre (X := Plane) r e :=
+      c * μH[1] e + (1 - c) * d < hausdorffPre (X := (EuclideanSpace ℝ (Fin 2))) r e :=
     (tendsto_hausdorffPre e).eventually (eventually_gt_nhds hmul)
   obtain ⟨r, hr_pos, hr_large⟩ :
       ∃ r : ℝ≥0∞, 0 < r ∧
-        c * μH[1] e + (1 - c) * d < hausdorffPre (X := Plane) r e := by
+        c * μH[1] e + (1 - c) * d < hausdorffPre (X := (EuclideanSpace ℝ (Fin 2))) r e := by
     simpa only [mem_Ioi, and_comm] using (hevent.and self_mem_nhdsWithin).exists
-  let p : OuterMeasure Plane := hausdorffPre r
-  let Good : Set (Set (Set Plane)) :=
+  let p : OuterMeasure (EuclideanSpace ℝ (Fin 2)) := hausdorffPre r
+  let Good : Set (Set (Set (EuclideanSpace ℝ (Fin 2)))) :=
     {C | (∀ b ∈ C, MeasurableSet b ∧ b ⊆ e ∧ p b < c * μ b) ∧
       C.PairwiseDisjoint id}
   obtain ⟨C, hC⟩ : ∃ C, Maximal (fun D ↦ D ∈ Good) C := by
@@ -403,7 +403,7 @@ private theorem exists_large_almostStraightSubset {e : Set Plane} (he : Measurab
   haveI : Countable C := by
     apply Set.countable_univ_iff.mp
     have hcount := Measure.countable_meas_pos_of_disjoint_iUnion
-      (μ := μ) (As := fun b : C ↦ (b : Set Plane))
+      (μ := μ) (As := fun b : C ↦ (b : Set (EuclideanSpace ℝ (Fin 2))))
       (fun b ↦ (hC_mem.1 b b.2).1)
       (hC_mem.2.subtype _ _)
     simpa only [hC_pos, setOf_true] using hcount
@@ -412,10 +412,10 @@ private theorem exists_large_almostStraightSubset {e : Set Plane} (he : Measurab
     MeasurableSet.sUnion C_count fun b hb ↦ (hC_mem.1 b hb).1
   have hUnion_sub : ⋃₀ C ⊆ e :=
     sUnion_subset fun b hb ↦ (hC_mem.1 b hb).2.1
-  let a : Set Plane := e \ ⋃₀ C
+  let a : Set (EuclideanSpace ℝ (Fin 2)) := e \ ⋃₀ C
   have ha_meas : MeasurableSet a := he.diff hUnion_meas
   have ha_sub : a ⊆ e := sdiff_subset
-  have no_bad {t : Set Plane} (ht : MeasurableSet t) (hta : t ⊆ a) :
+  have no_bad {t : Set (EuclideanSpace ℝ (Fin 2))} (ht : MeasurableSet t) (hta : t ⊆ a) :
       c * μ t ≤ p t := by
     by_contra hnot
     have ht_bad : p t < c * μ t := lt_of_not_ge hnot
@@ -502,16 +502,16 @@ private theorem exists_large_almostStraightSubset {e : Set Plane} (he : Measurab
 
 /-- A positive finite Hausdorff set has a positive subset with asymptotically sharp bounds at a
 sequence of scales. -/
-private theorem exists_multiscaleAlmostStraightSubset {e : Set Plane} (he : MeasurableSet e)
+private theorem exists_multiscaleAlmostStraightSubset {e : Set (EuclideanSpace ℝ (Fin 2))} (he : MeasurableSet e)
     (he_pos : 0 < μH[1] e) (he_fin : μH[1] e < ∞) :
-    ∃ a : Set Plane, MeasurableSet a ∧ a ⊆ e ∧ 0 < μH[1] a ∧
-      ∀ n : ℕ, ∃ r : ℝ≥0∞, 0 < r ∧ ∀ s : Set Plane,
+    ∃ a : Set (EuclideanSpace ℝ (Fin 2)), MeasurableSet a ∧ a ⊆ e ∧ 0 < μH[1] a ∧
+      ∀ n : ℕ, ∃ r : ℝ≥0∞, 0 < r ∧ ∀ s : Set (EuclideanSpace ℝ (Fin 2)),
         MeasurableSet s → Metric.ediam s ≤ r →
           μH[1] (a ∩ s) ≤ (1 + lossWeight n) * Metric.ediam s := by
   have hexists (n : ℕ) :
-      ∃ a : Set Plane, MeasurableSet a ∧ a ⊆ e ∧
+      ∃ a : Set (EuclideanSpace ℝ (Fin 2)), MeasurableSet a ∧ a ⊆ e ∧
         μH[1] e - lossWeight n * μH[1] e < μH[1] a ∧
-        ∃ r : ℝ≥0∞, 0 < r ∧ ∀ s : Set Plane,
+        ∃ r : ℝ≥0∞, 0 < r ∧ ∀ s : Set (EuclideanSpace ℝ (Fin 2)),
           MeasurableSet s → Metric.ediam s ≤ r →
             μH[1] (a ∩ s) ≤ (1 + lossWeight n) * Metric.ediam s := by
     have hd : μH[1] e - lossWeight n * μH[1] e < μH[1] e :=
@@ -539,7 +539,7 @@ private theorem exists_multiscaleAlmostStraightSubset {e : Set Plane} (he : Meas
       ENNReal.mul_ne_top (lossWeight_lt_one n).ne_top he_fin.ne
     simpa only [add_comm] using
       (ENNReal.sub_lt_iff_lt_left hweight_ne_top hweight_le).1 (hA_large n)
-  let u : Set Plane := ⋃ n : ℕ, e \ A n
+  let u : Set (EuclideanSpace ℝ (Fin 2)) := ⋃ n : ℕ, e \ A n
   have hu_meas : MeasurableSet u := MeasurableSet.iUnion fun n ↦ he.diff (hA_meas n)
   have hu_sub : u ⊆ e := iUnion_subset fun _ ↦ sdiff_subset
   have hu_lt : μH[1] u < μH[1] e := by
@@ -555,7 +555,7 @@ private theorem exists_multiscaleAlmostStraightSubset {e : Set Plane} (he : Meas
             ENNReal.mul_lt_mul_left he_pos.ne' he_fin.ne
               (ENNReal.inv_lt_one.mpr (by norm_num))
           _ = μH[1] e := one_mul _
-  let a : Set Plane := e \ u
+  let a : Set (EuclideanSpace ℝ (Fin 2)) := e \ u
   have ha_meas : MeasurableSet a := he.diff hu_meas
   have ha_sub : a ⊆ e := sdiff_subset
   have ha_A (n : ℕ) : a ⊆ A n := by
@@ -578,13 +578,13 @@ private theorem exists_multiscaleAlmostStraightSubset {e : Set Plane} (he : Meas
     (hlocal n s hs hsr)
 
 /-- Every measurable set of positive finite Hausdorff one-measure has a positive straight piece. -/
-theorem exists_straight_measure_restrict_subset {e : Set Plane} (he : MeasurableSet e)
+theorem exists_straight_measure_restrict_subset {e : Set (EuclideanSpace ℝ (Fin 2))} (he : MeasurableSet e)
     (he_pos : 0 < μH[1] e) (he_fin : μH[1] e < ∞) :
-    ∃ a : Set Plane, MeasurableSet a ∧ a ⊆ e ∧ 0 < μH[1] a ∧
+    ∃ a : Set (EuclideanSpace ℝ (Fin 2)), MeasurableSet a ∧ a ⊆ e ∧ 0 < μH[1] a ∧
       IsStraightMeasure (μH[1].restrict a) := by
   classical
-  letI : NullSingletonClass (μH[1] : Measure Plane) :=
-    Measure.nullSingletonClass_hausdorff Plane (by norm_num)
+  letI : NullSingletonClass (μH[1] : Measure (EuclideanSpace ℝ (Fin 2))) :=
+    Measure.nullSingletonClass_hausdorff (EuclideanSpace ℝ (Fin 2)) (by norm_num)
   obtain ⟨A, hA_meas, hA_sub, hA_pos, hscale⟩ :=
     exists_multiscaleAlmostStraightSubset he he_pos he_fin
   choose r hr_pos hlocal using hscale
@@ -601,7 +601,7 @@ theorem exists_straight_measure_restrict_subset {e : Set Plane} (he : Measurable
   let c' : ℝ≥0 := min c 1
   have hc'_pos : 0 < c' := lt_min hc_pos zero_lt_one
   have hc'_one : c' ≤ 1 := min_le_right _ _
-  let μA : Measure Plane := μH[1].restrict A
+  let μA : Measure (EuclideanSpace ℝ (Fin 2)) := μH[1].restrict A
   letI : IsFiniteMeasure μA :=
     ⟨by simpa only [μA, Measure.restrict_apply_univ] using hA_fin⟩
   obtain ⟨E, hE_meas, hE_sub, hE_mass⟩ := exists_subset_measure_eq_mul
@@ -622,7 +622,7 @@ theorem exists_straight_measure_restrict_subset {e : Set Plane} (he : Measurable
     exact min_le_left c 1
   have hE_sub_e : E ⊆ e := hE_sub.trans hA_sub
   have hE_fin : μH[1] E < ∞ := (measure_mono hE_sub_e).trans_lt he_fin
-  let μ : Measure Plane := μH[1].restrict E
+  let μ : Measure (EuclideanSpace ℝ (Fin 2)) := μH[1].restrict E
   letI : IsFiniteMeasure μ :=
     ⟨by simpa only [μ, Measure.restrict_apply_univ] using hE_fin⟩
   let mesh (n : ℕ) : ℝ≥0 :=
@@ -632,7 +632,7 @@ theorem exists_straight_measure_restrict_subset {e : Set Plane} (he : Measurable
     exact div_pos (mul_pos (ENNReal.toNNReal_pos (lossWeight_pos n).ne'
       (lossWeight_lt_one n).ne_top) (hρ_pos (n + 1))) (by norm_num)
   have hselect (n k : ℕ) :
-      ∃ t : Set Plane, MeasurableSet t ∧ t ⊆ E ∩ metricCell (mesh n) k ∧
+      ∃ t : Set (EuclideanSpace ℝ (Fin 2)), MeasurableSet t ∧ t ⊆ E ∩ metricCell (mesh n) k ∧
         μ t = (thinningFraction n : ℝ≥0∞) *
           μ (E ∩ metricCell (mesh n) k) := by
     simpa only [ENNReal.ofReal_coe_nnreal] using exists_subset_measure_eq_mul
@@ -667,7 +667,7 @@ theorem exists_straight_measure_restrict_subset {e : Set Plane} (he : Measurable
           μ (⋃ k : K, E ∩ metricCell (mesh n) k) := by
         rw [measure_iUnion hcell_disj fun k ↦
           hE_meas.inter (measurableSet_metricCell _ _)]
-  let T (n : ℕ) : Set Plane := ⋃ k : (univ : Set ℕ), S n k
+  let T (n : ℕ) : Set (EuclideanSpace ℝ (Fin 2)) := ⋃ k : (univ : Set ℕ), S n k
   have hT_meas (n : ℕ) : MeasurableSet (T n) :=
     MeasurableSet.iUnion fun k ↦ hS_meas n k
   have hT_sub (n : ℕ) : T n ⊆ E :=
@@ -698,7 +698,7 @@ theorem exists_straight_measure_restrict_subset {e : Set Plane} (he : Measurable
           (1 - thinningFraction n) * μ E := by
         rw [ENNReal.sub_mul (fun _ _ ↦ (by simpa only [hμ_E] using hE_fin.ne)), one_mul]
       _ = 2 * lossWeight n * μ E := by rw [one_sub_thinningFraction_ennreal]
-  let bad : Set Plane := ⋃ n : ℕ, E \ T n
+  let bad : Set (EuclideanSpace ℝ (Fin 2)) := ⋃ n : ℕ, E \ T n
   have hbad_meas : MeasurableSet bad :=
     MeasurableSet.iUnion fun n ↦ hE_meas.diff (hT_meas n)
   have hbad_sub : bad ⊆ E := iUnion_subset fun _ ↦ sdiff_subset
@@ -723,7 +723,7 @@ theorem exists_straight_measure_restrict_subset {e : Set Plane} (he : Measurable
                     exact ENNReal.inv_lt_inv.mpr (by norm_num)
                   _ = 1 := ENNReal.mul_inv_cancel (by norm_num) (by norm_num))
           _ = μ E := one_mul _
-  let a : Set Plane := E \ bad
+  let a : Set (EuclideanSpace ℝ (Fin 2)) := E \ bad
   have ha_meas : MeasurableSet a := hE_meas.diff hbad_meas
   have ha_sub_E : a ⊆ E := sdiff_subset
   have ha_sub_e : a ⊆ e := ha_sub_E.trans hE_sub_e
@@ -764,8 +764,8 @@ theorem exists_straight_measure_restrict_subset {e : Set Plane} (he : Measurable
   obtain ⟨n, hn_lower, hn_upper⟩ :=
     exists_descendingRadius_interval hdiam (lt_of_not_ge hlarge)
   let K : Set ℕ := {k | (metricCell (mesh n) k ∩ s).Nonempty}
-  let V : Set Plane := ⋃ k : K, S n k
-  let W : Set Plane := ⋃ k : K, E ∩ metricCell (mesh n) k
+  let V : Set (EuclideanSpace ℝ (Fin 2)) := ⋃ k : K, S n k
+  let W : Set (EuclideanSpace ℝ (Fin 2)) := ⋃ k : K, E ∩ metricCell (mesh n) k
   have has_V : s ∩ a ⊆ V := by
     intro x hx
     have hxT := ha_T n hx.2

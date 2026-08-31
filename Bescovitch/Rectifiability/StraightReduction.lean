@@ -27,12 +27,12 @@ namespace Bescovitch
 /-- A nonrectifiable finite set with density at least `gamma` contains a positive straight,
 purely unrectifiable subset with density strictly above every `beta < gamma`. -/
 theorem exists_pure_straight_subset_of_not_rectifiable
-    {e : Set Plane} (he : MeasurableSet e) (he_fin : μH[1] e < ∞)
+    {e : Set (EuclideanSpace ℝ (Fin 2))} (he : MeasurableSet e) (he_fin : μH[1] e < ∞)
     (he_not_rectifiable : ¬IsCountablyOneRectifiable e)
     {beta gamma : ℝ} (hbeta : 0 ≤ beta) (hbeta_gamma : beta < gamma)
     (hdensity : ∀ᵐ x ∂μH[1].restrict e,
       ENNReal.ofReal gamma ≤ lowerOneDensity e x) :
-    ∃ a : Set Plane,
+    ∃ a : Set (EuclideanSpace ℝ (Fin 2)),
       MeasurableSet a ∧ a ⊆ e ∧ 0 < μH[1] a ∧ μH[1] a < ∞ ∧
         IsPurelyOneUnrectifiable a ∧ IsStraightMeasure (μH[1].restrict a) ∧
           ∀ᵐ x ∂μH[1].restrict a,

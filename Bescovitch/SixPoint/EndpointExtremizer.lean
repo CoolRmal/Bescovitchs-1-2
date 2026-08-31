@@ -21,14 +21,14 @@ noncomputable section
 namespace Bescovitch
 
 /-- The unit root direction used to display the endpoint configuration. -/
-def endpointRootVector : Plane := !₂[1, 0]
+def endpointRootVector : (EuclideanSpace ℝ (Fin 2)) := !₂[1, 0]
 
 /-- The unit-radius point in the endpoint configuration. -/
-def endpointUnitVector (B : ℝ) : Plane :=
+def endpointUnitVector (B : ℝ) : (EuclideanSpace ℝ (Fin 2)) :=
   !₂[endpointUnitAbscissa B, endpointUnitOrdinate B]
 
 /-- The second point in the endpoint configuration. -/
-def endpointOuterVector (c B : ℝ) : Plane :=
+def endpointOuterVector (c B : ℝ) : (EuclideanSpace ℝ (Fin 2)) :=
   !₂[endpointOuterAbscissa c B, endpointOuterOrdinate c B]
 
 private theorem endpointUnitRadicand_pos {c B : ℝ} (h : IsEndpointPair c B) :

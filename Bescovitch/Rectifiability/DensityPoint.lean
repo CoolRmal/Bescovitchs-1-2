@@ -25,8 +25,8 @@ open scoped ENNReal MeasureTheory Topology
 namespace Bescovitch
 
 /-- A straight measure assigns at most `2r` mass to a closed ball of radius `r`. -/
-theorem IsStraightMeasure.measure_closedBall_le {mu : Measure Plane}
-    (hmu : IsStraightMeasure mu) (z : Plane) (r : ℝ) :
+theorem IsStraightMeasure.measure_closedBall_le {mu : Measure (EuclideanSpace ℝ (Fin 2))}
+    (hmu : IsStraightMeasure mu) (z : (EuclideanSpace ℝ (Fin 2))) (r : ℝ) :
     mu (Metric.closedBall z r) ≤ ENNReal.ofReal (2 * r) := by
   apply (hmu _ measurableSet_closedBall).trans
   apply Metric.ediam_le_of_forall_dist_le
@@ -37,8 +37,8 @@ theorem IsStraightMeasure.measure_closedBall_le {mu : Measure Plane}
 
 /-- A lower ball-mass bound and a small loss outside the core leave a core point in the outer
 annulus. -/
-theorem annulus_inter_nonempty {mu : Measure Plane} [IsFiniteMeasure mu]
-    (hmu : IsStraightMeasure mu) {F : Set Plane} {z : Plane} {sigma alpha rho : ℝ}
+theorem annulus_inter_nonempty {mu : Measure (EuclideanSpace ℝ (Fin 2))} [IsFiniteMeasure mu]
+    (hmu : IsStraightMeasure mu) {F : Set (EuclideanSpace ℝ (Fin 2))} {z : (EuclideanSpace ℝ (Fin 2))} {sigma alpha rho : ℝ}
     (hsigma : 0 < sigma) (halpha_pos : 0 < alpha) (halpha : alpha < 28) (hrho : 0 < rho)
     (hball : ENNReal.ofReal (2 * sigma * rho) < mu (Metric.ball z rho))
     (hloss : mu (Metric.ball z rho \ F) < ENNReal.ofReal (sigma * alpha / 28 * rho)) :
@@ -82,8 +82,8 @@ theorem annulus_inter_nonempty {mu : Measure Plane} [IsFiniteMeasure mu]
 
 /-- At a density point of `F`, straightness makes the mass outside `F` smaller than any prescribed
 positive linear function of the radius. -/
-theorem exists_scale_measure_ball_sdiff_lt {mu : Measure Plane} [IsFiniteMeasure mu]
-    (hmu : IsStraightMeasure mu) {F : Set Plane} {z : Plane}
+theorem exists_scale_measure_ball_sdiff_lt {mu : Measure (EuclideanSpace ℝ (Fin 2))} [IsFiniteMeasure mu]
+    (hmu : IsStraightMeasure mu) {F : Set (EuclideanSpace ℝ (Fin 2))} {z : (EuclideanSpace ℝ (Fin 2))}
     (hdensity : Tendsto
       (fun r ↦ mu (Fᶜ ∩ Metric.closedBall z r) / mu (Metric.closedBall z r))
       (𝓝[>] 0) (𝓝 0)) {k : ℝ} (hk : 0 < k) :
@@ -127,18 +127,18 @@ theorem exists_scale_measure_ball_sdiff_lt {mu : Measure Plane} [IsFiniteMeasure
 
 /-- One may choose the point outside all seven-diameter enlargements to be a density point of the
 compact core. -/
-theorem exists_densityPoint_not_mem_sevenDiameterThickening {mu : Measure Plane}
-    [IsFiniteMeasure mu] (hmu : IsStraightMeasure mu) {F : Set Plane}
+theorem exists_densityPoint_not_mem_sevenDiameterThickening {mu : Measure (EuclideanSpace ℝ (Fin 2))}
+    [IsFiniteMeasure mu] (hmu : IsStraightMeasure mu) {F : Set (EuclideanSpace ℝ (Fin 2))}
     (hF : MeasurableSet F) {alpha : ℝ} (halpha : 0 < alpha)
-    {chosen : Set (Set Plane)} (hchosen : chosen ⊆ badConvexSets mu F alpha)
+    {chosen : Set (Set (EuclideanSpace ℝ (Fin 2)))} (hchosen : chosen ⊆ badConvexSets mu F alpha)
     (hcountable : chosen.Countable) (hdisjoint : chosen.PairwiseDisjoint id)
     (houtside : mu Fᶜ < ENNReal.ofReal (alpha / 15) * mu F) {k : ℝ} (hk : 0 < k) :
-    ∃ z ∈ F, (∀ V : chosen, z ∉ diameterThickening 7 (V : Set Plane)) ∧
+    ∃ z ∈ F, (∀ V : chosen, z ∉ diameterThickening 7 (V : Set (EuclideanSpace ℝ (Fin 2)))) ∧
       ∃ scale : ℝ, 0 < scale ∧ ∀ r : ℝ, 0 < r → r < scale →
         mu (Metric.ball z r \ F) < ENNReal.ofReal (k * r) := by
-  let U := ⋃ V : chosen, diameterThickening 7 (V : Set Plane)
+  let U := ⋃ V : chosen, diameterThickening 7 (V : Set (EuclideanSpace ℝ (Fin 2)))
   have hU_open : IsOpen U := isOpen_iUnion fun V ↦
-    isOpen_diameterThickening 7 (V : Set Plane)
+    isOpen_diameterThickening 7 (V : Set (EuclideanSpace ℝ (Fin 2)))
   have hmeasure : mu U < mu F :=
     measure_iUnion_sevenDiameterThickening_lt hmu hF halpha hchosen hcountable
       hdisjoint houtside
@@ -157,7 +157,7 @@ theorem exists_densityPoint_not_mem_sevenDiameterThickening {mu : Measure Plane}
     ae_mono Measure.restrict_le_self hae
   obtain ⟨z, hz, hzdensity⟩ :=
     Measure.exists_mem_of_measure_ne_zero_of_ae hremaining_ne hae_remaining
-  have hindicator : (Fᶜ).indicator (1 : Plane → ℝ≥0∞) z = 0 := by
+  have hindicator : (Fᶜ).indicator (1 : (EuclideanSpace ℝ (Fin 2)) → ℝ≥0∞) z = 0 := by
     simp [hz.1]
   rw [hindicator] at hzdensity
   obtain ⟨scale, hscale, hsmall⟩ :=

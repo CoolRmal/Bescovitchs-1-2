@@ -26,19 +26,19 @@ open scoped ENNReal MeasureTheory
 namespace Bescovitch
 
 /-- Open convex sets meeting `F` whose mass outside `F` exceeds `alpha` times their diameter. -/
-def badConvexSets (mu : Measure Plane) (F : Set Plane) (alpha : ℝ) : Set (Set Plane) :=
+def badConvexSets (mu : Measure (EuclideanSpace ℝ (Fin 2))) (F : Set (EuclideanSpace ℝ (Fin 2))) (alpha : ℝ) : Set (Set (EuclideanSpace ℝ (Fin 2))) :=
   {V | IsOpen V ∧ Convex ℝ V ∧ (V ∩ F).Nonempty ∧
     ENNReal.ofReal alpha * Metric.ediam V < mu (V \ F)}
 
 @[simp]
-theorem mem_badConvexSets {mu : Measure Plane} {F V : Set Plane} {alpha : ℝ} :
+theorem mem_badConvexSets {mu : Measure (EuclideanSpace ℝ (Fin 2))} {F V : Set (EuclideanSpace ℝ (Fin 2))} {alpha : ℝ} :
     V ∈ badConvexSets mu F alpha ↔ IsOpen V ∧ Convex ℝ V ∧ (V ∩ F).Nonempty ∧
       ENNReal.ofReal alpha * Metric.ediam V < mu (V \ F) :=
   Iff.rfl
 
 /-- A bad convex set with positive leakage coefficient is bounded. -/
-theorem isBounded_of_mem_badConvexSets {mu : Measure Plane}
-    {F V : Set Plane} {alpha : ℝ} (halpha : 0 < alpha)
+theorem isBounded_of_mem_badConvexSets {mu : Measure (EuclideanSpace ℝ (Fin 2))}
+    {F V : Set (EuclideanSpace ℝ (Fin 2))} {alpha : ℝ} (halpha : 0 < alpha)
     (hV : V ∈ badConvexSets mu F alpha) : IsBounded V := by
   rcases hV with ⟨_, _, _, hleakage⟩
   rw [Metric.isBounded_iff_ediam_ne_top]
@@ -50,8 +50,8 @@ theorem isBounded_of_mem_badConvexSets {mu : Measure Plane}
   exact (not_lt_of_ge le_top) hleakage
 
 /-- A nonempty open bad convex set has positive diameter. -/
-theorem diam_pos_of_mem_badConvexSets {mu : Measure Plane}
-    {F V : Set Plane} {alpha : ℝ} (halpha : 0 < alpha)
+theorem diam_pos_of_mem_badConvexSets {mu : Measure (EuclideanSpace ℝ (Fin 2))}
+    {F V : Set (EuclideanSpace ℝ (Fin 2))} {alpha : ℝ} (halpha : 0 < alpha)
     (hV : V ∈ badConvexSets mu F alpha) : 0 < Metric.diam V := by
   have hV_nonempty : V.Nonempty := hV.2.2.1.mono inter_subset_left
   obtain ⟨x, hx⟩ := hV_nonempty
@@ -61,8 +61,8 @@ theorem diam_pos_of_mem_badConvexSets {mu : Measure Plane}
     (isBounded_of_mem_badConvexSets halpha hV)
 
 /-- The total mass supplies a uniform real diameter bound for all bad convex sets. -/
-theorem diam_lt_measure_univ_div_of_mem_badConvexSets {mu : Measure Plane}
-    [IsFiniteMeasure mu] {F V : Set Plane} {alpha : ℝ} (halpha : 0 < alpha)
+theorem diam_lt_measure_univ_div_of_mem_badConvexSets {mu : Measure (EuclideanSpace ℝ (Fin 2))}
+    [IsFiniteMeasure mu] {F V : Set (EuclideanSpace ℝ (Fin 2))} {alpha : ℝ} (halpha : 0 < alpha)
     (hV : V ∈ badConvexSets mu F alpha) :
     Metric.diam V < (mu Set.univ).toReal / alpha := by
   have hbounded := isBounded_of_mem_badConvexSets halpha hV
@@ -80,7 +80,7 @@ theorem diam_lt_measure_univ_div_of_mem_badConvexSets {mu : Measure Plane}
 
 /-- A BPC witness becomes bad after replacing it by its open convex hull and lowering the
 coefficient. -/
-theorem openConvexHull_mem_badConvexSets {mu : Measure Plane} {F U : Set Plane}
+theorem openConvexHull_mem_badConvexSets {mu : Measure (EuclideanSpace ℝ (Fin 2))} {F U : Set (EuclideanSpace ℝ (Fin 2))}
     {alpha tau : ℝ} (halpha_tau : alpha ≤ tau) (hU_open : IsOpen U)
     (hUF : (U ∩ F).Nonempty)
     (hleakage : ENNReal.ofReal tau * Metric.ediam U < mu (U \ F)) :
@@ -98,8 +98,8 @@ theorem openConvexHull_mem_badConvexSets {mu : Measure Plane} {F U : Set Plane}
       measure_mono (sdiff_subset_sdiff hsubset Subset.rfl)
 
 /-- The bad convex sets have a countable disjoint scale-dominating subfamily. -/
-theorem exists_countable_disjoint_badConvexSets {mu : Measure Plane} [IsFiniteMeasure mu]
-    (F : Set Plane) {alpha : ℝ} (halpha : 0 < alpha) :
+theorem exists_countable_disjoint_badConvexSets {mu : Measure (EuclideanSpace ℝ (Fin 2))} [IsFiniteMeasure mu]
+    (F : Set (EuclideanSpace ℝ (Fin 2))) {alpha : ℝ} (halpha : 0 < alpha) :
     ∃ chosen ⊆ badConvexSets mu F alpha, chosen.PairwiseDisjoint id ∧ chosen.Countable ∧
       ∀ V ∈ badConvexSets mu F alpha, ∃ W ∈ chosen,
         (V ∩ W).Nonempty ∧ Metric.diam V < 2 * Metric.diam W := by

@@ -110,7 +110,7 @@ private theorem s0s3_scalarGram_high_high (e p₁ p₂ w₁ w₂ : ℝ) :
         67457 / 8500000 * w₂ ^ 2 by ring]
   positivity
 
-private theorem s0s3_gram_low_low (e p₁ p₂ w₁ w₂ : Plane) :
+private theorem s0s3_gram_low_low (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
         ‖e - p₂ - w₂‖ ^ 2) - 11930 / 543 * (‖p₁‖ ^ 2 + ‖w₂‖ ^ 2) -
         1930 / 693 * (‖p₂‖ ^ 2 + ‖w₁‖ ^ 2) ≤
@@ -124,7 +124,7 @@ private theorem s0s3_gram_low_low (e p₁ p₂ w₁ w₂ : Plane) :
   ring_nf at h ⊢
   exact h
 
-private theorem s0s3_gram_low_high (e p₁ p₂ w₁ w₂ : Plane) :
+private theorem s0s3_gram_low_high (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
         ‖e - p₂ - w₂‖ ^ 2) - 11930 / 543 * ‖p₁‖ ^ 2 -
         1193 / 85 * ‖w₂‖ ^ 2 - 1930 / 693 * (‖p₂‖ ^ 2 + ‖w₁‖ ^ 2) ≤
@@ -138,7 +138,7 @@ private theorem s0s3_gram_low_high (e p₁ p₂ w₁ w₂ : Plane) :
   ring_nf at h ⊢
   exact h
 
-private theorem s0s3_gram_high_high (e p₁ p₂ w₁ w₂ : Plane) :
+private theorem s0s3_gram_high_high (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
         ‖e - p₂ - w₂‖ ^ 2) - 1193 / 85 * (‖p₁‖ ^ 2 + ‖w₂‖ ^ 2) -
         1930 / 693 * (‖p₂‖ ^ 2 + ‖w₁‖ ^ 2) ≤
@@ -162,7 +162,7 @@ private theorem s0s3_scalarGram_high_low (e p₁ p₂ w₁ w₂ : ℝ) :
   ring_nf at h ⊢
   exact h
 
-private theorem s0s3_gram_high_low (e p₁ p₂ w₁ w₂ : Plane) :
+private theorem s0s3_gram_high_low (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
         ‖e - p₂ - w₂‖ ^ 2) - 1193 / 85 * ‖p₁‖ ^ 2 -
         11930 / 543 * ‖w₂‖ ^ 2 - 1930 / 693 * (‖p₂‖ ^ 2 + ‖w₁‖ ^ 2) ≤
@@ -176,7 +176,7 @@ private theorem s0s3_gram_high_low (e p₁ p₂ w₁ w₂ : Plane) :
   ring_nf at h ⊢
   exact h
 
-private theorem s0s3_positive_distances_le (e p₁ p₂ w₁ w₂ : Plane) :
+private theorem s0s3_positive_distances_le (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) :
     17 * ‖e - p₁ - w₁‖ + 20 * ‖e - p₂ - w₁‖ +
         17 * ‖e - p₂ - w₂‖ ≤
       815 / 12 + 18 / 5 * (‖e - p₁ - w₁‖ ^ 2 +
@@ -257,7 +257,7 @@ private theorem s0s3_high_high_constant_neg :
   norm_num at hc ⊢
   nlinarith [sq_nonneg (cStar - 1)]
 
-private theorem s0s3_gramBound_low_low (e p₁ p₂ w₁ w₂ : Plane) (he : ‖e‖ = 1)
+private theorem s0s3_gramBound_low_low (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
     (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
     (hwsep : cStar ≤ ‖w₁ - w₂‖) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
@@ -274,7 +274,7 @@ private theorem s0s3_gramBound_low_low (e p₁ p₂ w₁ w₂ : Plane) (he : ‖
   rw [he, one_pow] at hgram
   nlinarith only [hgram, hp₂Sq, hw₁Sq, hpsepSq, hwsepSq]
 
-private theorem s0s3_gramBound_low_high (e p₁ p₂ w₁ w₂ : Plane) (he : ‖e‖ = 1)
+private theorem s0s3_gramBound_low_high (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
     (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
     (hwsep : cStar ≤ ‖w₁ - w₂‖) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
@@ -292,7 +292,7 @@ private theorem s0s3_gramBound_low_high (e p₁ p₂ w₁ w₂ : Plane) (he : �
   rw [he, one_pow] at hgram
   nlinarith only [hgram, hp₂Sq, hw₁Sq, hpsepSq, hwsepSq]
 
-private theorem s0s3_gramBound_high_low (e p₁ p₂ w₁ w₂ : Plane) (he : ‖e‖ = 1)
+private theorem s0s3_gramBound_high_low (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
     (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
     (hwsep : cStar ≤ ‖w₁ - w₂‖) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
@@ -310,7 +310,7 @@ private theorem s0s3_gramBound_high_low (e p₁ p₂ w₁ w₂ : Plane) (he : �
   rw [he, one_pow] at hgram
   nlinarith only [hgram, hp₂Sq, hw₁Sq, hpsepSq, hwsepSq]
 
-private theorem s0s3_gramBound_high_high (e p₁ p₂ w₁ w₂ : Plane) (he : ‖e‖ = 1)
+private theorem s0s3_gramBound_high_high (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
     (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
     (hwsep : cStar ≤ ‖w₁ - w₂‖) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
@@ -327,7 +327,7 @@ private theorem s0s3_gramBound_high_high (e p₁ p₂ w₁ w₂ : Plane) (he : �
   rw [he, one_pow] at hgram
   nlinarith only [hgram, hp₂Sq, hw₁Sq, hpsepSq, hwsepSq]
 
-private theorem s0s3_radialBound_of_secants (p₁ p₂ w₁ w₂ : Plane)
+private theorem s0s3_radialBound_of_secants (p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2)))
     (pSlope pConstant wSlope wConstant : ℝ)
     (hp₁ : pSlope * ‖p₁‖ ^ 2 + pConstant ≤ 1193 / 50 * ‖p₁‖)
     (hp₂ : 1930 / 693 * ‖p₂‖ ^ 2 + 37249 / 34650 ≤ 193 / 50 * ‖p₂‖)
@@ -348,7 +348,7 @@ private theorem s0s3_radialBound_of_secants (p₁ p₂ w₁ w₂ : Plane)
     _ ≤ _ := add_le_add hhigh hlow
 
 /-- A two-secant rational Gram separator for the `S0/S3` incidence representative. -/
-theorem gramCertificate_s0s3 (e p₁ p₂ w₁ w₂ : Plane) (he : ‖e‖ = 1)
+theorem gramCertificate_s0s3 (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
     (hwsep : cStar ≤ ‖w₁ - w₂‖) :

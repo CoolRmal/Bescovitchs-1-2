@@ -94,7 +94,7 @@ theorem weightedPairScoreTangentMajorant_le_quadraticMajorant
 def weightedLensQuadraticCertificateMajorant
     (sideP zP aP hP sideW zW aW hW : ℝ)
     (rhoP rhoW rho₁₁ rho₂₂ rho₁₂ rho₂₁ : ℝ)
-    (uP₁ uW₁ uP₂ uW₂ : Plane) (etaP₁ etaP₂ etaW₁ etaW₂ : ℝ) : ℝ :=
+    (uP₁ uW₁ uP₂ uW₂ : (EuclideanSpace ℝ (Fin 2))) (etaP₁ etaP₂ etaW₁ etaW₂ : ℝ) : ℝ :=
   weightedPairScoreQuadraticMajorant !₂[1, 0]
     certificateChord certificateLambda certificateMu
     (chordChartFirst sideP aP hP zP)
@@ -108,7 +108,7 @@ def weightedLensQuadraticCertificateMajorant
 theorem weightedLensCertificateMajorant_le_quadraticMajorant
     (sideP zP aP hP sideW zW aW hW : ℝ)
     (rhoP rhoW rho₁₁ rho₂₂ rho₁₂ rho₂₁ : ℝ)
-    (uP₁ uW₁ uP₂ uW₂ : Plane) (etaP₁ etaP₂ etaW₁ etaW₂ : ℝ)
+    (uP₁ uW₁ uP₂ uW₂ : (EuclideanSpace ℝ (Fin 2))) (etaP₁ etaP₂ etaW₁ etaW₂ : ℝ)
     (hrhoP : 0 < rhoP) (hrhoW : 0 < rhoW) (hrho₁₁ : 0 < rho₁₁)
     (hrho₂₂ : 0 < rho₂₂) (hrho₁₂ : 0 < rho₁₂) (hrho₂₁ : 0 < rho₂₁) :
     weightedLensCertificateMajorant sideP zP aP hP sideW zW aW hW
@@ -134,7 +134,7 @@ theorem weightedLensCertificateMajorant_le_quadraticMajorant
 theorem weightedPairScore_le_lensQuadraticCertificateMajorant
     (sideP zP aP hP sideW zW aW hW : ℝ)
     (rhoP rhoW rho₁₁ rho₂₂ rho₁₂ rho₂₁ : ℝ)
-    (uP₁ uW₁ uP₂ uW₂ : Plane) (etaP₁ etaP₂ etaW₁ etaW₂ : ℝ)
+    (uP₁ uW₁ uP₂ uW₂ : (EuclideanSpace ℝ (Fin 2))) (etaP₁ etaP₂ etaW₁ etaW₂ : ℝ)
     (hsideP : sideP ^ 2 = 1) (hsideW : sideW ^ 2 = 1)
     (hPFirst : aP ^ 2 + hP ^ 2 ≤ 1) (hPSecond : (aP - cStar) ^ 2 + hP ^ 2 ≤ 1)
     (hWFirst : aW ^ 2 + hW ^ 2 ≤ 1) (hWSecond : (aW - cStar) ^ 2 + hW ^ 2 ≤ 1)

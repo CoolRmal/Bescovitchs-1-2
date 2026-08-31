@@ -25,7 +25,7 @@ open scoped ENNReal MeasureTheory Topology
 namespace Bescovitch
 
 /-- Increasing the scale index only weakens the defining radius restriction. -/
-theorem monotone_uniformDensitySet (mu : Measure Plane) (A : Set Plane) (gamma : ℝ) :
+theorem monotone_uniformDensitySet (mu : Measure (EuclideanSpace ℝ (Fin 2))) (A : Set (EuclideanSpace ℝ (Fin 2))) (gamma : ℝ) :
     Monotone fun m ↦ uniformDensitySet mu A gamma m := by
   intro m n hmn x hx
   refine ⟨hx.1, fun q hq hq_small ↦ hx.2 q hq ?_⟩
@@ -33,7 +33,7 @@ theorem monotone_uniformDensitySet (mu : Measure Plane) (A : Set Plane) (gamma :
   exact_mod_cast Nat.add_le_add_right hmn 1
 
 /-- Lowering the density level enlarges a uniform density set. -/
-theorem uniformDensitySet_mono_level {mu : Measure Plane} {A : Set Plane} {beta gamma : ℝ}
+theorem uniformDensitySet_mono_level {mu : Measure (EuclideanSpace ℝ (Fin 2))} {A : Set (EuclideanSpace ℝ (Fin 2))} {beta gamma : ℝ}
     {m : ℕ} (hbeta_gamma : beta ≤ gamma) :
     uniformDensitySet mu A gamma m ⊆ uniformDensitySet mu A beta m := by
   intro x hx
@@ -43,8 +43,8 @@ theorem uniformDensitySet_mono_level {mu : Measure Plane} {A : Set Plane} {beta 
     (mul_le_mul_of_nonneg_left hbeta_gamma (by norm_num)) hq.le
 
 /-- A point strictly above level `sigma` belongs to the diagonal uniform-density exhaustion. -/
-theorem exists_mem_diagonal_uniformDensitySet_of_lt_lowerOneDensity {A : Set Plane}
-    {x : Plane} {sigma : ℝ} (hx : x ∈ A) (hsigma : 0 ≤ sigma)
+theorem exists_mem_diagonal_uniformDensitySet_of_lt_lowerOneDensity {A : Set (EuclideanSpace ℝ (Fin 2))}
+    {x : (EuclideanSpace ℝ (Fin 2))} {sigma : ℝ} (hx : x ∈ A) (hsigma : 0 ≤ sigma)
     (hdensity : ENNReal.ofReal sigma < lowerOneDensity A x) :
     ∃ n : ℕ, x ∈ uniformDensitySet (μH[1].restrict A) A
       (sigma + 1 / (n + 1 : ℝ)) n := by
@@ -76,7 +76,7 @@ theorem exists_mem_diagonal_uniformDensitySet_of_lt_lowerOneDensity {A : Set Pla
   linarith
 
 /-- Almost-everywhere density gives an arbitrarily small exceptional set at one uniform scale. -/
-theorem exists_uniformDensitySet_measure_sdiff_lt {A : Set Plane} (hA : MeasurableSet A)
+theorem exists_uniformDensitySet_measure_sdiff_lt {A : Set (EuclideanSpace ℝ (Fin 2))} (hA : MeasurableSet A)
     {gamma : ℝ} (hgamma : 0 ≤ gamma)
     (hdensity : ∀ᵐ x ∂μH[1].restrict A,
       ENNReal.ofReal gamma < lowerOneDensity A x)
@@ -84,7 +84,7 @@ theorem exists_uniformDensitySet_measure_sdiff_lt {A : Set Plane} (hA : Measurab
     {epsilon : ℝ≥0∞} (hepsilon : 0 < epsilon) :
     ∃ m : ℕ, μH[1] (A \ uniformDensitySet (μH[1].restrict A) A gamma m) < epsilon := by
   letI : IsFiniteMeasure (μH[1].restrict A) := isFiniteMeasure_restrict.mpr hfinite
-  let G : ℕ → Set Plane := fun m ↦ uniformDensitySet (μH[1].restrict A) A gamma m
+  let G : ℕ → Set (EuclideanSpace ℝ (Fin 2)) := fun m ↦ uniformDensitySet (μH[1].restrict A) A gamma m
   have hG_measurable (m : ℕ) : MeasurableSet (G m) :=
     measurableSet_uniformDensitySet _ hA _ _
   have hG_mono : Monotone G := monotone_uniformDensitySet _ _ _
@@ -127,12 +127,12 @@ theorem exists_uniformDensitySet_measure_sdiff_lt {A : Set Plane} (hA : Measurab
   exact (not_le_of_gt hepsilon) this
 
 /-- A compact uniform-density piece can retain all but any prescribed positive mass. -/
-theorem exists_compact_uniformDensitySet_measure_sdiff_lt {A : Set Plane}
+theorem exists_compact_uniformDensitySet_measure_sdiff_lt {A : Set (EuclideanSpace ℝ (Fin 2))}
     (hA : MeasurableSet A) {gamma : ℝ} (hgamma : 0 ≤ gamma)
     (hdensity : ∀ᵐ x ∂μH[1].restrict A,
       ENNReal.ofReal gamma < lowerOneDensity A x)
     (hfinite : μH[1] A ≠ ∞) {epsilon : ℝ≥0∞} (hepsilon : 0 < epsilon) :
-    ∃ (m : ℕ) (F : Set Plane), IsCompact F ∧
+    ∃ (m : ℕ) (F : Set (EuclideanSpace ℝ (Fin 2))), IsCompact F ∧
       F ⊆ uniformDensitySet (μH[1].restrict A) A gamma m ∧ μH[1] (A \ F) < epsilon := by
   letI : IsFiniteMeasure (μH[1].restrict A) := isFiniteMeasure_restrict.mpr hfinite
   have hhalf : 0 < epsilon / 2 := ENNReal.div_pos hepsilon.ne' (by norm_num)
@@ -157,12 +157,12 @@ theorem exists_compact_uniformDensitySet_measure_sdiff_lt {A : Set Plane}
     _ = epsilon := ENNReal.add_halves epsilon
 
 /-- The compact core can be chosen so that the discarded mass is a prescribed fraction of it. -/
-theorem exists_compact_uniformDensitySet_measure_sdiff_lt_mul {A : Set Plane}
+theorem exists_compact_uniformDensitySet_measure_sdiff_lt_mul {A : Set (EuclideanSpace ℝ (Fin 2))}
     (hA : MeasurableSet A) (hA_pos : 0 < μH[1] A) (hA_finite : μH[1] A ≠ ∞)
     {gamma alpha : ℝ} (hgamma : 0 ≤ gamma) (halpha : 0 < alpha)
     (hdensity : ∀ᵐ x ∂μH[1].restrict A,
       ENNReal.ofReal gamma < lowerOneDensity A x) :
-    ∃ (m : ℕ) (F : Set Plane), IsCompact F ∧
+    ∃ (m : ℕ) (F : Set (EuclideanSpace ℝ (Fin 2))), IsCompact F ∧
       F ⊆ uniformDensitySet (μH[1].restrict A) A gamma m ∧
         μH[1] (A \ F) < ENNReal.ofReal alpha * μH[1] F := by
   let mass := μH[1] A
@@ -206,16 +206,16 @@ theorem exists_compact_uniformDensitySet_measure_sdiff_lt_mul {A : Set Plane}
 
 /-- An almost-everywhere density bound strictly above `sigma` is uniform at a common higher level
 on a compact core whose discarded mass is a prescribed fraction of the retained mass. -/
-theorem exists_compact_uniformDensitySet_above {A : Set Plane} (hA : MeasurableSet A)
+theorem exists_compact_uniformDensitySet_above {A : Set (EuclideanSpace ℝ (Fin 2))} (hA : MeasurableSet A)
     (hA_pos : 0 < μH[1] A) (hA_finite : μH[1] A ≠ ∞) {sigma alpha : ℝ}
     (hsigma : 0 ≤ sigma) (halpha : 0 < alpha)
     (hdensity : ∀ᵐ x ∂μH[1].restrict A,
       ENNReal.ofReal sigma < lowerOneDensity A x) :
-    ∃ (gamma : ℝ) (m : ℕ) (F : Set Plane), sigma < gamma ∧ IsCompact F ∧
+    ∃ (gamma : ℝ) (m : ℕ) (F : Set (EuclideanSpace ℝ (Fin 2))), sigma < gamma ∧ IsCompact F ∧
       F ⊆ uniformDensitySet (μH[1].restrict A) A gamma m ∧
         μH[1] (A \ F) < ENNReal.ofReal alpha * μH[1] F := by
   letI : IsFiniteMeasure (μH[1].restrict A) := isFiniteMeasure_restrict.mpr hA_finite
-  let G : ℕ → Set Plane := fun n ↦ uniformDensitySet (μH[1].restrict A) A
+  let G : ℕ → Set (EuclideanSpace ℝ (Fin 2)) := fun n ↦ uniformDensitySet (μH[1].restrict A) A
     (sigma + 1 / (n + 1 : ℝ)) n
   have hG_measurable (n : ℕ) : MeasurableSet (G n) :=
     measurableSet_uniformDensitySet _ hA _ _

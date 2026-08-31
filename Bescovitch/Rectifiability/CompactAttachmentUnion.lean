@@ -25,15 +25,15 @@ open scoped ENNReal Topology
 namespace Bescovitch
 
 /-- The compact core together with all convex pieces attached along selected holes. -/
-def compactAttachmentUnion (F : Set Plane) (chosen : Set (Set Plane)) : Set Plane :=
-  F ∪ ⋃ V : chosen, convexAttachment F (V : Set Plane)
+def compactAttachmentUnion (F : Set (EuclideanSpace ℝ (Fin 2))) (chosen : Set (Set (EuclideanSpace ℝ (Fin 2)))) : Set (EuclideanSpace ℝ (Fin 2)) :=
+  F ∪ ⋃ V : chosen, convexAttachment F (V : Set (EuclideanSpace ℝ (Fin 2)))
 
 /-- Finite total hole diameter makes the full attachment union compact. -/
-theorem isCompact_compactAttachmentUnion {mu : MeasureTheory.Measure Plane}
-    {F : Set Plane} (hF : IsCompact F)
-    {alpha : ℝ} (halpha : 0 < alpha) {chosen : Set (Set Plane)}
+theorem isCompact_compactAttachmentUnion {mu : MeasureTheory.Measure (EuclideanSpace ℝ (Fin 2))}
+    {F : Set (EuclideanSpace ℝ (Fin 2))} (hF : IsCompact F)
+    {alpha : ℝ} (halpha : 0 < alpha) {chosen : Set (Set (EuclideanSpace ℝ (Fin 2)))}
     (hchosen : chosen ⊆ badConvexSets mu F alpha)
-    (hsum : ∑' V : chosen, Metric.ediam (V : Set Plane) ≠ ∞) :
+    (hsum : ∑' V : chosen, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2))) ≠ ∞) :
     IsCompact (compactAttachmentUnion F chosen) := by
   classical
   rw [isCompact_iff_finite_subcover]
@@ -45,15 +45,15 @@ theorem isCompact_compactAttachmentUnion {mu : MeasureTheory.Measure Plane}
   obtain ⟨epsilon, hepsilon, hthickening⟩ :=
     hF.exists_thickening_subset_open hO_open hcoreCover
   let large : Set chosen :=
-    {V | ENNReal.ofReal (epsilon / 5) ≤ Metric.ediam (V : Set Plane)}
+    {V | ENNReal.ofReal (epsilon / 5) ≤ Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2)))}
   have hlarge_finite : large.Finite := by
     exact ENNReal.finite_const_le_of_tsum_ne_top hsum
       (ENNReal.ofReal_ne_zero_iff.mpr (by positivity))
   letI : Fintype large := hlarge_finite.fintype
   have hattachment_compact (V : large) :
-      IsCompact (convexAttachment F (V : Set Plane)) := isCompact_convexAttachment hF
+      IsCompact (convexAttachment F (V : Set (EuclideanSpace ℝ (Fin 2)))) := isCompact_convexAttachment hF
   have hattachment_cover (V : large) :
-      convexAttachment F (V : Set Plane) ⊆ ⋃ i, U i := by
+      convexAttachment F (V : Set (EuclideanSpace ℝ (Fin 2))) ⊆ ⋃ i, U i := by
     intro x hx
     exact hcover (Or.inr (mem_iUnion_of_mem (V : chosen) hx))
   choose attachmentCover hattachmentCover using fun V : large ↦
@@ -61,17 +61,17 @@ theorem isCompact_compactAttachmentUnion {mu : MeasureTheory.Measure Plane}
   let cover := coreCover ∪ Finset.univ.biUnion attachmentCover
   refine ⟨cover, ?_⟩
   have hsmall {V : chosen} (hVsmall : V ∉ large) :
-      convexAttachment F (V : Set Plane) ⊆ O := by
+      convexAttachment F (V : Set (EuclideanSpace ℝ (Fin 2))) ⊆ O := by
     have hVbad := hchosen V.property
     have hVbounded := isBounded_of_mem_badConvexSets halpha hVbad
     have hVdiam := diam_pos_of_mem_badConvexSets halpha hVbad
-    have hedV : Metric.ediam (V : Set Plane) < ENNReal.ofReal (epsilon / 5) := by
+    have hedV : Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2))) < ENNReal.ofReal (epsilon / 5) := by
       exact lt_of_not_ge hVsmall
-    have hattachment_ediam : Metric.ediam (convexAttachment F (V : Set Plane)) <
+    have hattachment_ediam : Metric.ediam (convexAttachment F (V : Set (EuclideanSpace ℝ (Fin 2)))) <
         ENNReal.ofReal epsilon := by
       calc
-        Metric.ediam (convexAttachment F (V : Set Plane)) ≤
-            ENNReal.ofReal 5 * Metric.ediam (V : Set Plane) :=
+        Metric.ediam (convexAttachment F (V : Set (EuclideanSpace ℝ (Fin 2)))) ≤
+            ENNReal.ofReal 5 * Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2))) :=
           ediam_convexAttachment_le hVbounded
         _ < ENNReal.ofReal 5 * ENNReal.ofReal (epsilon / 5) :=
           ENNReal.mul_lt_mul_right (by norm_num) ENNReal.ofReal_ne_top hedV
@@ -82,7 +82,7 @@ theorem isCompact_compactAttachmentUnion {mu : MeasureTheory.Measure Plane}
     intro x hx
     apply hthickening
     obtain ⟨f, hfV, hfF⟩ := hVbad.2.2.1
-    have hfattachment : f ∈ convexAttachment F (V : Set Plane) :=
+    have hfattachment : f ∈ convexAttachment F (V : Set (EuclideanSpace ℝ (Fin 2))) :=
       inter_subset_convexAttachment hVdiam ⟨hfF, hfV⟩
     have hdist : dist x f < epsilon := by
       have hedist := (Metric.edist_le_ediam_of_mem hx hfattachment).trans_lt

@@ -136,6 +136,10 @@ theorem sStar_mem_isolation_box :
   intro c B h
   exact congrArg Prod.fst h.eq_certifiedEndpointPair
 
+/-- The exact isolation interval puts `sStar` below `0.6934`. -/
+theorem sStar_le_6934_div_10000_certified : sStar ≤ 6934 / 10000 := by
+  exact sStar_mem_isolation_box.2.le.trans (by norm_num)
+
 /-- The certified endpoint lies in the elementary range needed by the six-point argument. -/
 theorem half_lt_sStar_and_sStar_lt_one_certified : 1 / 2 < sStar ∧ sStar < 1 :=
   half_lt_sStar_and_sStar_lt_one exists_isEndpointPair

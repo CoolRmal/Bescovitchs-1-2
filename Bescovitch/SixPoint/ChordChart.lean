@@ -23,7 +23,7 @@ open scoped InnerProductSpace
 namespace Bescovitch
 
 /-- A rational parametrization of either closed semicircle; `side` is `1` or `-1`. -/
-def stereographicDirection (side z : ℝ) : Plane :=
+def stereographicDirection (side z : ℝ) : (EuclideanSpace ℝ (Fin 2)) :=
   !₂[side * (1 - z ^ 2) / (1 + z ^ 2), 2 * z / (1 + z ^ 2)]
 
 /-- The stereographic direction is a unit vector when the side is a sign. -/
@@ -38,7 +38,7 @@ theorem norm_stereographicDirection {side : ℝ} (z : ℝ) (hside : side ^ 2 = 1
   nlinarith [sq_nonneg z, sq_nonneg (z ^ 2 - 1)]
 
 /-- The two stereographic semicircles cover the unit circle with `z ∈ [-1,1]`. -/
-theorem exists_stereographicDirection (n : Plane) (hn : ‖n‖ = 1) :
+theorem exists_stereographicDirection (n : (EuclideanSpace ℝ (Fin 2))) (hn : ‖n‖ = 1) :
     ∃ side z : ℝ, (side = 1 ∨ side = -1) ∧ -1 ≤ z ∧ z ≤ 1 ∧
       stereographicDirection side z = n := by
   have hnSq : n 0 ^ 2 + n 1 ^ 2 = 1 := by
@@ -94,12 +94,12 @@ theorem exists_stereographicDirection (n : Plane) (hn : ‖n‖ = 1) :
       ring
 
 /-- On the upper half-circle, the stereographic parameter can be chosen in `[0,1]`. -/
-theorem exists_stereographicDirection_nonnegative (n : Plane) (hn : ‖n‖ = 1)
+theorem exists_stereographicDirection_nonnegative (n : (EuclideanSpace ℝ (Fin 2))) (hn : ‖n‖ = 1)
     (hnUpper : 0 ≤ n 1) :
     ∃ side z : ℝ, (side = 1 ∨ side = -1) ∧ 0 ≤ z ∧ z ≤ 1 ∧
       stereographicDirection side z = n := by
   obtain ⟨side, z, hside, -, hzUpper, hz⟩ := exists_stereographicDirection n hn
-  have hcomponent := congrArg (fun x : Plane ↦ x 1) hz
+  have hcomponent := congrArg (fun x : (EuclideanSpace ℝ (Fin 2)) ↦ x 1) hz
   simp only [stereographicDirection, Matrix.cons_val_one, Matrix.cons_val_zero] at hcomponent
   have hden : 0 < 1 + z ^ 2 := by positivity
   have hquotient : 0 ≤ 2 * z / (1 + z ^ 2) := by rw [hcomponent]; exact hnUpper
@@ -111,11 +111,11 @@ theorem exists_stereographicDirection_nonnegative (n : Plane) (hn : ‖n‖ = 1)
 
 /-- The first endpoint of the chord with longitudinal coordinate `a` and transverse coordinate
 `h`. -/
-def chordChartFirst (side a h z : ℝ) : Plane :=
+def chordChartFirst (side a h z : ℝ) : (EuclideanSpace ℝ (Fin 2)) :=
   a • stereographicDirection side z + h • quarterTurn (stereographicDirection side z)
 
 /-- The second endpoint, a distance `c` backward along the chord direction. -/
-def chordChartSecond (side c a h z : ℝ) : Plane :=
+def chordChartSecond (side c a h z : ℝ) : (EuclideanSpace ℝ (Fin 2)) :=
   (a - c) • stereographicDirection side z + h • quarterTurn (stereographicDirection side z)
 
 /-- The first chart endpoint has squared radius `a² + h²`. -/
@@ -159,11 +159,11 @@ theorem norm_chordChartFirst_sub_second {side c : ℝ} (a h z : ℝ)
     mul_one, Real.norm_eq_abs, abs_of_nonneg hc]
 
 /-- Every positive-length chord in the plane has stereographic chord coordinates. -/
-theorem exists_chordChart {p q : Plane} {c : ℝ} (hc : 0 < c) (hpq : ‖p - q‖ = c) :
+theorem exists_chordChart {p q : (EuclideanSpace ℝ (Fin 2))} {c : ℝ} (hc : 0 < c) (hpq : ‖p - q‖ = c) :
     ∃ side z a h : ℝ,
       (side = 1 ∨ side = -1) ∧ -1 ≤ z ∧ z ≤ 1 ∧
         p = chordChartFirst side a h z ∧ q = chordChartSecond side c a h z := by
-  let n : Plane := c⁻¹ • (p - q)
+  let n : (EuclideanSpace ℝ (Fin 2)) := c⁻¹ • (p - q)
   have hn : ‖n‖ = 1 := by
     dsimp only [n]
     rw [norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hc), hpq]
@@ -189,12 +189,12 @@ theorem exists_chordChart {p q : Plane} {c : ℝ} (hc : 0 < c) (hpq : ‖p - q�
       _ = (a - c) • n + h • quarterTurn n := by rw [hp]; module
 
 /-- A chord whose direction lies in the upper half-plane has a chart with `z ∈ [0,1]`. -/
-theorem exists_chordChart_nonnegative {p q : Plane} {c : ℝ} (hc : 0 < c)
-    (hpq : ‖p - q‖ = c) (hupper : 0 ≤ (c⁻¹ • (p - q) : Plane) 1) :
+theorem exists_chordChart_nonnegative {p q : (EuclideanSpace ℝ (Fin 2))} {c : ℝ} (hc : 0 < c)
+    (hpq : ‖p - q‖ = c) (hupper : 0 ≤ (c⁻¹ • (p - q) : (EuclideanSpace ℝ (Fin 2))) 1) :
     ∃ side z a h : ℝ,
       (side = 1 ∨ side = -1) ∧ 0 ≤ z ∧ z ≤ 1 ∧
         p = chordChartFirst side a h z ∧ q = chordChartSecond side c a h z := by
-  let n : Plane := c⁻¹ • (p - q)
+  let n : (EuclideanSpace ℝ (Fin 2)) := c⁻¹ • (p - q)
   have hn : ‖n‖ = 1 := by
     dsimp only [n]
     rw [norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hc), hpq]

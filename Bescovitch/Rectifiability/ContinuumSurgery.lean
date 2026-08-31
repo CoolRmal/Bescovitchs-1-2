@@ -6,7 +6,7 @@ Authors: Yongxi Lin
 module
 
 public import Bescovitch.Rectifiability.Continuum
-public import Bescovitch.Geometry.Basic
+public import Bescovitch.Statement
 public import Mathlib.Analysis.Convex.Hull
 import Bescovitch.Topology.ConnectedComponent
 import Bescovitch.Rectifiability.HoleMerging
@@ -44,12 +44,12 @@ theorem _root_.IsCompact.exists_edist_eq_ediam {X : Type*} [MetricSpace X] {C : 
       ENNReal.ofReal_toReal hC.isBounded.ediam_ne_top]⟩
 
 /-- The two-segment bridge through an interior point of a convex hole. -/
-def brokenSegment (a c b : Plane) : Set Plane :=
+def brokenSegment (a c b : (EuclideanSpace ℝ (Fin 2))) : Set (EuclideanSpace ℝ (Fin 2)) :=
   segment ℝ a c ∪ segment ℝ c b
 
 /-- A one-hole surgery preserves a continuum's diameter and changes it only inside the hole. -/
-def IsOneHoleSurgery (K U : Set Plane) (x y : Plane) (epsilon : ℝ)
-    (D bridge : Set Plane) : Prop :=
+def IsOneHoleSurgery (K U : Set (EuclideanSpace ℝ (Fin 2))) (x y : (EuclideanSpace ℝ (Fin 2))) (epsilon : ℝ)
+    (D bridge : Set (EuclideanSpace ℝ (Fin 2))) : Prop :=
   IsCompact D ∧ IsConnected D ∧ x ∈ D ∧ y ∈ D ∧
     Metric.ediam D = Metric.ediam K ∧ D ⊆ convexHull ℝ K ∧
     D \ U ⊆ K \ U ∧ D ∩ U ⊆ bridge ∧
@@ -58,25 +58,25 @@ def IsOneHoleSurgery (K U : Set Plane) (x y : Plane) (epsilon : ℝ)
     (bridge.Nonempty → (D ∩ (bridge \ U)).Nonempty) ∧
     μH[1] bridge < Metric.ediam U + ENNReal.ofReal epsilon
 
-private theorem isCompact_brokenSegment (a c b : Plane) : IsCompact (brokenSegment a c b) := by
-  have hsegment (u v : Plane) : IsCompact (segment ℝ u v) := by
+private theorem isCompact_brokenSegment (a c b : (EuclideanSpace ℝ (Fin 2))) : IsCompact (brokenSegment a c b) := by
+  have hsegment (u v : (EuclideanSpace ℝ (Fin 2))) : IsCompact (segment ℝ u v) := by
     rw [← affineSegment_eq_segment]
     exact isCompact_Icc.image (by fun_prop)
   exact (hsegment a c).union (hsegment c b)
 
-private theorem isConnected_brokenSegment (a c b : Plane) :
+private theorem isConnected_brokenSegment (a c b : (EuclideanSpace ℝ (Fin 2))) :
     IsConnected (brokenSegment a c b) := by
   refine ⟨⟨c, Or.inl (right_mem_segment ℝ a c)⟩, ?_⟩
   exact IsPreconnected.union c (right_mem_segment ℝ a c) (left_mem_segment ℝ c b)
     (convex_segment a c).isPreconnected (convex_segment c b).isPreconnected
 
-private theorem brokenSegment_subset_convexHull {K : Set Plane} {a c b : Plane}
+private theorem brokenSegment_subset_convexHull {K : Set (EuclideanSpace ℝ (Fin 2))} {a c b : (EuclideanSpace ℝ (Fin 2))}
     (ha : a ∈ K) (hc : c ∈ K) (hb : b ∈ K) :
     brokenSegment a c b ⊆ convexHull ℝ K := by
   exact union_subset (segment_subset_convexHull ha hc) (segment_subset_convexHull hc hb)
 
-private theorem brokenSegment_sdiff_subset_endpoints {U : Set Plane} (hUopen : IsOpen U)
-    (hUconvex : Convex ℝ U) {a c b : Plane} (ha : a ∈ closure U) (hc : c ∈ U)
+private theorem brokenSegment_sdiff_subset_endpoints {U : Set (EuclideanSpace ℝ (Fin 2))} (hUopen : IsOpen U)
+    (hUconvex : Convex ℝ U) {a c b : (EuclideanSpace ℝ (Fin 2))} (ha : a ∈ closure U) (hc : c ∈ U)
     (hb : b ∈ closure U) : brokenSegment a c b \ U ⊆ {a, b} := by
   have hcinterior : c ∈ interior U := by rwa [hUopen.interior_eq]
   have hac : openSegment ℝ a c ⊆ U := by
@@ -98,8 +98,8 @@ private theorem brokenSegment_sdiff_subset_endpoints {U : Set Plane} (hUopen : I
     · exact mem_insert_iff.mpr (Or.inr (mem_singleton _))
     · exact (hzU (hcb hz)).elim
 
-private theorem hausdorffMeasure_brokenSegment_lt {U : Set Plane} (hUbounded : IsBounded U)
-    {a c b : Plane} (ha : a ∈ closure U) (hb : b ∈ closure U) {epsilon : ℝ}
+private theorem hausdorffMeasure_brokenSegment_lt {U : Set (EuclideanSpace ℝ (Fin 2))} (hUbounded : IsBounded U)
+    {a c b : (EuclideanSpace ℝ (Fin 2))} (ha : a ∈ closure U) (hb : b ∈ closure U) {epsilon : ℝ}
     (hepsilon : 0 < epsilon) (hac : dist a c < epsilon / 2) :
     μH[1] (brokenSegment a c b) < Metric.ediam U + ENNReal.ofReal epsilon := by
   have hab : dist a b ≤ Metric.diam U := by
@@ -126,15 +126,15 @@ private theorem hausdorffMeasure_brokenSegment_lt {U : Set Plane} (hUbounded : I
       rw [ENNReal.ofReal_add Metric.diam_nonneg hepsilon.le, Metric.diam,
         ENNReal.ofReal_toReal hUbounded.ediam_ne_top]
 
-private theorem isCompact_connectedComponentIn_of_isCompact {F : Set Plane}
-    (hF : IsCompact F) {x : Plane} (hx : x ∈ F) : IsCompact (connectedComponentIn F x) := by
+private theorem isCompact_connectedComponentIn_of_isCompact {F : Set (EuclideanSpace ℝ (Fin 2))}
+    (hF : IsCompact F) {x : (EuclideanSpace ℝ (Fin 2))} (hx : x ∈ F) : IsCompact (connectedComponentIn F x) := by
   letI : CompactSpace F := isCompact_iff_compactSpace.mp hF
   rw [connectedComponentIn_eq_image hx]
   exact isClosed_connectedComponent.isCompact.image continuous_subtype_val
 
 private theorem connectedComponentIn_inter_closure_inter_of_not_mem
-    {K U : Set Plane} (hKcompact : IsCompact K) (hKconnected : IsConnected K)
-    (hU : IsOpen U) {x y : Plane} (hxK : x ∈ K) (hxU : x ∉ U) (hyK : y ∈ K)
+    {K U : Set (EuclideanSpace ℝ (Fin 2))} (hKcompact : IsCompact K) (hKconnected : IsConnected K)
+    (hU : IsOpen U) {x y : (EuclideanSpace ℝ (Fin 2))} (hxK : x ∈ K) (hxU : x ∉ U) (hyK : y ∈ K)
     (hycomponent : y ∉ connectedComponentIn (K \ U) x) :
     (connectedComponentIn (K \ U) x ∩ closure (K ∩ U)).Nonempty := by
   classical
@@ -145,20 +145,20 @@ private theorem connectedComponentIn_inter_closure_inter_of_not_mem
   have hScompact : IsCompact S := hKcompact.inter_right hU.isClosed_compl
   have hxS : x ∈ S := ⟨hxK, hxU⟩
   let xS : S := ⟨x, hxS⟩
-  let O : Set Plane := (closure (K ∩ U))ᶜ ∩ {y}ᶜ
+  let O : Set (EuclideanSpace ℝ (Fin 2)) := (closure (K ∩ U))ᶜ ∩ {y}ᶜ
   have hOopen : IsOpen O := isOpen_compl_iff.mpr isClosed_closure |>.inter isOpen_compl_singleton
   have hcomponent_O : connectedComponent xS ⊆ ((↑) ⁻¹' O : Set S) := by
     intro z hz
-    have hzcomponent : (z : Plane) ∈ connectedComponentIn S x := by
+    have hzcomponent : (z : (EuclideanSpace ℝ (Fin 2))) ∈ connectedComponentIn S x := by
       rw [connectedComponentIn_eq_image hxS]
       exact ⟨z, hz, rfl⟩
-    have hzclosure : (z : Plane) ∉ closure (K ∩ U) := by
+    have hzclosure : (z : (EuclideanSpace ℝ (Fin 2))) ∉ closure (K ∩ U) := by
       intro hz
-      have : (z : Plane) ∈ connectedComponentIn (K \ U) x ∩ closure (K ∩ U) :=
+      have : (z : (EuclideanSpace ℝ (Fin 2))) ∈ connectedComponentIn (K \ U) x ∩ closure (K ∩ U) :=
         ⟨hzcomponent, hz⟩
       rw [hinter] at this
       exact this
-    have hzy : (z : Plane) ≠ y := by
+    have hzy : (z : (EuclideanSpace ℝ (Fin 2))) ≠ y := by
       intro hzy
       apply hycomponent
       simpa [S, hzy] using hzcomponent
@@ -167,7 +167,7 @@ private theorem connectedComponentIn_inter_closure_inter_of_not_mem
   obtain ⟨H, hHclopen, hcomponent_H, hH_O⟩ :=
     exists_isClopen_between_connectedComponent
       (hOopen.preimage continuous_subtype_val) hcomponent_O
-  let Hplane : Set Plane := Subtype.val '' H
+  let Hplane : Set (EuclideanSpace ℝ (Fin 2)) := Subtype.val '' H
   have hHplane_compact : IsCompact Hplane :=
     hHclopen.isClosed.isCompact.image continuous_subtype_val
   have hHplane_O : Hplane ⊆ O := by
@@ -182,7 +182,7 @@ private theorem connectedComponentIn_inter_closure_inter_of_not_mem
       ext z
       constructor
       · rintro ⟨hzV, hzO⟩
-        have hzU : (z : Plane) ∉ U := by
+        have hzU : (z : (EuclideanSpace ℝ (Fin 2))) ∉ U := by
           intro hzU
           exact hzO.1 (subset_closure ⟨z.property, hzU⟩)
         let w : S := ⟨z, z.property, hzU⟩
@@ -191,12 +191,12 @@ private theorem connectedComponentIn_inter_closure_inter_of_not_mem
           exact hzV
         exact ⟨w, hwH, rfl⟩
       · rintro ⟨w, hwH, hwz⟩
-        have hwV : (w : Plane) ∈ V := by
+        have hwV : (w : (EuclideanSpace ℝ (Fin 2))) ∈ V := by
           change w ∈ Subtype.val ⁻¹' V
           rw [hpreimage]
           exact hwH
-        have hw : (w : Plane) ∈ V ∩ O := ⟨hwV, hHplane_O ⟨w, hwH, rfl⟩⟩
-        change (z : Plane) ∈ V ∩ O
+        have hw : (w : (EuclideanSpace ℝ (Fin 2))) ∈ V ∩ O := ⟨hwV, hHplane_O ⟨w, hwH, rfl⟩⟩
+        change (z : (EuclideanSpace ℝ (Fin 2))) ∈ V ∩ O
         exact hwz ▸ hw
   let xK : K := ⟨x, hxK⟩
   have hxHplane : xK ∈ ((↑) ⁻¹' Hplane : Set K) := by
@@ -210,7 +210,7 @@ private theorem connectedComponentIn_inter_closure_inter_of_not_mem
   exact hyHplane (isPreconnected_univ.subset_isClopen hHplane_clopen_in_K
     ⟨xK, mem_univ _, hxHplane⟩ <| mem_univ yK)
 
-private theorem isOneHoleSurgery_of_connected_subset {K U A : Set Plane} {x y : Plane}
+private theorem isOneHoleSurgery_of_connected_subset {K U A : Set (EuclideanSpace ℝ (Fin 2))} {x y : (EuclideanSpace ℝ (Fin 2))}
     (hxy : edist x y = Metric.ediam K) (hAcompact : IsCompact A)
     (hAconnected : IsConnected A) (hxA : x ∈ A) (hyA : y ∈ A)
     (hAKU : A ⊆ K \ U) {epsilon : ℝ} (hepsilon : 0 < epsilon) :
@@ -231,7 +231,7 @@ private theorem isOneHoleSurgery_of_connected_subset {K U A : Set Plane} {x y : 
     positivity
 
 private theorem isOneHoleSurgery_of_component_union_bridge
-    {K U A bridge : Set Plane} {x y q : Plane} {epsilon : ℝ}
+    {K U A bridge : Set (EuclideanSpace ℝ (Fin 2))} {x y q : (EuclideanSpace ℝ (Fin 2))} {epsilon : ℝ}
     (hxy : edist x y = Metric.ediam K)
     (hAcompact : IsCompact A) (hAconnected : IsConnected A) (hyA : y ∈ A)
     (hqA : q ∈ A) (hAKU : A ⊆ K \ U) (hbridgeCompact : IsCompact bridge)
@@ -260,7 +260,7 @@ private theorem isOneHoleSurgery_of_component_union_bridge
   · exact fun _ hz ↦ Or.inr hz
 
 private theorem isOneHoleSurgery_of_two_components
-    {K U A B bridge : Set Plane} {x y a b : Plane} {epsilon : ℝ}
+    {K U A B bridge : Set (EuclideanSpace ℝ (Fin 2))} {x y a b : (EuclideanSpace ℝ (Fin 2))} {epsilon : ℝ}
     (hxy : edist x y = Metric.ediam K)
     (hAcompact : IsCompact A) (hAconnected : IsConnected A) (hxA : x ∈ A) (haA : a ∈ A)
     (hBcompact : IsCompact B) (hBconnected : IsConnected B) (hyB : y ∈ B) (hbB : b ∈ B)
@@ -297,7 +297,7 @@ private theorem isOneHoleSurgery_of_two_components
     · exact (hBKU hzB).2 hzU |>.elim
   · exact fun _ hz ↦ Or.inl (Or.inr hz)
 
-private theorem IsOneHoleSurgery.swap {K U D bridge : Set Plane} {x y : Plane}
+private theorem IsOneHoleSurgery.swap {K U D bridge : Set (EuclideanSpace ℝ (Fin 2))} {x y : (EuclideanSpace ℝ (Fin 2))}
     {epsilon : ℝ} (h : IsOneHoleSurgery K U x y epsilon D bridge) :
     IsOneHoleSurgery K U y x epsilon D bridge := by
   rcases h with ⟨hDcompact, hDconnected, hxD, hyD, hdiam, hDhull,
@@ -308,8 +308,8 @@ private theorem IsOneHoleSurgery.swap {K U D bridge : Set Plane} {x y : Plane}
     hbridgeAnchor, hbridgeMeasure⟩
 
 private theorem exists_oneHoleSurgery_of_left_mem
-    {K U : Set Plane} (hKcompact : IsCompact K) (hKconnected : IsConnected K)
-    {x y : Plane} (hxK : x ∈ K) (hyK : y ∈ K)
+    {K U : Set (EuclideanSpace ℝ (Fin 2))} (hKcompact : IsCompact K) (hKconnected : IsConnected K)
+    {x y : (EuclideanSpace ℝ (Fin 2))} (hxK : x ∈ K) (hyK : y ∈ K)
     (hxy : edist x y = Metric.ediam K) (hUopen : IsOpen U)
     (hUconvex : Convex ℝ U) (hUbounded : IsBounded U) (hxU : x ∈ U)
     (hyU : y ∉ U) {epsilon : ℝ} (hepsilon : 0 < epsilon) :
@@ -331,7 +331,7 @@ private theorem exists_oneHoleSurgery_of_left_mem
   have hbbridge : b ∈ bridge := Or.inr (right_mem_segment ℝ x b)
   have hbridgeSdiff : bridge \ U ⊆ K \ U := by
     intro z hz
-    have hzxb : z ∈ ({x, b} : Set Plane) :=
+    have hzxb : z ∈ ({x, b} : Set (EuclideanSpace ℝ (Fin 2))) :=
       brokenSegment_sdiff_subset_endpoints hUopen hUconvex
         (subset_closure hxU) hxU hbClosureU hz
     rcases hzxb with rfl | hzxb
@@ -354,8 +354,8 @@ private theorem exists_oneHoleSurgery_of_left_mem
 diameter-realizing pair. The bridge inserted in the hole has length at most the hole diameter,
 up to an arbitrarily small error. -/
 theorem exists_oneHoleSurgery
-    {K U : Set Plane} (hKcompact : IsCompact K) (hKconnected : IsConnected K)
-    {x y : Plane} (hxK : x ∈ K) (hyK : y ∈ K)
+    {K U : Set (EuclideanSpace ℝ (Fin 2))} (hKcompact : IsCompact K) (hKconnected : IsConnected K)
+    {x y : (EuclideanSpace ℝ (Fin 2))} (hxK : x ∈ K) (hyK : y ∈ K)
     (hxy : edist x y = Metric.ediam K) (hUopen : IsOpen U)
     (hUconvex : Convex ℝ U) (hUbounded : IsBounded U)
     (hUdiam : Metric.ediam U < Metric.ediam K) {epsilon : ℝ} (hepsilon : 0 < epsilon) :
@@ -407,7 +407,7 @@ theorem exists_oneHoleSurgery
         have hbbridge : b ∈ bridge := Or.inr (right_mem_segment ℝ c b)
         have hbridgeSdiff : bridge \ U ⊆ K \ U := by
           intro z hz
-          have hzab : z ∈ ({a, b} : Set Plane) :=
+          have hzab : z ∈ ({a, b} : Set (EuclideanSpace ℝ (Fin 2))) :=
             brokenSegment_sdiff_subset_endpoints hUopen hUconvex
               haClosureU hcKU.2 hbClosureU hz
           rcases hzab with rfl | hzab
@@ -431,22 +431,22 @@ theorem exists_oneHoleSurgery
         · exact hausdorffMeasure_brokenSegment_lt hUbounded
             haClosureU hbClosureU hepsilon hac
 
-private def threePointBarycenters (C : Set Plane) : Set Plane :=
+private def threePointBarycenters (C : Set (EuclideanSpace ℝ (Fin 2))) : Set (EuclideanSpace ℝ (Fin 2)) :=
   (fun p : stdSimplex ℝ (Fin 3) × (Fin 3 → C) ↦
-    ∑ i, p.1.1 i • (p.2 i : Plane)) '' univ
+    ∑ i, p.1.1 i • (p.2 i : (EuclideanSpace ℝ (Fin 2)))) '' univ
 
-private theorem exists_threePointBarycenter {C : Set Plane} (hC : C.Nonempty)
-    {t : Finset Plane} (htC : (t : Set Plane) ⊆ C) {w : Plane → ℝ}
+private theorem exists_threePointBarycenter {C : Set (EuclideanSpace ℝ (Fin 2))} (hC : C.Nonempty)
+    {t : Finset (EuclideanSpace ℝ (Fin 2))} (htC : (t : Set (EuclideanSpace ℝ (Fin 2))) ⊆ C) {w : (EuclideanSpace ℝ (Fin 2)) → ℝ}
     (hw : ∀ y ∈ t, 0 ≤ w y) (hwsum : ∑ y ∈ t, w y = 1)
     (hcard : Fintype.card t ≤ 3) :
     ∃ p : stdSimplex ℝ (Fin 3) × (Fin 3 → C),
-      ∑ i, p.1.1 i • (p.2 i : Plane) = ∑ y ∈ t, w y • y := by
+      ∑ i, p.1.1 i • (p.2 i : (EuclideanSpace ℝ (Fin 2))) = ∑ y ∈ t, w y • y := by
   let e : t ↪ Fin 3 := Classical.choice (Function.Embedding.nonempty_of_card_le hcard)
   let weight : Fin 3 → ℝ := Function.extend e (fun q : t ↦ w q) 0
   let point : Fin 3 → C :=
     Function.extend e (fun q : t ↦ ⟨q, htC q.property⟩) (fun _ ↦ ⟨hC.some, hC.some_mem⟩)
   have hweight_apply (q : t) : weight (e q) = w q := by simp [weight, Function.extend]
-  have hpoint_apply (q : t) : (point (e q) : Plane) = q := by
+  have hpoint_apply (q : t) : (point (e q) : (EuclideanSpace ℝ (Fin 2))) = q := by
     simp [point, Function.extend]
   have hweight_zero {i : Fin 3} (hi : i ∉ Finset.univ.map e) : weight i = 0 := by
     apply Function.extend_apply'
@@ -470,22 +470,22 @@ private theorem exists_threePointBarycenter {C : Set Plane} (hC : C.Nonempty)
   let weights : stdSimplex ℝ (Fin 3) := ⟨weight, hweight_nonneg, hweightsum⟩
   refine ⟨(weights, point), ?_⟩
   calc
-    (∑ i, weight i • (point i : Plane)) =
-        (∑ i ∈ Finset.univ.map e, weight i • (point i : Plane)) := by
+    (∑ i, weight i • (point i : (EuclideanSpace ℝ (Fin 2)))) =
+        (∑ i ∈ Finset.univ.map e, weight i • (point i : (EuclideanSpace ℝ (Fin 2)))) := by
       symm
       apply Finset.sum_subset (by simp)
       intro i _ hi
       rw [hweight_zero hi, zero_smul]
-    _ = (∑ q : t, weight (e q) • (point (e q) : Plane)) :=
+    _ = (∑ q : t, weight (e q) • (point (e q) : (EuclideanSpace ℝ (Fin 2)))) :=
       Finset.sum_map (Finset.univ : Finset t) e _
-    _ = (∑ q : t, w q • (q : Plane)) := by
+    _ = (∑ q : t, w q • (q : (EuclideanSpace ℝ (Fin 2)))) := by
       apply Finset.sum_congr rfl
       intro q _
       rw [hweight_apply, hpoint_apply]
     _ = (∑ y ∈ t, w y • y) := by
-      simpa using Finset.sum_coe_sort t (fun y : Plane ↦ w y • y)
+      simpa using Finset.sum_coe_sort t (fun y : (EuclideanSpace ℝ (Fin 2)) ↦ w y • y)
 
-private theorem convexHull_eq_threePointBarycenters {C : Set Plane} (hC : C.Nonempty) :
+private theorem convexHull_eq_threePointBarycenters {C : Set (EuclideanSpace ℝ (Fin 2))} (hC : C.Nonempty) :
     convexHull ℝ C = threePointBarycenters C := by
   apply Subset.antisymm
   · intro z hz
@@ -496,20 +496,20 @@ private theorem convexHull_eq_threePointBarycenters {C : Set Plane} (hC : C.None
     obtain ⟨w, hw, hwsum, hwz⟩ := hzt
     have hcard : Fintype.card t ≤ 3 := by
       calc
-        Fintype.card t ≤ Module.finrank ℝ (vectorSpan ℝ (range ((↑) : t → Plane))) + 1 :=
+        Fintype.card t ≤ Module.finrank ℝ (vectorSpan ℝ (range ((↑) : t → (EuclideanSpace ℝ (Fin 2))))) + 1 :=
           htAffine.card_le_finrank_succ
-        _ ≤ Module.finrank ℝ Plane + 1 :=
+        _ ≤ Module.finrank ℝ (EuclideanSpace ℝ (Fin 2)) + 1 :=
           Nat.add_le_add_right (Submodule.finrank_le _) 1
         _ = 3 := by simp [finrank_euclideanSpace]
     obtain ⟨p, hp⟩ := exists_threePointBarycenter hC htC hw hwsum hcard
     exact ⟨p, mem_univ _, by simpa [threePointBarycenters, hwz] using hp⟩
   · rintro z ⟨p, -, rfl⟩
-    change (∑ i, p.1.1 i • (p.2 i : Plane)) ∈ convexHull ℝ C
-    rw [← Finset.centerMass_eq_of_sum_1 Finset.univ (fun i ↦ (p.2 i : Plane)) p.1.2.2]
+    change (∑ i, p.1.1 i • (p.2 i : (EuclideanSpace ℝ (Fin 2)))) ∈ convexHull ℝ C
+    rw [← Finset.centerMass_eq_of_sum_1 Finset.univ (fun i ↦ (p.2 i : (EuclideanSpace ℝ (Fin 2)))) p.1.2.2]
     exact Finset.univ.centerMass_mem_convexHull (fun i _ ↦ p.1.2.1 i)
       (by rw [p.1.2.2]; exact zero_lt_one) (fun i _ ↦ (p.2 i).property)
 
-private theorem isCompact_convexHull_plane {C : Set Plane} (hC : IsCompact C) :
+private theorem isCompact_convexHull_plane {C : Set (EuclideanSpace ℝ (Fin 2))} (hC : IsCompact C) :
     IsCompact (convexHull ℝ C) := by
   by_cases hCne : C.Nonempty
   · rw [convexHull_eq_threePointBarycenters hCne, threePointBarycenters]
@@ -522,14 +522,14 @@ private theorem isCompact_convexHull_plane {C : Set Plane} (hC : IsCompact C) :
   · rw [not_nonempty_iff_eq_empty.mp hCne, convexHull_empty]
     exact isCompact_empty
 
-private def holesBefore (U : ℕ → Set Plane) (n : ℕ) : Set Plane :=
+private def holesBefore (U : ℕ → Set (EuclideanSpace ℝ (Fin 2))) (n : ℕ) : Set (EuclideanSpace ℝ (Fin 2)) :=
   ⋃ i : Fin n, U i
 
 @[simp]
-private theorem holesBefore_zero (U : ℕ → Set Plane) : holesBefore U 0 = ∅ := by
+private theorem holesBefore_zero (U : ℕ → Set (EuclideanSpace ℝ (Fin 2))) : holesBefore U 0 = ∅ := by
   simp [holesBefore]
 
-private theorem holesBefore_succ (U : ℕ → Set Plane) (n : ℕ) :
+private theorem holesBefore_succ (U : ℕ → Set (EuclideanSpace ℝ (Fin 2))) (n : ℕ) :
     holesBefore U (n + 1) = holesBefore U n ∪ U n := by
   ext z
   simp only [holesBefore, mem_iUnion, mem_union]
@@ -542,10 +542,10 @@ private theorem holesBefore_succ (U : ℕ → Set Plane) (n : ℕ) :
     · exact ⟨i.castSucc, hi⟩
     · exact ⟨Fin.last n, hn⟩
 
-private structure SurgeryStage (C : Set Plane) (U : ℕ → Set Plane)
-    (eta : ℕ → ℝ) (x y : Plane) (n : ℕ) where
-  carrier : Set Plane
-  bridges : Fin n → Set Plane
+private structure SurgeryStage (C : Set (EuclideanSpace ℝ (Fin 2))) (U : ℕ → Set (EuclideanSpace ℝ (Fin 2)))
+    (eta : ℕ → ℝ) (x y : (EuclideanSpace ℝ (Fin 2))) (n : ℕ) where
+  carrier : Set (EuclideanSpace ℝ (Fin 2))
+  bridges : Fin n → Set (EuclideanSpace ℝ (Fin 2))
   isCompact_carrier : IsCompact carrier
   isConnected_carrier : IsConnected carrier
   left_mem : x ∈ carrier
@@ -562,8 +562,8 @@ private structure SurgeryStage (C : Set Plane) (U : ℕ → Set Plane)
   bridge_measure : ∀ i : Fin n, μH[1] (bridges i) <
     Metric.ediam (U i) + ENNReal.ofReal (eta i)
 
-private def initialSurgeryStage {C : Set Plane} (U : ℕ → Set Plane)
-    (eta : ℕ → ℝ) {x y : Plane} (hCcompact : IsCompact C)
+private def initialSurgeryStage {C : Set (EuclideanSpace ℝ (Fin 2))} (U : ℕ → Set (EuclideanSpace ℝ (Fin 2)))
+    (eta : ℕ → ℝ) {x y : (EuclideanSpace ℝ (Fin 2))} (hCcompact : IsCompact C)
     (hCconnected : IsConnected C) (hxC : x ∈ C) (hyC : y ∈ C) :
     SurgeryStage C U eta x y 0 where
   carrier := C
@@ -584,7 +584,7 @@ private def initialSurgeryStage {C : Set Plane} (U : ℕ → Set Plane)
   bridge_measure := fun i ↦ Fin.elim0 i
 
 private theorem SurgeryStage.exists_succ
-    {C : Set Plane} {U : ℕ → Set Plane} {eta : ℕ → ℝ} {x y : Plane} {n : ℕ}
+    {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} {eta : ℕ → ℝ} {x y : (EuclideanSpace ℝ (Fin 2))} {n : ℕ}
     (S : SurgeryStage C U eta x y n) (hxy : edist x y = Metric.ediam C)
     (hUopen : ∀ i, IsOpen (U i)) (hUconvex : ∀ i, Convex ℝ (U i))
     (hUbounded : ∀ i, IsBounded (U i))
@@ -604,7 +604,7 @@ private theorem SurgeryStage.exists_succ
   rcases hD with ⟨hDcompact, hDconnected, hxD, hyD, hDediam, hDhull,
     hDoutside, hDinside, hbridgeD, hbridgeCompact, hbridgePreconnected, hbridgeClosure,
     hbridgeAnchor, hbridgeMeasure⟩
-  let bridges : Fin (n + 1) → Set Plane := Fin.lastCases bridge S.bridges
+  let bridges : Fin (n + 1) → Set (EuclideanSpace ℝ (Fin 2)) := Fin.lastCases bridge S.bridges
   have hDsubset : D ⊆ S.carrier ∪ bridge := by
     intro z hzD
     by_cases hzU : z ∈ U n
@@ -704,8 +704,8 @@ private theorem SurgeryStage.exists_succ
   · intro i
     simp [bridges]
 
-private structure SurgeryData (C : Set Plane) (U : ℕ → Set Plane)
-    (eta : ℕ → ℝ) (x y : Plane) where
+private structure SurgeryData (C : Set (EuclideanSpace ℝ (Fin 2))) (U : ℕ → Set (EuclideanSpace ℝ (Fin 2)))
+    (eta : ℕ → ℝ) (x y : (EuclideanSpace ℝ (Fin 2))) where
   isCompact_core : IsCompact C
   isConnected_core : IsConnected C
   left_mem_core : x ∈ C
@@ -720,39 +720,39 @@ private structure SurgeryData (C : Set Plane) (U : ℕ → Set Plane)
 
 namespace SurgeryData
 
-private noncomputable def next {C : Set Plane} {U : ℕ → Set Plane}
-    {eta : ℕ → ℝ} {x y : Plane} (P : SurgeryData C U eta x y) {n : ℕ}
+private noncomputable def next {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    {eta : ℕ → ℝ} {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) {n : ℕ}
     (S : SurgeryStage C U eta x y n) : SurgeryStage C U eta x y (n + 1) :=
   Classical.choose <| S.exists_succ P.realizes_ediam P.isOpen_hole P.convex_hole
     P.isBounded_hole P.disjoint_holes P.sum_ediam_lt P.error_pos
 
-private theorem next_subset {C : Set Plane} {U : ℕ → Set Plane}
-    {eta : ℕ → ℝ} {x y : Plane} (P : SurgeryData C U eta x y) {n : ℕ}
+private theorem next_subset {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    {eta : ℕ → ℝ} {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) {n : ℕ}
     (S : SurgeryStage C U eta x y n) :
     (P.next S).carrier ⊆ S.carrier ∪ (P.next S).bridges (Fin.last n) :=
   (Classical.choose_spec <| S.exists_succ P.realizes_ediam P.isOpen_hole P.convex_hole
     P.isBounded_hole P.disjoint_holes P.sum_ediam_lt P.error_pos).1
 
-private theorem next_bridge_castSucc {C : Set Plane} {U : ℕ → Set Plane}
-    {eta : ℕ → ℝ} {x y : Plane} (P : SurgeryData C U eta x y) {n : ℕ}
+private theorem next_bridge_castSucc {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    {eta : ℕ → ℝ} {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) {n : ℕ}
     (S : SurgeryStage C U eta x y n) (i : Fin n) :
     (P.next S).bridges i.castSucc = S.bridges i :=
   (Classical.choose_spec <| S.exists_succ P.realizes_ediam P.isOpen_hole P.convex_hole
     P.isBounded_hole P.disjoint_holes P.sum_ediam_lt P.error_pos).2 i
 
-private noncomputable def stages {C : Set Plane} {U : ℕ → Set Plane}
-    {eta : ℕ → ℝ} {x y : Plane} (P : SurgeryData C U eta x y) :
+private noncomputable def stages {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    {eta : ℕ → ℝ} {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) :
     (n : ℕ) → SurgeryStage C U eta x y n
   | 0 => initialSurgeryStage U eta P.isCompact_core P.isConnected_core
       P.left_mem_core P.right_mem_core
   | n + 1 => P.next (P.stages n)
 
-private def bridge {C : Set Plane} {U : ℕ → Set Plane} {eta : ℕ → ℝ}
-    {x y : Plane} (P : SurgeryData C U eta x y) (i : ℕ) : Set Plane :=
+private def bridge {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} {eta : ℕ → ℝ}
+    {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) (i : ℕ) : Set (EuclideanSpace ℝ (Fin 2)) :=
   (P.stages (i + 1)).bridges (Fin.last i)
 
-private theorem stage_bridge_eq {C : Set Plane} {U : ℕ → Set Plane}
-    {eta : ℕ → ℝ} {x y : Plane} (P : SurgeryData C U eta x y) (n : ℕ)
+private theorem stage_bridge_eq {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    {eta : ℕ → ℝ} {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) (n : ℕ)
     (i : Fin n) : (P.stages n).bridges i = P.bridge i := by
   induction n with
   | zero => exact Fin.elim0 i
@@ -763,8 +763,8 @@ private theorem stage_bridge_eq {C : Set Plane} {U : ℕ → Set Plane}
         exact ih j
 
 private theorem stage_subset_core_union_bridges
-    {C : Set Plane} {U : ℕ → Set Plane} {eta : ℕ → ℝ}
-    {x y : Plane} (P : SurgeryData C U eta x y) (n : ℕ) :
+    {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} {eta : ℕ → ℝ}
+    {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) (n : ℕ) :
     (P.stages n).carrier ⊆ C ∪ ⋃ i : Fin n, P.bridge i := by
   induction n with
   | zero =>
@@ -782,34 +782,34 @@ private theorem stage_subset_core_union_bridges
         apply mem_iUnion.2
         exact ⟨Fin.last n, hznew⟩
 
-private theorem isCompact_bridge {C : Set Plane} {U : ℕ → Set Plane}
-    {eta : ℕ → ℝ} {x y : Plane} (P : SurgeryData C U eta x y) (i : ℕ) :
+private theorem isCompact_bridge {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    {eta : ℕ → ℝ} {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) (i : ℕ) :
     IsCompact (P.bridge i) :=
   (P.stages (i + 1)).isCompact_bridge (Fin.last i)
 
-private theorem bridge_subset_closure {C : Set Plane} {U : ℕ → Set Plane}
-    {eta : ℕ → ℝ} {x y : Plane} (P : SurgeryData C U eta x y) (i : ℕ) :
+private theorem bridge_subset_closure {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    {eta : ℕ → ℝ} {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) (i : ℕ) :
     P.bridge i ⊆ closure (U i) :=
   (P.stages (i + 1)).bridge_subset_closure (Fin.last i)
 
-private theorem bridge_outside {C : Set Plane} {U : ℕ → Set Plane}
-    {eta : ℕ → ℝ} {x y : Plane} (P : SurgeryData C U eta x y) (i : ℕ) :
+private theorem bridge_outside {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    {eta : ℕ → ℝ} {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) (i : ℕ) :
     P.bridge i \ U i ⊆ C :=
   (P.stages (i + 1)).bridge_outside (Fin.last i)
 
-private theorem bridge_anchor {C : Set Plane} {U : ℕ → Set Plane}
-    {eta : ℕ → ℝ} {x y : Plane} (P : SurgeryData C U eta x y) (i : ℕ) :
+private theorem bridge_anchor {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    {eta : ℕ → ℝ} {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) (i : ℕ) :
     (P.bridge i).Nonempty → (P.bridge i ∩ C).Nonempty :=
   (P.stages (i + 1)).bridge_anchor (Fin.last i)
 
-private theorem bridge_measure {C : Set Plane} {U : ℕ → Set Plane}
-    {eta : ℕ → ℝ} {x y : Plane} (P : SurgeryData C U eta x y) (i : ℕ) :
+private theorem bridge_measure {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    {eta : ℕ → ℝ} {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) (i : ℕ) :
     μH[1] (P.bridge i) < Metric.ediam (U i) + ENNReal.ofReal (eta i) :=
   (P.stages (i + 1)).bridge_measure (Fin.last i)
 
 private theorem closure_core_union_bridges_sdiff
-    {C : Set Plane} {U : ℕ → Set Plane} {eta : ℕ → ℝ}
-    {x y : Plane} (P : SurgeryData C U eta x y) :
+    {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} {eta : ℕ → ℝ}
+    {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) :
     closure (C ∪ ⋃ i, P.bridge i) \ ⋃ i, U i ⊆ C := by
   rintro z ⟨hzclosure, hzholes⟩
   by_contra hzC
@@ -867,21 +867,21 @@ private theorem closure_core_union_bridges_sdiff
       _ < delta := by linarith
     exact (lt_irrefl _ hcontradiction).elim
 
-private noncomputable def compactStage {C : Set Plane} {U : ℕ → Set Plane}
-    {eta : ℕ → ℝ} {x y : Plane} (P : SurgeryData C U eta x y) (n : ℕ) :
+private noncomputable def compactStage {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    {eta : ℕ → ℝ} {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) (n : ℕ) :
     TopologicalSpace.NonemptyCompacts (convexHull ℝ C) := by
   letI : CompactSpace (convexHull ℝ C) :=
     isCompact_iff_compactSpace.mp (isCompact_convexHull_plane P.isCompact_core)
   exact {
-    carrier := {q | (q : Plane) ∈ (P.stages n).carrier}
+    carrier := {q | (q : (EuclideanSpace ℝ (Fin 2))) ∈ (P.stages n).carrier}
     isCompact' :=
       ((P.stages n).isCompact_carrier.isClosed.preimage continuous_subtype_val).isCompact
     nonempty' :=
       ⟨⟨x, (P.stages n).subset_convexHull (P.stages n).left_mem⟩,
         (P.stages n).left_mem⟩ }
 
-private theorem isConnected_compactStage {C : Set Plane} {U : ℕ → Set Plane}
-    {eta : ℕ → ℝ} {x y : Plane} (P : SurgeryData C U eta x y) (n : ℕ) :
+private theorem isConnected_compactStage {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))}
+    {eta : ℕ → ℝ} {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) (n : ℕ) :
     IsConnected (P.compactStage n : Set (convexHull ℝ C)) := by
   refine ⟨⟨⟨x, (P.stages n).subset_convexHull (P.stages n).left_mem⟩,
     (P.stages n).left_mem⟩, ?_⟩
@@ -941,15 +941,15 @@ private theorem isConnected_nonemptyCompacts_limit
 
 namespace SurgeryData
 
-private theorem exists_limit {C : Set Plane} {U : ℕ → Set Plane} {eta : ℕ → ℝ}
-    {x y : Plane} (P : SurgeryData C U eta x y) :
-    ∃ D : Set Plane,
+private theorem exists_limit {C : Set (EuclideanSpace ℝ (Fin 2))} {U : ℕ → Set (EuclideanSpace ℝ (Fin 2))} {eta : ℕ → ℝ}
+    {x y : (EuclideanSpace ℝ (Fin 2))} (P : SurgeryData C U eta x y) :
+    ∃ D : Set (EuclideanSpace ℝ (Fin 2)),
       IsCompact D ∧ IsConnected D ∧ x ∈ D ∧ y ∈ D ∧ D ⊆ convexHull ℝ C ∧
         D ⊆ closure (C ∪ ⋃ i, P.bridge i) ∧ ∀ i, D ∩ U i ⊆ P.bridge i := by
   letI : CompactSpace (convexHull ℝ C) :=
     isCompact_iff_compactSpace.mp (isCompact_convexHull_plane P.isCompact_core)
   obtain ⟨L, phi, hphi, hlimit⟩ := CompactSpace.tendsto_subseq P.compactStage
-  let D : Set Plane := Subtype.val '' (L : Set (convexHull ℝ C))
+  let D : Set (EuclideanSpace ℝ (Fin 2)) := Subtype.val '' (L : Set (convexHull ℝ C))
   have hLconnected : IsConnected (L : Set (convexHull ℝ C)) :=
     isConnected_nonemptyCompacts_limit (fun n ↦ P.compactStage (phi n)) L
       (fun n ↦ P.isConnected_compactStage (phi n)) hlimit
@@ -1016,15 +1016,15 @@ end SurgeryData
 
 /-- Countably many disjoint open convex holes can be bypassed without changing a
 diameter-realizing pair, at a total length cost bounded by their diameters. -/
-theorem exists_continuum_surgery {C : Set Plane} (hCcompact : IsCompact C)
-    (hCconnected : IsConnected C) {x y : Plane} (hxC : x ∈ C) (hyC : y ∈ C)
-    (hxy : edist x y = Metric.ediam C) (U : ℕ → Set Plane)
+theorem exists_continuum_surgery {C : Set (EuclideanSpace ℝ (Fin 2))} (hCcompact : IsCompact C)
+    (hCconnected : IsConnected C) {x y : (EuclideanSpace ℝ (Fin 2))} (hxC : x ∈ C) (hyC : y ∈ C)
+    (hxy : edist x y = Metric.ediam C) (U : ℕ → Set (EuclideanSpace ℝ (Fin 2)))
     (hUopen : ∀ i, IsOpen (U i)) (hUconvex : ∀ i, Convex ℝ (U i))
     (hUbounded : ∀ i, IsBounded (U i))
     (hUdisjoint : Pairwise fun i j ↦ Disjoint (U i) (U j))
     (hsum : (∑' i, Metric.ediam (U i)) < Metric.ediam C) {epsilon : ℝ}
     (hepsilon : 0 < epsilon) :
-    ∃ D : Set Plane,
+    ∃ D : Set (EuclideanSpace ℝ (Fin 2)),
       IsCompact D ∧ IsConnected D ∧ x ∈ D ∧ y ∈ D ∧
         Metric.ediam D = Metric.ediam C ∧ D ⊆ convexHull ℝ C ∧
         D \ ⋃ i, U i ⊆ C \ ⋃ i, U i ∧
@@ -1088,15 +1088,15 @@ theorem exists_continuum_surgery {C : Set Plane} (hCcompact : IsCompact C)
 
 /-- The continuum-surgery theorem for a countable index type. -/
 theorem exists_continuum_surgery_countable {iota : Type*} [Countable iota]
-    {C : Set Plane} (hCcompact : IsCompact C) (hCconnected : IsConnected C)
-    {x y : Plane} (hxC : x ∈ C) (hyC : y ∈ C)
-    (hxy : edist x y = Metric.ediam C) (U : iota → Set Plane)
+    {C : Set (EuclideanSpace ℝ (Fin 2))} (hCcompact : IsCompact C) (hCconnected : IsConnected C)
+    {x y : (EuclideanSpace ℝ (Fin 2))} (hxC : x ∈ C) (hyC : y ∈ C)
+    (hxy : edist x y = Metric.ediam C) (U : iota → Set (EuclideanSpace ℝ (Fin 2)))
     (hUopen : ∀ i, IsOpen (U i)) (hUconvex : ∀ i, Convex ℝ (U i))
     (hUbounded : ∀ i, IsBounded (U i))
     (hUdisjoint : Pairwise fun i j ↦ Disjoint (U i) (U j))
     (hsum : (∑' i, Metric.ediam (U i)) < Metric.ediam C) {epsilon : ℝ}
     (hepsilon : 0 < epsilon) :
-    ∃ D : Set Plane,
+    ∃ D : Set (EuclideanSpace ℝ (Fin 2)),
       IsCompact D ∧ IsConnected D ∧ x ∈ D ∧ y ∈ D ∧
         Metric.ediam D = Metric.ediam C ∧ D ⊆ convexHull ℝ C ∧
         D \ ⋃ i, U i ⊆ C \ ⋃ i, U i ∧
@@ -1104,7 +1104,7 @@ theorem exists_continuum_surgery_countable {iota : Type*} [Countable iota]
         μH[1] D ≤ μH[1] C + (∑' i, Metric.ediam (U i)) + ENNReal.ofReal epsilon := by
   letI : Encodable iota := Encodable.ofCountable iota
   let e : iota → ℕ := Encodable.encode
-  let V : ℕ → Set Plane := Function.extend e U ⊥
+  let V : ℕ → Set (EuclideanSpace ℝ (Fin 2)) := Function.extend e U ⊥
   have he : Function.Injective e := Encodable.encode_injective
   have hVencode (i : iota) : V (e i) = U i := by
     exact he.extend_apply U ⊥ i
@@ -1170,18 +1170,18 @@ theorem exists_continuum_surgery_countable {iota : Type*} [Countable iota]
 /-- A countable family of open holes has a pairwise-disjoint open convex enlargement whose
 total diameter is no larger. -/
 theorem exists_pairwiseDisjoint_convex_hole_cover_countable
-    {iota : Type*} [Countable iota] (U : iota → Set Plane)
+    {iota : Type*} [Countable iota] (U : iota → Set (EuclideanSpace ℝ (Fin 2)))
     (hUopen : ∀ i, IsOpen (U i))
     (hsum : (∑' i, Metric.ediam (U i)) ≠ ∞) :
-    ∃ W : Set (Set Plane),
+    ∃ W : Set (Set (EuclideanSpace ℝ (Fin 2))),
       W.Countable ∧ W.PairwiseDisjoint id ∧
-        (∀ V : W, IsOpen (V : Set Plane) ∧ Convex ℝ (V : Set Plane) ∧
-          IsBounded (V : Set Plane)) ∧
-        (⋃ i, U i) ⊆ ⋃ V : W, (V : Set Plane) ∧
-        (∑' V : W, Metric.ediam (V : Set Plane)) ≤ ∑' i, Metric.ediam (U i) := by
+        (∀ V : W, IsOpen (V : Set (EuclideanSpace ℝ (Fin 2))) ∧ Convex ℝ (V : Set (EuclideanSpace ℝ (Fin 2))) ∧
+          IsBounded (V : Set (EuclideanSpace ℝ (Fin 2)))) ∧
+        (⋃ i, U i) ⊆ ⋃ V : W, (V : Set (EuclideanSpace ℝ (Fin 2))) ∧
+        (∑' V : W, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2)))) ≤ ∑' i, Metric.ediam (U i) := by
   letI : Encodable iota := Encodable.ofCountable iota
   let e : iota → ℕ := Encodable.encode
-  let V : ℕ → Set Plane := Function.extend e U ⊥
+  let V : ℕ → Set (EuclideanSpace ℝ (Fin 2)) := Function.extend e U ⊥
   have he : Function.Injective e := Encodable.encode_injective
   have hVencode (i : iota) : V (e i) = U i := he.extend_apply U ⊥ i
   have hVoutside {n : ℕ} (hn : ¬ ∃ i, e i = n) : V n = ∅ := by
@@ -1226,12 +1226,12 @@ theorem exists_pairwiseDisjoint_convex_hole_cover_countable
 /-- Surgery for arbitrary countably many open holes. The part not inherited from the old
 continuum outside the holes has measure strictly smaller than the preserved diameter. -/
 theorem exists_continuum_surgery_open_holes {iota : Type*} [Countable iota]
-    {C : Set Plane} (hCcompact : IsCompact C) (hCconnected : IsConnected C)
-    {x y : Plane} (hxC : x ∈ C) (hyC : y ∈ C)
-    (hxy : edist x y = Metric.ediam C) (U : iota → Set Plane)
+    {C : Set (EuclideanSpace ℝ (Fin 2))} (hCcompact : IsCompact C) (hCconnected : IsConnected C)
+    {x y : (EuclideanSpace ℝ (Fin 2))} (hxC : x ∈ C) (hyC : y ∈ C)
+    (hxy : edist x y = Metric.ediam C) (U : iota → Set (EuclideanSpace ℝ (Fin 2)))
     (hUopen : ∀ i, IsOpen (U i))
     (hsum : (∑' i, Metric.ediam (U i)) < Metric.ediam C) :
-    ∃ D : Set Plane,
+    ∃ D : Set (EuclideanSpace ℝ (Fin 2)),
       IsCompact D ∧ IsConnected D ∧ x ∈ D ∧ y ∈ D ∧
         Metric.ediam D = Metric.ediam C ∧ D ⊆ convexHull ℝ C ∧
         μH[1] (D \ (C \ ⋃ i, U i)) < Metric.ediam C ∧
@@ -1242,7 +1242,7 @@ theorem exists_continuum_surgery_open_holes {iota : Type*} [Countable iota]
       (ne_top_of_lt (hsum.trans_le le_top))
   letI : Countable W := hWcountable.to_subtype
   have hWpairwise : Pairwise fun V Z : W ↦
-      Disjoint (V : Set Plane) (Z : Set Plane) := by
+      Disjoint (V : Set (EuclideanSpace ℝ (Fin 2))) (Z : Set (EuclideanSpace ℝ (Fin 2))) := by
     intro V Z hVZ
     simpa only [Function.onFun, id_eq] using
       hWdisjoint V.property Z.property (fun h ↦ hVZ (Subtype.ext h))
@@ -1251,20 +1251,20 @@ theorem exists_continuum_surgery_open_holes {iota : Type*} [Countable iota]
   obtain ⟨D, hDcompact, hDconnected, hxD, hyD, hDediam, hDhull,
       hDoutside, hDinside, -⟩ :=
     exists_continuum_surgery_countable hCcompact hCconnected hxC hyC hxy
-      (fun V : W ↦ (V : Set Plane)) (fun V ↦ (hWproperties V).1)
+      (fun V : W ↦ (V : Set (EuclideanSpace ℝ (Fin 2)))) (fun V ↦ (hWproperties V).1)
       (fun V ↦ (hWproperties V).2.1) (fun V ↦ (hWproperties V).2.2)
       hWpairwise (hWsum.trans_lt hsum) (NNReal.coe_pos.mpr herror)
-  have hinsideStrict : μH[1] (D ∩ ⋃ V : W, (V : Set Plane)) < Metric.ediam C := by
+  have hinsideStrict : μH[1] (D ∩ ⋃ V : W, (V : Set (EuclideanSpace ℝ (Fin 2)))) < Metric.ediam C := by
     calc
-      μH[1] (D ∩ ⋃ V : W, (V : Set Plane)) ≤
-          (∑' V : W, Metric.ediam (V : Set Plane)) + ENNReal.ofReal (error : ℝ) :=
+      μH[1] (D ∩ ⋃ V : W, (V : Set (EuclideanSpace ℝ (Fin 2)))) ≤
+          (∑' V : W, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2)))) + ENNReal.ofReal (error : ℝ) :=
         hDinside
       _ ≤ (∑' i, Metric.ediam (U i)) + (error : ℝ≥0∞) := by
         simpa only [ENNReal.ofReal_coe_nnreal, add_comm] using
           add_le_add_right hWsum (error : ℝ≥0∞)
       _ < Metric.ediam C := hbudget
   have hchargedSubset :
-      D \ (C \ ⋃ i, U i) ⊆ D ∩ ⋃ V : W, (V : Set Plane) := by
+      D \ (C \ ⋃ i, U i) ⊆ D ∩ ⋃ V : W, (V : Set (EuclideanSpace ℝ (Fin 2))) := by
     rintro z ⟨hzD, hzcore⟩
     refine ⟨hzD, ?_⟩
     by_contra hzW

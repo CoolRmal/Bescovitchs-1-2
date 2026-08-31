@@ -124,8 +124,8 @@ theorem BesicovitchPairCondition.mono {β γ : ℝ} (hβγ : β ≤ γ)
   exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hβγ (by norm_num)) hr.le
 
 /-- A straight set whose mass exceeds `a` contains two points more than `a` apart. -/
-theorem IsStraightMeasure.exists_dist_gt {μ : Measure Plane} (hμ : IsStraightMeasure μ)
-    {s : Set Plane} (hs : MeasurableSet s) {a : ℝ} (ha : ENNReal.ofReal a < μ s) :
+theorem IsStraightMeasure.exists_dist_gt {μ : Measure (EuclideanSpace ℝ (Fin 2))} (hμ : IsStraightMeasure μ)
+    {s : Set (EuclideanSpace ℝ (Fin 2))} (hs : MeasurableSet s) {a : ℝ} (ha : ENNReal.ofReal a < μ s) :
     ∃ x ∈ s, ∃ y ∈ s, a < dist x y := by
   by_contra h
   have hall : ∀ x ∈ s, ∀ y ∈ s, dist x y ≤ a := by

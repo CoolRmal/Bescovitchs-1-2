@@ -5,7 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
-public import Bescovitch.Geometry.Basic
+public import Bescovitch.Statement
 
 /-!
 # Two-color six-point configurations
@@ -34,12 +34,12 @@ inductive SixPointLabel
 abbrev SixPointIndex := SixPointColor × SixPointLabel
 
 /-- A two-color six-point configuration in the Euclidean plane. -/
-abbrev SixPointConfiguration := SixPointColor → SixPointLabel → Plane
+abbrev SixPointConfiguration := SixPointColor → SixPointLabel → (EuclideanSpace ℝ (Fin 2))
 
 namespace SixPointConfiguration
 
 /-- The labelled configuration determined by two roots and two children of each color. -/
-def ofPoints (redRoot redLeft redRight blueRoot blueLeft blueRight : Plane) :
+def ofPoints (redRoot redLeft redRight blueRoot blueLeft blueRight : (EuclideanSpace ℝ (Fin 2))) :
     SixPointConfiguration
   | .red, .root => redRoot
   | .red, .left => redLeft

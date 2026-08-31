@@ -22,7 +22,8 @@ namespace Bescovitch
 
 /-- The weighted geometric bound implies the desired bound for the planar density threshold. -/
 theorem sigmaOne_plane_le_sStar_of_weightedGeometricBound
-    (hweighted : WeightedGeometricBound) : sigmaOne Plane ≤ sStar :=
+    (hweighted : WeightedGeometricBound) :
+    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ sStar :=
   sigmaOne_plane_le_sStar_of_sixPointFiniteProperty
     (sixPointFiniteProperty_sStar_of_weightedGeometricBound hweighted)
 

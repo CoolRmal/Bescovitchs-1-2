@@ -3,13 +3,21 @@
 The target is the exact theorem
 
 ```lean
-Bescovitch.sigma_one_plane_le_s_star : sigmaOne Plane ≤ sStar
+Bescovitch.sigma_one_plane_le_s_star :
+  sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ sStar
 ```
 
-The project separates the public statement from its proof. `Challenge.lean` imports the transparent
-definitions and contains the one permitted challenge hole. `Solution.lean` repeats the same theorem
-header and will import the completed proof. The comparator recursively checks every definition in
-the theorem type, so neither `sigmaOne` nor `sStar` can be changed in the solution.
+The comparator also checks the certified numerical consequence
+
+```lean
+Bescovitch.sStar_le_6934_div_10000 : sStar ≤ 6934 / 10000
+```
+
+The project separates the public statement from its proof. `Challenge.lean` contains every
+transparent definition in the theorems and the two challenge holes. The identical
+definitions in `Statement.lean` support the modular proof imported by `Solution.lean`. The
+comparator recursively checks them, so neither `sigmaOne` nor `sStar` can be changed in the
+solution.
 
 Only declarations on a dependency path to this theorem belong in the project. In particular, a
 lemma from Preiss's paper is formalized only when it is used by the six-point argument, the BPC
@@ -17,17 +25,17 @@ transfer, or the rectifiability transfer below.
 
 ## Definition layer
 
-- `Geometry/Basic.lean`: the Euclidean plane and elementary metric API.
-- `Measure/Density.lean`: normalized lower one-dimensional Hausdorff density.
-- `Rectifiability/Defs.lean`: countable and pure one-unrectifiability.
+- `Challenge.lean`: lower density, countable rectifiability, `sigmaOne`, the exact endpoint, and the
+  target theorem, stated directly for `EuclideanSpace ℝ (Fin 2)`.
+- `Statement.lean`: the identical solution-side definitions required by the modular proof.
+- `Rectifiability/Basic.lean`: pure one-unrectifiability and the basic rectifiability API.
 - `BPC/Defs.lean`: set distance, straight measures, and the Besicovitch pair condition.
-- `Sigma/Defs.lean`: the rectifiability property and `sigmaOne`.
-- `SixPoint/AlgebraicConstant.lean`: the isolated radical system defining `sStar`.
-- `Statement.lean`: the trusted re-export used by both comparator files.
 
-Every infimum in this layer has the nonemptiness and boundedness facts needed to rule out default
-values. The endpoint `sStar` is constructed from an exactly isolated real-algebraic pair; its
-decimal expansion is documentation only and never occurs in the theorem or its proof.
+`lowerOneDensity` and the threshold of `ForcesOneRectifiability` are extended nonnegative reals, so
+their comparison is direct. `sigmaOne` and `sStar` remain real because the endpoint geometry is
+real-valued; the single `ENNReal.ofReal` in the definition of `sigmaOne` is the genuine boundary
+between the two theories. The endpoint is constructed from an exactly isolated real-algebraic
+pair; its decimal expansion is documentation only and never occurs in the theorem or its proof.
 
 ## Completed logical transfers
 
@@ -37,7 +45,7 @@ decimal expansion is documentation only and never occurs in the theorem or its p
 - `BPC/SixPointTransfer.lean` proves BPC at every `beta > s` from the finite six-point property at
   `s`. The strict inequality is intentional and is enough to pass to the infimum.
 - `Main/Bound.lean` combines these results to prove
-  `SixPointFiniteProperty s -> sigmaOne Plane <= s` for positive `s < 1`.
+  `SixPointFiniteProperty s -> sigmaOne (EuclideanSpace ℝ (Fin 2)) <= s` for positive `s < 1`.
 
 These modules compile without `sorry` or nonstandard axioms. Thus the remaining work is confined to
 the exact endpoint statement `SixPointFiniteProperty sStar`.
@@ -88,7 +96,8 @@ contradicts straightness by inclusion–exclusion unless the required leaking op
 
 It therefore proves `BesicovitchPairCondition beta` for every `beta > sStar`; it does not need the
 stronger endpoint assertion `BesicovitchPairCondition sStar`. The subsequent infimum argument gives
-the exact non-strict conclusion `sigmaOne Plane <= sStar`.
+the exact non-strict conclusion
+`sigmaOne (EuclideanSpace ℝ (Fin 2)) <= sStar`.
 
 ## Transfer to rectifiability
 
@@ -108,7 +117,7 @@ The geometric-measure-theory results absent from Mathlib are proved in the local
 Each milestone is built and pushed separately. The final gate requires:
 
 1. a clean `lake build` and a separate build of `Challenge.lean`;
-2. exactly one `sorry`, in `Challenge.lean`, and none in the solution dependency graph;
+2. exactly the two requested holes in `Challenge.lean`, and none in the solution dependency graph;
 3. no `native_decide`, `Lean.ofReduceBool`, or custom axioms;
 4. only `propext`, `Quot.sound`, and `Classical.choice` in the proved theorem;
 5. every Lean file below 1,500 lines and ordinary style/lint checks passing;

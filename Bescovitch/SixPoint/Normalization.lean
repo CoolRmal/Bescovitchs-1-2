@@ -22,12 +22,12 @@ namespace Bescovitch
 namespace SixPointConfiguration
 
 /-- Translate a configuration by `origin` and divide all coordinates by `scale`. -/
-def normalize (configuration : SixPointConfiguration) (origin : Plane) (scale : ℝ) :
+def normalize (configuration : SixPointConfiguration) (origin : (EuclideanSpace ℝ (Fin 2))) (scale : ℝ) :
     SixPointConfiguration :=
   fun color label ↦ scale⁻¹ • (configuration color label - origin)
 
 /-- Normalization by a positive scale divides every pairwise distance by that scale. -/
-theorem dist_normalize (configuration : SixPointConfiguration) (origin : Plane) {scale : ℝ}
+theorem dist_normalize (configuration : SixPointConfiguration) (origin : (EuclideanSpace ℝ (Fin 2))) {scale : ℝ}
     (hscale : 0 < scale) (color₁ color₂ : SixPointColor) (label₁ label₂ : SixPointLabel) :
     dist (configuration.normalize origin scale color₁ label₁)
         (configuration.normalize origin scale color₂ label₂) =
@@ -36,7 +36,7 @@ theorem dist_normalize (configuration : SixPointConfiguration) (origin : Plane) 
 
 /-- Multiplying normalized distances by the positive scale recovers physical distances. -/
 theorem dist_eq_scale_mul_dist_normalize (configuration : SixPointConfiguration)
-    (origin : Plane) {scale : ℝ} (hscale : 0 < scale)
+    (origin : (EuclideanSpace ℝ (Fin 2))) {scale : ℝ} (hscale : 0 < scale)
     (color₁ color₂ : SixPointColor) (label₁ label₂ : SixPointLabel) :
     dist (configuration color₁ label₁) (configuration color₂ label₂) =
       scale * dist (configuration.normalize origin scale color₁ label₁)
@@ -46,7 +46,7 @@ theorem dist_eq_scale_mul_dist_normalize (configuration : SixPointConfiguration)
 
 /-- Distance bounds at scale `scale` give an admissible normalized configuration. -/
 theorem isAdmissibleAt_normalize_of_distances (configuration : SixPointConfiguration)
-    (origin : Plane) {scale d γ q s : ℝ} (hscale : 0 < scale)
+    (origin : (EuclideanSpace ℝ (Fin 2))) {scale d γ q s : ℝ} (hscale : 0 < scale)
     (hroot : dist (configuration .red .root) (configuration .blue .root) = scale)
     (hchild : ∀ color label, label ≠ .root →
       dist (configuration color .root) (configuration color label) ≤ d)

@@ -26,8 +26,8 @@ namespace Bescovitch
 rectifiability threshold. -/
 theorem BesicovitchPairCondition.sigmaOne_plane_le {s : ℝ}
     (hpair : BesicovitchPairCondition s) (hs : 0 < s) (hs_one : s < 1) :
-    sigmaOne Plane ≤ s := by
-  apply sigmaOne_le_of_forall_gt Plane hs.le
+    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ s := by
+  apply sigmaOne_le_of_forall_gt (EuclideanSpace ℝ (Fin 2)) hs.le
   intro gamma hs_gamma
   exact hpair.forcesOneRectifiability hs hs_one hs_gamma
 
@@ -35,8 +35,8 @@ theorem BesicovitchPairCondition.sigmaOne_plane_le {s : ℝ}
 rectifiability threshold by that parameter. -/
 theorem SixPointFiniteProperty.sigmaOne_plane_le {s : ℝ}
     (hfinite : SixPointFiniteProperty s) (hs : 0 < s) (hs_one : s < 1) :
-    sigmaOne Plane ≤ s := by
-  apply sigmaOne_le_of_forall_gt Plane hs.le
+    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ s := by
+  apply sigmaOne_le_of_forall_gt (EuclideanSpace ℝ (Fin 2)) hs.le
   intro gamma hs_gamma
   let beta := (s + min gamma 1) / 2
   have hs_min : s < min gamma 1 := lt_min_iff.mpr ⟨hs_gamma, hs_one⟩
@@ -55,7 +55,8 @@ theorem SixPointFiniteProperty.sigmaOne_plane_le {s : ℝ}
 /-- The desired planar bound follows from the finite six-point property at the certified
 endpoint. -/
 theorem sigmaOne_plane_le_sStar_of_sixPointFiniteProperty
-    (hfinite : SixPointFiniteProperty sStar) : sigmaOne Plane ≤ sStar :=
+    (hfinite : SixPointFiniteProperty sStar) :
+    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ sStar :=
   hfinite.sigmaOne_plane_le sStar_pos sStar_lt_one
 
 end Bescovitch

@@ -29,32 +29,32 @@ open scoped ENNReal MeasureTheory Topology
 namespace Bescovitch
 
 /-- The connected component through `z` in the attachment union localized to a closed ball. -/
-def localAttachmentComponent (F : Set Plane) (chosen : Set (Set Plane))
-    (z : Plane) (rho : ℝ) : Set Plane :=
+def localAttachmentComponent (F : Set (EuclideanSpace ℝ (Fin 2))) (chosen : Set (Set (EuclideanSpace ℝ (Fin 2))))
+    (z : (EuclideanSpace ℝ (Fin 2))) (rho : ℝ) : Set (EuclideanSpace ℝ (Fin 2)) :=
   connectedComponentIn
     (compactAttachmentUnion F chosen ∩ Metric.closedBall z rho) z
 
 /-- A BPC separation forces the local attachment component to have diameter at least
 `sigma * rho / 2`. -/
 theorem sigma_mul_radius_div_two_le_diam_localAttachmentComponent
-    {mu : Measure Plane}
-    {F : Set Plane} (hF : IsCompact F) {alpha tau sigma gamma : ℝ}
+    {mu : Measure (EuclideanSpace ℝ (Fin 2))}
+    {F : Set (EuclideanSpace ℝ (Fin 2))} (hF : IsCompact F) {alpha tau sigma gamma : ℝ}
     (halpha : 0 < alpha) (halpha_tau : alpha ≤ tau) (hsigma : 0 ≤ sigma)
     (hsigma_one : sigma < 1) (hsigma_gamma : sigma < gamma) {m : ℕ}
     (huniform : F ⊆ uniformDensitySet mu F gamma m)
-    {chosen : Set (Set Plane)} (hchosen : chosen ⊆ badConvexSets mu F alpha)
+    {chosen : Set (Set (EuclideanSpace ℝ (Fin 2)))} (hchosen : chosen ⊆ badConvexSets mu F alpha)
     (hselect : ∀ V ∈ badConvexSets mu F alpha, ∃ W ∈ chosen,
       (V ∩ W).Nonempty ∧ Metric.diam V < 2 * Metric.diam W)
-    (hsum : ∑' V : chosen, Metric.ediam (V : Set Plane) ≠ ∞)
-    {z : Plane} (hzF : z ∈ F) {rho delta : ℝ} (hrho : 0 < rho)
+    (hsum : ∑' V : chosen, Metric.ediam (V : Set (EuclideanSpace ℝ (Fin 2))) ≠ ∞)
+    {z : (EuclideanSpace ℝ (Fin 2))} (hzF : z ∈ F) {rho delta : ℝ} (hrho : 0 < rho)
     (hrho_delta : rho < delta)
     (hannulus : ((Metric.ball z rho \ Metric.ball z (sigma * rho / 2)) ∩ F).Nonempty)
-    (hpair : ∀ e₁ e₂ : Set Plane, MeasurableSet e₁ → MeasurableSet e₂ →
+    (hpair : ∀ e₁ e₂ : Set (EuclideanSpace ℝ (Fin 2)), MeasurableSet e₁ → MeasurableSet e₂ →
       e₁.Nonempty → e₂.Nonempty → 0 < setEDist e₁ e₂ →
       setEDist e₁ e₂ < ENNReal.ofReal delta →
       (∀ x ∈ e₁ ∪ e₂, ∀ r : ℝ, 0 < r → r < 1 / (m + 1 : ℝ) →
         ENNReal.ofReal (2 * sigma * r) < mu (Metric.ball x r)) →
-      ∃ v : Set Plane, IsOpen v ∧ (v ∩ e₁).Nonempty ∧ (v ∩ e₂).Nonempty ∧
+      ∃ v : Set (EuclideanSpace ℝ (Fin 2)), IsOpen v ∧ (v ∩ e₁).Nonempty ∧ (v ∩ e₂).Nonempty ∧
         ENNReal.ofReal tau * Metric.ediam v < mu (v \ (e₁ ∪ e₂))) :
     sigma * rho / 2 ≤ Metric.diam (localAttachmentComponent F chosen z rho) := by
   let Q := compactAttachmentUnion F chosen

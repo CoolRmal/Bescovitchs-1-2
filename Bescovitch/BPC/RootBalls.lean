@@ -5,7 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
-public import Bescovitch.Geometry.Basic
+public import Bescovitch.Statement
 
 /-!
 # The common pair of root balls
@@ -18,15 +18,15 @@ The direct pair-condition transfer charges both child extractions to one union o
 namespace Bescovitch
 
 /-- The common open neighborhood formed by two balls of the same radius. -/
-def rootBallUnion (x y : Plane) (r : ℝ) : Set Plane :=
+def rootBallUnion (x y : (EuclideanSpace ℝ (Fin 2))) (r : ℝ) : Set (EuclideanSpace ℝ (Fin 2)) :=
   Metric.ball x r ∪ Metric.ball y r
 
 /-- The common root-ball union is open. -/
-theorem isOpen_rootBallUnion (x y : Plane) (r : ℝ) : IsOpen (rootBallUnion x y r) :=
+theorem isOpen_rootBallUnion (x y : (EuclideanSpace ℝ (Fin 2))) (r : ℝ) : IsOpen (rootBallUnion x y r) :=
   Metric.isOpen_ball.union Metric.isOpen_ball
 
 /-- The diameter of the common root-ball union is bounded by root distance plus two radii. -/
-theorem ediam_rootBallUnion_le (x y : Plane) (r : ℝ) :
+theorem ediam_rootBallUnion_le (x y : (EuclideanSpace ℝ (Fin 2))) (r : ℝ) :
     Metric.ediam (rootBallUnion x y r) ≤ ENNReal.ofReal (dist x y + 2 * r) := by
   apply Metric.ediam_le_of_forall_dist_le
   intro a ha b hb

@@ -5,7 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
-public import Bescovitch.SixPoint.AlgebraicConstant
+public import Bescovitch.Statement
 
 /-!
 # Basic properties of the six-point endpoint

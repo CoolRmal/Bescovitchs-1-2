@@ -1,7 +1,10 @@
 {
   "challenge_module": "Challenge",
   "solution_module": "Solution",
-  "theorem_names": ["Bescovitch.sigma_one_plane_le_s_star"],
+  "theorem_names": [
+    "Bescovitch.sigma_one_plane_le_s_star",
+    "Bescovitch.sStar_le_6934_div_10000"
+  ],
   "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"],
   "enable_nanoda": false
 }

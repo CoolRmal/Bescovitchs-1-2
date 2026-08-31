@@ -16,9 +16,10 @@ still has a development hole and must not yet be treated as a completed proof. S
 
 ## Comparator layout
 
-- `Challenge.lean` contains the public theorem with the single challenge hole.
+- `Challenge.lean` contains every transparent statement definition and the two requested theorem
+  holes.
 - `Solution.lean` repeats the same theorem independently.
-- `Bescovitch/Statement.lean` re-exports the transparent definitions shared by both sides.
+- `Bescovitch/Statement.lean` contains the identical definitions used by the modular solution.
 - `comparator.json` permits only `propext`, `Quot.sound`, and `Classical.choice`.
 
 The comparator configuration intentionally has no `definition_names` escape hatch: the definitions

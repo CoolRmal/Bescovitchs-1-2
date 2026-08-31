@@ -5,7 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
-public import Bescovitch.Geometry.Basic
+public import Bescovitch.Statement
 public import Mathlib.MeasureTheory.Covering.Vitali
 public import Mathlib.Topology.Algebra.Module.PerfectSpace
 
@@ -25,7 +25,7 @@ namespace Bescovitch
 /-- A uniformly bounded family of nonempty bounded open sets has a countable disjoint subfamily
 meeting every member at a scale larger than half its diameter. -/
 theorem exists_countable_disjoint_subfamily
-    (family : Set (Set Plane))
+    (family : Set (Set (EuclideanSpace ℝ (Fin 2))))
     (hopen : ∀ V ∈ family, IsOpen V)
     (hnonempty : ∀ V ∈ family, V.Nonempty)
     (hbounded : ∀ V ∈ family, IsBounded V)

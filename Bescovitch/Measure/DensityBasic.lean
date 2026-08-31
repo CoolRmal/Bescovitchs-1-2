@@ -5,7 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
-public import Bescovitch.Measure.Density
+public import Bescovitch.Statement
 public import Mathlib.Topology.Instances.ENNReal.Lemmas
 
 /-!

@@ -27,7 +27,7 @@ open scoped ENNReal MeasureTheory Topology
 namespace Bescovitch
 
 /-- An eventual lower ball-mass bound gives the corresponding lower-density bound. -/
-theorem le_lowerOneDensity_of_eventually_ball_measure_ge {s : Set Plane} {x : Plane}
+theorem le_lowerOneDensity_of_eventually_ball_measure_ge {s : Set (EuclideanSpace ℝ (Fin 2))} {x : (EuclideanSpace ℝ (Fin 2))}
     {beta scale : ℝ} (hbeta : 0 ≤ beta) (hscale : 0 < scale)
     (hmass : ∀ r : ℝ, 0 < r → r < scale →
       ENNReal.ofReal (2 * beta * r) ≤ μH[1] (s ∩ Metric.ball x r)) :
@@ -50,15 +50,15 @@ theorem le_lowerOneDensity_of_eventually_ball_measure_ge {s : Set Plane} {x : Pl
 /-- A straight measurable subset inherits every strictly smaller lower-density threshold almost
 everywhere from a finite measurable ambient set. -/
 theorem ae_lt_lowerOneDensity_of_subset_of_straight
-    {e a : Set Plane} (ha : MeasurableSet a) (hae : a ⊆ e)
+    {e a : Set (EuclideanSpace ℝ (Fin 2))} (ha : MeasurableSet a) (hae : a ⊆ e)
     (he_fin : μH[1] e < ∞) (ha_straight : IsStraightMeasure (μH[1].restrict a))
     {beta gamma : ℝ} (hbeta : 0 ≤ beta) (hbeta_gamma : beta < gamma)
     (hdensity : ∀ᵐ x ∂μH[1].restrict a,
       ENNReal.ofReal gamma ≤ lowerOneDensity e x) :
     ∀ᵐ x ∂μH[1].restrict a,
       ENNReal.ofReal beta < lowerOneDensity a x := by
-  let mu : Measure Plane := μH[1].restrict a
-  let nu : Measure Plane := μH[1].restrict (e \ a)
+  let mu : Measure (EuclideanSpace ℝ (Fin 2)) := μH[1].restrict a
+  let nu : Measure (EuclideanSpace ℝ (Fin 2)) := μH[1].restrict (e \ a)
   have hmu_fin : mu Set.univ < ∞ := by
     simpa only [mu, Measure.restrict_apply_univ] using
       (measure_mono hae).trans_lt he_fin

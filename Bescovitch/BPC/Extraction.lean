@@ -51,8 +51,8 @@ theorem measure_inter_gt_of_ball_gt_of_leakage {X : Type*} [MeasurableSpace X]
   exact (not_lt_of_ge (hmeasure.trans (hsum.trans_eq hab.symm))) hdensity
 
 /-- Straightness converts enough mass in one color of a root ball into two separated children. -/
-theorem IsStraightMeasure.exists_children {μ : Measure Plane} (hμ : IsStraightMeasure μ)
-    {e : Set Plane} (he : MeasurableSet e) {root : Plane} {d γ : ℝ}
+theorem IsStraightMeasure.exists_children {μ : Measure (EuclideanSpace ℝ (Fin 2))} (hμ : IsStraightMeasure μ)
+    {e : Set (EuclideanSpace ℝ (Fin 2))} (he : MeasurableSet e) {root : (EuclideanSpace ℝ (Fin 2))} {d γ : ℝ}
     (hmass : ENNReal.ofReal (2 * γ * d) < μ (e ∩ Metric.ball root d)) :
     ∃ left ∈ e ∩ Metric.ball root d, ∃ right ∈ e ∩ Metric.ball root d,
       2 * γ * d < dist left right := by

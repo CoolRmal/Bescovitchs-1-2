@@ -5,7 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
-public import Bescovitch.Rectifiability.Defs
+public import Bescovitch.Statement
 public import Mathlib.Data.Nat.Pairing
 
 /-!
@@ -24,6 +24,10 @@ open scoped MeasureTheory NNReal
 namespace Bescovitch
 
 variable {X : Type*} [MetricSpace X] [MeasurableSpace X] [BorelSpace X]
+
+/-- A set is purely one-unrectifiable if it meets every rectifiable set in a null set. -/
+def IsPurelyOneUnrectifiable (s : Set X) : Prop :=
+  ∀ t, IsCountablyOneRectifiable t → μH[1] (s ∩ t) = 0
 
 /-- A subset of a countably one-rectifiable set is countably one-rectifiable. -/
 theorem IsCountablyOneRectifiable.mono {s t : Set X} (hs : IsCountablyOneRectifiable s)
