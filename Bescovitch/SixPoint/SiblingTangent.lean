@@ -110,6 +110,90 @@ theorem separableQuadratic_le_radial_vertices {a₁ a₂ b₁ b₂ d c t₁ t₂
       (le_max_of_le_right (le_max_right _ _)) (le_max_left _ _))
   simpa [value, v11, v1c, vc1] using hfinal
 
+/-- A positive quadratic coefficient gives a global tangent majorant for a weighted norm. -/
+theorem weightedNorm_le_quadratic {E : Type*} [SeminormedAddCommGroup E]
+    (x : E) (weight coefficient : ℝ) (hcoefficient : 0 < coefficient) :
+    weight * ‖x‖ ≤ coefficient * ‖x‖ ^ 2 + weight ^ 2 / (4 * coefficient) := by
+  have hsquare := sq_nonneg (2 * coefficient * ‖x‖ - weight)
+  field_simp [hcoefficient.ne']
+  nlinarith
+
+private theorem gramTwoMulNormTangent {E : Type*} [SeminormedAddCommGroup E]
+    (x : E) {radius : ℝ} (hradius : 0 < radius) :
+    2 * ‖x‖ ≤ radius + ‖x‖ ^ 2 / radius := by
+  have hsquare := sq_nonneg (‖x‖ - radius)
+  field_simp [hradius.ne']
+  nlinarith
+
+private theorem gramWeightedNormSq {E : Type*} [NormedAddCommGroup E]
+    [InnerProductSpace ℝ E] (x y : E) {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
+    ‖a • x + b • y‖ ^ 2 =
+      (a + b) * (a * ‖x‖ ^ 2 + b * ‖y‖ ^ 2) - a * b * ‖x - y‖ ^ 2 := by
+  rw [norm_add_sq_real, norm_sub_sq_real]
+  simp only [norm_smul, Real.norm_eq_abs, abs_of_nonneg ha, abs_of_nonneg hb,
+    real_inner_smul_left, real_inner_smul_right]
+  ring
+
+/-- The scalar upper function for a two-point Gram estimate. -/
+def gramPairValue (c u₁ u₂ g₁ g₂ d₁ d₂ off sigma t₁ t₂ : ℝ) : ℝ :=
+  (u₁ + (g₁ + g₂) * g₁ / sigma) * t₁ ^ 2 - d₁ * t₁ +
+    (u₂ + (g₁ + g₂) * g₂ / sigma) * t₂ ^ 2 - d₂ * t₂ +
+    sigma - (off + g₁ * g₂ / sigma) * c ^ 2
+
+/-- The largest radial-vertex value in a two-point Gram estimate. -/
+def gramPairMaximum (c u₁ u₂ g₁ g₂ d₁ d₂ off sigma : ℝ) : ℝ :=
+  max (gramPairValue c u₁ u₂ g₁ g₂ d₁ d₂ off sigma 1 1)
+    (max (gramPairValue c u₁ u₂ g₁ g₂ d₁ d₂ off sigma 1 (c - 1))
+      (gramPairValue c u₁ u₂ g₁ g₂ d₁ d₂ off sigma (c - 1) 1))
+
+/-- A separated pair in the unit ball is controlled by the three radial vertices. -/
+theorem gramPairCore_le_vertices {E : Type*} [NormedAddCommGroup E]
+    [InnerProductSpace ℝ E] (e x₁ x₂ : E) (c u₁ u₂ g₁ g₂ d₁ d₂ off sigma : ℝ)
+    (he : ‖e‖ = 1) (hx₁ : ‖x₁‖ ≤ 1) (hx₂ : ‖x₂‖ ≤ 1)
+    (hseparation : c ≤ ‖x₁ - x₂‖) (hc : 0 ≤ c) (hu₁ : 0 ≤ u₁) (hu₂ : 0 ≤ u₂)
+    (hg₁ : 0 ≤ g₁) (hg₂ : 0 ≤ g₂) (hsigma : 0 < sigma) :
+    u₁ * ‖x₁‖ ^ 2 + u₂ * ‖x₂‖ ^ 2 -
+        2 * ⟪e, g₁ • x₁ + g₂ • x₂⟫_ℝ - d₁ * ‖x₁‖ - d₂ * ‖x₂‖ -
+        off * c ^ 2 ≤ gramPairMaximum c u₁ u₂ g₁ g₂ d₁ d₂ off sigma := by
+  let z := g₁ • x₁ + g₂ • x₂
+  let Q := (g₁ + g₂) * (g₁ * ‖x₁‖ ^ 2 + g₂ * ‖x₂‖ ^ 2) -
+    g₁ * g₂ * c ^ 2
+  have hseparationSq : c ^ 2 ≤ ‖x₁ - x₂‖ ^ 2 := by
+    nlinarith [norm_nonneg (x₁ - x₂)]
+  have hzUpper : ‖z‖ ^ 2 ≤ Q := by
+    rw [show ‖z‖ ^ 2 =
+      (g₁ + g₂) * (g₁ * ‖x₁‖ ^ 2 + g₂ * ‖x₂‖ ^ 2) -
+        g₁ * g₂ * ‖x₁ - x₂‖ ^ 2 by exact gramWeightedNormSq x₁ x₂ hg₁ hg₂]
+    dsimp only [Q]
+    exact sub_le_sub_left
+      (mul_le_mul_of_nonneg_left hseparationSq (mul_nonneg hg₁ hg₂)) _
+  have hinner := real_inner_le_norm (-e) z
+  simp only [inner_neg_left, norm_neg, he, one_mul] at hinner
+  have hnorm := gramTwoMulNormTangent z hsigma
+  have hscaled := (div_le_div_iff_of_pos_right hsigma).2 hzUpper
+  have horientation : -2 * ⟪e, z⟫_ℝ ≤ sigma + Q / sigma := by
+    nlinarith
+  have hsum : c ≤ ‖x₁‖ + ‖x₂‖ :=
+    hseparation.trans (norm_sub_le x₁ x₂)
+  have hvertices := separableQuadratic_le_radial_vertices
+    (a₁ := u₁ + (g₁ + g₂) * g₁ / sigma)
+    (a₂ := u₂ + (g₁ + g₂) * g₂ / sigma) (b₁ := -d₁) (b₂ := -d₂)
+    (d := sigma - (off + g₁ * g₂ / sigma) * c ^ 2) (c := c)
+    (t₁ := ‖x₁‖) (t₂ := ‖x₂‖) (by positivity) (by positivity) hx₁ hx₂ hsum
+  have hpointwise :
+      u₁ * ‖x₁‖ ^ 2 + u₂ * ‖x₂‖ ^ 2 - 2 * ⟪e, z⟫_ℝ -
+          d₁ * ‖x₁‖ - d₂ * ‖x₂‖ - off * c ^ 2 ≤
+        gramPairValue c u₁ u₂ g₁ g₂ d₁ d₂ off sigma ‖x₁‖ ‖x₂‖ := by
+    dsimp only [gramPairValue, Q] at horientation ⊢
+    ring_nf at horientation ⊢
+    nlinarith
+  dsimp only [z] at hpointwise
+  apply hpointwise.trans
+  unfold gramPairMaximum
+  dsimp only [gramPairValue]
+  ring_nf at hvertices ⊢
+  exact hvertices
+
 /-- The quadratic upper function in the two-point tangent estimate. -/
 def pairTangentValue (c A₁ A₂ d₁ d₂ rho₁ rho₂ sigma t₁ t₂ : ℝ) : ℝ :=
   let g₁ := A₁ / rho₁
