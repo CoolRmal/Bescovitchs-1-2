@@ -119,9 +119,18 @@ recurse on `leftHalf` and `rightHalf`. Choosing the coordinate whose worse half 
 lower bound beats splitting the widest coordinate: on the exceptional face-Hessian determinant it
 cut the tree from 3592 leaves to 2371.
 
-For a mixed leaf the generator must also choose the stored data: `rho` from the norm of the
-corresponding cleared difference at the box centre, the support slopes from the centre direction,
-and the disk slacks from the constraint residuals.
+For a mixed leaf the generator must also choose the stored data, and there is a natural choice at
+the box centre `x*` that makes the majorant tight there:
+
+- the six tangent parameters `rho i` as the norm of the corresponding cleared difference at
+  `x*`, since the quadratic tangent is exact where it is taken;
+- the four support slopes from the unit vector `p j x* / ‖p j x*‖`: a unit vector `(nx, ny)` has
+  stereographic parameter `ny / (1 + nx)`;
+- the four disk slacks at zero, which is always admissible.
+
+Round each to a rational with denominator `4096`, the leaf data format. Search in floating point
+with a safety margin --- only the final tree is verified exactly, in Lean --- and bisect
+round-robin by depth, matching `weightedMixedSplitCoordinate`.
 
 ## Step 3 --- verify
 
