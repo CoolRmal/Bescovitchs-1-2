@@ -80,6 +80,9 @@ The endpoint certificate has three parts:
    negative definiteness in the antisymmetric directions then reduces the midpoint to the proved
    self inequality. The rest of that chart is covered by the strict certificate.
 
+The radius bins `[1933/5000, 2/5]` and `[3/5, 7/10]` are currently kernel-certified. The other
+five bins remain obligations of the endpoint assembly.
+
 All interval endpoints and certificate coefficients are rational. Bernstein conversion is itself
 implemented and proved sound in Lean. Hashes, program exit codes, floating-point samples,
 `native_decide`, and unchecked external computations are not proof objects.

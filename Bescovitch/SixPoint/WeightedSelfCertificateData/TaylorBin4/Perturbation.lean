@@ -5,10 +5,9 @@ Authors: Yongxi Lin
 -/
 module
 
-public import Bescovitch.SixPoint.WeightedSelfCertificateData.TaylorBin4.Approximation
+public import Bescovitch.SixPoint.WeightedSelfApproximation
 public import Bescovitch.SixPoint.WeightedSelfCertificateData.TaylorBin4.NegativeP
 public import Bescovitch.SixPoint.WeightedSelfCertificateData.Boxes
-import Mathlib.Data.Rat.Cast.Order
 
 /-!
 # Perturbation from dyadic data to the exact weighted-self formula
@@ -21,28 +20,8 @@ namespace WeightedSelfTaylorBin4
 
 noncomputable section
 
+open WeightedSelfApproximation
 open Approximation
-
-private def around (I : RationalInterval) (q : ℚ) : Approximation :=
-  ⟨I, RationalInterval.singleton q,
-    absBound (I.add (RationalInterval.singleton q).neg)⟩
-
-private def same (I : RationalInterval) : Approximation := ⟨I, I, 0⟩
-
-private theorem around_rel {I : RationalInterval} {q : ℚ} {x : ℝ} (hx : I.Contains x) :
-    (around I q).Rel x q := by
-  refine ⟨hx, RationalInterval.singleton_contains q, ?_⟩
-  have hq : (RationalInterval.singleton q).Contains (q : ℝ) :=
-    RationalInterval.singleton_contains q
-  have hdiff := RationalInterval.add_contains hx
-    (RationalInterval.neg_contains hq)
-  simpa only [around, Rat.cast_sub, sub_eq_add_neg] using abs_le_absBound hdiff
-
-private theorem same_rel {I : RationalInterval} {x : ℝ} (hx : I.Contains x) :
-    (same I).Rel x x := by
-  refine ⟨hx, hx, ?_⟩
-  change |x - x| ≤ ((0 : ℚ) : ℝ)
-  simp
 
 private def bin4ApproxAtoms : Fin 18 → Approximation := fun i ↦
   around
@@ -100,11 +79,6 @@ private theorem bin4_approx_atoms_rel : ∀ i,
   exact around_rel (hinput i)
 
 open scoped unitInterval
-
-private theorem unit_rel (u : I) : (same RationalInterval.unit).Rel u u := by
-  apply same_rel
-  simpa only [RationalInterval.unit, RationalInterval.Contains, Rat.cast_zero,
-    Rat.cast_one, Set.mem_Icc] using u.property
 
 private theorem bin4_approx_chart_rel (x y z : I) :
     (bin4ApproxChart.r).Rel

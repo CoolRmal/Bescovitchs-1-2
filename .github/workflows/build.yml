@@ -66,6 +66,7 @@ jobs:
           Bescovitch.SixPoint.WeightedCertificateAssembly
           Bescovitch.SixPoint.WeightedSelfCertificate
           Bescovitch.SixPoint.WeightedSelfCertificateCore
+          Bescovitch.SixPoint.WeightedSelfCertificateData.Bin1933To2000.Certificate
           Bescovitch.SixPoint.WeightedSelfCertificateData.Boxes
           Bescovitch.SixPoint.WeightedSelfCertificateData.NonexceptionalTrees
           Bescovitch.SixPoint.WeightedSelfDirectInterval

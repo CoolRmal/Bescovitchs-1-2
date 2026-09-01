@@ -6,15 +6,16 @@ Authors: Yongxi Lin
 module
 
 public import Bescovitch.SixPoint.WeightedSelfDirectInterval
+import Mathlib.Data.Rat.Cast.Order
 
 /-!
-# Exact perturbation arithmetic for the hard weighted-self bin
+# Exact perturbation arithmetic for weighted-self formulas
 -/
 
 @[expose] public section
 
 namespace Bescovitch
-namespace WeightedSelfTaylorBin4
+namespace WeightedSelfApproximation
 
 noncomputable section
 
@@ -34,7 +35,7 @@ def Rel (a : Approximation) (x y : ℝ) : Prop :=
   a.exact.Contains x ∧ a.nominal.Contains y ∧ |x - y| ≤ a.error
 
 /-- Membership in an interval bounds the absolute value by `absBound`. -/
-theorem abs_le_absBound {I : RationalInterval} {x : ℝ} (hx : I.Contains x) :
+theorem abs_le_abs_bound {I : RationalInterval} {x : ℝ} (hx : I.Contains x) :
     |x| ≤ (absBound I : ℝ) := by
   rw [abs_le]
   have hlq : -(absBound I) ≤ I.lower := by
@@ -46,6 +47,38 @@ theorem abs_le_absBound {I : RationalInterval} {x : ℝ} (hx : I.Contains x) :
   constructor
   · exact hlr.trans hx.1
   · exact hx.2.trans hur
+
+/-- Approximate an exact interval by a nominal rational value. -/
+def around (I : RationalInterval) (q : ℚ) : Approximation :=
+  ⟨I, RationalInterval.singleton q,
+    absBound (I.add (RationalInterval.singleton q).neg)⟩
+
+/-- Regard one interval as both the exact and nominal enclosure. -/
+def same (I : RationalInterval) : Approximation := ⟨I, I, 0⟩
+
+/-- An interval member is related to a nominal rational surrounded by that interval. -/
+theorem around_rel {I : RationalInterval} {q : ℚ} {x : ℝ} (hx : I.Contains x) :
+    (around I q).Rel x q := by
+  refine ⟨hx, RationalInterval.singleton_contains q, ?_⟩
+  have hq : (RationalInterval.singleton q).Contains (q : ℝ) :=
+    RationalInterval.singleton_contains q
+  have hdiff := RationalInterval.add_contains hx (RationalInterval.neg_contains hq)
+  simpa only [around, Rat.cast_sub, sub_eq_add_neg] using abs_le_abs_bound hdiff
+
+/-- An interval member is related to itself with zero error. -/
+theorem same_rel {I : RationalInterval} {x : ℝ} (hx : I.Contains x) :
+    (same I).Rel x x := by
+  refine ⟨hx, hx, ?_⟩
+  change |x - x| ≤ ((0 : ℚ) : ℝ)
+  simp
+
+open scoped unitInterval
+
+/-- Every unit-interval value is related to itself by the unit interval. -/
+theorem unit_rel (u : I) : (same RationalInterval.unit).Rel u u := by
+  apply same_rel
+  simpa only [RationalInterval.unit, RationalInterval.Contains, Rat.cast_zero,
+    Rat.cast_one, Set.mem_Icc] using u.property
 
 /-- The exact approximation of a rational constant. -/
 def rational (q : ℚ) : Approximation :=
@@ -100,8 +133,8 @@ theorem mul_rel {a b : Approximation} {x x' y y' : ℝ}
     (ha : a.Rel x x') (hb : b.Rel y y') : (mul a b).Rel (x * y) (x' * y') := by
   refine ⟨RationalInterval.mul_contains ha.1 hb.1,
     RationalInterval.mul_contains ha.2.1 hb.2.1, ?_⟩
-  have hax := abs_le_absBound ha.1
-  have hby := abs_le_absBound hb.2.1
+  have hax := abs_le_abs_bound ha.1
+  have hby := abs_le_abs_bound hb.2.1
   have hea : 0 ≤ (a.error : ℝ) := (abs_nonneg (x - x')).trans ha.2.2
   have heb : 0 ≤ (b.error : ℝ) := (abs_nonneg (y - y')).trans hb.2.2
   have habsA : 0 ≤ (absBound a.exact : ℝ) := (abs_nonneg x).trans hax
@@ -145,6 +178,84 @@ theorem discriminant_rel {p q r : Approximation}
   simpa only [discriminant, pow_two, sub_eq_add_neg] using
     add_rel (mul_rel hp hp) (neg_rel (mul_rel (mul_rel hq hq) hr))
 
+/-- Componentwise errors control the error in `p² - q²r`. -/
+theorem discriminant_difference_abs_le (p q r p₀ q₀ r₀ : ℝ) :
+    |(p ^ 2 - q ^ 2 * r) - (p₀ ^ 2 - q₀ ^ 2 * r₀)| ≤
+      (|p| + |p₀|) * |p - p₀| + |q| ^ 2 * |r - r₀| +
+        |r₀| * (|q| + |q₀|) * |q - q₀| := by
+  have hpadd : |p + p₀| * |p - p₀| ≤
+      (|p| + |p₀|) * |p - p₀| :=
+    mul_le_mul_of_nonneg_right (abs_add_le p p₀) (abs_nonneg _)
+  have hqadd : |r₀| * |q + q₀| * |q - q₀| ≤
+      |r₀| * (|q| + |q₀|) * |q - q₀| := by
+    apply mul_le_mul_of_nonneg_right _ (abs_nonneg _)
+    exact mul_le_mul_of_nonneg_left (abs_add_le q q₀) (abs_nonneg _)
+  calc
+    |(p ^ 2 - q ^ 2 * r) - (p₀ ^ 2 - q₀ ^ 2 * r₀)| =
+        |(p + p₀) * (p - p₀) - q ^ 2 * (r - r₀) -
+          r₀ * (q + q₀) * (q - q₀)| := by
+      congr 1
+      ring
+    _ ≤ |(p + p₀) * (p - p₀)| + |q ^ 2 * (r - r₀)| +
+        |r₀ * (q + q₀) * (q - q₀)| := by
+      calc
+        _ ≤ |(p + p₀) * (p - p₀) - q ^ 2 * (r - r₀)| +
+            |r₀ * (q + q₀) * (q - q₀)| := by
+          simpa only [sub_zero, zero_sub, abs_neg] using
+            abs_sub_le
+              ((p + p₀) * (p - p₀) - q ^ 2 * (r - r₀)) 0
+              (r₀ * (q + q₀) * (q - q₀))
+        _ ≤ (|(p + p₀) * (p - p₀)| + |q ^ 2 * (r - r₀)|) +
+            |r₀ * (q + q₀) * (q - q₀)| := by
+          apply add_le_add _ le_rfl
+          simpa only [sub_zero, zero_sub, abs_neg] using
+            abs_sub_le ((p + p₀) * (p - p₀)) 0 (q ^ 2 * (r - r₀))
+    _ = |p + p₀| * |p - p₀| + |q| ^ 2 * |r - r₀| +
+        |r₀| * |q + q₀| * |q - q₀| := by
+      rw [abs_mul, abs_mul, abs_mul, abs_mul, abs_pow]
+    _ ≤ (|p| + |p₀|) * |p - p₀| + |q| ^ 2 * |r - r₀| +
+        |r₀| * (|q| + |q₀|) * |q - q₀| :=
+      add_le_add (add_le_add hpadd le_rfl) hqadd
+
+/-- Strict component bounds give a strict numerical discriminant-error budget. -/
+theorem discriminant_difference_abs_lt_of_bounds
+    {p q r p₀ q₀ r₀ P P₀ Q Q₀ R₀ eP eQ eR : ℝ}
+    (hp : |p| ≤ P) (hp₀ : |p₀| ≤ P₀)
+    (hq : |q| ≤ Q) (hq₀ : |q₀| ≤ Q₀) (hr₀ : |r₀| ≤ R₀)
+    (hep : |p - p₀| < eP) (heq : |q - q₀| < eQ)
+    (her : |r - r₀| < eR)
+    (hP : 0 < P) (hP₀ : 0 < P₀) (hQ : 0 < Q)
+    (hQ₀ : 0 < Q₀) (hR₀ : 0 < R₀) :
+    |(p ^ 2 - q ^ 2 * r) - (p₀ ^ 2 - q₀ ^ 2 * r₀)| <
+      (P + P₀) * eP + Q ^ 2 * eR + R₀ * (Q + Q₀) * eQ := by
+  apply (discriminant_difference_abs_le p q r p₀ q₀ r₀).trans_lt
+  have hpTerm : (|p| + |p₀|) * |p - p₀| < (P + P₀) * eP := by
+    calc
+      _ ≤ (P + P₀) * |p - p₀| :=
+        mul_le_mul_of_nonneg_right (add_le_add hp hp₀) (abs_nonneg _)
+      _ < (P + P₀) * eP := mul_lt_mul_of_pos_left hep (add_pos hP hP₀)
+  have hqSq : |q| ^ 2 ≤ Q ^ 2 := by
+    simpa only [pow_two] using mul_self_le_mul_self (abs_nonneg q) hq
+  have hqTerm : |q| ^ 2 * |r - r₀| < Q ^ 2 * eR := by
+    calc
+      _ ≤ Q ^ 2 * |r - r₀| :=
+        mul_le_mul_of_nonneg_right hqSq (abs_nonneg _)
+      _ < Q ^ 2 * eR := mul_lt_mul_of_pos_left her (pow_pos hQ 2)
+  have hrq : |r₀| * (|q| + |q₀|) ≤ R₀ * (Q + Q₀) := by
+    calc
+      _ ≤ R₀ * (|q| + |q₀|) :=
+        mul_le_mul_of_nonneg_right hr₀ (add_nonneg (abs_nonneg _) (abs_nonneg _))
+      _ ≤ R₀ * (Q + Q₀) :=
+        mul_le_mul_of_nonneg_left (add_le_add hq hq₀) hR₀.le
+  have hrqTerm : |r₀| * (|q| + |q₀|) * |q - q₀| <
+      R₀ * (Q + Q₀) * eQ := by
+    calc
+      _ ≤ R₀ * (Q + Q₀) * |q - q₀| :=
+        mul_le_mul_of_nonneg_right hrq (abs_nonneg _)
+      _ < R₀ * (Q + Q₀) * eQ :=
+        mul_lt_mul_of_pos_left heq (mul_pos hR₀ (add_pos hQ hQ₀))
+  exact add_lt_add (add_lt_add hpTerm hqTerm) hrqTerm
+
 /-- Weighted-self formula operations on approximation data. -/
 def operations : WeightedSelfFormulaOperations Approximation :=
   ⟨rational, add, neg, mul, pow⟩
@@ -156,7 +267,7 @@ def pairOperations : WeightedSelfFormulaOperations (ℝ × ℝ) :=
     fun a n ↦ (a.1 ^ n, a.2 ^ n)⟩
 
 /-- Lift the approximation relation to a pair of exact and nominal values. -/
-def PairRel (a : Approximation) (p : ℝ × ℝ) : Prop := a.Rel p.1 p.2
+def pair_rel (a : Approximation) (p : ℝ × ℝ) : Prop := a.Rel p.1 p.2
 
 /-- The compact error recurrence is sound for all three weighted-self formula outputs. -/
 theorem formula_rel {atom : Fin 18 → Approximation}
@@ -172,13 +283,13 @@ theorem formula_rel {atom : Fin 18 → Approximation}
     data.p.Rel pairedData.p.1 pairedData.p.2 ∧
       data.q.Rel pairedData.q.1 pairedData.q.2 ∧
       data.radicand.Rel pairedData.radicand.1 pairedData.radicand.2 := by
-  exact weightedSelfFormula_rel operations pairOperations PairRel
+  exact weightedSelfFormula_rel operations pairOperations pair_rel
     (fun q ↦ rational_rel q) (fun ha hb ↦ add_rel ha hb) (fun ha ↦ neg_rel ha)
     (fun ha hb ↦ mul_rel ha hb) (fun ha n ↦ pow_rel ha n)
-    (fun i ↦ show PairRel (atom i) (exactAtom i, nominalAtom i) from hatom i)
-    (show PairRel r (exactR, nominalR) from hr)
-    (show PairRel b (exactB, nominalB) from hb)
-    (show PairRel t (exactT, nominalT) from ht)
+    (fun i ↦ show pair_rel (atom i) (exactAtom i, nominalAtom i) from hatom i)
+    (show pair_rel r (exactR, nominalR) from hr)
+    (show pair_rel b (exactB, nominalB) from hb)
+    (show pair_rel t (exactT, nominalT) from ht)
 
 end Approximation
 
@@ -230,5 +341,5 @@ theorem formula_rel_real {atom : Fin 18 → Approximation}
 
 end
 
-end WeightedSelfTaylorBin4
+end WeightedSelfApproximation
 end Bescovitch
