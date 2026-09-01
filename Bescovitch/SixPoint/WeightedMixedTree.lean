@@ -86,6 +86,19 @@ def weightedMixedTreeCheck (sideP sideW : ℚ) (depth : ℕ)
       weightedMixedTreeCheck sideP sideW (depth + 1) (weightedMixedLowerHalf depth box) left &&
         weightedMixedTreeCheck sideP sideW (depth + 1) (weightedMixedUpperHalf depth box) right
 
+/-- A tree check splits into the checks of its two halves.
+
+This is what lets one chart's check be spread over several modules: each half is proved where its
+own resources allow, and the two are combined here. -/
+theorem weightedMixedTreeCheck_split (sideP sideW : ℚ) (depth : ℕ)
+    (box : Fin 6 → RationalInterval) (left right : WeightedMixedTree)
+    (hleft : weightedMixedTreeCheck sideP sideW (depth + 1)
+      (weightedMixedLowerHalf depth box) left = true)
+    (hright : weightedMixedTreeCheck sideP sideW (depth + 1)
+      (weightedMixedUpperHalf depth box) right = true) :
+    weightedMixedTreeCheck sideP sideW depth box (.split left right) = true := by
+  rw [weightedMixedTreeCheck, hleft, hright, Bool.and_self]
+
 /-- The exact root box for a pair of cap choices; `false` denotes cap zero. -/
 def weightedMixedRootBox (capP capW : Bool) : Fin 6 → RationalInterval
   | 0 => if capP then
