@@ -59,9 +59,30 @@ The conclusion to work from: the routing layer retargets close to free, with of 
 numeric repairs, and it must be done **bottom-up in import order** so that each module's
 dependencies already speak of the new chord. Do not judge a module by compiling it in isolation.
 
-So: introduce the chord as a parameter with an interval hypothesis, replace `cStar` throughout,
-and let the mismatches propagate outward module by module. Order the work by the import graph.
-The modules to convert, largest first, are `RootEdge`, `RowColumnRescue`,
+It has to be done as a **substitution, not a parameterisation**. Making the chord a variable with
+an abstract box hypothesis does not work: the separators are proved by `nlinarith` over the box
+*numerals*, and an abstract box gives it nothing to compute with. Nor can one box serve both
+chords --- widening `SiblingTangent`'s box to `(1.386, 1.399)`, which covers `cStar` and `barC`
+together, turns its zero failures into forty-eight. Each chord needs its own tight box, and with
+its own tight box each works.
+
+So: replace `cStar` by `barC` and `sStar` by `barS` outright in the routing, weighted and
+certificate layers, and let the mismatches propagate outward module by module. Order the work by
+the import graph. `SixPoint/RationalChord.lean` already supplies the constants and the shim
+lemmas, under the names the routing layer expects.
+
+Leave the exact-endpoint machinery alone --- `Statement.lean`, `SixPoint/AlgebraicBasic.lean`,
+`SixPoint/EndpointExtremizer.lean`, `SixPoint/EndpointWeights.lean`,
+`Certificates/EndpointIsolation.lean`, `Certificates/EndpointBridge.lean` and
+`Certificates/EndpointTightBounds.lean`. It is self-contained, it keeps proving
+`sStar <= 6934 / 10000`, and `endpointLambda` and `endpointMu` keep their values: the weights are
+still valid multipliers at the larger chord, so they are not re-derived.
+
+The certificate data modules under `SixPoint/WeightedMixedCertificateData` and
+`SixPoint/WeightedSelfCertificateData` are specific to the old chord and cannot be converted by
+substitution; they have to be regenerated, as in step 2.
+Forty-one files mention the constants outside the exact-endpoint machinery, about twenty thousand
+lines. The routing modules to convert, largest first, are `RootEdge`, `RowColumnRescue`,
 `SiblingIncidenceLedger`, `LensEndpointBalancedE0S0`, `SiblingIncidence`, `SiblingTangent`,
 `RootEdgeType12`, `RootEdgeFailureTree`, `SiblingLensS0S3`, `SiblingLensE1S0`, `SiblingLens`,
 `BlueChildSwap`, `EndpointFailureClosed`, `EndpointPacking`, `WeightedChart`.
