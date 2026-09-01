@@ -128,4 +128,24 @@ theorem weighted_mixed_equality_complement_sound
       · exact ihRight (weightedMixedEqualityUpperHalf axis box) hcheck.2
           (mem_weighted_mixed_equality_upper_half hx (le_of_not_ge hside))
 
+/-- Exact trees for all noncentral cells prove the equality-complement bound. -/
+theorem weightedMixedEqualityComplementBound_of_tree_checks
+    (leafCheck : (Fin 6 → RationalInterval) → WeightedMixedLeaf → Bool)
+    (leafSound : ∀ box data, leafCheck box data = true → ∀ x : Fin 6 → ℝ,
+      (∀ i, (box i).Contains (x i)) →
+      x 0 ^ 2 + x 1 ^ 2 ≤ 1 → (x 0 - cStar) ^ 2 + x 1 ^ 2 ≤ 1 →
+      x 3 ^ 2 + x 4 ^ 2 ≤ 1 → (x 3 - cStar) ^ 2 + x 4 ^ 2 ≤ 1 →
+      weightedMixedEqualityScore x ≤ 0)
+    (tree : ∀ cell, cell ≠ weightedMixedEqualityLocalCell →
+      WeightedMixedEqualityComplementTree)
+    (hcheck : ∀ (cell) (hcell : cell ≠ weightedMixedEqualityLocalCell),
+      weightedMixedEqualityComplementCheck leafCheck
+        (weightedMixedEqualityCellBox cell) (tree cell hcell) = true) :
+    WeightedMixedEqualityComplementBound := by
+  rw [WeightedMixedEqualityComplementBound]
+  intro cell hcell x hx hPFirst hPSecond hWFirst hWSecond
+  exact weighted_mixed_equality_complement_sound leafCheck leafSound (tree cell hcell)
+    (weightedMixedEqualityCellBox cell) (hcheck cell hcell) x hx
+    hPFirst hPSecond hWFirst hWSecond
+
 end Bescovitch
