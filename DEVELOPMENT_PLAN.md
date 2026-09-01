@@ -80,8 +80,41 @@ The endpoint certificate has three parts:
    negative definiteness in the antisymmetric directions then reduces the midpoint to the proved
    self inequality. The rest of that chart is covered by the strict certificate.
 
-The radius bins `[1933/5000, 2/5]` and `[3/5, 7/10]` are currently kernel-certified. The other
-five bins remain obligations of the endpoint assembly.
+Six of the seven radius bins close by plain certificates. `[1933/5000, 2/5]` uses the exact integer
+route and `[3/5, 7/10]` the Taylor route; `[2/5, 1/2]`, `[1/2, 3/5]`, `[4/5, 9/10]`, and `[9/10, 1]`
+use the interval-Horner and Bernstein trees of `SixPoint/WeightedSelfIntervalCertificate.lean`. The
+seventh bin `[7/10, 4/5]` is the exceptional one: it contains the sharp endpoint configuration, so
+no strict polynomial bound covers it, and it is closed instead through the hybrid and
+exceptional-face modules.
+
+## Certificate cost
+
+Kernel checking is the binding constraint on parts 2 and 3, and the two parts differ by orders of
+magnitude.
+
+A self radius bin is cheap. Its certificate is trivariate, its subdivision trees have a handful of
+leaves, and `with_unfolding_all rfl` discharges a whole interval-Horner or Bernstein check in about
+a minute.
+
+A mixed lens chart is not. `weightedMixedTreeCheck` rebuilds `polynomialOfLeaf` at every leaf: a
+six-variable dense polynomial of multidegree `(2, 2, 4, 2, 2, 4)`, hence 2025 coefficients, and only
+then converts to the Bernstein basis. One leaf costs more than five kernel CPU-minutes, and the
+fifteen generated trees hold about 5900 certified leaves between them, so checking them as written
+is on the order of twenty CPU-days. The equality complement needs eighty further cell trees that
+have not been generated.
+
+Two candidate remedies were measured and rejected as insufficient on their own. `Nat.gcd` is
+already accelerated in the kernel, so exact rational normalisation is not the bottleneck and an
+unreduced `RawRat` representation buys little; a direct loop puts kernel `Rat` arithmetic at only
+about six times kernel `Int` arithmetic, so an integer-scaled representation is worth a single-digit
+factor.
+
+The cost is structural rather than arithmetic, so the remedy has to be structural too. The leaf
+polynomial is a fixed linear combination of about thirty-seven base polynomials whose coefficients
+are elementary rational functions of the leaf data alone; the base polynomials themselves do not
+depend on it. Converting those once on the root box and then descending the tree by exact
+bisection of Bernstein coefficients replaces the per-leaf rebuild by one linear combination per
+leaf, which is the reduction the remaining charts need.
 
 All interval endpoints and certificate coefficients are rational. Bernstein conversion is itself
 implemented and proved sound in Lean. Hashes, program exit codes, floating-point samples,
