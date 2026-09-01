@@ -109,12 +109,24 @@ unreduced `RawRat` representation buys little; a direct loop puts kernel `Rat` a
 about six times kernel `Int` arithmetic, so an integer-scaled representation is worth a single-digit
 factor.
 
-The cost is structural rather than arithmetic, so the remedy has to be structural too. The leaf
-polynomial is a fixed linear combination of about thirty-seven base polynomials whose coefficients
-are elementary rational functions of the leaf data alone; the base polynomials themselves do not
-depend on it. Converting those once on the root box and then descending the tree by exact
-bisection of Bernstein coefficients replaces the per-leaf rebuild by one linear combination per
-leaf, which is the reduction the remaining charts need.
+A third remedy was measured and rejected outright. Evaluating the leaf certificate as an
+*expression* in interval arithmetic, rather than converting it to a dense Bernstein tensor, is some
+four orders of magnitude cheaper, but it is far too loose: it certifies none of the hundred and
+thirty leaves of the smallest chart. The cancellation that defeats interval-Horner on the self
+discriminant defeats it here too, so the tightness of the Bernstein basis is not negotiable.
+
+The cost is therefore structural rather than arithmetic, and so is the remedy. The leaf polynomial
+is a fixed linear combination of thirty-seven base polynomials whose coefficients are elementary
+rational functions of the leaf data alone; the base polynomials themselves do not mention it. They
+are also much smaller than the full multidegree suggests --- only the four mixed tangents carry it,
+so the thirty-seven hold about thirteen thousand coefficients rather than seventy-five thousand.
+Transporting them from the root box to each leaf by affine substitution costs about `3 * 10 ^ 5`
+operations per leaf instead of `10 ^ 7`, and needs only an evaluation lemma; carrying their
+Bernstein coefficients down the tree by exact bisection is cheaper still, at about `2.6 * 10 ^ 4`
+per node, but needs a verified subdivision.
+
+`SixPoint/WeightedMixedLeafBasis.lean` is the first step of that reduction: it isolates the basis
+and proves that the certificate polynomial of a leaf evaluates to that leaf's combination of it.
 
 All interval endpoints and certificate coefficients are rational. Bernstein conversion is itself
 implemented and proved sound in Lean. Hashes, program exit codes, floating-point samples,
