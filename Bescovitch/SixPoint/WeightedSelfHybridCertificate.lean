@@ -5,7 +5,8 @@ Authors: Yongxi Lin
 -/
 module
 
-public import Bescovitch.SixPoint.WeightedSelfExceptionalCertificate
+public import Bescovitch.SixPoint.WeightedSelfCertificateData.Boxes
+public import Bescovitch.SixPoint.WeightedSelfExceptionalBernstein
 
 /-!
 # The hybrid certificate for the exceptional weighted-self bin
@@ -632,24 +633,20 @@ private theorem hybridBin5_exceptional_discriminant_nonneg
       weightedSelfEndpointBox kappaDBox = true)
     (hC : (weightedSelfCoefficientExpression (4 / 5) 14).certifiesWithin
       weightedSelfEndpointBox kappaCBox = true)
-    (radialTree faceBBTree determinantTree : TensorSubdivision)
-    (hradialCertificate : intervalPolynomialSubdivisionCertifiesNonnegative radialTree
+    (hradialCertificate : intervalPolynomialSubdivisionCertifiesNonnegative .leaf
       (weightedSelfExceptionalNegativeRadialIntervalPolynomial
         (weightedSelfCoefficientBox kappaDBox kappaCBox))
       weightedSelfExceptionalRadiusInterval
       weightedSelfExceptionalSecondRadiusInterval
       weightedSelfExceptionalProjectionInterval = true)
-    (hfaceBBCertificate : intervalPolynomialSubdivisionCertifiesNonnegative faceBBTree
-      (weightedSelfExceptionalFaceBBMarginIntervalPolynomial
-        (weightedSelfCoefficientBox kappaDBox kappaCBox))
-      (.singleton 1) weightedSelfExceptionalSecondRadiusInterval
-      weightedSelfExceptionalProjectionInterval = true)
-    (hdeterminantCertificate : intervalPolynomialSubdivisionCertifiesNonnegative
-      determinantTree
-      (weightedSelfExceptionalFaceDeterminantIntervalPolynomial
-        (weightedSelfCoefficientBox kappaDBox kappaCBox))
-      (.singleton 1) weightedSelfExceptionalSecondRadiusInterval
-      weightedSelfExceptionalProjectionInterval = true)
+    (bbCertificate : NormalizedBivariatePolynomial.BernsteinCertificate
+      (weightedSelfCoefficientBox kappaDBox kappaCBox)
+      weightedSelfExceptionalFaceBBMarginChartPolynomial)
+    (determinantCertificate : NormalizedBivariatePolynomial.BernsteinCertificate
+      (weightedSelfCoefficientBox kappaDBox kappaCBox)
+      weightedSelfExceptionalFaceDeterminantChartPolynomial)
+    (hbbCertificate : bbCertificate.certifiesNonnegative = true)
+    (hdeterminantCertificate : determinantCertificate.certifiesNonnegative = true)
     (x y z : I) (hexceptional : weightedSelfBin5DiscriminantTree.ExceptionalAt x y z) :
     0 ≤ (weightedSelfRadicalDiscriminant (7 / 10) (4 / 5)).eval
       (weightedSelfCoefficientInput (4 / 5)) x y z := by
@@ -696,9 +693,9 @@ private theorem hybridBin5_exceptional_discriminant_nonneg
     rw [weightedSelfRadicalDiscriminant_eval
       (7 / 10) (4 / 5) x y z hrPositive'.ne']
     convert
-      weightedSelfDiscriminant_nonneg_on_exceptionalBox_of_interval_certificates
-        kappaDBox kappaCBox hD hC radialTree faceBBTree determinantTree
-        hradialCertificate hfaceBBCertificate hdeterminantCertificate
+      weightedSelfDiscriminant_nonneg_on_exceptionalBox_of_bernstein_certificates
+        kappaDBox kappaCBox hD hC hradialCertificate bbCertificate determinantCertificate
+        hbbCertificate hdeterminantCertificate
         hrLower hrUpper hbLower hbUpper htLower htUpper using 1
     norm_num [r, b, t]
   convert htarget using 1
@@ -751,63 +748,53 @@ private theorem exists_hybridProjection_chart {t : ℝ}
   ring
 
 set_option maxHeartbeats 10000000 in
-/-- The ordinary leaves and the endpoint argument prove the tight fifth radius bin. -/
-theorem weightedSelfBin5RadiusBound_of_hybrid_interval_certificates
+/-- Ordinary interval leaves and the endpoint argument prove the tight fifth radius bin. -/
+theorem weightedSelfBin5RadiusBound_of_hybrid_certificates
     (kappaDBox kappaCBox : RationalInterval)
     (hD : (weightedSelfCoefficientExpression (4 / 5) 10).certifiesWithin
       weightedSelfEndpointBox kappaDBox = true)
     (hC : (weightedSelfCoefficientExpression (4 / 5) 14).certifiesWithin
       weightedSelfEndpointBox kappaCBox = true)
-    (negativePTree qTree : TensorSubdivision)
-    (hnegativeP : intervalTensorSubdivisionCertifiesNonnegative negativePTree
+    (negativePTree : TensorSubdivision)
+    (hnegativeP : intervalPolynomialSubdivisionCertifiesNonnegative negativePTree
       (weightedSelfNegativePIntervalPolynomial (7 / 10) (4 / 5)
-        (weightedSelfCoefficientBox kappaDBox kappaCBox)).bernsteinCoefficients = true)
-    (hq : intervalTensorSubdivisionCertifiesNonnegative qTree
-      (weightedSelfQIntervalPolynomial (7 / 10) (4 / 5)
-        (weightedSelfCoefficientBox kappaDBox kappaCBox)).bernsteinCoefficients = true)
+        (weightedSelfCoefficientBox kappaDBox kappaCBox))
+      .unit .unit .unit = true)
     (hdiscriminant : hybridIntervalTensorSubdivisionCertifiesNonnegative
       weightedSelfBin5DiscriminantTree
       (weightedSelfDiscriminantIntervalPolynomial (7 / 10) (4 / 5)
         (weightedSelfCoefficientBox kappaDBox kappaCBox)).bernsteinCoefficients = true)
-    (radialTree faceBBTree determinantTree : TensorSubdivision)
-    (hradialCertificate : intervalPolynomialSubdivisionCertifiesNonnegative radialTree
+    (hradialCertificate : intervalPolynomialSubdivisionCertifiesNonnegative .leaf
       (weightedSelfExceptionalNegativeRadialIntervalPolynomial
         (weightedSelfCoefficientBox kappaDBox kappaCBox))
       weightedSelfExceptionalRadiusInterval
       weightedSelfExceptionalSecondRadiusInterval
       weightedSelfExceptionalProjectionInterval = true)
-    (hfaceBBCertificate : intervalPolynomialSubdivisionCertifiesNonnegative faceBBTree
-      (weightedSelfExceptionalFaceBBMarginIntervalPolynomial
-        (weightedSelfCoefficientBox kappaDBox kappaCBox))
-      (.singleton 1) weightedSelfExceptionalSecondRadiusInterval
-      weightedSelfExceptionalProjectionInterval = true)
-    (hdeterminantCertificate : intervalPolynomialSubdivisionCertifiesNonnegative
-      determinantTree
-      (weightedSelfExceptionalFaceDeterminantIntervalPolynomial
-        (weightedSelfCoefficientBox kappaDBox kappaCBox))
-      (.singleton 1) weightedSelfExceptionalSecondRadiusInterval
-      weightedSelfExceptionalProjectionInterval = true) :
+    (bbCertificate : NormalizedBivariatePolynomial.BernsteinCertificate
+      (weightedSelfCoefficientBox kappaDBox kappaCBox)
+      weightedSelfExceptionalFaceBBMarginChartPolynomial)
+    (determinantCertificate : NormalizedBivariatePolynomial.BernsteinCertificate
+      (weightedSelfCoefficientBox kappaDBox kappaCBox)
+      weightedSelfExceptionalFaceDeterminantChartPolynomial)
+    (hbbCertificate : bbCertificate.certifiesNonnegative = true)
+    (hdeterminantCertificate : determinantCertificate.certifiesNonnegative = true) :
     WeightedSelfRadiusBinBound (7 / 10) (4 / 5) := by
   let box := weightedSelfCoefficientBox kappaDBox kappaCBox
   let input := weightedSelfCoefficientInput ((4 / 5 : ℚ) : ℝ)
   have hinput : ∀ i, (box i).Contains (input i) := by
     exact weightedSelfCoefficientInput_mem (4 / 5) kappaDBox kappaCBox hD hC
-  obtain ⟨hnegativePFits, hqFits, hdiscriminantFits⟩ :=
+  obtain ⟨_, _, hdiscriminantFits⟩ :=
     weightedSelfRadicalPolynomials_fits (7 / 10) (4 / 5)
+  have hunit (u : I) : RationalInterval.unit.Contains (u : ℝ) := by
+    simpa only [RationalInterval.unit, RationalInterval.Contains, Rat.cast_zero,
+      Rat.cast_one, Set.mem_Icc] using u.property
   have hnegativePValues (x y z : I) :
       0 ≤ (weightedSelfRadicalNegativeP (7 / 10) (4 / 5)).eval input x y z := by
-    exact RadicalTrivariate.nonneg_of_interval_bernstein_certificate
-      (weightedSelfRadicalNegativeP (7 / 10) (4 / 5)) hnegativePFits
+    exact RadicalTrivariate.nonneg_of_interval_box_certificate
+      (weightedSelfRadicalNegativeP (7 / 10) (4 / 5))
       (weightedSelfNegativePIntervalPolynomial (7 / 10) (4 / 5) box) input
       (weightedSelfNegativePInterval_contains (7 / 10) (4 / 5) box input hinput)
-      negativePTree hnegativeP x y z
-  have hqValues (x y z : I) :
-      0 ≤ (weightedSelfRadicalFormula (7 / 10) (4 / 5)).q.eval input x y z := by
-    exact RadicalTrivariate.nonneg_of_interval_bernstein_certificate
-      (weightedSelfRadicalFormula (7 / 10) (4 / 5)).q hqFits
-      (weightedSelfQIntervalPolynomial (7 / 10) (4 / 5) box) input
-      (weightedSelfQInterval_contains (7 / 10) (4 / 5) box input hinput)
-      qTree hq x y z
+      negativePTree hnegativeP (hunit x) (hunit y) (hunit z)
   have hdiscriminantValues (x y z : I) :
       0 ≤ (weightedSelfRadicalDiscriminant (7 / 10) (4 / 5)).eval input x y z := by
     apply RadicalTrivariate.nonneg_of_hybrid_interval_bernstein_certificate
@@ -817,8 +804,8 @@ theorem weightedSelfBin5RadiusBound_of_hybrid_interval_certificates
       weightedSelfBin5DiscriminantTree hdiscriminant
     intro x' y' z' hexceptional
     convert hybridBin5_exceptional_discriminant_nonneg
-      kappaDBox kappaCBox hD hC radialTree faceBBTree determinantTree
-      hradialCertificate hfaceBBCertificate hdeterminantCertificate
+      kappaDBox kappaCBox hD hC hradialCertificate bbCertificate determinantCertificate
+      hbbCertificate hdeterminantCertificate
       x' y' z' hexceptional using 1
     norm_num [input]
   intro r b t hbLower hbUpper hrLower hrUpper htLower htUpper
@@ -840,9 +827,9 @@ theorem weightedSelfBin5RadiusBound_of_hybrid_interval_certificates
     nlinarith [one_lt_cStar_and_cStar_lt_two.1]
   have hrChart : 0 < hybridFirstRadius ((7 / 10 : ℚ) : ℝ)
       ((4 / 5 : ℚ) : ℝ) x y := by rwa [hchartR]
-  obtain ⟨hpValue, hqValue, _⟩ := weightedSelfRadicalFormula_eval
+  obtain ⟨hpValue, _, _⟩ := weightedSelfRadicalFormula_eval
     (7 / 10) (4 / 5) x y z hrChart.ne'
-  rw [hchartR, hchartB, hz] at hpValue hqValue
+  rw [hchartR, hchartB, hz] at hpValue
   have hp : weightedSelfPolynomialP r b t (4 / 5) ≤ 0 := by
     have hvalue := hnegativePValues x y z
     rw [weightedSelfRadicalNegativeP, RadicalTrivariate.eval_neg, hpValue] at hvalue
@@ -850,9 +837,19 @@ theorem weightedSelfBin5RadiusBound_of_hybrid_interval_certificates
       using 1
     norm_num
   have hqValue' : 0 ≤ weightedSelfPolynomialQ r b t (4 / 5) := by
-    have hvalue := hqValues x y z
-    rw [hqValue] at hvalue
-    convert hvalue using 1
+    have hvalue := weightedSelfPolynomialQ_nonneg_on_certificate_bin 4 x y z
+    have hlower : weightedSelfBinLower 4 = 7 / 10 := by with_unfolding_all rfl
+    have hupper : weightedSelfBinUpper 4 = 4 / 5 := by with_unfolding_all rfl
+    rw [hlower, hupper] at hvalue
+    norm_num [weightedSelfRealChart] at hvalue
+    have hvalue' : 0 ≤ weightedSelfPolynomialQ
+        (hybridFirstRadius ((7 / 10 : ℚ) : ℝ) ((4 / 5 : ℚ) : ℝ) x y)
+        (hybridSecondRadius ((7 / 10 : ℚ) : ℝ) ((4 / 5 : ℚ) : ℝ) y)
+        (hybridProjection z) ((4 / 5 : ℚ) : ℝ) := by
+      convert hvalue using 1
+      all_goals norm_num [hybridFirstRadius, hybridSecondRadius, hybridProjection]
+    rw [hchartR, hchartB, hz] at hvalue'
+    convert hvalue' using 1
     norm_num
   have hdiscriminantValue : 0 ≤ weightedSelfDiscriminant r b t (4 / 5) := by
     have hvalue := hdiscriminantValues x y z
