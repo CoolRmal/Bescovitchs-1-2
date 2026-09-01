@@ -523,11 +523,13 @@ private theorem weightedSelfExceptionalIntervalDiscriminant_contains
       (IntervalTrivariate.contains_mul
         (IntervalTrivariate.contains_mul hformula.2.1 hformula.2.1) hformula.2.2))
 
-private theorem weightedSelfExceptionalNegativeRadialInterval_contains
+/-- The exceptional radial interval polynomial encloses the exact negative derivative. -/
+theorem weightedSelfExceptionalNegativeRadialInterval_contains
     (box : Fin 18 → RationalInterval)
-    (hinput : ∀ i, (box i).Contains (exceptionalInput i)) :
+    (hinput : ∀ i, (box i).Contains (weightedSelfCoefficientInput (4 / 5) i)) :
     (weightedSelfExceptionalNegativeRadialIntervalPolynomial box).Contains
-      exceptionalInput weightedSelfExceptionalNegativeRadialPolynomial := by
+      (weightedSelfCoefficientInput (4 / 5))
+      weightedSelfExceptionalNegativeRadialPolynomial := by
   simpa only [weightedSelfExceptionalNegativeRadialIntervalPolynomial,
     weightedSelfExceptionalNegativeRadialPolynomial,
     weightedSelfExceptionalRadialPolynomial] using

@@ -42,6 +42,7 @@ jobs:
           Bescovitch.Certificates.IntervalBernstein
           Bescovitch.Certificates.IntervalHorner
           Bescovitch.Certificates.IntervalPolynomial
+          Bescovitch.Certificates.NormalizedBivariateBernstein
           Bescovitch.Certificates.RawDenseBernstein
           Bescovitch.Certificates.RawDensePolynomial
           Bescovitch.Certificates.RawRat
@@ -64,6 +65,7 @@ jobs:
           Bescovitch.SixPoint.WeightedSelfCertificateData.NonexceptionalTrees
           Bescovitch.SixPoint.WeightedSelfDyadicCertificate
           Bescovitch.SixPoint.WeightedSelfExceptional
+          Bescovitch.SixPoint.WeightedSelfExceptionalBernstein
           Bescovitch.SixPoint.WeightedSelfExceptionalCertificate
           Bescovitch.SixPoint.WeightedSelfHybridCertificate
           Bescovitch.SixPoint.WeightedSelfFormula
