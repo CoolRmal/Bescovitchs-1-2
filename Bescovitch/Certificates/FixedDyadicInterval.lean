@@ -27,6 +27,8 @@ structure FixedDyadicInterval (width precision : ℕ) where
   upper : BitVec width
   /-- Whether all operations used to construct the interval were exact and overflow-free. -/
   ok : Bool
+  /-- A successful interval has its endpoints in signed order. -/
+  ordered : ok = true → lower.sle upper = true
   deriving DecidableEq, Repr
 
 namespace FixedDyadicInterval
@@ -74,8 +76,9 @@ def fromDyadic (width : ℕ) (value : DyadicInterval precision) :
     FixedDyadicInterval width precision :=
   let lower := BitVec.ofInt width value.lower
   let upper := BitVec.ofInt width value.upper
-  ⟨lower, upper, decide (lower.toInt = value.lower) &&
-    decide (upper.toInt = value.upper) && lower.sle upper⟩
+  let ok := decide (lower.toInt = value.lower) &&
+    decide (upper.toInt = value.upper) && lower.sle upper
+  ⟨lower, upper, ok, by simp [ok]⟩
 
 /-- Outward-round a rational to a guarded fixed-width dyadic interval. -/
 def ofRat (width precision : ℕ) (q : ℚ) : FixedDyadicInterval width precision :=
@@ -96,7 +99,8 @@ def add (left right : FixedDyadicInterval width precision) :
     FixedDyadicInterval width precision :=
   let lower := narrow (wideAdd left.lower right.lower)
   let upper := narrow (wideAdd left.upper right.upper)
-  ⟨lower, upper, additionSafe left right && lower.sle upper⟩
+  let ok := additionSafe left right && lower.sle upper
+  ⟨lower, upper, ok, by simp [ok]⟩
 
 /-- Check the signed-minimum corner case for interval negation. -/
 def negationSafe (value : FixedDyadicInterval width precision) : Bool :=
@@ -107,7 +111,8 @@ def negationSafe (value : FixedDyadicInterval width precision) : Bool :=
 def neg (value : FixedDyadicInterval width precision) : FixedDyadicInterval width precision :=
   let lower := -value.upper
   let upper := -value.lower
-  ⟨lower, upper, negationSafe value && lower.sle upper⟩
+  let ok := negationSafe value && lower.sle upper
+  ⟨lower, upper, ok, by simp [ok]⟩
 
 /-- Check that a guarded interval is valid and has nonpositive upper endpoint. -/
 def upperNonpositive (value : FixedDyadicInterval width precision) : Bool :=
@@ -150,7 +155,8 @@ def mul (left right : FixedDyadicInterval width precision) :
     FixedDyadicInterval width precision :=
   let lower := narrow (lowerRounded left right)
   let upper := narrow (upperRounded left right)
-  ⟨lower, upper, multiplicationSafe left right && lower.sle upper⟩
+  let ok := multiplicationSafe left right && lower.sle upper
+  ⟨lower, upper, ok, by simp [ok]⟩
 
 private theorem toInt_signedMin (left right : BitVec width) :
     (signedMin left right).toInt = min left.toInt right.toInt := by
