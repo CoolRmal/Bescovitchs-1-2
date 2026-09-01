@@ -180,6 +180,32 @@ which holds only for `c < 1.386850`, that is `s < 0.693425`. At `6934 / 10000` i
 relative margin of `1.9 * 10 ^ -5`; at `69345 / 100000` and above it fails. Do not raise the
 threshold.
 
+## Where the proof now stands
+
+`Main/RationalBound.lean` reduces the target to **ten** `WeightedMixedRootBoxBound`s and nothing
+else:
+
+```lean
+sigmaOne_plane_le_barS_of_mixed_root_box_bounds :
+  (ten mixed root box bounds) → sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ 6934 / 10000
+```
+
+Above the sharp constant the equality chart is not exceptional, so it needs no separate treatment,
+and the self inequality --- which existed only to close that chart's central cell --- is no longer
+on the dependency path at all. The seven radius bins are kept but are not needed for the theorem.
+
+Nine of the ten charts have generated trees, restored in
+`SixPoint/WeightedMixedCertificateData`, and trees of this kind still certify at the new chord.
+`SixPoint/WeightedMixedCharts` holds a module per chart running its check. The tenth,
+`Cap1Cap1NegNeg`, never had an ordinary tree because the equality machinery used to cover it, and
+is the one thing left to generate.
+
+A first generator is written: it chooses the stored data at each box centre by the geometric rule
+above and bisects round-robin, mirroring `weightedMixedSplitCoordinate`. It compiles and runs, but
+at a fuel of fourteen it does not close the equality chart --- unsurprising, since that chart is
+where the score comes closest to zero and the existing trees elsewhere run to depths of twenty and
+beyond. Raise the fuel, and expect that chart to need the deepest subdivision of the sixteen.
+
 ## Gates that still apply
 
 Unchanged from `DEVELOPMENT_PLAN.md`: no `native_decide`, no `Lean.ofReduceBool`, no custom
