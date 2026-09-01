@@ -38,6 +38,8 @@ jobs:
           Bescovitch.Certificates.FixedDenseBernstein
           Bescovitch.Certificates.FixedDensePolynomial
           Bescovitch.Certificates.FixedDyadicInterval
+          Bescovitch.Certificates.BivariateBernstein
+          Bescovitch.Certificates.IntegerTensorBernstein
           Bescovitch.Certificates.ScalarTraceVerifier
           Bescovitch.Certificates.IntervalBernstein
           Bescovitch.Certificates.IntervalHorner
@@ -70,6 +72,7 @@ jobs:
           Bescovitch.SixPoint.WeightedSelfExceptionalBernstein
           Bescovitch.SixPoint.WeightedSelfExceptionalCertificate
           Bescovitch.SixPoint.WeightedSelfHybridCertificate
+          Bescovitch.SixPoint.WeightedSelfTaylorCertificate
           Bescovitch.SixPoint.WeightedSelfFormula
           Bescovitch.SixPoint.Normalization Bescovitch.SixPoint.Realization
           Bescovitch.SixPoint.Scaling
