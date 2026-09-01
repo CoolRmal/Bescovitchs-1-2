@@ -5,7 +5,8 @@ Authors: Yongxi Lin
 -/
 module
 
-public import Bescovitch.Statement
+public import Mathlib.Data.Real.Basic
+public import Mathlib.Tactic.NormNum
 
 /-!
 # The rational chord of the retargeted six-point argument
