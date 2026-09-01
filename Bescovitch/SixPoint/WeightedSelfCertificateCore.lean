@@ -817,6 +817,51 @@ private theorem radiusBinBound_of_cube_signs (lower upper : ℚ)
       htLower htUpper)
     hp hqValue hdiscriminantValue
 
+/-- Pointwise signs on the affine cube imply the estimate on its physical radius bin. -/
+theorem weightedSelfRadiusBinBound_of_real_chart_signs (lower upper : ℝ)
+    (hwidth : lower < upper) (hupper : upper ≤ 1)
+    (hnegativeP : ∀ x y z : I,
+      weightedSelfPolynomialP (weightedSelfRealChart lower upper x y z).r
+        (weightedSelfRealChart lower upper x y z).b
+        (weightedSelfRealChart lower upper x y z).t upper ≤ 0)
+    (hq : ∀ x y z : I,
+      0 ≤ weightedSelfPolynomialQ (weightedSelfRealChart lower upper x y z).r
+        (weightedSelfRealChart lower upper x y z).b
+        (weightedSelfRealChart lower upper x y z).t upper)
+    (hdiscriminant : ∀ x y z : I,
+      0 ≤ weightedSelfDiscriminant (weightedSelfRealChart lower upper x y z).r
+        (weightedSelfRealChart lower upper x y z).b
+        (weightedSelfRealChart lower upper x y z).t upper) :
+    WeightedSelfRadiusBinBound lower upper := by
+  intro r b t hbLower hbUpper hrLower hrUpper htLower htUpper
+  have hbPhysical : cStar - 1 ≤ b := by linarith
+  obtain ⟨x, hx⟩ := exists_firstRadius_chart hbPhysical hrLower hrUpper
+  obtain ⟨y, hy⟩ := exists_secondRadius_chart hwidth hbLower hbUpper
+  obtain ⟨z, hz⟩ := exists_projection_chart htLower htUpper
+  have hp := hnegativeP x y z
+  have hq' := hq x y z
+  have hdiscriminant' := hdiscriminant x y z
+  have hrPos : 0 < r := by
+    have hc := one_lt_cStar_and_cStar_lt_two.1
+    linarith
+  have hchartR :
+      certificateFirstRadius (certificateSecondRadius lower upper y) x = r := by
+    rw [hy, hx]
+  have hrealChartR : (weightedSelfRealChart lower upper x y z).r = r := by
+    change certificateFirstRadius (certificateSecondRadius lower upper y) x = r
+    exact hchartR
+  have hrealChartB : (weightedSelfRealChart lower upper x y z).b = b := by
+    change certificateSecondRadius lower upper y = b
+    exact hy
+  have hrealChartT : (weightedSelfRealChart lower upper x y z).t = t := by
+    change certificateProjection z = t
+    exact hz
+  rw [hrealChartR, hrealChartB, hrealChartT] at hp hq' hdiscriminant'
+  exact weightedSelfCoordinateMajorant_nonpos_of_polynomial_signs hrPos
+    (chordProjectionRadicand_nonneg_of_bounds hrLower hrUpper (hbUpper.trans hupper)
+      htLower htUpper)
+    hp hq' hdiscriminant'
+
 set_option maxHeartbeats 10000000 in
 private theorem radiusBinBound_of_certificates (lower upper : ℚ)
     (hwidth : (lower : ℝ) < upper) (hupper : (upper : ℝ) ≤ 1)
