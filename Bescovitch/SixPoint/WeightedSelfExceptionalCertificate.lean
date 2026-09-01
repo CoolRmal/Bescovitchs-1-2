@@ -477,9 +477,9 @@ def weightedSelfExceptionalFaceBBMarginIntervalPolynomial
 
 private theorem weightedSelfExceptionalIntervalDiscriminant_contains
     (box : Fin 18 → RationalInterval)
-    (hinput : ∀ i, (box i).Contains (exceptionalInput i)) :
+    {input : Fin 18 → ℝ} (hinput : ∀ i, (box i).Contains (input i)) :
     (weightedSelfExceptionalIntervalDiscriminantPolynomial box).Contains
-      exceptionalInput weightedSelfExceptionalDiscriminantPolynomial := by
+      input weightedSelfExceptionalDiscriminantPolynomial := by
   let intervalFormula := weightedSelfFormula intervalPolynomialOperations
     (fun i ↦ IntervalTrivariate.constant (box i))
     IntervalTrivariate.first IntervalTrivariate.second IntervalTrivariate.third
@@ -487,11 +487,11 @@ private theorem weightedSelfExceptionalIntervalDiscriminant_contains
     (fun i ↦ RadicalTrivariate.constant (.var i))
     RadicalTrivariate.first RadicalTrivariate.second RadicalTrivariate.third
   have hformula :
-      intervalFormula.p.Contains exceptionalInput exactFormula.p ∧
-        intervalFormula.q.Contains exceptionalInput exactFormula.q ∧
-        intervalFormula.radicand.Contains exceptionalInput exactFormula.radicand := by
+      intervalFormula.p.Contains input exactFormula.p ∧
+        intervalFormula.q.Contains input exactFormula.q ∧
+        intervalFormula.radicand.Contains input exactFormula.radicand := by
     apply weightedSelfFormula_rel intervalPolynomialOperations
-      radicalPolynomialOperations (IntervalTrivariate.Contains exceptionalInput)
+      radicalPolynomialOperations (IntervalTrivariate.Contains input)
       (fun q ↦ IntervalTrivariate.contains_constant
         (RationalInterval.singleton_contains q))
       (fun ha hb ↦ IntervalTrivariate.contains_add ha hb)
@@ -506,13 +506,13 @@ private theorem weightedSelfExceptionalIntervalDiscriminant_contains
     · intro i
       apply IntervalTrivariate.contains_constant
       simpa only [RadicalExpression.eval] using hinput i
-    · exact IntervalTrivariate.contains_first exceptionalInput
-    · exact IntervalTrivariate.contains_second exceptionalInput
-    · exact IntervalTrivariate.contains_third exceptionalInput
+    · exact IntervalTrivariate.contains_first input
+    · exact IntervalTrivariate.contains_second input
+    · exact IntervalTrivariate.contains_third input
   change (IntervalTrivariate.add (IntervalTrivariate.mul intervalFormula.p intervalFormula.p)
       (IntervalTrivariate.neg
         (IntervalTrivariate.mul (IntervalTrivariate.mul intervalFormula.q intervalFormula.q)
-          intervalFormula.radicand))).Contains exceptionalInput
+          intervalFormula.radicand))).Contains input
     (RadicalTrivariate.add (RadicalTrivariate.mul exactFormula.p exactFormula.p)
       (RadicalTrivariate.neg
         (RadicalTrivariate.mul (RadicalTrivariate.mul exactFormula.q exactFormula.q)
@@ -525,11 +525,10 @@ private theorem weightedSelfExceptionalIntervalDiscriminant_contains
 
 /-- The exceptional radial interval polynomial encloses the exact negative derivative. -/
 theorem weightedSelfExceptionalNegativeRadialInterval_contains
-    (box : Fin 18 → RationalInterval)
-    (hinput : ∀ i, (box i).Contains (weightedSelfCoefficientInput (4 / 5) i)) :
+    (box : Fin 18 → RationalInterval) {input : Fin 18 → ℝ}
+    (hinput : ∀ i, (box i).Contains (input i)) :
     (weightedSelfExceptionalNegativeRadialIntervalPolynomial box).Contains
-      (weightedSelfCoefficientInput (4 / 5))
-      weightedSelfExceptionalNegativeRadialPolynomial := by
+      input weightedSelfExceptionalNegativeRadialPolynomial := by
   simpa only [weightedSelfExceptionalNegativeRadialIntervalPolynomial,
     weightedSelfExceptionalNegativeRadialPolynomial,
     weightedSelfExceptionalRadialPolynomial] using
@@ -539,9 +538,9 @@ theorem weightedSelfExceptionalNegativeRadialInterval_contains
 
 private theorem weightedSelfExceptionalFaceBBInterval_contains
     (box : Fin 18 → RationalInterval)
-    (hinput : ∀ i, (box i).Contains (exceptionalInput i)) :
+    {input : Fin 18 → ℝ} (hinput : ∀ i, (box i).Contains (input i)) :
     (weightedSelfExceptionalFaceBBIntervalPolynomial box).Contains
-      exceptionalInput weightedSelfExceptionalFaceBBPolynomial := by
+      input weightedSelfExceptionalFaceBBPolynomial := by
   simpa only [weightedSelfExceptionalFaceBBIntervalPolynomial,
     weightedSelfExceptionalFaceBBPolynomial,
     weightedSelfExceptionalFaceBPolynomial] using
@@ -551,9 +550,9 @@ private theorem weightedSelfExceptionalFaceBBInterval_contains
 
 private theorem weightedSelfExceptionalFaceBTInterval_contains
     (box : Fin 18 → RationalInterval)
-    (hinput : ∀ i, (box i).Contains (exceptionalInput i)) :
+    {input : Fin 18 → ℝ} (hinput : ∀ i, (box i).Contains (input i)) :
     (weightedSelfExceptionalFaceBTIntervalPolynomial box).Contains
-      exceptionalInput weightedSelfExceptionalFaceBTPolynomial := by
+      input weightedSelfExceptionalFaceBTPolynomial := by
   have hbase := weightedSelfExceptionalIntervalDiscriminant_contains box hinput
   simpa only [weightedSelfExceptionalFaceBTIntervalPolynomial,
     weightedSelfExceptionalFaceBTPolynomial,
@@ -569,9 +568,9 @@ private theorem weightedSelfExceptionalFaceBTInterval_contains
 
 private theorem weightedSelfExceptionalFaceTTInterval_contains
     (box : Fin 18 → RationalInterval)
-    (hinput : ∀ i, (box i).Contains (exceptionalInput i)) :
+    {input : Fin 18 → ℝ} (hinput : ∀ i, (box i).Contains (input i)) :
     (weightedSelfExceptionalFaceTTIntervalPolynomial box).Contains
-      exceptionalInput weightedSelfExceptionalFaceTTPolynomial := by
+      input weightedSelfExceptionalFaceTTPolynomial := by
   simpa only [weightedSelfExceptionalFaceTTIntervalPolynomial,
     weightedSelfExceptionalFaceTTPolynomial,
     weightedSelfExceptionalFaceTPolynomial] using
@@ -579,11 +578,12 @@ private theorem weightedSelfExceptionalFaceTTInterval_contains
       (IntervalTrivariate.contains_derivativeThird
         (weightedSelfExceptionalIntervalDiscriminant_contains box hinput))
 
-private theorem weightedSelfExceptionalFaceDeterminantInterval_contains
-    (box : Fin 18 → RationalInterval)
-    (hinput : ∀ i, (box i).Contains (exceptionalInput i)) :
+/-- The interval determinant polynomial contains the exact face-Hessian determinant. -/
+theorem weightedSelfExceptionalFaceDeterminantInterval_contains
+    (box : Fin 18 → RationalInterval) {input : Fin 18 → ℝ}
+    (hinput : ∀ i, (box i).Contains (input i)) :
     (weightedSelfExceptionalFaceDeterminantIntervalPolynomial box).Contains
-      exceptionalInput weightedSelfExceptionalFaceDeterminantPolynomial := by
+      input weightedSelfExceptionalFaceDeterminantPolynomial := by
   simpa only [weightedSelfExceptionalFaceDeterminantIntervalPolynomial,
     weightedSelfExceptionalFaceDeterminantPolynomial] using
     IntervalTrivariate.contains_add
@@ -594,11 +594,12 @@ private theorem weightedSelfExceptionalFaceDeterminantInterval_contains
         (IntervalTrivariate.contains_pow
           (weightedSelfExceptionalFaceBTInterval_contains box hinput) 2))
 
-private theorem weightedSelfExceptionalFaceBBMarginInterval_contains
-    (box : Fin 18 → RationalInterval)
-    (hinput : ∀ i, (box i).Contains (exceptionalInput i)) :
+/-- The interval `bb`-margin polynomial contains the exact margin polynomial. -/
+theorem weightedSelfExceptionalFaceBBMarginInterval_contains
+    (box : Fin 18 → RationalInterval) {input : Fin 18 → ℝ}
+    (hinput : ∀ i, (box i).Contains (input i)) :
     (weightedSelfExceptionalFaceBBMarginIntervalPolynomial box).Contains
-      exceptionalInput weightedSelfExceptionalFaceBBMarginPolynomial := by
+      input weightedSelfExceptionalFaceBBMarginPolynomial := by
   simpa only [weightedSelfExceptionalFaceBBMarginIntervalPolynomial,
     weightedSelfExceptionalFaceBBMarginPolynomial] using
     IntervalTrivariate.contains_add
