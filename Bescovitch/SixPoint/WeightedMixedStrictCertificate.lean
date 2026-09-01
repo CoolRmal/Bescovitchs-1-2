@@ -5,7 +5,8 @@ Authors: Yongxi Lin
 -/
 module
 
-public import Bescovitch.SixPoint.WeightedMixedRootCover
+public import Bescovitch.SixPoint.WeightedMixedSymmetry
+import Bescovitch.SixPoint.WeightedMixedRootCover
 
 /-!
 # Geometric soundness of a mixed-certificate tree
@@ -143,5 +144,16 @@ theorem weighted_pair_score_nonpos_of_weighted_mixed_tree_check
     hsideP hsideW hPFirst hPSecond hWFirst hWSecond).trans
       (leaf_quadratic_majorant_nonpos sideP sideW leafBox data x hrho hxLeaf
         hpolynomial hsideP hsideW)
+
+/-- A successful exact tree check proves the corresponding rational root-box bound. -/
+theorem weightedMixedRootBoxBound_of_tree_check
+    (capP capW : Bool) (sideP sideW : ℚ) (tree : WeightedMixedTree)
+    (hcheck : weightedMixedTreeCheck sideP sideW 0
+      (weightedMixedRootBox capP capW) tree = true) :
+    WeightedMixedRootBoxBound capP capW sideP sideW := by
+  intro x hsideP hsideW hx hPFirst hPSecond hWFirst hWSecond
+  exact weighted_pair_score_nonpos_of_weighted_mixed_tree_check
+    sideP sideW tree (weightedMixedRootBox capP capW) x hcheck hx hsideP hsideW
+    hPFirst hPSecond hWFirst hWSecond
 
 end Bescovitch
