@@ -6,15 +6,16 @@ Authors: Yongxi Lin
 module
 
 public import Bescovitch.SixPoint.WeightedSelfCertificateData.Boxes
-public import Bescovitch.SixPoint.WeightedSelfExceptionalBernstein
+public import Bescovitch.SixPoint.WeightedSelfExceptional
+import Bescovitch.SixPoint.WeightedSelfExceptionalCertificate
 
 /-!
 # The hybrid certificate for the exceptional weighted-self bin
 
 The discriminant certificate on the radius bin `[7 / 10, 4 / 5]` has one tight leaf.
 Ordinary Bernstein coefficients settle every other leaf, while the tight leaf is handled by the
-endpoint Hessian argument. This file combines those two mechanisms without leaving a geometric
-case as an assumption.
+endpoint Hessian argument. This file connects the ordinary certificate to that exact semantic
+exceptional-box bound.
 -/
 
 @[expose] public section
@@ -628,25 +629,11 @@ private theorem weightedSelfRadicalDiscriminant_eval (lower upper : ℚ) (x y z 
   ring
 
 private theorem hybridBin5_exceptional_discriminant_nonneg
-    (kappaDBox kappaCBox : RationalInterval)
-    (hD : (weightedSelfCoefficientExpression (4 / 5) 10).certifiesWithin
-      weightedSelfEndpointBox kappaDBox = true)
-    (hC : (weightedSelfCoefficientExpression (4 / 5) 14).certifiesWithin
-      weightedSelfEndpointBox kappaCBox = true)
-    (hradialCertificate : intervalPolynomialSubdivisionCertifiesNonnegative .leaf
-      (weightedSelfExceptionalNegativeRadialIntervalPolynomial
-        (weightedSelfCoefficientBox kappaDBox kappaCBox))
-      weightedSelfExceptionalRadiusInterval
-      weightedSelfExceptionalSecondRadiusInterval
-      weightedSelfExceptionalProjectionInterval = true)
-    (bbCertificate : NormalizedBivariatePolynomial.BernsteinCertificate
-      (weightedSelfCoefficientBox kappaDBox kappaCBox)
-      weightedSelfExceptionalFaceBBMarginChartPolynomial)
-    (determinantCertificate : NormalizedBivariatePolynomial.BernsteinCertificate
-      (weightedSelfCoefficientBox kappaDBox kappaCBox)
-      weightedSelfExceptionalFaceDeterminantChartPolynomial)
-    (hbbCertificate : bbCertificate.certifiesNonnegative = true)
-    (hdeterminantCertificate : determinantCertificate.certifiesNonnegative = true)
+    (hexceptionalBound : ∀ {r b t : ℝ},
+      weightedSelfExceptionalRadialLower b ≤ r → r ≤ 1 →
+      (29 : ℝ) / 40 ≤ b → b ≤ 3 / 4 →
+      (-209 : ℝ) / 256 ≤ t → t ≤ -13 / 16 →
+      0 ≤ weightedSelfDiscriminant r b t (4 / 5))
     (x y z : I) (hexceptional : weightedSelfBin5DiscriminantTree.ExceptionalAt x y z) :
     0 ≤ (weightedSelfRadicalDiscriminant (7 / 10) (4 / 5)).eval
       (weightedSelfCoefficientInput (4 / 5)) x y z := by
@@ -692,11 +679,7 @@ private theorem hybridBin5_exceptional_discriminant_nonneg
         (weightedSelfCoefficientInput ((4 / 5 : ℚ) : ℝ)) x y z := by
     rw [weightedSelfRadicalDiscriminant_eval
       (7 / 10) (4 / 5) x y z hrPositive'.ne']
-    convert
-      weightedSelfDiscriminant_nonneg_on_exceptionalBox_of_bernstein_certificates
-        kappaDBox kappaCBox hD hC hradialCertificate bbCertificate determinantCertificate
-        hbbCertificate hdeterminantCertificate
-        hrLower hrUpper hbLower hbUpper htLower htUpper using 1
+    convert hexceptionalBound hrLower hrUpper hbLower hbUpper htLower htUpper using 1
     norm_num [r, b, t]
   convert htarget using 1
   norm_num
@@ -764,20 +747,11 @@ theorem weightedSelfBin5RadiusBound_of_hybrid_certificates
       weightedSelfBin5DiscriminantTree
       (weightedSelfDiscriminantIntervalPolynomial (7 / 10) (4 / 5)
         (weightedSelfCoefficientBox kappaDBox kappaCBox)).bernsteinCoefficients = true)
-    (hradialCertificate : intervalPolynomialSubdivisionCertifiesNonnegative .leaf
-      (weightedSelfExceptionalNegativeRadialIntervalPolynomial
-        (weightedSelfCoefficientBox kappaDBox kappaCBox))
-      weightedSelfExceptionalRadiusInterval
-      weightedSelfExceptionalSecondRadiusInterval
-      weightedSelfExceptionalProjectionInterval = true)
-    (bbCertificate : NormalizedBivariatePolynomial.BernsteinCertificate
-      (weightedSelfCoefficientBox kappaDBox kappaCBox)
-      weightedSelfExceptionalFaceBBMarginChartPolynomial)
-    (determinantCertificate : NormalizedBivariatePolynomial.BernsteinCertificate
-      (weightedSelfCoefficientBox kappaDBox kappaCBox)
-      weightedSelfExceptionalFaceDeterminantChartPolynomial)
-    (hbbCertificate : bbCertificate.certifiesNonnegative = true)
-    (hdeterminantCertificate : determinantCertificate.certifiesNonnegative = true) :
+    (hexceptionalBound : ∀ {r b t : ℝ},
+      weightedSelfExceptionalRadialLower b ≤ r → r ≤ 1 →
+      (29 : ℝ) / 40 ≤ b → b ≤ 3 / 4 →
+      (-209 : ℝ) / 256 ≤ t → t ≤ -13 / 16 →
+      0 ≤ weightedSelfDiscriminant r b t (4 / 5)) :
     WeightedSelfRadiusBinBound (7 / 10) (4 / 5) := by
   let box := weightedSelfCoefficientBox kappaDBox kappaCBox
   let input := weightedSelfCoefficientInput ((4 / 5 : ℚ) : ℝ)
@@ -802,11 +776,9 @@ theorem weightedSelfBin5RadiusBound_of_hybrid_certificates
       (weightedSelfDiscriminantIntervalPolynomial (7 / 10) (4 / 5) box) input
       (weightedSelfDiscriminantInterval_contains (7 / 10) (4 / 5) box input hinput)
       weightedSelfBin5DiscriminantTree hdiscriminant
-    intro x' y' z' hexceptional
+    intro x' y' z' hexceptionalAt
     convert hybridBin5_exceptional_discriminant_nonneg
-      kappaDBox kappaCBox hD hC hradialCertificate bbCertificate determinantCertificate
-      hbbCertificate hdeterminantCertificate
-      x' y' z' hexceptional using 1
+      hexceptionalBound x' y' z' hexceptionalAt using 1
     norm_num [input]
   intro r b t hbLower hbUpper hrLower hrUpper htLower htUpper
   have hbPhysical : cStar - 1 ≤ b := by linarith
