@@ -70,21 +70,112 @@ theorem eval_radicalPowerToBernstein {n degree : ℕ}
   · simp [RadicalExpression.eval]
   · simp [RadicalExpression.eval]
 
-set_option maxHeartbeats 10000000 in
-set_option maxRecDepth 10000 in
+private theorem choose_ratio_mul (n j k : ℕ) (hjn : j ≤ n) :
+    (Nat.choose (j + k) j : ℝ) / Nat.choose n j * Nat.choose n (j + k) =
+      Nat.choose (n - j) k := by
+  have hchoose := Nat.choose_mul (n := n) (k := j + k) (s := j) (Nat.le_add_right j k)
+  rw [Nat.add_sub_cancel_left] at hchoose
+  have hchooseReal :
+      (Nat.choose n (j + k) : ℝ) * Nat.choose (j + k) j =
+        Nat.choose n j * Nat.choose (n - j) k := by
+    exact_mod_cast hchoose
+  have hden : (Nat.choose n j : ℝ) ≠ 0 := by
+    exact_mod_cast Nat.choose_ne_zero hjn
+  field_simp
+  simpa only [mul_comm] using hchooseReal
+
+private theorem shifted_bernstein_sum (n j : ℕ) (hjn : j ≤ n) (x : I) :
+    (∑ k ∈ Finset.range (n - j + 1),
+        (Nat.choose (j + k) j : ℝ) / Nat.choose n j * bernstein n (j + k) x) =
+      (x : ℝ) ^ j := by
+  calc
+    _ = (x : ℝ) ^ j * ∑ k ∈ Finset.range (n - j + 1),
+        (x : ℝ) ^ k * (1 - (x : ℝ)) ^ (n - j - k) * Nat.choose (n - j) k := by
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro k hk
+      have hkBound : k ≤ n - j := by
+        simpa only [Finset.mem_range, Nat.lt_add_one_iff] using hk
+      have hsub : n - (j + k) = n - j - k := by omega
+      rw [bernstein_apply, pow_add, hsub]
+      calc
+        (Nat.choose (j + k) j : ℝ) / Nat.choose n j *
+              (Nat.choose n (j + k) * ((x : ℝ) ^ j * (x : ℝ) ^ k) *
+                (1 - (x : ℝ)) ^ (n - j - k)) =
+            ((Nat.choose (j + k) j : ℝ) / Nat.choose n j * Nat.choose n (j + k)) *
+              ((x : ℝ) ^ j * (x : ℝ) ^ k) *
+              (1 - (x : ℝ)) ^ (n - j - k) := by ring
+        _ = _ := by rw [choose_ratio_mul n j k hjn]; ring
+    _ = (x : ℝ) ^ j * ((x : ℝ) + (1 - (x : ℝ))) ^ (n - j) := by
+      rw [add_pow]
+    _ = (x : ℝ) ^ j := by ring
+
+/-- A power is its degree-`n` Bernstein expansion whenever its exponent is at most `n`. -/
+theorem power_eq_bernstein_sum (n j : ℕ) (hjn : j ≤ n) (x : I) :
+    (x : ℝ) ^ j =
+      ∑ i : Fin (n + 1), (if j ≤ (i : ℕ) then
+        (Nat.choose (i : ℕ) j : ℝ) / Nat.choose n j else 0) * bernstein n i x := by
+  let f : ℕ → ℝ := fun i ↦
+    (if j ≤ i then (Nat.choose i j : ℝ) / Nat.choose n j else 0) * bernstein n i x
+  change (x : ℝ) ^ j = ∑ i : Fin (n + 1), f i
+  rw [Fin.sum_univ_eq_sum_range f (n + 1)]
+  symm
+  rw [← Finset.sum_subset (s₁ := Finset.Ico j (n + 1)) (s₂ := Finset.range (n + 1))]
+  · rw [Finset.sum_Ico_eq_sum_range]
+    simp only [f, if_pos (Nat.le_add_right j _)]
+    have hsize : n + 1 - j = n - j + 1 := by omega
+    rw [hsize]
+    exact shifted_bernstein_sum n j hjn x
+  · intro i hi
+    simp only [Finset.mem_Ico, Finset.mem_range] at hi ⊢
+    exact hi.2
+  · intro i hi hnot
+    simp only [Finset.mem_Ico, not_and_or, Finset.mem_range] at hnot hi
+    simp [f, hnot.resolve_right (not_not_intro hi)]
+
+/-- Exact power-to-Bernstein conversion in arbitrary degree. -/
+theorem paddedPowerEval_eq_bernstein_sum (degree : ℕ)
+    (a : Fin (degree + 1) → ℝ) (x : I) :
+    paddedPowerEval degree a x =
+      ∑ i, powerToBernstein degree a i * bernstein degree i x := by
+  rw [paddedPowerEval]
+  calc
+    (∑ j, a j * (x : ℝ) ^ (j : ℕ)) =
+        ∑ j, a j * ∑ i : Fin (degree + 1),
+          (if (j : ℕ) ≤ (i : ℕ) then
+            (Nat.choose (i : ℕ) (j : ℕ) : ℝ) / Nat.choose degree (j : ℕ) else 0) *
+              bernstein degree i x := by
+      apply Finset.sum_congr rfl
+      intro j hj
+      rw [power_eq_bernstein_sum degree (j : ℕ) (Nat.le_of_lt_succ j.isLt) x]
+    _ = ∑ j, ∑ i : Fin (degree + 1),
+        a j * ((if (j : ℕ) ≤ (i : ℕ) then
+          (Nat.choose (i : ℕ) (j : ℕ) : ℝ) / Nat.choose degree (j : ℕ) else 0) *
+            bernstein degree i x) := by
+      apply Finset.sum_congr rfl
+      intro j hj
+      rw [Finset.mul_sum]
+    _ = ∑ i : Fin (degree + 1), ∑ j : Fin (degree + 1),
+        a j * ((if (j : ℕ) ≤ (i : ℕ) then
+          (Nat.choose (i : ℕ) (j : ℕ) : ℝ) / Nat.choose degree (j : ℕ) else 0) *
+            bernstein degree i x) := by rw [Finset.sum_comm]
+    _ = ∑ i, powerToBernstein degree a i * bernstein degree i x := by
+      apply Finset.sum_congr rfl
+      intro i hi
+      rw [powerToBernstein, Finset.sum_mul]
+      apply Finset.sum_congr rfl
+      intro j hj
+      split_ifs <;> ring
+
 theorem paddedPowerEval_twelve_eq (a : Fin 13 → ℝ) (x : I) :
     paddedPowerEval 12 a x =
       ∑ i, powerToBernstein 12 a i * bernstein 12 i x := by
-  simp [paddedPowerEval, powerToBernstein, bernstein_apply, Fin.sum_univ_succ]
-  norm_num [Nat.choose]
-  ring
+  exact paddedPowerEval_eq_bernstein_sum 12 a x
 
 theorem paddedPowerEval_four_eq (a : Fin 5 → ℝ) (x : I) :
     paddedPowerEval 4 a x =
       ∑ i, powerToBernstein 4 a i * bernstein 4 i x := by
-  simp [paddedPowerEval, powerToBernstein, bernstein_apply, Fin.sum_univ_succ]
-  norm_num [Nat.choose]
-  ring
+  exact paddedPowerEval_eq_bernstein_sum 4 a x
 
 /-- Convert all three coordinates of a `12 × 12 × 4` padded power tensor. -/
 noncomputable def tensorPowerToBernstein (a : Fin 13 → Fin 13 → Fin 5 → ℝ)
