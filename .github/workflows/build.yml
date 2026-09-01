@@ -44,8 +44,19 @@ jobs:
           Bescovitch.Rectifiability.Selection Bescovitch.Sigma.Basic
           Bescovitch.SixPoint.AlgebraicBasic Bescovitch.SixPoint.FiniteProperty
           Bescovitch.SixPoint.WeightedMixedBernsteinPass
+          Bescovitch.SixPoint.WeightedMixedEquality
+          Bescovitch.SixPoint.WeightedMixedEqualityCalculus
+          Bescovitch.SixPoint.WeightedMixedEqualityComplement
+          Bescovitch.SixPoint.WeightedMixedEqualityFace
+          Bescovitch.SixPoint.WeightedMixedEqualityLocalCertificate
+          Bescovitch.SixPoint.WeightedMixedEqualityLocalData
+          Bescovitch.SixPoint.WeightedMixedEqualityPartition
+          Bescovitch.SixPoint.WeightedMixedEqualityTransverse
           Bescovitch.SixPoint.WeightedMixedRootAssembly
           Bescovitch.SixPoint.WeightedMixedStrictCertificate
+          Bescovitch.SixPoint.WeightedSelfCertificateCore
+          Bescovitch.SixPoint.WeightedSelfDyadicCertificate
+          Bescovitch.SixPoint.WeightedSelfFormula
           Bescovitch.SixPoint.Normalization Bescovitch.SixPoint.Realization
           Bescovitch.SixPoint.Scaling
 
