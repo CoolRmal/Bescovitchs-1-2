@@ -6,6 +6,7 @@ Authors: Yongxi Lin
 module
 
 public import Bescovitch.SixPoint.WeightedMixedEqualityPartition
+import Bescovitch.SixPoint.WeightedMixedRootCover
 
 /-!
 # Semantic core for the equality-chart complement certificate

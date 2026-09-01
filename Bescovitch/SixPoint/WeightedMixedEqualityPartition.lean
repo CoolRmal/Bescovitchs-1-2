@@ -6,7 +6,7 @@ Authors: Yongxi Lin
 module
 
 public import Bescovitch.SixPoint.WeightedMixedEquality
-public import Bescovitch.SixPoint.WeightedMixedRootCover
+public import Bescovitch.SixPoint.WeightedMixedSymmetry
 
 /-!
 # Exact face partition for the exceptional mixed chart
@@ -175,5 +175,22 @@ theorem weighted_mixed_equality_score_nonpos_of_cell_bounds
     exact weighted_mixed_equality_score_nonpos_on_local_cell_of_self
       selfNonpos x hcell hPFirst hWFirst
   · exact hcomplement cell hlocal x hcell hPFirst hPSecond hWFirst hWSecond
+
+/-- The self inequality and all noncentral cell bounds settle the exceptional mixed root box. -/
+theorem weighted_mixed_equality_root_box_bound_of_cell_bounds
+    (selfNonpos : ∀ p₁ p₂ : EuclideanSpace ℝ (Fin 2),
+      ‖p₁‖ ≤ 1 → ‖p₂‖ ≤ 1 → cStar ≤ ‖p₁ - p₂‖ →
+      weightedPairScore !₂[1, 0] cStar endpointLambda endpointMu p₁ p₂ p₁ p₂ ≤ 0)
+    (hcomplement : ∀ cell ≠ weightedMixedEqualityLocalCell, ∀ x : Fin 6 → ℝ,
+      (∀ i, (weightedMixedEqualityCellBox cell i).Contains (x i)) →
+      x 0 ^ 2 + x 1 ^ 2 ≤ 1 → (x 0 - cStar) ^ 2 + x 1 ^ 2 ≤ 1 →
+      x 3 ^ 2 + x 4 ^ 2 ≤ 1 → (x 3 - cStar) ^ 2 + x 4 ^ 2 ≤ 1 →
+      weightedMixedEqualityScore x ≤ 0) :
+    WeightedMixedRootBoxBound true true (-1) (-1) := by
+  intro x _ _ hx hPFirst hPSecond hWFirst hWSecond
+  norm_num only [Rat.cast_neg, Rat.cast_one]
+  simpa only [weightedMixedEqualityScore] using
+    weighted_mixed_equality_score_nonpos_of_cell_bounds selfNonpos hcomplement x hx
+      hPFirst hPSecond hWFirst hWSecond
 
 end Bescovitch
