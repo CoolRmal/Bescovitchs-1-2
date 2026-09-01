@@ -59,6 +59,8 @@ jobs:
           Bescovitch.SixPoint.WeightedMixedStrictCertificate
           Bescovitch.SixPoint.WeightedSelfCertificateCore
           Bescovitch.SixPoint.WeightedSelfDyadicCertificate
+          Bescovitch.SixPoint.WeightedSelfExceptional
+          Bescovitch.SixPoint.WeightedSelfExceptionalCertificate
           Bescovitch.SixPoint.WeightedSelfFormula
           Bescovitch.SixPoint.Normalization Bescovitch.SixPoint.Realization
           Bescovitch.SixPoint.Scaling

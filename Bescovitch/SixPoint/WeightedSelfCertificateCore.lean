@@ -337,7 +337,8 @@ private theorem endpointCertificateInput_mem :
   · simpa [weightedSelfEndpointBox, endpointCertificateInput, RationalInterval.Contains] using
       endpointMu_tight_bounds
 
-private noncomputable def weightedSelfCoefficientInput (upper : ℝ) : Fin 18 → ℝ := ![
+/-- The eighteen exact coefficients in the reduced weighted-self formula. -/
+noncomputable def weightedSelfCoefficientInput (upper : ℝ) : Fin 18 → ℝ := ![
   cStar,
   certifiedEndpointPair.2,
   endpointSecondDistance cStar certifiedEndpointPair.2,
@@ -440,7 +441,8 @@ def weightedSelfCoefficientBox
 
 set_option maxHeartbeats 5000000 in
 set_option maxRecDepth 10000 in
-private theorem weightedSelfCoefficientInput_mem (upper : ℚ)
+/-- The certified coefficient box contains every exact weighted-self coefficient. -/
+theorem weightedSelfCoefficientInput_mem (upper : ℚ)
     (kappaDBox kappaCBox : RationalInterval)
     (hD : (weightedSelfCoefficientExpression upper 10).certifiesWithin
       weightedSelfEndpointBox kappaDBox = true)
@@ -517,19 +519,21 @@ private noncomputable def certificatePolynomialPLegacy (r b t upper : ℝ) : ℝ
 private noncomputable def certificatePolynomialQLegacy (r b t upper : ℝ) : ℝ :=
   certificatePolynomialQLegacyAtoms (weightedSelfCoefficientInput upper) r b t
 
-private def realWeightedSelfFormulaOperations : WeightedSelfFormulaOperations ℝ :=
+/-- The five scalar operations used to evaluate the reduced formula over the reals. -/
+def weightedSelfRealFormulaOperations : WeightedSelfFormulaOperations ℝ :=
   ⟨fun q ↦ q, fun a b ↦ a + b, fun a ↦ -a,
     fun a b ↦ a * b, fun a n ↦ a ^ n⟩
 
-private noncomputable def certificateFormula (r b t upper : ℝ) : WeightedSelfFormula ℝ :=
-  weightedSelfFormula realWeightedSelfFormulaOperations
+/-- The fixed reduced formula evaluated at its exact real coefficients. -/
+noncomputable def weightedSelfRealFormula (r b t upper : ℝ) : WeightedSelfFormula ℝ :=
+  weightedSelfFormula weightedSelfRealFormulaOperations
     (weightedSelfCoefficientInput upper) r b t
 
 private noncomputable def certificatePolynomialP (r b t upper : ℝ) : ℝ :=
-  (certificateFormula r b t upper).p
+  (weightedSelfRealFormula r b t upper).p
 
 private noncomputable def certificatePolynomialQ (r b t upper : ℝ) : ℝ :=
-  (certificateFormula r b t upper).q
+  (weightedSelfRealFormula r b t upper).q
 
 private theorem weightedSelfFormula_certified_values (input : Fin 18 → ℝ)
     (box : Fin 18 → RationalInterval)
@@ -543,7 +547,7 @@ private theorem weightedSelfFormula_certified_values (input : Fin 18 → ℝ)
       ⟨rational, CertifiedPolynomial.add, CertifiedPolynomial.neg,
         CertifiedPolynomial.mul, CertifiedPolynomial.pow⟩
     let certified := weightedSelfFormula operations coefficient r b t
-    let value := weightedSelfFormula realWeightedSelfFormulaOperations input
+    let value := weightedSelfFormula weightedSelfRealFormulaOperations input
       (r.value x y z) (b.value x y z) (t.value x y z)
     certified.p.value x y z = value.p ∧ certified.q.value x y z = value.q ∧
       certified.radicand.value x y z = value.radicand := by
@@ -582,10 +586,10 @@ private theorem weightedSelfCertified_formula_values (lower upper : ℚ)
       data.q.value x y z = certificatePolynomialQ
         (data.r.value x y z) (data.b.value x y z) (data.t.value x y z) upper ∧
       data.radicand.value x y z =
-        (certificateFormula (data.r.value x y z) (data.b.value x y z)
+        (weightedSelfRealFormula (data.r.value x y z) (data.b.value x y z)
           (data.t.value x y z) upper).radicand := by
   simpa only [weightedSelfCertifiedPolynomials, certificatePolynomialP,
-    certificatePolynomialQ, certificateFormula] using
+    certificatePolynomialQ, weightedSelfRealFormula] using
     weightedSelfFormula_certified_values (weightedSelfCoefficientInput upper)
       box hinput
       (weightedSelfCertifiedPolynomials lower upper (weightedSelfCoefficientInput upper)
@@ -596,9 +600,9 @@ private theorem weightedSelfCertified_formula_values (lower upper : ℚ)
         box hinput).t x y z
 
 private theorem certificateFormula_radicand (r b t upper : ℝ) :
-    (certificateFormula r b t upper).radicand =
+    (weightedSelfRealFormula r b t upper).radicand =
       chordProjectionRadicand cStar r b t := by
-  simp [certificateFormula, weightedSelfFormula, realWeightedSelfFormulaOperations,
+  simp [weightedSelfRealFormula, weightedSelfFormula, weightedSelfRealFormulaOperations,
     weightedSelfCoefficientInput, chordProjectionRadicand, chordInnerProduct]
   ring
 
@@ -629,8 +633,8 @@ set_option maxRecDepth 10000 in
 private theorem certificatePolynomials_eq_legacy (r b t upper : ℝ) :
     certificatePolynomialP r b t upper = certificatePolynomialPLegacy r b t upper ∧
       certificatePolynomialQ r b t upper = certificatePolynomialQLegacy r b t upper := by
-  simp only [certificatePolynomialP, certificatePolynomialQ, certificateFormula,
-    weightedSelfFormula, realWeightedSelfFormulaOperations, certificatePolynomialPLegacy,
+  simp only [certificatePolynomialP, certificatePolynomialQ, weightedSelfRealFormula,
+    weightedSelfFormula, weightedSelfRealFormulaOperations, certificatePolynomialPLegacy,
     certificatePolynomialQLegacy, certificatePolynomialPLegacyAtoms,
     certificatePolynomialQLegacyAtoms, chordInnerProduct, chordProjectionRadicand]
   constructor <;> ring
@@ -642,6 +646,17 @@ private theorem certificatePolynomials_eq_weightedSelf (r b t upper : ℝ)
   obtain ⟨hp, hq⟩ := certificatePolynomials_eq_legacy r b t upper
   obtain ⟨hp', hq'⟩ := certificateLegacyPolynomials_eq_weightedSelf r b t upper hr
   exact ⟨hp.trans hp', hq.trans hq'⟩
+
+/-- The fixed real formula computes the two reduced polynomials and their Gram radicand. -/
+theorem weightedSelfRealFormula_eq_weightedSelf (r b t upper : ℝ) (hr : r ≠ 0) :
+    (weightedSelfRealFormula r b t upper).p =
+        weightedSelfPolynomialP r b t upper ∧
+      (weightedSelfRealFormula r b t upper).q =
+        weightedSelfPolynomialQ r b t upper ∧
+      (weightedSelfRealFormula r b t upper).radicand =
+        chordProjectionRadicand cStar r b t := by
+  obtain ⟨hp, hq⟩ := certificatePolynomials_eq_weightedSelf r b t upper hr
+  exact ⟨hp, hq, certificateFormula_radicand r b t upper⟩
 
 private theorem weightedSelfCertifiedValues_eval (lower upper : ℚ)
     (box : Fin 18 → RationalInterval)
