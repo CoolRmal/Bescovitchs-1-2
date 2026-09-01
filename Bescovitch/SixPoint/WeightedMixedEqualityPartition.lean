@@ -78,6 +78,14 @@ def weightedMixedEqualityScore (x : Fin 6 → ℝ) : ℝ :=
     (chordChartFirst (-1) (x 3) (x 4) (x 5))
     (chordChartSecond (-1) cStar (x 3) (x 4) (x 5))
 
+/-- The mixed score is nonpositive on every noncentral equality-partition cell. -/
+def WeightedMixedEqualityComplementBound : Prop :=
+  ∀ cell ≠ weightedMixedEqualityLocalCell, ∀ x : Fin 6 → ℝ,
+    (∀ i, (weightedMixedEqualityCellBox cell i).Contains (x i)) →
+    x 0 ^ 2 + x 1 ^ 2 ≤ 1 → (x 0 - cStar) ^ 2 + x 1 ^ 2 ≤ 1 →
+    x 3 ^ 2 + x 4 ^ 2 ≤ 1 → (x 3 - cStar) ^ 2 + x 4 ^ 2 ≤ 1 →
+    weightedMixedEqualityScore x ≤ 0
+
 private theorem exists_band_of_mem {I : RationalInterval} {lowerCut upperCut : ℚ}
     (hcuts : I.lower ≤ lowerCut ∧ lowerCut ≤ upperCut ∧ upperCut ≤ I.upper)
     {x : ℝ} (hx : I.Contains x) :
@@ -157,11 +165,7 @@ theorem weighted_mixed_equality_score_nonpos_of_cell_bounds
     (selfNonpos : ∀ p₁ p₂ : EuclideanSpace ℝ (Fin 2),
       ‖p₁‖ ≤ 1 → ‖p₂‖ ≤ 1 → cStar ≤ ‖p₁ - p₂‖ →
       weightedPairScore !₂[1, 0] cStar endpointLambda endpointMu p₁ p₂ p₁ p₂ ≤ 0)
-    (hcomplement : ∀ cell ≠ weightedMixedEqualityLocalCell, ∀ x : Fin 6 → ℝ,
-      (∀ i, (weightedMixedEqualityCellBox cell i).Contains (x i)) →
-      x 0 ^ 2 + x 1 ^ 2 ≤ 1 → (x 0 - cStar) ^ 2 + x 1 ^ 2 ≤ 1 →
-      x 3 ^ 2 + x 4 ^ 2 ≤ 1 → (x 3 - cStar) ^ 2 + x 4 ^ 2 ≤ 1 →
-      weightedMixedEqualityScore x ≤ 0)
+    (hcomplement : WeightedMixedEqualityComplementBound)
     (x : Fin 6 → ℝ)
     (hx : ∀ i, (weightedMixedRootBox true true i).Contains (x i))
     (hPFirst : x 0 ^ 2 + x 1 ^ 2 ≤ 1)
@@ -181,11 +185,7 @@ theorem weighted_mixed_equality_root_box_bound_of_cell_bounds
     (selfNonpos : ∀ p₁ p₂ : EuclideanSpace ℝ (Fin 2),
       ‖p₁‖ ≤ 1 → ‖p₂‖ ≤ 1 → cStar ≤ ‖p₁ - p₂‖ →
       weightedPairScore !₂[1, 0] cStar endpointLambda endpointMu p₁ p₂ p₁ p₂ ≤ 0)
-    (hcomplement : ∀ cell ≠ weightedMixedEqualityLocalCell, ∀ x : Fin 6 → ℝ,
-      (∀ i, (weightedMixedEqualityCellBox cell i).Contains (x i)) →
-      x 0 ^ 2 + x 1 ^ 2 ≤ 1 → (x 0 - cStar) ^ 2 + x 1 ^ 2 ≤ 1 →
-      x 3 ^ 2 + x 4 ^ 2 ≤ 1 → (x 3 - cStar) ^ 2 + x 4 ^ 2 ≤ 1 →
-      weightedMixedEqualityScore x ≤ 0) :
+    (hcomplement : WeightedMixedEqualityComplementBound) :
     WeightedMixedRootBoxBound true true (-1) (-1) := by
   intro x _ _ hx hPFirst hPSecond hWFirst hWSecond
   norm_num only [Rat.cast_neg, Rat.cast_one]
