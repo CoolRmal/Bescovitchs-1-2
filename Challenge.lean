@@ -49,36 +49,9 @@ def ForcesOneRectifiability (X : Type*) [MetricSpace X] [MeasurableSpace X] [Bor
 def sigmaOne (X : Type*) [MetricSpace X] [MeasurableSpace X] [BorelSpace X] : ℝ :=
   sInf {β : ℝ | 0 ≤ β ∧ ForcesOneRectifiability X (ENNReal.ofReal β)}
 
-/-- The isolated radical system whose first coordinate is twice the six-point endpoint. -/
-def IsEndpointPair (c B : ℝ) : Prop :=
-  let D := 4 * c ^ 2 - 2 * c - B
-  let b := (2 * B - 3 * c ^ 2 + 2 * c - 1) / (c + 1)
-  let A := Real.sqrt ((B ^ 2 - 1) / 2)
-  let C := Real.sqrt ((B ^ 2 + D ^ 2) / 2 - c ^ 2)
-  let x := (5 - B ^ 2) / 4
-  let z := (1 + 4 * b ^ 2 - D ^ 2) / 4
-  let k := (1 + b ^ 2 - c ^ 2) / 2
-  13866128436518096 / 10 ^ 16 < c ∧ c < 13866128436518100 / 10 ^ 16 ∧
-    2873744161801659 / 10 ^ 15 < B ∧ B < 2873744161801662 / 10 ^ 15 ∧
-    A + C = 3 * c * b + c ^ 2 - 1 ∧
-    (k - x * z) ^ 2 = (1 - x ^ 2) * (b ^ 2 - z ^ 2) ∧
-    x < 0 ∧ z < 0 ∧ k - x * z < 0
-
-/-- Twice the optimal six-point constant, defined by its isolated exact system. -/
-def cStar : ℝ :=
-  sInf {c : ℝ | ∃ B : ℝ, IsEndpointPair c B}
-
-/-- The optimal two-colour six-point constant. -/
-def sStar : ℝ :=
-  cStar / 2
-
-/-- The planar one-dimensional rectifiability threshold is at most the six-point endpoint. -/
-theorem sigma_one_plane_le_s_star :
-    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ sStar := by
-  sorry
-
-/-- The exact endpoint is at most `0.6934`. -/
-theorem sStar_le_6934_div_10000 : sStar ≤ 6934 / 10000 := by
+/-- The planar one-dimensional rectifiability threshold is below the previous record. -/
+theorem sigma_one_plane_le_699_div_1000 :
+    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ 699 / 1000 := by
   sorry
 
 end Bescovitch

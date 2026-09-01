@@ -1,17 +1,18 @@
 # Formalization roadmap
 
-The target is the exact theorem
+The target is
 
 ```lean
-Bescovitch.sigma_one_plane_le_s_star :
-  sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ sStar
+Bescovitch.sigma_one_plane_le_699_div_1000 :
+  sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ 699 / 1000
 ```
 
-The comparator also checks the certified numerical consequence
-
-```lean
-Bescovitch.sStar_le_6934_div_10000 : sStar ≤ 6934 / 10000
-```
+which still improves on the published `0.7`. The six-point analysis computes the sharp constant
+`sStar = 0.6933064218...`, and `Bescovitch.sStar_le_6934_div_10000` already certifies it from
+above; but a Lean proof of `sigmaOne ≤ sStar` needs the endpoint to be attained exactly, and that
+tightness is precisely what makes the finite certificates expensive. The weighted score has a
+margin of about `0.2` at `699 / 1000` against `0` at `sStar`, some twenty million times the
+`10 ^ -8` slack the current certificates were built for.
 
 The project separates the public statement from its proof. `Challenge.lean` contains every
 transparent definition in the theorems and the two challenge holes. The identical

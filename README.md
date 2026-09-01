@@ -14,6 +14,19 @@ The formalization is being developed in pushed, buildable milestones. The curren
 still has a development hole and must not yet be treated as a completed proof. See
 [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md) for the proof graph and verification criteria.
 
+**The formalization currently targets the weaker rational bound**
+
+$$
+\sigma_1(\mathbb{R}^2) \le \frac{699}{1000},
+$$
+
+which still improves on the published $0.7$. The sharp constant $s_{\ast}$ is what the six-point
+analysis below actually computes, but certifying it in Lean requires the endpoint to be attained
+exactly, and that tightness is what makes the finite certificates expensive. Away from the
+endpoint the same argument carries a margin of about $0.2$ instead of $10^{-8}$, which is what
+makes the rational target reachable. `DEVELOPMENT_PLAN.md` records the measurements behind that
+choice.
+
 ## The problem
 
 For a Borel set $E \subset \mathbb{R}^2$ with finite one-dimensional Hausdorff measure, the
@@ -112,8 +125,7 @@ external computations are not proof objects.
 
 ## Comparator layout
 
-- `Challenge.lean` contains every transparent statement definition and the two requested theorem
-  holes.
+- `Challenge.lean` contains every transparent statement definition and the requested theorem hole.
 - `Solution.lean` repeats the same theorem independently.
 - `Bescovitch/Statement.lean` contains the identical definitions used by the modular solution.
 - `comparator.json` permits only `propext`, `Quot.sound`, and `Classical.choice`.

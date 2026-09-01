@@ -17,12 +17,12 @@ Proof imports will be added as the leaf theorems in `DEVELOPMENT_PLAN.md` are di
 
 namespace Bescovitch
 
-/-- The planar one-dimensional rectifiability threshold is at most the six-point endpoint. -/
-theorem sigma_one_plane_le_s_star :
-    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ sStar := by
+/-- The planar one-dimensional rectifiability threshold is below the previous record. -/
+theorem sigma_one_plane_le_699_div_1000 :
+    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ 699 / 1000 := by
   sorry
 
-/-- The exact endpoint is at most `0.6934`. -/
+/-- The exact six-point endpoint is at most `0.6934`. -/
 theorem sStar_le_6934_div_10000 : sStar ≤ 6934 / 10000 :=
   sStar_le_6934_div_10000_certified
 
