@@ -32,6 +32,7 @@ jobs:
           Bescovitch.BPC.PackingMeasure Bescovitch.BPC.Parameters
           Bescovitch.BPC.RootBalls Bescovitch.Certificates.Krawczyk
           Bescovitch.Certificates.BernsteinPass
+          Bescovitch.Certificates.DyadicInterval
           Bescovitch.Certificates.RawDenseBernstein
           Bescovitch.Certificates.RawDensePolynomial
           Bescovitch.Certificates.RawRat
