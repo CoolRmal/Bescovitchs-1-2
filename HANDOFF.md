@@ -206,6 +206,28 @@ at a fuel of fourteen it does not close the equality chart --- unsurprising, sin
 where the score comes closest to zero and the existing trees elsewhere run to depths of twenty and
 beyond. Raise the fuel, and expect that chart to need the deepest subdivision of the sixteen.
 
+## Verification cost, and what it means for continuous integration
+
+Measured at the rational chord: the smallest mixed chart, a hundred and twenty leaves, evaluates
+in **eighteen seconds compiled** --- about a seventh of a second a leaf, against some seven seconds
+a leaf before the retarget, since the chord's denominator fell from seventeen digits to four.
+
+The kernel is a different matter. The same chart passed an hour under `with_unfolding_all rfl`,
+so upwards of thirty seconds a leaf: a ratio near two hundred, not the ten or twenty the compiled
+timing suggests. Over the roughly five thousand nine hundred leaves of the fifteen trees that is
+on the order of **fifty CPU-hours**.
+
+Two consequences. First, run the charts in parallel, one per core, and expect an overnight job
+rather than an afternoon. Second, and this is the part that bites: continuous integration caps a
+job at six hours, and the largest chart alone --- `Cap1Cap1NegPos`, a thousand and eleven leaves
+--- would exceed that. Its tree has to be split across several modules, exactly as
+`Bin1933To2000` splits its rows, and the workflow has to become a matrix with a job per module.
+
+Before settling on `with_unfolding_all rfl`, compare it against `decide +kernel` on one chart.
+The former makes the elaborator evaluate the whole tree at full transparency and then the kernel
+evaluate it again; the latter skips the elaborator's pass. On a fifty-hour workload the difference
+is worth an hour's measurement.
+
 ## Gates that still apply
 
 Unchanged from `DEVELOPMENT_PLAN.md`: no `native_decide`, no `Lean.ofReduceBool`, no custom
