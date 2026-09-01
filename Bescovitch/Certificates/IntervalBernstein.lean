@@ -222,38 +222,46 @@ def intervalSplitThirdRight
     (a : Fin 13 → Fin 13 → Fin 5 → RationalInterval) :=
   fun i j k => intervalBernsteinRightFour (fun h => a i j h) k
 
-private noncomputable def splitFirstLeft
+/-- Restrict an exact tensor to the left half of its first coordinate. -/
+noncomputable def splitFirstLeft
     (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :=
   fun i j k => bernsteinLeftTwelve (fun h => a h j k) i
 
-private noncomputable def splitFirstRight
+/-- Restrict an exact tensor to the right half of its first coordinate. -/
+noncomputable def splitFirstRight
     (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :=
   fun i j k => bernsteinRightTwelve (fun h => a h j k) i
 
-private noncomputable def splitSecondLeft
+/-- Restrict an exact tensor to the left half of its second coordinate. -/
+noncomputable def splitSecondLeft
     (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :=
   fun i j k => bernsteinLeftTwelve (fun h => a i h k) j
 
-private noncomputable def splitSecondRight
+/-- Restrict an exact tensor to the right half of its second coordinate. -/
+noncomputable def splitSecondRight
     (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :=
   fun i j k => bernsteinRightTwelve (fun h => a i h k) j
 
-private noncomputable def splitThirdLeft
+/-- Restrict an exact tensor to the left half of its third coordinate. -/
+noncomputable def splitThirdLeft
     (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :=
   fun i j k => bernsteinLeftFour (fun h => a i j h) k
 
-private noncomputable def splitThirdRight
+/-- Restrict an exact tensor to the right half of its third coordinate. -/
+noncomputable def splitThirdRight
     (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :=
   fun i j k => bernsteinRightFour (fun h => a i j h) k
 
-private theorem intervalSplitFirstLeft_contains
+/-- Left restriction in the first coordinate preserves coefficientwise containment. -/
+theorem intervalSplitFirstLeft_contains
     {intervals : Fin 13 → Fin 13 → Fin 5 → RationalInterval}
     {values : Fin 13 → Fin 13 → Fin 5 → ℝ}
     (h : ∀ i j k, (intervals i j k).Contains (values i j k)) :
     ∀ i j k, (intervalSplitFirstLeft intervals i j k).Contains (splitFirstLeft values i j k) :=
   fun i j k => intervalBernsteinLeftTwelve_contains (fun h' => h h' j k) i
 
-private theorem intervalSplitFirstRight_contains
+/-- Right restriction in the first coordinate preserves coefficientwise containment. -/
+theorem intervalSplitFirstRight_contains
     {intervals : Fin 13 → Fin 13 → Fin 5 → RationalInterval}
     {values : Fin 13 → Fin 13 → Fin 5 → ℝ}
     (h : ∀ i j k, (intervals i j k).Contains (values i j k)) :
@@ -261,7 +269,8 @@ private theorem intervalSplitFirstRight_contains
       (splitFirstRight values i j k) :=
   fun i j k => intervalBernsteinRightTwelve_contains (fun h' => h h' j k) i
 
-private theorem intervalSplitSecondLeft_contains
+/-- Left restriction in the second coordinate preserves coefficientwise containment. -/
+theorem intervalSplitSecondLeft_contains
     {intervals : Fin 13 → Fin 13 → Fin 5 → RationalInterval}
     {values : Fin 13 → Fin 13 → Fin 5 → ℝ}
     (h : ∀ i j k, (intervals i j k).Contains (values i j k)) :
@@ -269,7 +278,8 @@ private theorem intervalSplitSecondLeft_contains
       (splitSecondLeft values i j k) :=
   fun i j k => intervalBernsteinLeftTwelve_contains (fun h' => h i h' k) j
 
-private theorem intervalSplitSecondRight_contains
+/-- Right restriction in the second coordinate preserves coefficientwise containment. -/
+theorem intervalSplitSecondRight_contains
     {intervals : Fin 13 → Fin 13 → Fin 5 → RationalInterval}
     {values : Fin 13 → Fin 13 → Fin 5 → ℝ}
     (h : ∀ i j k, (intervals i j k).Contains (values i j k)) :
@@ -277,7 +287,8 @@ private theorem intervalSplitSecondRight_contains
       (splitSecondRight values i j k) :=
   fun i j k => intervalBernsteinRightTwelve_contains (fun h' => h i h' k) j
 
-private theorem intervalSplitThirdLeft_contains
+/-- Left restriction in the third coordinate preserves coefficientwise containment. -/
+theorem intervalSplitThirdLeft_contains
     {intervals : Fin 13 → Fin 13 → Fin 5 → RationalInterval}
     {values : Fin 13 → Fin 13 → Fin 5 → ℝ}
     (h : ∀ i j k, (intervals i j k).Contains (values i j k)) :
@@ -285,7 +296,8 @@ private theorem intervalSplitThirdLeft_contains
       (splitThirdLeft values i j k) :=
   fun i j k => intervalBernsteinLeftFour_contains (fun h' => h i j h') k
 
-private theorem intervalSplitThirdRight_contains
+/-- Right restriction in the third coordinate preserves coefficientwise containment. -/
+theorem intervalSplitThirdRight_contains
     {intervals : Fin 13 → Fin 13 → Fin 5 → RationalInterval}
     {values : Fin 13 → Fin 13 → Fin 5 → ℝ}
     (h : ∀ i j k, (intervals i j k).Contains (values i j k)) :
@@ -395,42 +407,48 @@ private theorem tensorBernstein_third_coordinate
   intro k hk
   ring
 
-private theorem tensorBernstein_splitFirstLeft
+/-- First-coordinate left restriction agrees with the left half-cube chart. -/
+theorem tensorBernstein_splitFirstLeft
     (a : Fin 13 → Fin 13 → Fin 5 → ℝ) (x y z : I) :
     tensorBernstein a (unitIntervalLeftHalf x) y z =
       tensorBernstein (splitFirstLeft a) x y z := by
   exact tensorBernstein_first_coordinate a unitIntervalLeftHalf bernsteinLeftTwelve
     bernstein_twelve_left_half x y z
 
-private theorem tensorBernstein_splitFirstRight
+/-- First-coordinate right restriction agrees with the right half-cube chart. -/
+theorem tensorBernstein_splitFirstRight
     (a : Fin 13 → Fin 13 → Fin 5 → ℝ) (x y z : I) :
     tensorBernstein a (unitIntervalRightHalf x) y z =
       tensorBernstein (splitFirstRight a) x y z := by
   exact tensorBernstein_first_coordinate a unitIntervalRightHalf bernsteinRightTwelve
     bernstein_twelve_right_half x y z
 
-private theorem tensorBernstein_splitSecondLeft
+/-- Second-coordinate left restriction agrees with the left half-cube chart. -/
+theorem tensorBernstein_splitSecondLeft
     (a : Fin 13 → Fin 13 → Fin 5 → ℝ) (x y z : I) :
     tensorBernstein a x (unitIntervalLeftHalf y) z =
       tensorBernstein (splitSecondLeft a) x y z := by
   exact tensorBernstein_second_coordinate a unitIntervalLeftHalf bernsteinLeftTwelve
     bernstein_twelve_left_half x y z
 
-private theorem tensorBernstein_splitSecondRight
+/-- Second-coordinate right restriction agrees with the right half-cube chart. -/
+theorem tensorBernstein_splitSecondRight
     (a : Fin 13 → Fin 13 → Fin 5 → ℝ) (x y z : I) :
     tensorBernstein a x (unitIntervalRightHalf y) z =
       tensorBernstein (splitSecondRight a) x y z := by
   exact tensorBernstein_second_coordinate a unitIntervalRightHalf bernsteinRightTwelve
     bernstein_twelve_right_half x y z
 
-private theorem tensorBernstein_splitThirdLeft
+/-- Third-coordinate left restriction agrees with the left half-cube chart. -/
+theorem tensorBernstein_splitThirdLeft
     (a : Fin 13 → Fin 13 → Fin 5 → ℝ) (x y z : I) :
     tensorBernstein a x y (unitIntervalLeftHalf z) =
       tensorBernstein (splitThirdLeft a) x y z := by
   exact tensorBernstein_third_coordinate a unitIntervalLeftHalf bernsteinLeftFour
     bernstein_four_left_half x y z
 
-private theorem tensorBernstein_splitThirdRight
+/-- Third-coordinate right restriction agrees with the right half-cube chart. -/
+theorem tensorBernstein_splitThirdRight
     (a : Fin 13 → Fin 13 → Fin 5 → ℝ) (x y z : I) :
     tensorBernstein a x y (unitIntervalRightHalf z) =
       tensorBernstein (splitThirdRight a) x y z := by
