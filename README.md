@@ -3,9 +3,9 @@
 A Lean 4 and Mathlib project for the proposed bound
 
 $$
-\sigma_1(\mathbb{R}^2) \le s_*,
+\sigma_1(\mathbb{R}^2) \le s_{\ast},
 \qquad
-s_* = 0.6933064218259048726\ldots,
+s_{\ast} = 0.6933064218259048726\ldots,
 $$
 
 where `sStar` is defined by an exact isolated radical system rather than by a decimal.
@@ -20,13 +20,13 @@ For a Borel set $E \subset \mathbb{R}^2$ with finite one-dimensional Hausdorff m
 **lower density** at a point $x$ is
 
 $$
-\Theta^1_*(E,x) \;=\; \liminf_{r \downarrow 0} \frac{\mathcal{H}^1(E \cap B(x,r))}{2r},
+\Theta^1_{\ast}(E,x) \;=\; \liminf_{r \downarrow 0} \frac{\mathcal{H}^1(E \cap B(x,r))}{2r},
 $$
 
 normalized by the diameter $2r$ of the ball, so that a straight segment has density $1$ at its
 interior points. **Besicovitch's 1/2 conjecture** asserts that
 
-> if $\mathcal{H}^1(E) < \infty$ and $\Theta^1_*(E,x) > 1/2$ for $\mathcal{H}^1$-almost every
+> if $\mathcal{H}^1(E) < \infty$ and $\Theta^1_{\ast}(E,x) > 1/2$ for $\mathcal{H}^1$-almost every
 > $x \in E$, then $E$ is countably 1-rectifiable — covered up to null measure by countably many
 > Lipschitz curves.
 
@@ -36,7 +36,7 @@ it. Writing
 
 $$
 \sigma_1(\mathbb{R}^2) = \inf\lbrace\beta \ge 0 : \text{every finite-measure Borel set with }
-\Theta^1_* \ge \beta \text{ a.e. is countably 1-rectifiable}\rbrace,
+\Theta^1_{\ast} \ge \beta \text{ a.e. is countably 1-rectifiable}\rbrace,
 $$
 
 the conjecture is the assertion $\sigma_1(\mathbb{R}^2) = 1/2$.
@@ -71,17 +71,17 @@ sets a separation argument produces; each colour contributes a root and two chil
 constant is the algebraic number
 
 $$
-\theta_6 = s_* = 0.693306421825904872690678414403710951\ldots,
+\theta_6 = s_{\ast} = 0.693306421825904872690678414403710951\ldots,
 $$
 
 pinned by an isolated pair of radical equations inside an explicit rational box — the decimal
 appears nowhere in the proof — with a unique extremal configuration up to the evident symmetries.
-That configuration is a half-turn pair of chords of length $c_* = 2s_*$ at which three
+That configuration is a half-turn pair of chords of length $c_{\ast} = 2s_{\ast}$ at which three
 structurally different packing mechanisms tie simultaneously, which is why the answer is an
 algebraic number of high degree rather than a round one.
 
 Combined with a direct six-centre transfer to the Besicovitch pair condition and the standard
-rectifiability machinery, this gives $\sigma_1(\mathbb{R}^2) \le s_*$.
+rectifiability machinery, this gives $\sigma_1(\mathbb{R}^2) \le s_{\ast}$.
 
 ## The paper
 
