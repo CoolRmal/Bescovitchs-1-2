@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.SiblingFailureTree
 
 /-!
@@ -94,7 +95,7 @@ theorem IsAdmissibleAt.swapBlueChildren {configuration : SixPointConfiguration} 
 theorem selectedDiagonalMatchingFails_swapBlueChildren
     (configuration : SixPointConfiguration) :
     SelectedDiagonalMatchingFails (swapBlueChildren configuration) ↔
-      (2 * cStar - 1) *
+      (2 * barC - 1) *
           (dist (configuration .red .left) (configuration .red .right) +
             dist (configuration .blue .left) (configuration .blue .right)) ≤
         dist (configuration .red .left) (configuration .blue .right) +

@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.Certificates.EndpointBridge
 public import Bescovitch.SixPoint.EndpointGeometry
 public import Bescovitch.SixPoint.SiblingTriangle
@@ -990,84 +991,84 @@ private theorem bluePointUpper_vertices (c : ℝ) :
   constructor <;> ring
 
 private theorem redPointVertex_dominates :
-    redPointVertex1 cStar < redPointVertex0 cStar ∧
-      redPointVertex2 cStar < redPointVertex0 cStar := by
-  rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+    redPointVertex1 barC < redPointVertex0 barC ∧
+      redPointVertex2 barC < redPointVertex0 barC := by
+  rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
   norm_num [redPointVertex0, redPointVertex1, redPointVertex2] at hlower hupper ⊢
-  constructor <;> nlinarith [sq_nonneg (cStar - 13866128436518096 / 10 ^ 16)]
+  constructor <;> nlinarith [sq_nonneg (barC - 13866128436518096 / 10 ^ 16)]
 
 private theorem bluePointVertex_dominates :
-    bluePointVertex1 cStar < bluePointVertex0 cStar ∧
-      bluePointVertex2 cStar < bluePointVertex0 cStar := by
-  rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+    bluePointVertex1 barC < bluePointVertex0 barC ∧
+      bluePointVertex2 barC < bluePointVertex0 barC := by
+  rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
   norm_num [bluePointVertex0, bluePointVertex1, bluePointVertex2] at hlower hupper ⊢
-  constructor <;> nlinarith [sq_nonneg (cStar - 13866128436518096 / 10 ^ 16)]
+  constructor <;> nlinarith [sq_nonneg (barC - 13866128436518096 / 10 ^ 16)]
 
 private theorem redPointUpper_le_vertex0 {t₁ t₂ : ℝ} (ht₁ : t₁ ≤ 1) (ht₂ : t₂ ≤ 1)
-    (hsum : cStar ≤ t₁ + t₂) : redPointUpper cStar t₁ t₂ ≤ redPointVertex0 cStar := by
+    (hsum : barC ≤ t₁ + t₂) : redPointUpper barC t₁ t₂ ≤ redPointVertex0 barC := by
   have hvertices := twoPointUpper_le_vertices
-    (c := cStar) (A₁ := 25 / 2) (A₂ := 19 / 2) (rho₁ := 14 / 5) (rho₂ := 7 / 4)
-    (sigma := 407 / 100) (d₁ := 0) (d₂ := 24 * cStar) (t₁ := t₁) (t₂ := t₂)
+    (c := barC) (A₁ := 25 / 2) (A₂ := 19 / 2) (rho₁ := 14 / 5) (rho₂ := 7 / 4)
+    (sigma := 407 / 100) (d₁ := 0) (d₂ := 24 * barC) (t₁ := t₁) (t₂ := t₂)
     (by norm_num [twoPointQuadratic1, twoPointGain])
     (by norm_num [twoPointQuadratic2, twoPointGain]) ht₁ ht₂ hsum
   rw [← redPointUpper, ← redPointUpper, ← redPointUpper, ← redPointUpper] at hvertices
-  rw [redPointUpper_vertices cStar |>.1, redPointUpper_vertices cStar |>.2.1,
-    redPointUpper_vertices cStar |>.2.2] at hvertices
+  rw [redPointUpper_vertices barC |>.1, redPointUpper_vertices barC |>.2.1,
+    redPointUpper_vertices barC |>.2.2] at hvertices
   exact hvertices.trans <| max_le (le_rfl) <| max_le
     redPointVertex_dominates.1.le redPointVertex_dominates.2.le
 
 private theorem bluePointUpper_le_vertex0 {t₁ t₂ : ℝ} (ht₁ : t₁ ≤ 1)
-    (ht₂ : t₂ ≤ 1) (hsum : cStar ≤ t₁ + t₂) :
-    bluePointUpper cStar t₁ t₂ ≤ bluePointVertex0 cStar := by
+    (ht₂ : t₂ ≤ 1) (hsum : barC ≤ t₁ + t₂) :
+    bluePointUpper barC t₁ t₂ ≤ bluePointVertex0 barC := by
   have hvertices := twoPointUpper_le_vertices
-    (c := cStar) (A₁ := 25 / 2) (A₂ := 19 / 2) (rho₁ := 113 / 40)
-    (rho₂ := 213 / 100) (sigma := 24 / 5) (d₁ := 15 * cStar - 3)
-    (d₂ := 15 * cStar + 3) (t₁ := t₁) (t₂ := t₂)
+    (c := barC) (A₁ := 25 / 2) (A₂ := 19 / 2) (rho₁ := 113 / 40)
+    (rho₂ := 213 / 100) (sigma := 24 / 5) (d₁ := 15 * barC - 3)
+    (d₂ := 15 * barC + 3) (t₁ := t₁) (t₂ := t₂)
     (by norm_num [twoPointQuadratic1, twoPointGain])
     (by norm_num [twoPointQuadratic2, twoPointGain]) ht₁ ht₂ hsum
   rw [← bluePointUpper, ← bluePointUpper, ← bluePointUpper, ← bluePointUpper] at hvertices
-  rw [bluePointUpper_vertices cStar |>.1, bluePointUpper_vertices cStar |>.2.1,
-    bluePointUpper_vertices cStar |>.2.2] at hvertices
+  rw [bluePointUpper_vertices barC |>.1, bluePointUpper_vertices barC |>.2.1,
+    bluePointUpper_vertices barC |>.2.2] at hvertices
   exact hvertices.trans <| max_le (le_rfl) <| max_le
     bluePointVertex_dominates.1.le bluePointVertex_dominates.2.le
 
 private theorem redPointTangent_le {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ : E) (he : ‖e‖ = 1) (hp₁ : ‖p₁‖ ≤ 1)
-    (hp₂ : ‖p₂‖ ≤ 1) (hseparation : cStar ≤ ‖p₁ - p₂‖) :
+    (hp₂ : ‖p₂‖ ≤ 1) (hseparation : barC ≤ ‖p₁ - p₂‖) :
     (25 / 2) * ‖e - (2 : ℝ) • p₁‖ + (19 / 2) * ‖e - (2 : ℝ) • p₂‖ -
-        24 * cStar * ‖p₂‖ ≤ redPointVertex0 cStar := by
-  have htangent := twoPointTangent_le e p₁ p₂ (c := cStar) (A₁ := 25 / 2)
+        24 * barC * ‖p₂‖ ≤ redPointVertex0 barC := by
+  have htangent := twoPointTangent_le e p₁ p₂ (c := barC) (A₁ := 25 / 2)
     (A₂ := 19 / 2) (rho₁ := 14 / 5) (rho₂ := 7 / 4) (sigma := 407 / 100)
-    (d₁ := 0) (d₂ := 24 * cStar) he hseparation cStar_pos.le
+    (d₁ := 0) (d₂ := 24 * barC) he hseparation barC_pos.le
     (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hsum : cStar ≤ ‖p₁‖ + ‖p₂‖ :=
+  have hsum : barC ≤ ‖p₁‖ + ‖p₂‖ :=
     hseparation.trans (norm_sub_le p₁ p₂)
-  have hupper : redPointUpper cStar ‖p₁‖ ‖p₂‖ ≤ redPointVertex0 cStar :=
+  have hupper : redPointUpper barC ‖p₁‖ ‖p₂‖ ≤ redPointVertex0 barC :=
     redPointUpper_le_vertex0 hp₁ hp₂ hsum
   simpa only [redPointUpper, zero_mul, sub_zero] using htangent.trans hupper
 
 private theorem bluePointTangent_le {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e w₁ w₂ : E) (he : ‖e‖ = 1) (hw₁ : ‖w₁‖ ≤ 1)
-    (hw₂ : ‖w₂‖ ≤ 1) (hseparation : cStar ≤ ‖w₁ - w₂‖) :
+    (hw₂ : ‖w₂‖ ≤ 1) (hseparation : barC ≤ ‖w₁ - w₂‖) :
     (25 / 2) * ‖e - (2 : ℝ) • w₁‖ + (19 / 2) * ‖e - (2 : ℝ) • w₂‖ -
-        (15 * cStar - 3) * ‖w₁‖ - (15 * cStar + 3) * ‖w₂‖ ≤
-      bluePointVertex0 cStar := by
-  have htangent := twoPointTangent_le e w₁ w₂ (c := cStar) (A₁ := 25 / 2)
+        (15 * barC - 3) * ‖w₁‖ - (15 * barC + 3) * ‖w₂‖ ≤
+      bluePointVertex0 barC := by
+  have htangent := twoPointTangent_le e w₁ w₂ (c := barC) (A₁ := 25 / 2)
     (A₂ := 19 / 2) (rho₁ := 113 / 40) (rho₂ := 213 / 100) (sigma := 24 / 5)
-    (d₁ := 15 * cStar - 3) (d₂ := 15 * cStar + 3) he hseparation cStar_pos.le
+    (d₁ := 15 * barC - 3) (d₂ := 15 * barC + 3) he hseparation barC_pos.le
     (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hsum : cStar ≤ ‖w₁‖ + ‖w₂‖ :=
+  have hsum : barC ≤ ‖w₁‖ + ‖w₂‖ :=
     hseparation.trans (norm_sub_le w₁ w₂)
   refine htangent.trans ?_
-  change bluePointUpper cStar ‖w₁‖ ‖w₂‖ ≤ bluePointVertex0 cStar
+  change bluePointUpper barC ‖w₁‖ ‖w₂‖ ≤ bluePointVertex0 barC
   exact bluePointUpper_le_vertex0 hw₁ hw₂ hsum
 
 private theorem rootEdge_internal_polynomial_lt :
-    redPointVertex0 cStar + bluePointVertex0 cStar +
-        95 * cStar - 97 * cStar ^ 2 - 6 < -5 := by
-  rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+    redPointVertex0 barC + bluePointVertex0 barC +
+        95 * barC - 97 * barC ^ 2 - 6 < -5 := by
+  rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
   norm_num [redPointVertex0, bluePointVertex0] at hlower hupper ⊢
-  nlinarith [sq_nonneg (cStar - 13866128436518096 / 10 ^ 16)]
+  nlinarith [sq_nonneg (barC - 13866128436518096 / 10 ^ 16)]
 
 /-- Midpoint convexity splits a cross distance into one term for each color. -/
 theorem midpoint_crossDistance_le {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1091,11 +1092,11 @@ theorem rootEdge_internal_expanded_lt {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hredSeparation : cStar ≤ ‖p₁ - p₂‖)
-    (hblueSeparation : cStar ≤ ‖w₁ - w₂‖) :
+    (hredSeparation : barC ≤ ‖p₁ - p₂‖)
+    (hblueSeparation : barC ≤ ‖w₁ - w₂‖) :
     25 * ‖e - p₁ - w₁‖ + 19 * ‖e - p₂ - w₂‖ +
-        (3 - 15 * cStar) * ‖w₁‖ - (15 * cStar + 3) * ‖w₂‖ -
-        24 * cStar * ‖p₂‖ + 95 * cStar - 97 * cStar ^ 2 - 6 < 0 := by
+        (3 - 15 * barC) * ‖w₁‖ - (15 * barC + 3) * ‖w₂‖ -
+        24 * barC * ‖p₂‖ + 95 * barC - 97 * barC ^ 2 - 6 < 0 := by
   have hmid₁ := midpoint_crossDistance_le e p₁ w₁
   have hmid₂ := midpoint_crossDistance_le e p₂ w₂
   have hred := redPointTangent_le e p₁ p₂ he hp₁ hp₂ hredSeparation
@@ -1127,20 +1128,20 @@ theorem rootEdge_internal_separator_lt {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hredSeparation : cStar ≤ ‖p₁ - p₂‖)
-    (hblueSeparation : cStar ≤ ‖w₁ - w₂‖) :
-    19 * matchingFailureSlack cStar ‖p₁ - p₂‖ ‖w₁ - w₂‖
+    (hredSeparation : barC ≤ ‖p₁ - p₂‖)
+    (hblueSeparation : barC ≤ ‖w₁ - w₂‖) :
+    19 * matchingFailureSlack barC ‖p₁ - p₂‖ ‖w₁ - w₂‖
           ‖e - p₁ - w₁‖ ‖e - p₂ - w₂‖ +
-        6 * redEndpointFailureSlack cStar ‖p₁ - p₂‖ ‖w₁ - w₂‖
+        6 * redEndpointFailureSlack barC ‖p₁ - p₂‖ ‖w₁ - w₂‖
           ‖w₁‖ ‖w₂‖ ‖e - p₁ - w₁‖ +
-        24 * redRootEdgeInternalSlack cStar ‖w₁ - w₂‖ ‖p₂‖ ‖w₁‖ ‖w₂‖ <
+        24 * redRootEdgeInternalSlack barC ‖w₁ - w₂‖ ‖p₂‖ ‖w₁‖ ‖w₂‖ <
       0 := by
   have hexpanded := rootEdge_internal_expanded_lt e p₁ p₂ w₁ w₂ he hp₁ hp₂ hw₁ hw₂
     hredSeparation hblueSeparation
-  have hcoefRed : 25 - 44 * cStar ≤ 0 := by
-    nlinarith [one_lt_cStar_and_cStar_lt_two.1]
-  have hcoefBlue : 70 - 53 * cStar ≤ 0 := by
-    rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  have hcoefRed : 25 - 44 * barC ≤ 0 := by
+    nlinarith [one_lt_barC_and_barC_lt_two.1]
+  have hcoefBlue : 70 - 53 * barC ≤ 0 := by
+    rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
     norm_num at hlower hupper ⊢
     linarith
   have hredTerm := mul_le_mul_of_nonpos_left hredSeparation hcoefRed
@@ -1153,13 +1154,13 @@ theorem redRootEdgeInternalSlack_neg {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hredSeparation : cStar ≤ ‖p₁ - p₂‖)
-    (hblueSeparation : cStar ≤ ‖w₁ - w₂‖)
-    (hmatching : 0 ≤ matchingFailureSlack cStar ‖p₁ - p₂‖ ‖w₁ - w₂‖
+    (hredSeparation : barC ≤ ‖p₁ - p₂‖)
+    (hblueSeparation : barC ≤ ‖w₁ - w₂‖)
+    (hmatching : 0 ≤ matchingFailureSlack barC ‖p₁ - p₂‖ ‖w₁ - w₂‖
       ‖e - p₁ - w₁‖ ‖e - p₂ - w₂‖)
-    (hendpoint : 0 ≤ redEndpointFailureSlack cStar ‖p₁ - p₂‖ ‖w₁ - w₂‖
+    (hendpoint : 0 ≤ redEndpointFailureSlack barC ‖p₁ - p₂‖ ‖w₁ - w₂‖
       ‖w₁‖ ‖w₂‖ ‖e - p₁ - w₁‖) :
-    redRootEdgeInternalSlack cStar ‖w₁ - w₂‖ ‖p₂‖ ‖w₁‖ ‖w₂‖ < 0 := by
+    redRootEdgeInternalSlack barC ‖w₁ - w₂‖ ‖p₂‖ ‖w₁‖ ‖w₂‖ < 0 := by
   have hseparator := rootEdge_internal_separator_lt e p₁ p₂ w₁ w₂ he hp₁ hp₂ hw₁ hw₂
     hredSeparation hblueSeparation
   nlinarith
@@ -1169,13 +1170,13 @@ theorem blueRootEdge_internal_separator_lt {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hredSeparation : cStar ≤ ‖p₁ - p₂‖)
-    (hblueSeparation : cStar ≤ ‖w₁ - w₂‖) :
-    19 * matchingFailureSlack cStar ‖p₁ - p₂‖ ‖w₁ - w₂‖
+    (hredSeparation : barC ≤ ‖p₁ - p₂‖)
+    (hblueSeparation : barC ≤ ‖w₁ - w₂‖) :
+    19 * matchingFailureSlack barC ‖p₁ - p₂‖ ‖w₁ - w₂‖
           ‖e - p₁ - w₁‖ ‖e - p₂ - w₂‖ +
-        6 * blueEndpointFailureSlack cStar ‖p₁ - p₂‖ ‖w₁ - w₂‖
+        6 * blueEndpointFailureSlack barC ‖p₁ - p₂‖ ‖w₁ - w₂‖
           ‖p₁‖ ‖p₂‖ ‖e - p₁ - w₁‖ +
-        24 * blueRootEdgeInternalSlack cStar ‖p₁ - p₂‖ ‖w₂‖ ‖p₁‖ ‖p₂‖ <
+        24 * blueRootEdgeInternalSlack barC ‖p₁ - p₂‖ ‖w₂‖ ‖p₁‖ ‖p₂‖ <
       0 := by
   have hseparator := rootEdge_internal_separator_lt e w₁ w₂ p₁ p₂ he hw₁ hw₂ hp₁ hp₂
     hblueSeparation hredSeparation
@@ -1191,13 +1192,13 @@ theorem blueRootEdgeInternalSlack_neg {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hredSeparation : cStar ≤ ‖p₁ - p₂‖)
-    (hblueSeparation : cStar ≤ ‖w₁ - w₂‖)
-    (hmatching : 0 ≤ matchingFailureSlack cStar ‖p₁ - p₂‖ ‖w₁ - w₂‖
+    (hredSeparation : barC ≤ ‖p₁ - p₂‖)
+    (hblueSeparation : barC ≤ ‖w₁ - w₂‖)
+    (hmatching : 0 ≤ matchingFailureSlack barC ‖p₁ - p₂‖ ‖w₁ - w₂‖
       ‖e - p₁ - w₁‖ ‖e - p₂ - w₂‖)
-    (hendpoint : 0 ≤ blueEndpointFailureSlack cStar ‖p₁ - p₂‖ ‖w₁ - w₂‖
+    (hendpoint : 0 ≤ blueEndpointFailureSlack barC ‖p₁ - p₂‖ ‖w₁ - w₂‖
       ‖p₁‖ ‖p₂‖ ‖e - p₁ - w₁‖) :
-    blueRootEdgeInternalSlack cStar ‖p₁ - p₂‖ ‖w₂‖ ‖p₁‖ ‖p₂‖ < 0 := by
+    blueRootEdgeInternalSlack barC ‖p₁ - p₂‖ ‖w₂‖ ‖p₁‖ ‖p₂‖ < 0 := by
   have hseparator :=
     blueRootEdge_internal_separator_lt e p₁ p₂ w₁ w₂ he hp₁ hp₂ hw₁ hw₂
       hredSeparation hblueSeparation
@@ -1206,19 +1207,19 @@ theorem blueRootEdgeInternalSlack_neg {E : Type*} [NormedAddCommGroup E]
 /-- In an admissible configuration, a diagonal matching and its red coincident endpoint rule out
 the red root-edge internal primitive. -/
 theorem SixPointConfiguration.redRootEdgeInternalSlack_neg_of_matching_endpoint
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
-    (hmatching : 0 ≤ matchingFailureSlack cStar
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
+    (hmatching : 0 ≤ matchingFailureSlack barC
       (dist (configuration .red .left) (configuration .red .right))
       (dist (configuration .blue .left) (configuration .blue .right))
       (dist (configuration .red .left) (configuration .blue .left))
       (dist (configuration .red .right) (configuration .blue .right)))
-    (hendpoint : 0 ≤ redEndpointFailureSlack cStar
+    (hendpoint : 0 ≤ redEndpointFailureSlack barC
       (dist (configuration .red .left) (configuration .red .right))
       (dist (configuration .blue .left) (configuration .blue .right))
       (dist (configuration .blue .root) (configuration .blue .left))
       (dist (configuration .blue .root) (configuration .blue .right))
       (dist (configuration .red .left) (configuration .blue .left))) :
-    redRootEdgeInternalSlack cStar
+    redRootEdgeInternalSlack barC
       (dist (configuration .blue .left) (configuration .blue .right))
       (dist (configuration .red .root) (configuration .red .right))
       (dist (configuration .blue .root) (configuration .blue .left))
@@ -1246,13 +1247,13 @@ theorem SixPointConfiguration.redRootEdgeInternalSlack_neg_of_matching_endpoint
   have hB₂₂ : ‖e - p₂ - w₂‖ =
       dist (configuration .red .right) (configuration .blue .right) := by
     exact (configuration.dist_red_blue_eq_norm .right .right).symm
-  have hredSeparation : cStar ≤ ‖p₁ - p₂‖ := by
+  have hredSeparation : barC ≤ ‖p₁ - p₂‖ := by
     have hsibling := configuration.two_mul_le_dist_redDisplacement h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hsibling
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hsibling
     exact hsibling
-  have hblueSeparation : cStar ≤ ‖w₁ - w₂‖ := by
+  have hblueSeparation : barC ≤ ‖w₁ - w₂‖ := by
     have hsibling := configuration.two_mul_le_dist_bluePullback h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hsibling
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hsibling
     exact hsibling
   have hnegative := redRootEdgeInternalSlack_neg e p₁ p₂ w₁ w₂
     (configuration.norm_rootDisplacement h)

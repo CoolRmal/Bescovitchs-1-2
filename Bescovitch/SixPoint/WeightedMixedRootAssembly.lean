@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalEndpointData
 public import Bescovitch.SixPoint.WeightedChart
 public import Bescovitch.SixPoint.WeightedMixedSymmetry
 import Bescovitch.SixPoint.WeightedMixedRootCover

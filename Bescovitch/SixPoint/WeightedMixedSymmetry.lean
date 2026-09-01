@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.WeightedChart
 public import Bescovitch.SixPoint.WeightedMixedTree
 
@@ -71,13 +72,13 @@ def WeightedMixedRootBoxBound (capP capW : Bool) (sideP sideW : ℚ) : Prop :=
   ∀ x : Fin 6 → ℝ,
     ((sideP : ℝ) ^ 2 = 1) → ((sideW : ℝ) ^ 2 = 1) →
     (∀ i, (weightedMixedRootBox capP capW i).Contains (x i)) →
-    x 0 ^ 2 + x 1 ^ 2 ≤ 1 → (x 0 - cStar) ^ 2 + x 1 ^ 2 ≤ 1 →
-    x 3 ^ 2 + x 4 ^ 2 ≤ 1 → (x 3 - cStar) ^ 2 + x 4 ^ 2 ≤ 1 →
-    weightedPairScore !₂[1, 0] cStar endpointLambda endpointMu
+    x 0 ^ 2 + x 1 ^ 2 ≤ 1 → (x 0 - barC) ^ 2 + x 1 ^ 2 ≤ 1 →
+    x 3 ^ 2 + x 4 ^ 2 ≤ 1 → (x 3 - barC) ^ 2 + x 4 ^ 2 ≤ 1 →
+    weightedPairScore !₂[1, 0] barC endpointLambda endpointMu
       (chordChartFirst sideP (x 0) (x 1) (x 2))
-      (chordChartSecond sideP cStar (x 0) (x 1) (x 2))
+      (chordChartSecond sideP barC (x 0) (x 1) (x 2))
       (chordChartFirst sideW (x 3) (x 4) (x 5))
-      (chordChartSecond sideW cStar (x 3) (x 4) (x 5)) ≤ 0
+      (chordChartSecond sideW barC (x 3) (x 4) (x 5)) ≤ 0
 
 private theorem swapped_coordinates_mem_root_box_of_nonneg (capP capW : Bool)
     (x : Fin 6 → ℝ) (hx : ∀ i, (weightedMixedRootBox capP capW i).Contains (x i))

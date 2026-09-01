@@ -1,4 +1,4 @@
-# Retargeting to `sigmaOne <= 699 / 1000`
+# Retargeting to `sigmaOne <= 6934 / 10000`
 
 This file is a working checklist for the change of target recorded in `DEVELOPMENT_PLAN.md`.
 It is written so that the remaining work can be carried out mechanically, with `lake build` as
@@ -8,19 +8,19 @@ the arbiter at every step.
 
 Certifying `sigmaOne <= sStar` needs the six-point endpoint to be attained exactly. The weighted
 score is then zero at the extremal configuration, so every finite certificate has to separate a
-tight inequality and the existing ones carry a margin of `10 ^ -8`. At `699 / 1000` the same score
-has a margin of about `0.2`, and the extremal configuration is no longer tight at all, so the
+tight inequality and the existing ones carry a margin of `10 ^ -8`. At `6934 / 10000` the same score
+has a margin of about `3 * 10 ^ -3`, and the extremal configuration is no longer tight at all, so the
 exceptional chart, the equality complement and the exceptional self bin disappear outright.
 
 Measured, so that none of it is re-litigated:
 
-- The bound still holds at `699 / 1000` with the existing `endpointLambda` and `endpointMu`; the
+- The bound still holds at `6934 / 10000` with the existing `endpointLambda` and `endpointMu`; the
   sampled maximum of the weighted score is about `-0.23`. The weights need not be re-derived.
 - Interval arithmetic on the cleared leaf polynomial certifies **none** of the hundred and thirty
   leaves of the smallest chart, overshooting by between `+13` and `+275`.
 - Interval arithmetic on the score itself is first-order accurate in the box width, so it cannot
   use the larger margin either: it needs widths near `0.009` across six unit-sized coordinates.
-  A search at `699 / 1000` passed three hundred thousand boxes without closing one sign pair.
+  A search at `6934 / 10000` passed three hundred thousand boxes without closing one sign pair.
 - The quadratic majorants and the Bernstein basis are therefore not negotiable. They are what
   makes the certificate second-order accurate, which is why the current trees need only about
   five thousand nine hundred leaves at a margin of `10 ^ -8`.

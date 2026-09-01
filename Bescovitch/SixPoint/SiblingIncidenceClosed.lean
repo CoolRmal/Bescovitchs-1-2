@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.LensEndpointBalancedE0S0
 public import Bescovitch.SixPoint.SiblingFailureTree
 public import Bescovitch.SixPoint.SiblingLensE1S0
@@ -25,7 +26,7 @@ noncomputable section
 namespace Bescovitch
 
 private theorem endpointEndpoint_offMatching_excluded_aux
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration) {redCode blueCode : Fin 4}
     (horbit : endpointEndpointOrbit redCode blueCode = .offMatchingCoincident) :
     ¬ (redSiblingTriangleFailure configuration (.endpoint redCode) ∧
@@ -39,7 +40,7 @@ private theorem endpointEndpoint_offMatching_excluded_aux
       (blueEndpointFailure_swapChildren configuration 2).2 failures.2⟩
 
 private theorem endpointBalanced_e0s0_excluded_aux
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration) {endpointCode balancedCode : Fin 4}
     (horbit : endpointBalancedOrbit endpointCode balancedCode = .e0s0) :
     ¬ (redSiblingTriangleFailure configuration (.endpoint endpointCode) ∧
@@ -55,7 +56,7 @@ private theorem endpointBalanced_e0s0_excluded_aux
       (blueBalancedFailure_swapChildren configuration 3).2 failures.2⟩
 
 private theorem endpointBalanced_e1s0_excluded_aux
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration) {endpointCode balancedCode : Fin 4}
     (horbit : endpointBalancedOrbit endpointCode balancedCode = .e1s0) :
     ¬ (redSiblingTriangleFailure configuration (.endpoint endpointCode) ∧
@@ -69,7 +70,7 @@ private theorem endpointBalanced_e1s0_excluded_aux
       (blueBalancedFailure_swapChildren configuration 3).2 failures.2⟩
 
 private theorem balancedEndpoint_e0s0_excluded_aux
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration) {balancedCode endpointCode : Fin 4}
     (horbit : endpointBalancedOrbit (transposeEndpointCode endpointCode) balancedCode = .e0s0) :
     ¬ (redSiblingTriangleFailure configuration (.balanced balancedCode) ∧
@@ -84,7 +85,7 @@ private theorem balancedEndpoint_e0s0_excluded_aux
     (blueBalancedFailure_transposeColors configuration balancedCode).2 failures.1⟩
 
 private theorem balancedEndpoint_e1s0_excluded_aux
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration) {balancedCode endpointCode : Fin 4}
     (horbit : endpointBalancedOrbit (transposeEndpointCode endpointCode) balancedCode = .e1s0) :
     ¬ (redSiblingTriangleFailure configuration (.balanced balancedCode) ∧
@@ -99,7 +100,7 @@ private theorem balancedEndpoint_e1s0_excluded_aux
     (blueBalancedFailure_transposeColors configuration balancedCode).2 failures.1⟩
 
 private theorem balancedBalanced_s0s0_excluded_aux
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration) {redCode blueCode : Fin 4}
     (horbit : balancedBalancedOrbit redCode blueCode = .s0s0) :
     ¬ (redSiblingTriangleFailure configuration (.balanced redCode) ∧
@@ -113,7 +114,7 @@ private theorem balancedBalanced_s0s0_excluded_aux
       (blueBalancedFailure_swapChildren configuration 3).2 failures.2⟩
 
 private theorem balancedBalanced_s0s3_excluded_aux
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration) {redCode blueCode : Fin 4}
     (horbit : balancedBalancedOrbit redCode blueCode = .s0s3) :
     ¬ (redSiblingTriangleFailure configuration (.balanced redCode) ∧
@@ -128,7 +129,7 @@ private theorem balancedBalanced_s0s3_excluded_aux
 
 /-- Every non-matched sibling-incidence cell is excluded at the exact endpoint. -/
 theorem siblingIncidenceExclusions_of_admissible
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration) :
     SiblingIncidenceExclusions (redSiblingTriangleFailure configuration)
       (blueSiblingTriangleFailure configuration) where
@@ -180,9 +181,9 @@ private theorem siblingIncidenceOutcome_failures_aux {configuration : SixPointCo
 
 /-- The sibling supports either give a nonnegative packing or fail at one matched endpoint. -/
 theorem exists_nonnegative_score_or_matched_sibling_endpoint
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration) :
-    (∃ packing : SixPointPacking configuration, 0 ≤ packing.score sStar) ∨
+    (∃ packing : SixPointPacking configuration, 0 ≤ packing.score barS) ∨
       ∃ code : Fin 4, (code = 0 ∨ code = 3) ∧
         redSiblingTriangleFailure configuration (.endpoint code) ∧
         blueSiblingTriangleFailure configuration (.endpoint code) := by

@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.FourChildren
 public import Bescovitch.SixPoint.RowColumnRescue
 
@@ -21,20 +22,20 @@ noncomputable section
 
 namespace Bescovitch
 
-private theorem cStar_four_children_gaps :
-    0 < cStar * (cStar + 2) - 4 ∧ 1 < 2 * cStar * (cStar - 1) := by
-  have hc : (69 : ℝ) / 50 < cStar := by
-    nlinarith [cStar_mem_isolation_box.1]
-  constructor <;> nlinarith [sq_nonneg (cStar - 69 / 50)]
+private theorem barC_four_children_gaps :
+    0 < barC * (barC + 2) - 4 ∧ 1 < 2 * barC * (barC - 1) := by
+  have hc : (69 : ℝ) / 50 < barC := by
+    nlinarith [barC_mem_isolation_box.1]
+  constructor <;> nlinarith [sq_nonneg (barC - 69 / 50)]
 
 private theorem sibling_distance_mem_four_children_range
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (color : SixPointColor) :
-    cStar ≤ dist (configuration color .left) (configuration color .right) ∧
+    barC ≤ dist (configuration color .left) (configuration color .right) ∧
       dist (configuration color .left) (configuration color .right) ≤ 2 := by
   constructor
   · have hsibling := h.sibling_distance color
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring] at hsibling
+    rw [barS, show 2 * (barC / 2) = barC by ring] at hsibling
     exact hsibling
   · calc
       dist (configuration color .left) (configuration color .right) ≤
@@ -46,7 +47,7 @@ private theorem sibling_distance_mem_four_children_range
       _ = 2 := by norm_num
 
 private theorem cross_child_distance_le_three {configuration : SixPointConfiguration}
-    (h : configuration.IsAdmissibleAt sStar) (redLabel blueLabel : SixPointLabel)
+    (h : configuration.IsAdmissibleAt barS) (redLabel blueLabel : SixPointLabel)
     (hred : redLabel ≠ .root) (hblue : blueLabel ≠ .root) :
     dist (configuration .red redLabel) (configuration .blue blueLabel) ≤ 3 := by
   calc
@@ -64,7 +65,7 @@ private theorem cross_child_distance_le_three {configuration : SixPointConfigura
     _ = 3 := by norm_num
 
 private theorem exists_nonnegative_score_or_matching_obstruction_of_no_split
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (hno : ¬ ∃ x y : ℝ,
       dist (configuration .red .left) (configuration .red .right) - 1 ≤ x ∧ x ≤ 1 ∧
       dist (configuration .blue .left) (configuration .blue .right) - 1 ≤ y ∧ y ≤ 1 ∧
@@ -75,15 +76,15 @@ private theorem exists_nonnegative_score_or_matching_obstruction_of_no_split
           (dist (configuration .red .left) (configuration .blue .right))
           (dist (configuration .red .right) (configuration .blue .left))
           (dist (configuration .red .right) (configuration .blue .right)) ≤
-        cStar * (dist (configuration .red .left) (configuration .red .right) +
+        barC * (dist (configuration .red .left) (configuration .red .right) +
           dist (configuration .blue .left) (configuration .blue .right))) :
-    (∃ packing : SixPointPacking configuration, 0 ≤ packing.score sStar) ∨
-      (2 * cStar - 1) *
+    (∃ packing : SixPointPacking configuration, 0 ≤ packing.score barS) ∨
+      (2 * barC - 1) *
           (dist (configuration .red .left) (configuration .red .right) +
             dist (configuration .blue .left) (configuration .blue .right)) ≤
         dist (configuration .red .left) (configuration .blue .left) +
           dist (configuration .red .right) (configuration .blue .right) ∨
-      (2 * cStar - 1) *
+      (2 * barC - 1) *
           (dist (configuration .red .left) (configuration .red .right) +
             dist (configuration .blue .left) (configuration .blue .right)) ≤
         dist (configuration .red .left) (configuration .blue .right) +
@@ -93,7 +94,7 @@ private theorem exists_nonnegative_score_or_matching_obstruction_of_no_split
   have hfail : ∀ x y : ℝ,
       dist (configuration .red .left) (configuration .red .right) - 1 ≤ x → x ≤ 1 →
       dist (configuration .blue .left) (configuration .blue .right) - 1 ≤ y → y ≤ 1 →
-      cStar * (dist (configuration .red .left) (configuration .red .right) +
+      barC * (dist (configuration .red .left) (configuration .red .right) +
         dist (configuration .blue .left) (configuration .blue .right)) <
       fourChildrenSplitDiameter
         (dist (configuration .red .left) (configuration .red .right))
@@ -105,9 +106,9 @@ private theorem exists_nonnegative_score_or_matching_obstruction_of_no_split
     intro x y hx_lower hx_upper hy_lower hy_upper
     exact lt_of_not_ge fun hdiameter ↦
       hno ⟨x, y, hx_lower, hx_upper, hy_lower, hy_upper, hdiameter⟩
-  rcases fourChildren_row_column_or_matching one_lt_cStar_and_cStar_lt_two.1
-      one_lt_cStar_and_cStar_lt_two.2.le hcL hcM hL hM cStar_four_children_gaps.1
-      cStar_four_children_gaps.2 (cross_child_distance_le_three h .left .left (by simp)
+  rcases fourChildren_row_column_or_matching one_lt_barC_and_barC_lt_two.1
+      one_lt_barC_and_barC_lt_two.2.le hcL hcM hL hM barC_four_children_gaps.1
+      barC_four_children_gaps.2 (cross_child_distance_le_three h .left .left (by simp)
         (by simp)) (cross_child_distance_le_three h .left .right (by simp) (by simp))
       (cross_child_distance_le_three h .right .left (by simp) (by simp))
       (cross_child_distance_le_three h .right .right (by simp) (by simp)) hfail with
@@ -134,14 +135,14 @@ private theorem exists_nonnegative_score_or_matching_obstruction_of_no_split
 /-- Every admissible endpoint configuration has a nonnegative packing or an obstructing child
 matching. -/
 theorem exists_nonnegative_score_or_matching_obstruction
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar) :
-    (∃ packing : SixPointPacking configuration, 0 ≤ packing.score sStar) ∨
-      (2 * cStar - 1) *
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS) :
+    (∃ packing : SixPointPacking configuration, 0 ≤ packing.score barS) ∨
+      (2 * barC - 1) *
           (dist (configuration .red .left) (configuration .red .right) +
             dist (configuration .blue .left) (configuration .blue .right)) ≤
         dist (configuration .red .left) (configuration .blue .left) +
           dist (configuration .red .right) (configuration .blue .right) ∨
-      (2 * cStar - 1) *
+      (2 * barC - 1) *
           (dist (configuration .red .left) (configuration .red .right) +
             dist (configuration .blue .left) (configuration .blue .right)) ≤
         dist (configuration .red .left) (configuration .blue .right) +
@@ -156,17 +157,17 @@ theorem exists_nonnegative_score_or_matching_obstruction
         (dist (configuration .red .left) (configuration .blue .right))
         (dist (configuration .red .right) (configuration .blue .left))
         (dist (configuration .red .right) (configuration .blue .right)) ≤
-      cStar * (dist (configuration .red .left) (configuration .red .right) +
+      barC * (dist (configuration .red .left) (configuration .red .right) +
         dist (configuration .blue .left) (configuration .blue .right))
   · rcases hsplit with ⟨x, y, hx_lower, hx_upper, hy_lower, hy_upper, hdiameter⟩
-    have hL := (one_lt_cStar_and_cStar_lt_two.1.le.trans
+    have hL := (one_lt_barC_and_barC_lt_two.1.le.trans
       (sibling_distance_mem_four_children_range h .red).1)
-    have hM := (one_lt_cStar_and_cStar_lt_two.1.le.trans
+    have hM := (one_lt_barC_and_barC_lt_two.1.le.trans
       (sibling_distance_mem_four_children_range h .blue).1)
     refine Or.inl ⟨fourChildrenPacking configuration rfl rfl hL hx_lower hx_upper hM
       hy_lower hy_upper, ?_⟩
-    simpa only [sStar] using fourChildrenPacking_score_nonnegative configuration rfl rfl hL
-      hx_lower hx_upper hM hy_lower hy_upper cStar_pos hdiameter
+    simpa only [barS] using fourChildrenPacking_score_nonnegative configuration rfl rfl hL
+      hx_lower hx_upper hM hy_lower hy_upper barC_pos hdiameter
   · exact exists_nonnegative_score_or_matching_obstruction_of_no_split configuration h hsplit
 
 end Bescovitch

@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalEndpointData
 public import Bescovitch.SixPoint.WeightedMixedPolynomial
 
 /-!
@@ -96,7 +97,7 @@ theorem eval_negativeTerm (weight slope : ℚ) (v : Vector) (d factor : Polynomi
   ring
 
 /-- The exact chord length of the certificate charts. -/
-def chord : ℚ := 13866128436518096 / 10 ^ 16
+def chord : ℚ := 3467 / 2500
 
 /-- The first exact endpoint weight. -/
 def lambda : ℚ := 8947642540885 / 10 ^ 14

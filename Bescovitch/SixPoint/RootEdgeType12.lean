@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.RootEdge
 public import Bescovitch.SixPoint.SiblingIncidenceLedger
 import Mathlib.Analysis.InnerProductSpace.GramMatrix
@@ -378,25 +379,25 @@ private theorem balance₁_nonneg : 0 ≤ balance₁ := by
   rw [balance₁, certificateMatrix_diagonal₁]
   norm_num [redSeparationMultiplier]
 
-private theorem balance₂_nonneg : 0 ≤ balance₂ cStar := by
-  rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
-  have hc := cStar_pos
+private theorem balance₂_nonneg : 0 ≤ balance₂ barC := by
+  rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
+  have hc := barC_pos
   rw [balance₂, certificateMatrix_diagonal₂]
   norm_num [redSeparationMultiplier, secondRedRadialPenalty] at hlower hupper ⊢
   field_simp [hc.ne'] at ⊢
   nlinarith
 
-private theorem balance₃_nonneg : 0 ≤ balance₃ cStar := by
-  rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
-  have hc := cStar_pos
+private theorem balance₃_nonneg : 0 ≤ balance₃ barC := by
+  rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
+  have hc := barC_pos
   rw [balance₃, certificateMatrix_diagonal₃]
   norm_num [blueSeparationMultiplier, firstBlueRadialPenalty] at hlower hupper ⊢
   field_simp [hc.ne'] at ⊢
   nlinarith
 
-private theorem balance₄_nonneg : 0 ≤ balance₄ cStar := by
-  rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
-  have hc := cStar_pos
+private theorem balance₄_nonneg : 0 ≤ balance₄ barC := by
+  rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
+  have hc := barC_pos
   rw [balance₄, certificateMatrix_diagonal₄]
   norm_num [blueSeparationMultiplier, secondBlueRadialPenalty] at hlower hupper ⊢
   field_simp [hc.ne'] at ⊢
@@ -411,9 +412,9 @@ private def certificateUpper (c : ℝ) : ℝ :=
     balance₀ + balance₁ + balance₂ c + balance₃ c + balance₄ c -
     (redSeparationMultiplier + blueSeparationMultiplier) * c ^ 2
 
-private theorem certificateUpper_neg : certificateUpper cStar < 0 := by
-  rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
-  have hc := cStar_pos
+private theorem certificateUpper_neg : certificateUpper barC < 0 := by
+  rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
+  have hc := barC_pos
   rw [certificateUpper, balance₀, balance₁, balance₂, balance₃, balance₄,
     certificateMatrix_diagonal₀, certificateMatrix_diagonal₁,
     certificateMatrix_diagonal₂, certificateMatrix_diagonal₃,
@@ -421,24 +422,24 @@ private theorem certificateUpper_neg : certificateUpper cStar < 0 := by
   norm_num [redSeparationMultiplier, blueSeparationMultiplier, firstBlueRadialPenalty,
     secondBlueRadialPenalty, secondRedRadialPenalty] at hlower hupper ⊢
   field_simp [hc.ne'] at ⊢
-  nlinarith [sq_nonneg (cStar - 13866128436518096 / 10 ^ 16)]
+  nlinarith [sq_nonneg (barC - 13866128436518096 / 10 ^ 16)]
 
 private theorem tangentQuadratic_le {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1)
     (hw₁ : ‖w₁‖ ≤ 1) (hw₂ : ‖w₂‖ ≤ 1)
-    (hredSeparation : cStar ≤ ‖p₁ - p₂‖) (hblueSeparation : cStar ≤ ‖w₁ - w₂‖) :
+    (hredSeparation : barC ≤ ‖p₁ - p₂‖) (hblueSeparation : barC ≤ ‖w₁ - w₂‖) :
     5 / 28 * ‖e - p₁ - w₁‖ ^ 2 + 15 / 43 * ‖e - p₂ - w₂‖ ^ 2 +
         4 / 15 * ‖e - w₁‖ ^ 2 -
-        firstBlueRadialPenalty cStar / cStar * ‖w₁‖ ^ 2 -
-        secondBlueRadialPenalty cStar / cStar * ‖w₂‖ ^ 2 -
-        secondRedRadialPenalty cStar / cStar * ‖p₂‖ ^ 2 ≤
-      balance₀ + balance₁ + balance₂ cStar + balance₃ cStar + balance₄ cStar -
-        (redSeparationMultiplier + blueSeparationMultiplier) * cStar ^ 2 := by
-  have hredSq : cStar ^ 2 ≤ ‖p₁ - p₂‖ ^ 2 := by
-    exact (sq_le_sq₀ cStar_pos.le (norm_nonneg _)).2 hredSeparation
-  have hblueSq : cStar ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
-    exact (sq_le_sq₀ cStar_pos.le (norm_nonneg _)).2 hblueSeparation
+        firstBlueRadialPenalty barC / barC * ‖w₁‖ ^ 2 -
+        secondBlueRadialPenalty barC / barC * ‖w₂‖ ^ 2 -
+        secondRedRadialPenalty barC / barC * ‖p₂‖ ^ 2 ≤
+      balance₀ + balance₁ + balance₂ barC + balance₃ barC + balance₄ barC -
+        (redSeparationMultiplier + blueSeparationMultiplier) * barC ^ 2 := by
+  have hredSq : barC ^ 2 ≤ ‖p₁ - p₂‖ ^ 2 := by
+    exact (sq_le_sq₀ barC_pos.le (norm_nonneg _)).2 hredSeparation
+  have hblueSq : barC ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
+    exact (sq_le_sq₀ barC_pos.le (norm_nonneg _)).2 hblueSeparation
   rw [norm_sub_sq_real] at hredSq hblueSq
   have hredScaled := mul_le_mul_of_nonneg_left hredSq
     (show 0 ≤ redSeparationMultiplier by norm_num [redSeparationMultiplier])
@@ -473,45 +474,45 @@ theorem rootEdge_type12_expanded_lt {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1)
     (hw₁ : ‖w₁‖ ≤ 1) (hw₂ : ‖w₂‖ ≤ 1)
-    (hredSeparation : cStar ≤ ‖p₁ - p₂‖) (hblueSeparation : cStar ≤ ‖w₁ - w₂‖) :
+    (hredSeparation : barC ≤ ‖p₁ - p₂‖) (hblueSeparation : barC ≤ ‖w₁ - w₂‖) :
     ‖e - p₁ - w₁‖ + 3 / 2 * ‖e - p₂ - w₂‖ + ‖e - w₁‖ +
-        (2 - 3 * cStar) / 2 * ‖p₁ - p₂‖ +
-        (7 - 9 * cStar) / 4 * ‖w₁ - w₂‖ +
-        (1 - 5 * cStar) / 4 * ‖w₁‖ -
-        (1 + 5 * cStar) / 4 * ‖w₂‖ +
-        (1 - 2 * cStar) * ‖p₂‖ - 1 / 2 < 0 := by
-  have hredSum : cStar ≤ ‖p₁‖ + ‖p₂‖ :=
+        (2 - 3 * barC) / 2 * ‖p₁ - p₂‖ +
+        (7 - 9 * barC) / 4 * ‖w₁ - w₂‖ +
+        (1 - 5 * barC) / 4 * ‖w₁‖ -
+        (1 + 5 * barC) / 4 * ‖w₂‖ +
+        (1 - 2 * barC) * ‖p₂‖ - 1 / 2 < 0 := by
+  have hredSum : barC ≤ ‖p₁‖ + ‖p₂‖ :=
     hredSeparation.trans (norm_sub_le p₁ p₂)
-  have hblueSum : cStar ≤ ‖w₁‖ + ‖w₂‖ :=
+  have hblueSum : barC ≤ ‖w₁‖ + ‖w₂‖ :=
     hblueSeparation.trans (norm_sub_le w₁ w₂)
-  have hp₁Lower : cStar - 1 ≤ ‖p₁‖ := by linarith
-  have hp₂Lower : cStar - 1 ≤ ‖p₂‖ := by linarith
-  have hw₁Lower : cStar - 1 ≤ ‖w₁‖ := by linarith
-  have hw₂Lower : cStar - 1 ≤ ‖w₂‖ := by linarith
-  have hfirstPenalty : 0 ≤ firstBlueRadialPenalty cStar := by
+  have hp₁Lower : barC - 1 ≤ ‖p₁‖ := by linarith
+  have hp₂Lower : barC - 1 ≤ ‖p₂‖ := by linarith
+  have hw₁Lower : barC - 1 ≤ ‖w₁‖ := by linarith
+  have hw₂Lower : barC - 1 ≤ ‖w₂‖ := by linarith
+  have hfirstPenalty : 0 ≤ firstBlueRadialPenalty barC := by
     simp only [firstBlueRadialPenalty]
-    nlinarith [one_lt_cStar_and_cStar_lt_two.1]
-  have hsecondPenalty : 0 ≤ secondBlueRadialPenalty cStar := by
+    nlinarith [one_lt_barC_and_barC_lt_two.1]
+  have hsecondPenalty : 0 ≤ secondBlueRadialPenalty barC := by
     simp only [secondBlueRadialPenalty]
-    nlinarith [cStar_pos]
-  have hredPenalty : 0 ≤ secondRedRadialPenalty cStar := by
+    nlinarith [barC_pos]
+  have hredPenalty : 0 ≤ secondRedRadialPenalty barC := by
     simp only [secondRedRadialPenalty]
-    nlinarith [one_lt_cStar_and_cStar_lt_two.1]
-  have hfirstRadial := radial_secant hfirstPenalty hw₁Lower hw₁ (by linarith [cStar_pos])
+    nlinarith [one_lt_barC_and_barC_lt_two.1]
+  have hfirstRadial := radial_secant hfirstPenalty hw₁Lower hw₁ (by linarith [barC_pos])
   have hsecondRadial := radial_secant hsecondPenalty hw₂Lower hw₂
-    (by linarith [cStar_pos])
-  have hredRadial := radial_secant hredPenalty hp₂Lower hp₂ (by linarith [cStar_pos])
+    (by linarith [barC_pos])
+  have hredRadial := radial_secant hredPenalty hp₂Lower hp₂ (by linarith [barC_pos])
   simp only [sub_add_cancel, mul_one] at hfirstRadial hsecondRadial hredRadial
   have hredDistance :
-      (2 - 3 * cStar) / 2 * ‖p₁ - p₂‖ ≤ (2 - 3 * cStar) / 2 * cStar := by
-    have hcoefficient : 0 ≤ (3 * cStar - 2) / 2 := by
-      nlinarith [one_lt_cStar_and_cStar_lt_two.1]
+      (2 - 3 * barC) / 2 * ‖p₁ - p₂‖ ≤ (2 - 3 * barC) / 2 * barC := by
+    have hcoefficient : 0 ≤ (3 * barC - 2) / 2 := by
+      nlinarith [one_lt_barC_and_barC_lt_two.1]
     have hscaled := mul_le_mul_of_nonneg_left hredSeparation hcoefficient
     nlinarith
   have hblueDistance :
-      (7 - 9 * cStar) / 4 * ‖w₁ - w₂‖ ≤ (7 - 9 * cStar) / 4 * cStar := by
-    have hcoefficient : 0 ≤ (9 * cStar - 7) / 4 := by
-      nlinarith [one_lt_cStar_and_cStar_lt_two.1]
+      (7 - 9 * barC) / 4 * ‖w₁ - w₂‖ ≤ (7 - 9 * barC) / 4 * barC := by
+    have hcoefficient : 0 ≤ (9 * barC - 7) / 4 := by
+      nlinarith [one_lt_barC_and_barC_lt_two.1]
     have hscaled := mul_le_mul_of_nonneg_left hblueSeparation hcoefficient
     nlinarith
   have htangent₁ := weighted_norm_tangent (e - p₁ - w₁) 1 (5 / 28) (by norm_num)
@@ -529,40 +530,40 @@ theorem rootEdge_type12_expanded_lt {E : Type*} [NormedAddCommGroup E]
   simp only [firstBlueRadialPenalty, secondBlueRadialPenalty,
     secondRedRadialPenalty] at hquadratic hupper
   have hfirstRadial' :
-      (1 - 5 * cStar) / 4 * ‖w₁‖ ≤
-        -((5 * cStar - 1) / 4) / cStar * ‖w₁‖ ^ 2 -
-          (5 * cStar - 1) / 4 * (cStar - 1) / cStar := by
+      (1 - 5 * barC) / 4 * ‖w₁‖ ≤
+        -((5 * barC - 1) / 4) / barC * ‖w₁‖ ^ 2 -
+          (5 * barC - 1) / 4 * (barC - 1) / barC := by
     convert hfirstRadial using 1
     all_goals ring
   have hsecondRadial' :
-      -(1 + 5 * cStar) / 4 * ‖w₂‖ ≤
-        -((5 * cStar + 1) / 4) / cStar * ‖w₂‖ ^ 2 -
-          (5 * cStar + 1) / 4 * (cStar - 1) / cStar := by
+      -(1 + 5 * barC) / 4 * ‖w₂‖ ≤
+        -((5 * barC + 1) / 4) / barC * ‖w₂‖ ^ 2 -
+          (5 * barC + 1) / 4 * (barC - 1) / barC := by
     convert hsecondRadial using 1
     all_goals ring
   have hredRadial' :
-      (1 - 2 * cStar) * ‖p₂‖ ≤
-        -(2 * cStar - 1) / cStar * ‖p₂‖ ^ 2 -
-          (2 * cStar - 1) * (cStar - 1) / cStar := by
+      (1 - 2 * barC) * ‖p₂‖ ≤
+        -(2 * barC - 1) / barC * ‖p₂‖ ^ 2 -
+          (2 * barC - 1) * (barC - 1) / barC := by
     convert hredRadial using 1
     all_goals ring
   have hpreUpper :
       ‖e - p₁ - w₁‖ + 3 / 2 * ‖e - p₂ - w₂‖ + ‖e - w₁‖ +
-          (2 - 3 * cStar) / 2 * ‖p₁ - p₂‖ +
-          (7 - 9 * cStar) / 4 * ‖w₁ - w₂‖ +
-          (1 - 5 * cStar) / 4 * ‖w₁‖ -
-          (1 + 5 * cStar) / 4 * ‖w₂‖ +
-          (1 - 2 * cStar) * ‖p₂‖ - 1 / 2 ≤
+          (2 - 3 * barC) / 2 * ‖p₁ - p₂‖ +
+          (7 - 9 * barC) / 4 * ‖w₁ - w₂‖ +
+          (1 - 5 * barC) / 4 * ‖w₁‖ -
+          (1 + 5 * barC) / 4 * ‖w₂‖ +
+          (1 - 2 * barC) * ‖p₂‖ - 1 / 2 ≤
         5 / 28 * ‖e - p₁ - w₁‖ ^ 2 + 15 / 43 * ‖e - p₂ - w₂‖ ^ 2 +
           4 / 15 * ‖e - w₁‖ ^ 2 -
-          (5 * cStar - 1) / 4 / cStar * ‖w₁‖ ^ 2 -
-          (5 * cStar + 1) / 4 / cStar * ‖w₂‖ ^ 2 -
-          (2 * cStar - 1) / cStar * ‖p₂‖ ^ 2 +
+          (5 * barC - 1) / 4 / barC * ‖w₁‖ ^ 2 -
+          (5 * barC + 1) / 4 / barC * ‖w₂‖ ^ 2 -
+          (2 * barC - 1) / barC * ‖p₂‖ ^ 2 +
           7 / 5 + 129 / 80 + 15 / 16 +
-          (2 - 3 * cStar) / 2 * cStar + (7 - 9 * cStar) / 4 * cStar -
-          (5 * cStar - 1) / 4 * (cStar - 1) / cStar -
-          (5 * cStar + 1) / 4 * (cStar - 1) / cStar -
-          (2 * cStar - 1) * (cStar - 1) / cStar - 1 / 2 := by
+          (2 - 3 * barC) / 2 * barC + (7 - 9 * barC) / 4 * barC -
+          (5 * barC - 1) / 4 * (barC - 1) / barC -
+          (5 * barC + 1) / 4 * (barC - 1) / barC -
+          (2 * barC - 1) * (barC - 1) / barC - 1 / 2 := by
     ring_nf at htangent₁
     ring_nf at htangent₂
     ring_nf at htangent₃
@@ -581,12 +582,12 @@ theorem rootEdge_type12_separator_lt {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1)
     (hw₁ : ‖w₁‖ ≤ 1) (hw₂ : ‖w₂‖ ≤ 1)
-    (hredSeparation : cStar ≤ ‖p₁ - p₂‖) (hblueSeparation : cStar ≤ ‖w₁ - w₂‖) :
-    matchingFailureSlack cStar ‖p₁ - p₂‖ ‖w₁ - w₂‖
+    (hredSeparation : barC ≤ ‖p₁ - p₂‖) (hblueSeparation : barC ≤ ‖w₁ - w₂‖) :
+    matchingFailureSlack barC ‖p₁ - p₂‖ ‖w₁ - w₂‖
           ‖e - p₁ - w₁‖ ‖e - p₂ - w₂‖ +
-        redEndpointFailureSlack cStar ‖p₁ - p₂‖ ‖w₁ - w₂‖
+        redEndpointFailureSlack barC ‖p₁ - p₂‖ ‖w₁ - w₂‖
           ‖w₁‖ ‖w₂‖ ‖e - p₁ - w₁‖ +
-        2 * redRootEdgeType12Slack cStar ‖w₁ - w₂‖ ‖p₂‖ ‖w₁‖ ‖w₂‖
+        2 * redRootEdgeType12Slack barC ‖w₁ - w₂‖ ‖p₂‖ ‖w₁‖ ‖w₂‖
           ‖e - w₁‖ ‖e - p₂ - w₂‖ < 0 := by
   have h := rootEdge_type12_expanded_lt e p₁ p₂ w₁ w₂ he hp₁ hp₂ hw₁ hw₂
     hredSeparation hblueSeparation
@@ -600,12 +601,12 @@ theorem redRootEdgeType12Slack_neg {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1)
     (hw₁ : ‖w₁‖ ≤ 1) (hw₂ : ‖w₂‖ ≤ 1)
-    (hredSeparation : cStar ≤ ‖p₁ - p₂‖) (hblueSeparation : cStar ≤ ‖w₁ - w₂‖)
-    (hmatching : 0 ≤ matchingFailureSlack cStar ‖p₁ - p₂‖ ‖w₁ - w₂‖
+    (hredSeparation : barC ≤ ‖p₁ - p₂‖) (hblueSeparation : barC ≤ ‖w₁ - w₂‖)
+    (hmatching : 0 ≤ matchingFailureSlack barC ‖p₁ - p₂‖ ‖w₁ - w₂‖
       ‖e - p₁ - w₁‖ ‖e - p₂ - w₂‖)
-    (hendpoint : 0 ≤ redEndpointFailureSlack cStar ‖p₁ - p₂‖ ‖w₁ - w₂‖
+    (hendpoint : 0 ≤ redEndpointFailureSlack barC ‖p₁ - p₂‖ ‖w₁ - w₂‖
       ‖w₁‖ ‖w₂‖ ‖e - p₁ - w₁‖) :
-    redRootEdgeType12Slack cStar ‖w₁ - w₂‖ ‖p₂‖ ‖w₁‖ ‖w₂‖
+    redRootEdgeType12Slack barC ‖w₁ - w₂‖ ‖p₂‖ ‖w₁‖ ‖w₂‖
       ‖e - w₁‖ ‖e - p₂ - w₂‖ < 0 := by
   have hseparator := rootEdge_type12_separator_lt e p₁ p₂ w₁ w₂ he hp₁ hp₂ hw₁ hw₂
     hredSeparation hblueSeparation
@@ -614,10 +615,10 @@ theorem redRootEdgeType12Slack_neg {E : Type*} [NormedAddCommGroup E]
 /-- In an admissible configuration, the selected matching and endpoint code `0` exclude the
 red crossed `(left,right)` root--edge term. -/
 theorem SixPointConfiguration.redRootEdgeType12Slack_neg_of_matching_endpoint
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration)
     (hendpoint : redSiblingTriangleFailure configuration (.endpoint 0)) :
-    redRootEdgeType12Slack cStar
+    redRootEdgeType12Slack barC
       (dist (configuration .blue .left) (configuration .blue .right))
       (dist (configuration .red .root) (configuration .red .right))
       (dist (configuration .blue .root) (configuration .blue .left))
@@ -651,21 +652,21 @@ theorem SixPointConfiguration.redRootEdgeType12Slack_neg_of_matching_endpoint
       dist (configuration .red .root) (configuration .blue .left) := by
     simpa [e, p₁, w₁, SixPointConfiguration.redDisplacement] using
       (configuration.dist_red_blue_eq_norm .root .left).symm
-  have hredSeparation : cStar ≤ ‖p₁ - p₂‖ := by
+  have hredSeparation : barC ≤ ‖p₁ - p₂‖ := by
     have hsibling := configuration.two_mul_le_dist_redDisplacement h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hsibling
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hsibling
     exact hsibling
-  have hblueSeparation : cStar ≤ ‖w₁ - w₂‖ := by
+  have hblueSeparation : barC ≤ ‖w₁ - w₂‖ := by
     have hsibling := configuration.two_mul_le_dist_bluePullback h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hsibling
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hsibling
     exact hsibling
-  have hmatching' : 0 ≤ matchingFailureSlack cStar ‖p₁ - p₂‖ ‖w₁ - w₂‖
+  have hmatching' : 0 ≤ matchingFailureSlack barC ‖p₁ - p₂‖ ‖w₁ - w₂‖
       ‖e - p₁ - w₁‖ ‖e - p₂ - w₂‖ := by
     simp only [hL, hM, hB₁₁, hB₂₂, matchingFailureSlack]
     apply sub_nonneg.mpr
     simpa [SelectedDiagonalMatchingFails, incidenceCrossDistance, incidenceChild] using
       hmatching
-  have hendpoint' : 0 ≤ redEndpointFailureSlack cStar ‖p₁ - p₂‖ ‖w₁ - w₂‖
+  have hendpoint' : 0 ≤ redEndpointFailureSlack barC ‖p₁ - p₂‖ ‖w₁ - w₂‖
       ‖w₁‖ ‖w₂‖ ‖e - p₁ - w₁‖ := by
     simp only [hL, hM, hb₁, hb₂, hB₁₁, redEndpointFailureSlack]
     simp [redSiblingTriangleFailure, siblingTriangleWitnessExceeds,

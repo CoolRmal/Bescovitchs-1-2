@@ -5,6 +5,8 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalEndpointData
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.WeightedChart
 public import Bescovitch.SixPoint.WeightedMajorant
 public import Bescovitch.SixPoint.WeightedParameterStability
@@ -12,7 +14,7 @@ public import Bescovitch.SixPoint.WeightedParameterStability
 /-!
 # Geometric interpretation of the mixed certificate
 
-The exact polynomial uses a rational chord just below `cStar`.  Shortening the second endpoint
+The exact polynomial uses a rational chord just below `barC`.  Shortening the second endpoint
 keeps it in the unit disk, and the stability theorem transfers the resulting rational majorant
 back to the algebraic endpoint score.
 -/
@@ -49,26 +51,26 @@ private theorem planeRoot_norm_le_one :
 
 private theorem norm_chordChartSecond_certificate_le_one
     {side : ℝ} (a h z : ℝ) (hside : side ^ 2 = 1)
-    (hfirst : a ^ 2 + h ^ 2 ≤ 1) (hsecond : (a - cStar) ^ 2 + h ^ 2 ≤ 1) :
+    (hfirst : a ^ 2 + h ^ 2 ≤ 1) (hsecond : (a - barC) ^ 2 + h ^ 2 ≤ 1) :
     ‖chordChartSecond side certificateChord a h z‖ ≤ 1 := by
   have ha : a ≤ 1 := by nlinarith [sq_nonneg a, sq_nonneg h]
-  have hc := cStar_certificateChord_distance.1
+  have hc := barC_certificateChord_distance.1
   have hcCertificate : 1 < certificateChord := by norm_num [certificateChord]
-  have hlong : (a - certificateChord) ^ 2 ≤ (a - cStar) ^ 2 := by
-    nlinarith [sq_nonneg (cStar - certificateChord)]
+  have hlong : (a - certificateChord) ^ 2 ≤ (a - barC) ^ 2 := by
+    nlinarith [sq_nonneg (barC - certificateChord)]
   apply norm_le_one_of_sq_le_one
   rw [norm_chordChartSecond_sq certificateChord a h z hside]
   linarith
 
 private theorem norm_chordChartSecond_sub_certificate
     {side : ℝ} (a h z : ℝ) (hside : side ^ 2 = 1) :
-    ‖chordChartSecond side cStar a h z -
+    ‖chordChartSecond side barC a h z -
         chordChartSecond side certificateChord a h z‖ ≤ 1 / 10 ^ 15 := by
-  have hc := cStar_certificateChord_distance
+  have hc := barC_certificateChord_distance
   have hvector :
-      chordChartSecond side cStar a h z -
+      chordChartSecond side barC a h z -
           chordChartSecond side certificateChord a h z =
-        (certificateChord - cStar) • stereographicDirection side z := by
+        (certificateChord - barC) • stereographicDirection side z := by
     simp only [chordChartSecond]
     module
   rw [hvector, norm_smul, norm_stereographicDirection z hside, mul_one,
@@ -82,32 +84,32 @@ theorem weightedPairScore_le_lensCertificateMajorant
     (rhoP rhoW rho₁₁ rho₂₂ rho₁₂ rho₂₁ : ℝ)
     (uP₁ uW₁ uP₂ uW₂ : (EuclideanSpace ℝ (Fin 2))) (etaP₁ etaP₂ etaW₁ etaW₂ : ℝ)
     (hsideP : sideP ^ 2 = 1) (hsideW : sideW ^ 2 = 1)
-    (hPFirst : aP ^ 2 + hP ^ 2 ≤ 1) (hPSecond : (aP - cStar) ^ 2 + hP ^ 2 ≤ 1)
-    (hWFirst : aW ^ 2 + hW ^ 2 ≤ 1) (hWSecond : (aW - cStar) ^ 2 + hW ^ 2 ≤ 1)
+    (hPFirst : aP ^ 2 + hP ^ 2 ≤ 1) (hPSecond : (aP - barC) ^ 2 + hP ^ 2 ≤ 1)
+    (hWFirst : aW ^ 2 + hW ^ 2 ≤ 1) (hWSecond : (aW - barC) ^ 2 + hW ^ 2 ≤ 1)
     (hrhoP : 0 < rhoP) (hrhoW : 0 < rhoW) (hrho₁₁ : 0 < rho₁₁)
     (hrho₂₂ : 0 < rho₂₂) (hrho₁₂ : 0 < rho₁₂) (hrho₂₁ : 0 < rho₂₁)
     (huP₁ : ‖uP₁‖ ≤ 1) (huW₁ : ‖uW₁‖ ≤ 1)
     (huP₂ : ‖uP₂‖ ≤ 1) (huW₂ : ‖uW₂‖ ≤ 1)
     (hetaP₁ : 0 ≤ etaP₁) (hetaP₂ : 0 ≤ etaP₂)
     (hetaW₁ : 0 ≤ etaW₁) (hetaW₂ : 0 ≤ etaW₂) :
-    weightedPairScore !₂[1, 0] cStar endpointLambda endpointMu
-        (chordChartFirst sideP aP hP zP) (chordChartSecond sideP cStar aP hP zP)
-        (chordChartFirst sideW aW hW zW) (chordChartSecond sideW cStar aW hW zW) ≤
+    weightedPairScore !₂[1, 0] barC endpointLambda endpointMu
+        (chordChartFirst sideP aP hP zP) (chordChartSecond sideP barC aP hP zP)
+        (chordChartFirst sideW aW hW zW) (chordChartSecond sideW barC aW hW zW) ≤
       weightedLensCertificateMajorant sideP zP aP hP sideW zW aW hW
         rhoP rhoW rho₁₁ rho₂₂ rho₁₂ rho₂₁ uP₁ uW₁ uP₂ uW₂
         etaP₁ etaP₂ etaW₁ etaW₂ := by
   let p₁ := chordChartFirst sideP aP hP zP
-  let p₂ := chordChartSecond sideP cStar aP hP zP
+  let p₂ := chordChartSecond sideP barC aP hP zP
   let p₂' := chordChartSecond sideP certificateChord aP hP zP
   let w₁ := chordChartFirst sideW aW hW zW
-  let w₂ := chordChartSecond sideW cStar aW hW zW
+  let w₂ := chordChartSecond sideW barC aW hW zW
   let w₂' := chordChartSecond sideW certificateChord aW hW zW
   have hp₁ : ‖p₁‖ ≤ 1 := by
     apply norm_le_one_of_sq_le_one
     simpa [p₁, norm_chordChartFirst_sq aP hP zP hsideP] using hPFirst
   have hp₂ : ‖p₂‖ ≤ 1 := by
     apply norm_le_one_of_sq_le_one
-    simpa [p₂, norm_chordChartSecond_sq cStar aP hP zP hsideP] using hPSecond
+    simpa [p₂, norm_chordChartSecond_sq barC aP hP zP hsideP] using hPSecond
   have hp₂' : ‖p₂'‖ ≤ 1 := by
     exact norm_chordChartSecond_certificate_le_one aP hP zP hsideP hPFirst hPSecond
   have hw₁ : ‖w₁‖ ≤ 1 := by
@@ -115,7 +117,7 @@ theorem weightedPairScore_le_lensCertificateMajorant
     simpa [w₁, norm_chordChartFirst_sq aW hW zW hsideW] using hWFirst
   have hw₂ : ‖w₂‖ ≤ 1 := by
     apply norm_le_one_of_sq_le_one
-    simpa [w₂, norm_chordChartSecond_sq cStar aW hW zW hsideW] using hWSecond
+    simpa [w₂, norm_chordChartSecond_sq barC aW hW zW hsideW] using hWSecond
   have hw₂' : ‖w₂'‖ ≤ 1 := by
     exact norm_chordChartSecond_certificate_le_one aW hW zW hsideW hWFirst hWSecond
   have hp₂dist : ‖p₂ - p₂'‖ ≤ 1 / 10 ^ 15 := by

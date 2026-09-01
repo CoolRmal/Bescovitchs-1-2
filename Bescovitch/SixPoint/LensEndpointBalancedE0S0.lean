@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.SiblingIncidenceLedger
 import Mathlib.Analysis.InnerProductSpace.GramMatrix
 import Mathlib.Analysis.Matrix.Order
@@ -938,8 +939,8 @@ private theorem exists_lens_certificate (r b : ℝ)
   · exact exists_certificate_sixth_red_band r b (by linarith) hr₅ hbl hbu
   · exact exists_certificate_seventh_red_band r b (by linarith) hru hbl hbu
 
-private theorem comparisonChord_lt_cStar : comparisonChord < cStar := by
-  have hc := cStar_mem_isolation_box.1
+private theorem comparisonChord_lt_barC : comparisonChord < barC := by
+  have hc := barC_mem_isolation_box.1
   norm_num [comparisonChord] at hc ⊢
   linarith
 
@@ -958,14 +959,14 @@ private theorem rational_chord_bound_implies_endpoint {E : Type*}
           blueFirstPenalty * ‖w₁‖ - blueSecondPenalty * ‖w₂‖ - 9 +
           59 / 2 * comparisonChord - 85 / 2 * comparisonChord ^ 2 < 0) :
     17 * ‖e - p₁ - w₁‖ + 3 * ‖e - p₁ - w₂‖ + 5 * ‖e - p₂ - w₂‖ -
-        3 * (cStar - 1) * ‖p₁‖ - 3 * (cStar + 1) * ‖p₂‖ -
-        9 / 2 * (cStar - 1) * ‖w₁‖ - 9 / 2 * (cStar + 1) * ‖w₂‖ - 9 +
-        59 / 2 * cStar - 85 / 2 * cStar ^ 2 < 0 := by
-  have hc := comparisonChord_lt_cStar
+        3 * (barC - 1) * ‖p₁‖ - 3 * (barC + 1) * ‖p₂‖ -
+        9 / 2 * (barC - 1) * ‖w₁‖ - 9 / 2 * (barC + 1) * ‖w₂‖ - 9 +
+        59 / 2 * barC - 85 / 2 * barC ^ 2 < 0 := by
+  have hc := comparisonChord_lt_barC
   have hslope : 0 ≤
       3 * ‖p₁‖ + 3 * ‖p₂‖ + 9 / 2 * ‖w₁‖ + 9 / 2 * ‖w₂‖ := by positivity
   have hpenalty := mul_nonneg (sub_nonneg.mpr hc.le) hslope
-  have hfactor : 0 < 85 / 2 * (cStar + comparisonChord) - 59 / 2 := by
+  have hfactor : 0 < 85 / 2 * (barC + comparisonChord) - 59 / 2 := by
     norm_num [comparisonChord] at hc ⊢
     linarith
   have hconstant := mul_pos (sub_pos.mpr hc) hfactor
@@ -975,14 +976,14 @@ private theorem rational_chord_bound_implies_endpoint {E : Type*}
 private theorem endpoint_balanced_lens_vector_bound {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
-    (hw₂ : ‖w₂‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
-    (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hw₂ : ‖w₂‖ ≤ 1) (hpsep : barC ≤ ‖p₁ - p₂‖)
+    (hwsep : barC ≤ ‖w₁ - w₂‖) :
     17 * ‖e - p₁ - w₁‖ + 3 * ‖e - p₁ - w₂‖ + 5 * ‖e - p₂ - w₂‖ -
-        3 * (cStar - 1) * ‖p₁‖ - 3 * (cStar + 1) * ‖p₂‖ -
-        9 / 2 * (cStar - 1) * ‖w₁‖ - 9 / 2 * (cStar + 1) * ‖w₂‖ - 9 +
-        59 / 2 * cStar - 85 / 2 * cStar ^ 2 < 0 := by
-  have hpsep' := comparisonChord_lt_cStar.le.trans hpsep
-  have hwsep' := comparisonChord_lt_cStar.le.trans hwsep
+        3 * (barC - 1) * ‖p₁‖ - 3 * (barC + 1) * ‖p₂‖ -
+        9 / 2 * (barC - 1) * ‖w₁‖ - 9 / 2 * (barC + 1) * ‖w₂‖ - 9 +
+        59 / 2 * barC - 85 / 2 * barC ^ 2 < 0 := by
+  have hpsep' := comparisonChord_lt_barC.le.trans hpsep
+  have hwsep' := comparisonChord_lt_barC.le.trans hwsep
   have hp₂Lower := second_norm_lower p₁ p₂ hp₁ hpsep'
   have hw₂Lower := second_norm_lower w₁ w₂ hw₁ hwsep'
   rcases exists_lens_certificate ‖p₂‖ ‖w₂‖ hp₂Lower hp₂ hw₂Lower hw₂ with
@@ -994,20 +995,20 @@ private theorem endpoint_balanced_lens_vector_bound {E : Type*} [NormedAddCommGr
 /-- The endpoint-balanced `E0/S0` lens separator is negative for every admissible
 six-point configuration. -/
 theorem endpointBalancedE0S0LensBound_of_admissible
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar) :
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS) :
     EndpointBalancedE0S0LensBound configuration := by
   let e := configuration.rootDisplacement
   let p₁ := configuration.redDisplacement .left
   let p₂ := configuration.redDisplacement .right
   let w₁ := configuration.bluePullback .left
   let w₂ := configuration.bluePullback .right
-  have hpsep : cStar ≤ ‖p₁ - p₂‖ := by
+  have hpsep : barC ≤ ‖p₁ - p₂‖ := by
     have hred := configuration.two_mul_le_dist_redDisplacement h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hred
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hred
     exact hred
-  have hwsep : cStar ≤ ‖w₁ - w₂‖ := by
+  have hwsep : barC ≤ ‖w₁ - w₂‖ := by
     have hblue := configuration.two_mul_le_dist_bluePullback h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hblue
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hblue
     exact hblue
   have hcertificate := endpoint_balanced_lens_vector_bound e p₁ p₂ w₁ w₂
     (configuration.norm_rootDisplacement h)

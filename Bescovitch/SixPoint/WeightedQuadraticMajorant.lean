@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.WeightedCertificateBridge
 
 /-!
@@ -137,17 +138,17 @@ theorem weightedPairScore_le_lensQuadraticCertificateMajorant
     (rhoP rhoW rho₁₁ rho₂₂ rho₁₂ rho₂₁ : ℝ)
     (uP₁ uW₁ uP₂ uW₂ : (EuclideanSpace ℝ (Fin 2))) (etaP₁ etaP₂ etaW₁ etaW₂ : ℝ)
     (hsideP : sideP ^ 2 = 1) (hsideW : sideW ^ 2 = 1)
-    (hPFirst : aP ^ 2 + hP ^ 2 ≤ 1) (hPSecond : (aP - cStar) ^ 2 + hP ^ 2 ≤ 1)
-    (hWFirst : aW ^ 2 + hW ^ 2 ≤ 1) (hWSecond : (aW - cStar) ^ 2 + hW ^ 2 ≤ 1)
+    (hPFirst : aP ^ 2 + hP ^ 2 ≤ 1) (hPSecond : (aP - barC) ^ 2 + hP ^ 2 ≤ 1)
+    (hWFirst : aW ^ 2 + hW ^ 2 ≤ 1) (hWSecond : (aW - barC) ^ 2 + hW ^ 2 ≤ 1)
     (hrhoP : 0 < rhoP) (hrhoW : 0 < rhoW) (hrho₁₁ : 0 < rho₁₁)
     (hrho₂₂ : 0 < rho₂₂) (hrho₁₂ : 0 < rho₁₂) (hrho₂₁ : 0 < rho₂₁)
     (huP₁ : ‖uP₁‖ ≤ 1) (huW₁ : ‖uW₁‖ ≤ 1)
     (huP₂ : ‖uP₂‖ ≤ 1) (huW₂ : ‖uW₂‖ ≤ 1)
     (hetaP₁ : 0 ≤ etaP₁) (hetaP₂ : 0 ≤ etaP₂)
     (hetaW₁ : 0 ≤ etaW₁) (hetaW₂ : 0 ≤ etaW₂) :
-    weightedPairScore !₂[1, 0] cStar endpointLambda endpointMu
-        (chordChartFirst sideP aP hP zP) (chordChartSecond sideP cStar aP hP zP)
-        (chordChartFirst sideW aW hW zW) (chordChartSecond sideW cStar aW hW zW) ≤
+    weightedPairScore !₂[1, 0] barC endpointLambda endpointMu
+        (chordChartFirst sideP aP hP zP) (chordChartSecond sideP barC aP hP zP)
+        (chordChartFirst sideW aW hW zW) (chordChartSecond sideW barC aW hW zW) ≤
       weightedLensQuadraticCertificateMajorant sideP zP aP hP sideW zW aW hW
         rhoP rhoW rho₁₁ rho₂₂ rho₁₂ rho₂₁ uP₁ uW₁ uP₂ uW₂
         etaP₁ etaP₂ etaW₁ etaW₂ := by

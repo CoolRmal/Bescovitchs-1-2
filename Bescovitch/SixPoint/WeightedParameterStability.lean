@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.Certificates.EndpointTightBounds
 public import Bescovitch.SixPoint.WeightedReduction
 
@@ -23,7 +24,7 @@ noncomputable section
 namespace Bescovitch
 
 /-- The rational chord value used in the mixed certificate. -/
-def certificateChord : ℝ := 13866128436518096 / 10 ^ 16
+def certificateChord : ℝ := 3467 / 2500
 
 /-- The rational centre used for the first endpoint weight. -/
 def certificateLambda : ℝ := 8947642540885 / 10 ^ 14
@@ -31,15 +32,10 @@ def certificateLambda : ℝ := 8947642540885 / 10 ^ 14
 /-- The rational centre used for the second endpoint weight. -/
 def certificateMu : ℝ := 92883833887540 / 10 ^ 14
 
-theorem cStar_certificateChord_distance :
-    0 ≤ cStar - certificateChord ∧ cStar - certificateChord ≤ 1 / 10 ^ 15 := by
-  have hcLower := cStar_mem_isolation_box.1
-  have hcUpper := cStar_mem_isolation_box.2
-  rw [certificateChord]
-  constructor
-  · linarith
-  · norm_num at hcUpper ⊢
-    linarith
+theorem barC_certificateChord_distance :
+    0 ≤ barC - certificateChord ∧ barC - certificateChord ≤ 1 / 10 ^ 15 := by
+  rw [certificateChord, barC]
+  constructor <;> norm_num
 
 theorem endpointLambda_certificate_distance :
     |endpointLambda - certificateLambda| ≤ 1 / 10 ^ 12 := by
@@ -58,10 +54,10 @@ theorem endpointMu_certificate_distance :
   constructor <;> linarith
 
 private theorem firstPenalty_certificate_distance :
-    |weightedFirstPenalty cStar endpointLambda endpointMu -
+    |weightedFirstPenalty barC endpointLambda endpointMu -
       weightedFirstPenalty certificateChord certificateLambda certificateMu| ≤ 1 / 10 ^ 10 := by
-  have hcLower := cStar_mem_isolation_box.1.le
-  have hcUpper := cStar_mem_isolation_box.2.le
+  have hcLower := barC_mem_isolation_box.1.le
+  have hcUpper := barC_mem_isolation_box.2.le
   have hlower := endpointLambda_tight_bounds.1
   have hupper := endpointLambda_tight_bounds.2
   have hmuLower := endpointMu_tight_bounds.1
@@ -72,10 +68,10 @@ private theorem firstPenalty_certificate_distance :
   constructor <;> nlinarith
 
 private theorem secondPenalty_certificate_distance :
-    |weightedSecondPenalty cStar endpointLambda endpointMu -
+    |weightedSecondPenalty barC endpointLambda endpointMu -
       weightedSecondPenalty certificateChord certificateLambda certificateMu| ≤ 1 / 10 ^ 10 := by
-  have hcLower := cStar_mem_isolation_box.1.le
-  have hcUpper := cStar_mem_isolation_box.2.le
+  have hcLower := barC_mem_isolation_box.1.le
+  have hcUpper := barC_mem_isolation_box.2.le
   have hlower := endpointLambda_tight_bounds.1
   have hupper := endpointLambda_tight_bounds.2
   have hmuLower := endpointMu_tight_bounds.1
@@ -86,10 +82,10 @@ private theorem secondPenalty_certificate_distance :
   constructor <;> nlinarith
 
 private theorem constantTerm_certificate_distance :
-    |weightedConstantTerm cStar endpointLambda endpointMu -
+    |weightedConstantTerm barC endpointLambda endpointMu -
       weightedConstantTerm certificateChord certificateLambda certificateMu| ≤ 1 / 10 ^ 10 := by
-  have hcLower := cStar_mem_isolation_box.1.le
-  have hcUpper := cStar_mem_isolation_box.2.le
+  have hcLower := barC_mem_isolation_box.1.le
+  have hcUpper := barC_mem_isolation_box.2.le
   have hlower := endpointLambda_tight_bounds.1
   have hupper := endpointLambda_tight_bounds.2
   have hmuLower := endpointMu_tight_bounds.1
@@ -147,7 +143,7 @@ theorem weightedPairScore_le_certificateScore_add
     (hw₁ : ‖w₁‖ ≤ 1) (hw₂ : ‖w₂‖ ≤ 1) (hw₂' : ‖w₂'‖ ≤ 1)
     (hp₂dist : ‖p₂ - p₂'‖ ≤ 1 / 10 ^ 15)
     (hw₂dist : ‖w₂ - w₂'‖ ≤ 1 / 10 ^ 15) :
-    weightedPairScore e cStar endpointLambda endpointMu p₁ p₂ w₁ w₂ ≤
+    weightedPairScore e barC endpointLambda endpointMu p₁ p₂ w₁ w₂ ≤
       weightedPairScore e certificateChord certificateLambda certificateMu p₁ p₂' w₁ w₂' +
         1 / 10 ^ 8 := by
   have hlambda := endpointLambda_certificate_distance
@@ -227,7 +223,7 @@ theorem weightedPairScore_le_certificateScore_add
     norm_num at hparameter hgeometry ⊢
     nlinarith
   have hfirstPenaltyTerm :
-      -(weightedFirstPenalty cStar endpointLambda endpointMu / 2 * (‖p₁‖ + ‖w₁‖)) ≤
+      -(weightedFirstPenalty barC endpointLambda endpointMu / 2 * (‖p₁‖ + ‖w₁‖)) ≤
         -(weightedFirstPenalty certificateChord certificateLambda certificateMu / 2 *
           (‖p₁‖ + ‖w₁‖)) + 1 / 10 ^ 10 := by
     have hdiff := (abs_le.mp hfirst).1
@@ -236,16 +232,16 @@ theorem weightedPairScore_le_certificateScore_add
         (by norm_num : (0 : ℝ) ≤ 2)
     have hmul := mul_le_mul_of_nonneg_right
       (show weightedFirstPenalty certificateChord certificateLambda certificateMu -
-          weightedFirstPenalty cStar endpointLambda endpointMu ≤ 1 / 10 ^ 10 by linarith)
+          weightedFirstPenalty barC endpointLambda endpointMu ≤ 1 / 10 ^ 10 by linarith)
       hhalfRadii
     nlinarith
   have hsecondPenaltyTerm :
-      -(weightedSecondPenalty cStar endpointLambda endpointMu / 2 * (‖p₂‖ + ‖w₂‖)) ≤
+      -(weightedSecondPenalty barC endpointLambda endpointMu / 2 * (‖p₂‖ + ‖w₂‖)) ≤
         -(weightedSecondPenalty certificateChord certificateLambda certificateMu / 2 *
           (‖p₂'‖ + ‖w₂'‖)) + 1 / 10 ^ 10 + 5 / 10 ^ 15 := by
     have hparameterDifference :
         weightedSecondPenalty certificateChord certificateLambda certificateMu -
-          weightedSecondPenalty cStar endpointLambda endpointMu ≤ 1 / 10 ^ 10 := by
+          weightedSecondPenalty barC endpointLambda endpointMu ≤ 1 / 10 ^ 10 := by
       linarith [(abs_le.mp hsecond).1]
     have hhalfRadii : 0 ≤ (‖p₂‖ + ‖w₂‖) / 2 :=
       div_nonneg (add_nonneg (norm_nonneg p₂) (norm_nonneg w₂))
@@ -261,7 +257,7 @@ theorem weightedPairScore_le_certificateScore_add
     nlinarith only [hparameter, hgeometry, hsecondRadii,
       certificate_secondPenalty_le_five]
   have hconstantTerm :
-      -weightedConstantTerm cStar endpointLambda endpointMu ≤
+      -weightedConstantTerm barC endpointLambda endpointMu ≤
         -weightedConstantTerm certificateChord certificateLambda certificateMu + 1 / 10 ^ 10 := by
     linarith [(abs_le.mp hconstant).1]
   rw [weightedPairScore, weightedPairScore]

@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalEndpointData
 public import Bescovitch.Certificates.RationalInterval
 public import Bescovitch.SixPoint.WeightedMixedPolynomial
 
@@ -36,16 +37,16 @@ def unitDiskExcluded (center : ℚ) (longitudinal transverse : RationalInterval)
 /-- The four unit-disk constraints for the two rational chord charts. -/
 def WeightedMixedDiskConstraints (x : Fin 6 → ℝ) : Prop :=
   x 0 ^ 2 + x 1 ^ 2 ≤ 1 ∧
-    (x 0 - (13866128436518096 / 10 ^ 16 : ℚ)) ^ 2 + x 1 ^ 2 ≤ 1 ∧
+    (x 0 - (3467 / 2500 : ℚ)) ^ 2 + x 1 ^ 2 ≤ 1 ∧
     x 3 ^ 2 + x 4 ^ 2 ≤ 1 ∧
-    (x 3 - (13866128436518096 / 10 ^ 16 : ℚ)) ^ 2 + x 4 ^ 2 ≤ 1
+    (x 3 - (3467 / 2500 : ℚ)) ^ 2 + x 4 ^ 2 ≤ 1
 
 /-- Exact test that a six-dimensional box violates a unit-disk constraint. -/
 def weightedMixedOutside (box : Fin 6 → RationalInterval) : Bool :=
   unitDiskExcluded 0 (box 0) (box 1) ||
-    unitDiskExcluded (13866128436518096 / 10 ^ 16) (box 0) (box 1) ||
+    unitDiskExcluded (3467 / 2500) (box 0) (box 1) ||
     unitDiskExcluded 0 (box 3) (box 4) ||
-    unitDiskExcluded (13866128436518096 / 10 ^ 16) (box 3) (box 4)
+    unitDiskExcluded (3467 / 2500) (box 3) (box 4)
 
 /-- Coordinate bisected at a given tree depth. -/
 def weightedMixedSplitCoordinate (depth : ℕ) : Fin 6 :=
@@ -88,16 +89,16 @@ def weightedMixedTreeCheck (sideP sideW : ℚ) (depth : ℕ)
 /-- The exact root box for a pair of cap choices; `false` denotes cap zero. -/
 def weightedMixedRootBox (capP capW : Bool) : Fin 6 → RationalInterval
   | 0 => if capP then
-      ⟨13866128436518096 / 10 ^ 16 / 2, 1, by norm_num⟩
+      ⟨3467 / 2500 / 2, 1, by norm_num⟩
     else
-      ⟨13866128436518096 / 10 ^ 16 - 1, 13866128436518100 / 10 ^ 16 / 2, by
+      ⟨3467 / 2500 - 1, 13868000000000001 / 10 ^ 16 / 2, by
         norm_num⟩
   | 1 => ⟨-720643 / 10 ^ 6, 720643 / 10 ^ 6, by norm_num⟩
   | 2 => ⟨0, 1, by norm_num⟩
   | 3 => if capW then
-      ⟨13866128436518096 / 10 ^ 16 / 2, 1, by norm_num⟩
+      ⟨3467 / 2500 / 2, 1, by norm_num⟩
     else
-      ⟨13866128436518096 / 10 ^ 16 - 1, 13866128436518100 / 10 ^ 16 / 2, by
+      ⟨3467 / 2500 - 1, 13868000000000001 / 10 ^ 16 / 2, by
         norm_num⟩
   | 4 => ⟨-720643 / 10 ^ 6, 720643 / 10 ^ 6, by norm_num⟩
   | 5 => ⟨-1, 1, by norm_num⟩
@@ -195,11 +196,11 @@ theorem weighted_mixed_outside_eq_false_of_constraints
   have hPFirst := unit_disk_excluded_eq_false_of_mem (center := (0 : ℚ))
     (hx 0) (hx 1) (by simpa using hdisk.1)
   have hPSecond := unit_disk_excluded_eq_false_of_mem
-    (center := (13866128436518096 / 10 ^ 16 : ℚ)) (hx 0) (hx 1) hdisk.2.1
+    (center := (3467 / 2500 : ℚ)) (hx 0) (hx 1) hdisk.2.1
   have hWFirst := unit_disk_excluded_eq_false_of_mem (center := (0 : ℚ))
     (hx 3) (hx 4) (by simpa using hdisk.2.2.1)
   have hWSecond := unit_disk_excluded_eq_false_of_mem
-    (center := (13866128436518096 / 10 ^ 16 : ℚ)) (hx 3) (hx 4) hdisk.2.2.2
+    (center := (3467 / 2500 : ℚ)) (hx 3) (hx 4) hdisk.2.2.2
   simp [weightedMixedOutside, hPFirst, hPSecond, hWFirst, hWSecond]
 
 private theorem mem_weighted_mixed_lower_half {depth : ℕ} {box : Fin 6 → RationalInterval}

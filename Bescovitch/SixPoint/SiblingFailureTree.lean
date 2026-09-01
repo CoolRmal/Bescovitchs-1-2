@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.FailureTree
 public import Bescovitch.SixPoint.SiblingIncidenceLedger
 
@@ -24,9 +25,9 @@ namespace Bescovitch
 /-- Under the diagonal matching obstruction, the two sibling-triangle supports either win or
 produce one of the residual incidence outcomes. -/
 theorem exists_nonnegative_score_or_siblingIncidenceOutcome
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration) :
-    (∃ packing : SixPointPacking configuration, 0 ≤ packing.score sStar) ∨
+    (∃ packing : SixPointPacking configuration, 0 ≤ packing.score barS) ∨
       SiblingIncidenceOutcome configuration := by
   by_cases hred : RedSiblingTriangleFails configuration h
   · by_cases hblue : BlueSiblingTriangleFails configuration h
@@ -42,10 +43,10 @@ theorem exists_nonnegative_score_or_siblingIncidenceOutcome
 
 /-- The first two packing stages leave only a sibling incidence or the anti-diagonal matching. -/
 theorem exists_nonnegative_score_or_siblingIncidence_or_antiDiagonal
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar) :
-    (∃ packing : SixPointPacking configuration, 0 ≤ packing.score sStar) ∨
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS) :
+    (∃ packing : SixPointPacking configuration, 0 ≤ packing.score barS) ∨
       SiblingIncidenceOutcome configuration ∨
-      (2 * cStar - 1) *
+      (2 * barC - 1) *
           (dist (configuration .red .left) (configuration .red .right) +
             dist (configuration .blue .left) (configuration .blue .right)) ≤
         dist (configuration .red .left) (configuration .blue .right) +

@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalEndpointData
 public import Bescovitch.Certificates.EndpointTightBounds
 public import Bescovitch.Certificates.IntervalBernstein
 public import Bescovitch.Certificates.IntervalHorner
@@ -301,17 +302,17 @@ private theorem weightedSelfCertifiedPolynomials_fits (lower upper : ℚ)
     RadicalUnivariate.scale]
 
 private noncomputable def endpointCertificateInput : Fin 7 → ℝ
-  | 0 => cStar
-  | 1 => certifiedEndpointPair.2
-  | 2 => endpointSecondDistance cStar certifiedEndpointPair.2
-  | 3 => endpointFirstAuxiliaryDistance certifiedEndpointPair.2
-  | 4 => endpointMixedAuxiliaryDistance cStar certifiedEndpointPair.2
+  | 0 => barC
+  | 1 => barB
+  | 2 => endpointSecondDistance barC barB
+  | 3 => endpointFirstAuxiliaryDistance barB
+  | 4 => endpointMixedAuxiliaryDistance barC barB
   | 5 => endpointLambda
   | 6 => endpointMu
 
 /-- Tight rational intervals for the seven exact endpoint quantities. -/
 def weightedSelfEndpointBox : Fin 7 → RationalInterval
-  | 0 => ⟨13866128436518096 / 10 ^ 16, 13866128436518100 / 10 ^ 16, by norm_num⟩
+  | 0 => ⟨3467 / 2500, 13868000000000001 / 10 ^ 16, by norm_num⟩
   | 1 => ⟨2873744161801659 / 10 ^ 15, 2873744161801662 / 10 ^ 15, by norm_num⟩
   | 2 => ⟨204381086361534 / 10 ^ 14, 204381086361536 / 10 ^ 14, by norm_num⟩
   | 3 => ⟨190504665395484 / 10 ^ 14, 190504665395485 / 10 ^ 14, by norm_num⟩
@@ -324,7 +325,7 @@ private theorem endpointCertificateInput_mem :
   intro i
   fin_cases i
   · simpa [weightedSelfEndpointBox, endpointCertificateInput, RationalInterval.Contains] using
-      ⟨cStar_mem_isolation_box.1.le, cStar_mem_isolation_box.2.le⟩
+      ⟨barC_mem_isolation_box.1.le, barC_mem_isolation_box.2.le⟩
   · simpa [weightedSelfEndpointBox, endpointCertificateInput, RationalInterval.Contains] using
       endpointB_tight_bounds
   · simpa [weightedSelfEndpointBox, endpointCertificateInput, RationalInterval.Contains] using
@@ -340,28 +341,28 @@ private theorem endpointCertificateInput_mem :
 
 /-- The eighteen exact coefficients in the reduced weighted-self formula. -/
 noncomputable def weightedSelfCoefficientInput (upper : ℝ) : Fin 18 → ℝ := ![
-  cStar,
-  certifiedEndpointPair.2,
-  endpointSecondDistance cStar certifiedEndpointPair.2,
-  endpointFirstAuxiliaryDistance certifiedEndpointPair.2,
-  endpointMixedAuxiliaryDistance cStar certifiedEndpointPair.2,
+  barC,
+  barB,
+  endpointSecondDistance barC barB,
+  endpointFirstAuxiliaryDistance barB,
+  endpointMixedAuxiliaryDistance barC barB,
   endpointLambda,
   endpointMu,
-  (1 + endpointLambda) / (2 * certifiedEndpointPair.2),
-  (1 + endpointLambda) / (2 * certifiedEndpointPair.2) /
-    (3 + certifiedEndpointPair.2) ^ 2,
-  1 / (2 * endpointSecondDistance cStar certifiedEndpointPair.2),
-  1 / (2 * endpointSecondDistance cStar certifiedEndpointPair.2) /
-    (1 + 2 * upper + endpointSecondDistance cStar certifiedEndpointPair.2) ^ 2,
-  endpointMu / (2 * endpointFirstAuxiliaryDistance certifiedEndpointPair.2),
-  endpointMu / (2 * endpointFirstAuxiliaryDistance certifiedEndpointPair.2) /
-    (2 + endpointFirstAuxiliaryDistance certifiedEndpointPair.2) ^ 2,
-  endpointMu / (2 * endpointMixedAuxiliaryDistance cStar certifiedEndpointPair.2),
-  endpointMu / (2 * endpointMixedAuxiliaryDistance cStar certifiedEndpointPair.2) /
-    (2 + upper + endpointMixedAuxiliaryDistance cStar certifiedEndpointPair.2) ^ 2,
-  weightedFirstPenalty cStar endpointLambda endpointMu,
-  weightedSecondPenalty cStar endpointLambda endpointMu,
-  weightedConstantTerm cStar endpointLambda endpointMu]
+  (1 + endpointLambda) / (2 * barB),
+  (1 + endpointLambda) / (2 * barB) /
+    (3 + barB) ^ 2,
+  1 / (2 * endpointSecondDistance barC barB),
+  1 / (2 * endpointSecondDistance barC barB) /
+    (1 + 2 * upper + endpointSecondDistance barC barB) ^ 2,
+  endpointMu / (2 * endpointFirstAuxiliaryDistance barB),
+  endpointMu / (2 * endpointFirstAuxiliaryDistance barB) /
+    (2 + endpointFirstAuxiliaryDistance barB) ^ 2,
+  endpointMu / (2 * endpointMixedAuxiliaryDistance barC barB),
+  endpointMu / (2 * endpointMixedAuxiliaryDistance barC barB) /
+    (2 + upper + endpointMixedAuxiliaryDistance barC barB) ^ 2,
+  weightedFirstPenalty barC endpointLambda endpointMu,
+  weightedSecondPenalty barC endpointLambda endpointMu,
+  weightedConstantTerm barC endpointLambda endpointMu]
 
 /-- Exact expressions for the eighteen coefficients on a radius bin. -/
 def weightedSelfCoefficientExpression (upper : ℚ) : Fin 18 → RadicalExpression 7 := ![
@@ -475,7 +476,7 @@ private noncomputable def certificateSecondRadius (lower upper y : ℝ) : ℝ :=
   lower + (upper - lower) * y
 
 private noncomputable def certificateFirstRadius (b x : ℝ) : ℝ :=
-  cStar - b + (1 - cStar + b) * x
+  barC - b + (1 - barC + b) * x
 
 private noncomputable def certificateProjection (z : ℝ) : ℝ :=
   -1 + 2 * z
@@ -602,7 +603,7 @@ private theorem weightedSelfCertified_formula_values (lower upper : ℚ)
 
 private theorem certificateFormula_radicand (r b t upper : ℝ) :
     (weightedSelfRealFormula r b t upper).radicand =
-      chordProjectionRadicand cStar r b t := by
+      chordProjectionRadicand barC r b t := by
   simp [weightedSelfRealFormula, weightedSelfFormula, weightedSelfRealFormulaOperations,
     weightedSelfCoefficientInput, chordProjectionRadicand, chordInnerProduct]
   ring
@@ -612,13 +613,13 @@ private theorem certificateLegacyPolynomials_eq_weightedSelf
     (r b t upper : ℝ) (hr : r ≠ 0) :
     certificatePolynomialPLegacy r b t upper = weightedSelfPolynomialP r b t upper ∧
       certificatePolynomialQLegacy r b t upper = weightedSelfPolynomialQ r b t upper := by
-  have hB : certifiedEndpointPair.2 ≠ 0 := by
+  have hB : barB ≠ 0 := by
     linarith [endpointB_tight_bounds.1]
-  have hD : endpointSecondDistance cStar certifiedEndpointPair.2 ≠ 0 := by
+  have hD : endpointSecondDistance barC barB ≠ 0 := by
     linarith [endpointSecondDistance_tight_bounds.1]
-  have hA : endpointFirstAuxiliaryDistance certifiedEndpointPair.2 ≠ 0 := by
+  have hA : endpointFirstAuxiliaryDistance barB ≠ 0 := by
     linarith [endpointFirstAuxiliaryDistance_tight_bounds.1]
-  have hC : endpointMixedAuxiliaryDistance cStar certifiedEndpointPair.2 ≠ 0 := by
+  have hC : endpointMixedAuxiliaryDistance barC barB ≠ 0 := by
     linarith [endpointMixedAuxiliaryDistance_tight_bounds.1]
   simp only [certificatePolynomialPLegacy, certificatePolynomialQLegacy,
     certificatePolynomialPLegacyAtoms, certificatePolynomialQLegacyAtoms,
@@ -655,7 +656,7 @@ theorem weightedSelfRealFormula_eq_weightedSelf (r b t upper : ℝ) (hr : r ≠ 
       (weightedSelfRealFormula r b t upper).q =
         weightedSelfPolynomialQ r b t upper ∧
       (weightedSelfRealFormula r b t upper).radicand =
-        chordProjectionRadicand cStar r b t := by
+        chordProjectionRadicand barC r b t := by
   obtain ⟨hp, hq⟩ := certificatePolynomials_eq_weightedSelf r b t upper hr
   exact ⟨hp, hq, certificateFormula_radicand r b t upper⟩
 
@@ -671,7 +672,7 @@ private theorem weightedSelfCertifiedValues_eval (lower upper : ℚ)
     let t := certificateProjection z
     data.p.value x y z = weightedSelfPolynomialP r b t upper ∧
       data.q.value x y z = weightedSelfPolynomialQ r b t upper ∧
-      data.radicand.value x y z = chordProjectionRadicand cStar r b t := by
+      data.radicand.value x y z = chordProjectionRadicand barC r b t := by
   let data := weightedSelfCertifiedPolynomials lower upper
     (weightedSelfCoefficientInput upper) box hinput
   change data.p.value x y z = _ ∧ data.q.value x y z = _ ∧
@@ -711,16 +712,16 @@ private theorem weightedSelfCertifiedDiscriminant_value (lower upper : ℚ)
   ring
 
 private theorem exists_firstRadius_chart {r b : ℝ}
-    (hb : cStar - 1 ≤ b) (hrLower : cStar - b ≤ r) (hrUpper : r ≤ 1) :
+    (hb : barC - 1 ≤ b) (hrLower : barC - b ≤ r) (hrUpper : r ≤ 1) :
     ∃ x : I, certificateFirstRadius b x = r := by
-  have hden : 0 ≤ 1 - cStar + b := by linarith
-  by_cases hzero : 1 - cStar + b = 0
+  have hden : 0 ≤ 1 - barC + b := by linarith
+  by_cases hzero : 1 - barC + b = 0
   · have hr : r = 1 := by linarith
     refine ⟨⟨0, by constructor <;> norm_num⟩, ?_⟩
     simp [certificateFirstRadius, hzero, hr]
     linarith
-  · have hdenPos : 0 < 1 - cStar + b := lt_of_le_of_ne hden (Ne.symm hzero)
-    let x : ℝ := (r - (cStar - b)) / (1 - cStar + b)
+  · have hdenPos : 0 < 1 - barC + b := lt_of_le_of_ne hden (Ne.symm hzero)
+    let x : ℝ := (r - (barC - b)) / (1 - barC + b)
     have hx : x ∈ Set.Icc (0 : ℝ) 1 := by
       constructor
       · exact div_nonneg (sub_nonneg.mpr hrLower) hden
@@ -778,7 +779,7 @@ private theorem radiusBinBound_of_cube_signs (lower upper : ℚ)
   intro r b t hbLower hbUpper hrLower hrUpper htLower htUpper
   let data := weightedSelfCertifiedPolynomials lower upper
     (weightedSelfCoefficientInput upper) box hinput
-  have hbPhysical : cStar - 1 ≤ b := by linarith
+  have hbPhysical : barC - 1 ≤ b := by linarith
   obtain ⟨x, hx⟩ := exists_firstRadius_chart hbPhysical hrLower hrUpper
   obtain ⟨y, hy⟩ := exists_secondRadius_chart hwidth hbLower hbUpper
   obtain ⟨z, hz⟩ := exists_projection_chart htLower htUpper
@@ -791,7 +792,7 @@ private theorem radiusBinBound_of_cube_signs (lower upper : ℚ)
       0 ≤ data.discriminant.exact.eval (weightedSelfCoefficientInput upper) x y z :=
     hdiscriminant x y z
   have hrPos : 0 < r := by
-    have hc := one_lt_cStar_and_cStar_lt_two.1
+    have hc := one_lt_barC_and_barC_lt_two.1
     linarith
   have hchartR :
       certificateFirstRadius (certificateSecondRadius lower upper y) x = r := by
@@ -834,7 +835,7 @@ theorem weightedSelfRadiusBinBound_of_real_chart_signs (lower upper : ℝ)
         (weightedSelfRealChart lower upper x y z).t upper) :
     WeightedSelfRadiusBinBound lower upper := by
   intro r b t hbLower hbUpper hrLower hrUpper htLower htUpper
-  have hbPhysical : cStar - 1 ≤ b := by linarith
+  have hbPhysical : barC - 1 ≤ b := by linarith
   obtain ⟨x, hx⟩ := exists_firstRadius_chart hbPhysical hrLower hrUpper
   obtain ⟨y, hy⟩ := exists_secondRadius_chart hwidth hbLower hbUpper
   obtain ⟨z, hz⟩ := exists_projection_chart htLower htUpper
@@ -842,7 +843,7 @@ theorem weightedSelfRadiusBinBound_of_real_chart_signs (lower upper : ℝ)
   have hq' := hq x y z
   have hdiscriminant' := hdiscriminant x y z
   have hrPos : 0 < r := by
-    have hc := one_lt_cStar_and_cStar_lt_two.1
+    have hc := one_lt_barC_and_barC_lt_two.1
     linarith
   have hchartR :
       certificateFirstRadius (certificateSecondRadius lower upper y) x = r := by

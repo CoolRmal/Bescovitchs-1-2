@@ -2,7 +2,7 @@
   "challenge_module": "Challenge",
   "solution_module": "Solution",
   "theorem_names": [
-    "Bescovitch.sigma_one_plane_le_699_div_1000"
+    "Bescovitch.sigma_one_plane_le_6934_div_10000"
   ],
   "permitted_axioms": [
     "propext",

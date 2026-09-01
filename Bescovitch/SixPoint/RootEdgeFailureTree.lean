@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.RootEdge
 public import Bescovitch.SixPoint.SiblingIncidenceLedger
 
@@ -24,17 +25,17 @@ namespace Bescovitch
 
 /-- The endpoint diameter target for the red root--second-child support. -/
 def redRootEdgeTarget (configuration : SixPointConfiguration) : ℝ :=
-  cStar * (dist (configuration .red .root) (configuration .red .right) +
+  barC * (dist (configuration .red .root) (configuration .red .right) +
     rootedTriangleTotalRadius configuration .blue)
 
 /-- The endpoint diameter target for the blue root--second-child support. -/
 def blueRootEdgeTarget (configuration : SixPointConfiguration) : ℝ :=
-  cStar * (dist (configuration .blue .root) (configuration .blue .right) +
+  barC * (dist (configuration .blue .root) (configuration .blue .right) +
     rootedTriangleTotalRadius configuration .red)
 
 /-- Support `57`, with the red root--second-child radius split at `x`. -/
 def redRootEdgePackingAtEndpoint (configuration : SixPointConfiguration)
-    (h : configuration.IsAdmissibleAt sStar) (x : ℝ)
+    (h : configuration.IsAdmissibleAt barS) (x : ℝ)
     (hxZero : 0 ≤ x)
     (hxEdge : x ≤ dist (configuration .red .root) (configuration .red .right)) :
     SixPointPacking configuration :=
@@ -44,7 +45,7 @@ def redRootEdgePackingAtEndpoint (configuration : SixPointConfiguration)
 
 /-- Support `75`, with the blue root--second-child radius split at `x`. -/
 def blueRootEdgePackingAtEndpoint (configuration : SixPointConfiguration)
-    (h : configuration.IsAdmissibleAt sStar) (x : ℝ)
+    (h : configuration.IsAdmissibleAt barS) (x : ℝ)
     (hxZero : 0 ≤ x)
     (hxEdge : x ≤ dist (configuration .blue .root) (configuration .blue .right)) :
     SixPointPacking configuration :=
@@ -54,7 +55,7 @@ def blueRootEdgePackingAtEndpoint (configuration : SixPointConfiguration)
 
 /-- A feasible red root--edge split below its target gives nonnegative score. -/
 theorem redRootEdgePackingAtEndpoint_score_nonnegative
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar) (x : ℝ)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS) (x : ℝ)
     (hxZero : 0 ≤ x)
     (hxEdge : x ≤ dist (configuration .red .root) (configuration .red .right))
     (hdiameter : rootEdgeSplitDiameter
@@ -62,21 +63,21 @@ theorem redRootEdgePackingAtEndpoint_score_nonnegative
       (dist (configuration .blue .left) (configuration .blue .right)) x
       (redRootBlueTriangleReach configuration)
       (redChildBlueTriangleReach configuration .right) ≤ redRootEdgeTarget configuration) :
-    0 ≤ (redRootEdgePackingAtEndpoint configuration h x hxZero hxEdge).score sStar := by
+    0 ≤ (redRootEdgePackingAtEndpoint configuration h x hxZero hxEdge).score barS := by
   have hblueOne : 1 ≤ dist (configuration .blue .left) (configuration .blue .right) :=
-    one_lt_cStar_and_cStar_lt_two.1.le.trans
+    one_lt_barC_and_barC_lt_two.1.le.trans
       (sibling_distance_mem_endpoint_interval h .blue).1
   simp only [redRootEdgePackingAtEndpoint, SixPointPacking.score]
   rw [redRootEdgeBlueTrianglePacking_totalRadius,
     redRootEdgeBlueTrianglePacking_virtualDiameter (hMdist := rfl) (hM := hblueOne)]
-  simp only [sStar]
-  rw [show 2 * (cStar / 2) = cStar by ring]
-  rw [sub_nonneg, div_le_iff₀ cStar_pos]
+  simp only [barS]
+  rw [show 2 * (barC / 2) = barC by ring]
+  rw [sub_nonneg, div_le_iff₀ barC_pos]
   simpa [redRootEdgeTarget, rootedTriangleTotalRadius, mul_comm] using hdiameter
 
 /-- A feasible blue root--edge split below its target gives nonnegative score. -/
 theorem blueRootEdgePackingAtEndpoint_score_nonnegative
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar) (x : ℝ)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS) (x : ℝ)
     (hxZero : 0 ≤ x)
     (hxEdge : x ≤ dist (configuration .blue .root) (configuration .blue .right))
     (hdiameter : rootEdgeSplitDiameter
@@ -84,35 +85,35 @@ theorem blueRootEdgePackingAtEndpoint_score_nonnegative
       (dist (configuration .red .left) (configuration .red .right)) x
       (blueRootRedTriangleReach configuration)
       (blueChildRedTriangleReach configuration .right) ≤ blueRootEdgeTarget configuration) :
-    0 ≤ (blueRootEdgePackingAtEndpoint configuration h x hxZero hxEdge).score sStar := by
+    0 ≤ (blueRootEdgePackingAtEndpoint configuration h x hxZero hxEdge).score barS := by
   have hredOne : 1 ≤ dist (configuration .red .left) (configuration .red .right) :=
-    one_lt_cStar_and_cStar_lt_two.1.le.trans
+    one_lt_barC_and_barC_lt_two.1.le.trans
       (sibling_distance_mem_endpoint_interval h .red).1
   simp only [blueRootEdgePackingAtEndpoint, SixPointPacking.score]
   rw [blueRootEdgeRedTrianglePacking_totalRadius,
     blueRootEdgeRedTrianglePacking_virtualDiameter (hLdist := rfl) (hL := hredOne)]
-  simp only [sStar]
-  rw [show 2 * (cStar / 2) = cStar by ring]
-  rw [sub_nonneg, div_le_iff₀ cStar_pos]
+  simp only [barS]
+  rw [show 2 * (barC / 2) = barC by ring]
+  rw [sub_nonneg, div_le_iff₀ barC_pos]
   simpa [blueRootEdgeTarget, rootedTriangleTotalRadius, mul_comm] using hdiameter
 
 /-- Every feasible split of support `57` has negative score. -/
 def RedRootEdgeFails (configuration : SixPointConfiguration)
-    (h : configuration.IsAdmissibleAt sStar) : Prop :=
+    (h : configuration.IsAdmissibleAt barS) : Prop :=
   ∀ (x : ℝ) (hxZero : 0 ≤ x)
     (hxEdge : x ≤ dist (configuration .red .root) (configuration .red .right)),
-    (redRootEdgePackingAtEndpoint configuration h x hxZero hxEdge).score sStar < 0
+    (redRootEdgePackingAtEndpoint configuration h x hxZero hxEdge).score barS < 0
 
 /-- Every feasible split of support `75` has negative score. -/
 def BlueRootEdgeFails (configuration : SixPointConfiguration)
-    (h : configuration.IsAdmissibleAt sStar) : Prop :=
+    (h : configuration.IsAdmissibleAt barS) : Prop :=
   ∀ (x : ℝ) (hxZero : 0 ≤ x)
     (hxEdge : x ≤ dist (configuration .blue .root) (configuration .blue .right)),
-    (blueRootEdgePackingAtEndpoint configuration h x hxZero hxEdge).score sStar < 0
+    (blueRootEdgePackingAtEndpoint configuration h x hxZero hxEdge).score barS < 0
 
 /-- Failure of support `57` makes every feasible root--edge split exceed its target. -/
 theorem redRootEdge_split_failure
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hfailure : RedRootEdgeFails configuration h) :
     ∀ (x : ℝ) (_hxZero : 0 ≤ x)
       (_hxEdge : x ≤ dist (configuration .red .root) (configuration .red .right)),
@@ -128,7 +129,7 @@ theorem redRootEdge_split_failure
 
 /-- Failure of support `75` makes every feasible root--edge split exceed its target. -/
 theorem blueRootEdge_split_failure
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hfailure : BlueRootEdgeFails configuration h) :
     ∀ (x : ℝ) (_hxZero : 0 ≤ x)
       (_hxEdge : x ≤ dist (configuration .blue .root) (configuration .blue .right)),
@@ -142,31 +143,31 @@ theorem blueRootEdge_split_failure
     (not_lt_of_ge (blueRootEdgePackingAtEndpoint_score_nonnegative configuration h x hxZero hxEdge
       hdiameter)) (hfailure x hxZero hxEdge)
 
-private theorem cStar_rootEdge_child_gap_pos : 0 < cStar ^ 2 + cStar - 3 := by
-  have hc := cStar_mem_isolation_box.1
+private theorem barC_rootEdge_child_gap_pos : 0 < barC ^ 2 + barC - 3 := by
+  have hc := barC_mem_isolation_box.1
   norm_num at hc ⊢
-  nlinarith [sq_nonneg (cStar - 1)]
+  nlinarith [sq_nonneg (barC - 1)]
 
-private theorem cStar_rootEdge_order_gap_pos : 2 < 4 * cStar * (cStar - 1) := by
-  have hc := cStar_mem_isolation_box.1
+private theorem barC_rootEdge_order_gap_pos : 2 < 4 * barC * (barC - 1) := by
+  have hc := barC_mem_isolation_box.1
   norm_num at hc ⊢
-  nlinarith [sq_nonneg (cStar - 1)]
+  nlinarith [sq_nonneg (barC - 1)]
 
 /-- The selected matching and blue coincident endpoint exclude the blue internal primitive. -/
 theorem SixPointConfiguration.blueRootEdgeInternalSlack_neg_of_matching_endpoint
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
-    (hmatching : 0 ≤ matchingFailureSlack cStar
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
+    (hmatching : 0 ≤ matchingFailureSlack barC
       (dist (configuration .red .left) (configuration .red .right))
       (dist (configuration .blue .left) (configuration .blue .right))
       (dist (configuration .red .left) (configuration .blue .left))
       (dist (configuration .red .right) (configuration .blue .right)))
-    (hendpoint : 0 ≤ blueEndpointFailureSlack cStar
+    (hendpoint : 0 ≤ blueEndpointFailureSlack barC
       (dist (configuration .red .left) (configuration .red .right))
       (dist (configuration .blue .left) (configuration .blue .right))
       (dist (configuration .red .root) (configuration .red .left))
       (dist (configuration .red .root) (configuration .red .right))
       (dist (configuration .red .left) (configuration .blue .left))) :
-    blueRootEdgeInternalSlack cStar
+    blueRootEdgeInternalSlack barC
       (dist (configuration .red .left) (configuration .red .right))
       (dist (configuration .blue .root) (configuration .blue .right))
       (dist (configuration .red .root) (configuration .red .left))
@@ -194,13 +195,13 @@ theorem SixPointConfiguration.blueRootEdgeInternalSlack_neg_of_matching_endpoint
   have hB₂₂ : ‖e - p₂ - w₂‖ =
       dist (configuration .red .right) (configuration .blue .right) := by
     exact (configuration.dist_red_blue_eq_norm .right .right).symm
-  have hredSeparation : cStar ≤ ‖p₁ - p₂‖ := by
+  have hredSeparation : barC ≤ ‖p₁ - p₂‖ := by
     have hsibling := configuration.two_mul_le_dist_redDisplacement h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hsibling
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hsibling
     exact hsibling
-  have hblueSeparation : cStar ≤ ‖w₁ - w₂‖ := by
+  have hblueSeparation : barC ≤ ‖w₁ - w₂‖ := by
     have hsibling := configuration.two_mul_le_dist_bluePullback h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hsibling
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hsibling
     exact hsibling
   have hnegative := blueRootEdgeInternalSlack_neg e p₁ p₂ w₁ w₂
     (configuration.norm_rootDisplacement h)
@@ -215,7 +216,7 @@ theorem SixPointConfiguration.blueRootEdgeInternalSlack_neg_of_matching_endpoint
 /-- On the selected endpoint branch, failure of the red root--edge support can only use one of
 the two child-labelled balanced terms. -/
 theorem redRootEdge_failure_routes_to_child_balanced
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration)
     (hendpoint : redSiblingTriangleFailure configuration (.endpoint 0))
     (hfailure : RedRootEdgeFails configuration h) :
@@ -233,11 +234,11 @@ theorem redRootEdge_failure_routes_to_child_balanced
   let r₁ := dist (configuration .red .root) (configuration .red .left)
   let b₁ := dist (configuration .blue .root) (configuration .blue .left)
   let b₂ := dist (configuration .blue .root) (configuration .blue .right)
-  have hcOne : 1 < cStar := one_lt_cStar_and_cStar_lt_two.1
-  have hcTwo : cStar < 2 := one_lt_cStar_and_cStar_lt_two.2
-  have hLLower : cStar ≤ L := by
+  have hcOne : 1 < barC := one_lt_barC_and_barC_lt_two.1
+  have hcTwo : barC < 2 := one_lt_barC_and_barC_lt_two.2
+  have hLLower : barC ≤ L := by
     simpa [L] using (sibling_distance_mem_endpoint_interval h .red).1
-  have hMLower : cStar ≤ M := by
+  have hMLower : barC ≤ M := by
     simpa [M] using (sibling_distance_mem_endpoint_interval h .blue).1
   have hROne : R ≤ 1 := by
     simpa [R] using h.child_distance .red .right (by simp)
@@ -253,7 +254,7 @@ theorem redRootEdge_failure_routes_to_child_balanced
         simpa [L, R] using dist_triangle (configuration .red .left)
           (configuration .red .root) (configuration .red .right)
       _ = r₁ + R := by rw [dist_comm]
-  have hRLower : cStar - 1 ≤ R := by linarith
+  have hRLower : barC - 1 ≤ R := by linarith
   have hRPos : 0 < R := by linarith
   have hBlueTriangle : M ≤ b₁ + b₂ := by
     calc
@@ -263,10 +264,10 @@ theorem redRootEdge_failure_routes_to_child_balanced
       _ = b₁ + b₂ := by rw [dist_comm]
   have hRootRoot :
       redRootBlueTriangleReach configuration .root ≤ redRootEdgeTarget configuration - R := by
-    have hRScaled := mul_le_mul_of_nonneg_left hRLower (by linarith : 0 ≤ cStar - 1)
+    have hRScaled := mul_le_mul_of_nonneg_left hRLower (by linarith : 0 ≤ barC - 1)
     have hBlueScaled := mul_le_mul_of_nonneg_left hBlueTriangle
-      (by linarith : 0 ≤ (cStar - 1) / 2)
-    have hMScaled := mul_le_mul_of_nonneg_left hMLower cStar_pos.le
+      (by linarith : 0 ≤ (barC - 1) / 2)
+    have hMScaled := mul_le_mul_of_nonneg_left hMLower barC_pos.le
     simp [redRootBlueTriangleReach, redRootEdgeTarget, rootedTriangleTotalRadius,
       canonicalTriangleRadius, R, h.root_distance]
     nlinarith
@@ -279,13 +280,13 @@ theorem redRootEdge_failure_routes_to_child_balanced
             dist (configuration .red .root) (configuration .blue .root) :=
           dist_triangle _ _ _
         _ = R + 1 := by rw [dist_comm, h.root_distance]
-    have hRScaled := mul_le_mul_of_nonpos_left hROne (by linarith : cStar - 2 ≤ 0)
+    have hRScaled := mul_le_mul_of_nonpos_left hROne (by linarith : barC - 2 ≤ 0)
     have hBlueScaled := mul_le_mul_of_nonneg_left hBlueTriangle
-      (by linarith : 0 ≤ (cStar - 1) / 2)
-    have hMScaled := mul_le_mul_of_nonneg_left hMLower cStar_pos.le
+      (by linarith : 0 ≤ (barC - 1) / 2)
+    have hMScaled := mul_le_mul_of_nonneg_left hMLower barC_pos.le
     simp [redChildBlueTriangleReach, redRootEdgeTarget, rootedTriangleTotalRadius,
       canonicalTriangleRadius, R]
-    nlinarith [cStar_rootEdge_child_gap_pos]
+    nlinarith [barC_rootEdge_child_gap_pos]
   have hLeftLower : redRootEdgeTarget configuration - R ≤
       redRootBlueTriangleReach configuration .left := by
     have hB₁₁Triangle :
@@ -296,9 +297,9 @@ theorem redRootEdge_failure_routes_to_child_balanced
             dist (configuration .red .root) (configuration .blue .left) :=
           dist_triangle _ _ _
         _ = _ := by rw [dist_comm]
-    have hLRLower : cStar - 1 ≤ L - R := by linarith
+    have hLRLower : barC - 1 ≤ L - R := by linarith
     have hLRScaled := mul_le_mul_of_nonneg_left hLRLower
-      (by linarith : 0 ≤ cStar - 1)
+      (by linarith : 0 ≤ barC - 1)
     simp [redSiblingTriangleFailure, siblingTriangleWitnessExceeds, incidenceFirst,
       incidenceSecond, incidenceChild, redSiblingTriangleTarget, rootedTriangleTotalRadius,
       redSiblingBlueTriangleReach, canonicalTriangleRadius, redRootEdgeTarget,
@@ -332,15 +333,15 @@ theorem redRootEdge_failure_routes_to_child_balanced
           dist_triangle _ _ _
         _ = _ := by rw [dist_comm]
     have hLScaled := mul_le_mul_of_nonneg_left hLLower
-      (by linarith : 0 ≤ cStar - 1)
-    have hSumLower : 2 * cStar ≤ b₁ + b₂ + M := by linarith
+      (by linarith : 0 ≤ barC - 1)
+    have hSumLower : 2 * barC ≤ b₁ + b₂ + M := by linarith
     have hSumScaled := mul_le_mul_of_nonneg_left hSumLower
-      (by linarith : 0 ≤ cStar - 1)
+      (by linarith : 0 ≤ barC - 1)
     simp [redSiblingTriangleFailure, siblingTriangleWitnessExceeds, incidenceFirst,
       incidenceSecond, incidenceChild, redSiblingTriangleTarget, rootedTriangleTotalRadius,
       redSiblingBlueTriangleReach, canonicalTriangleRadius,
       redRootBlueTriangleReach] at hendpoint hreachOrder ⊢
-    nlinarith [cStar_rootEdge_order_gap_pos]
+    nlinarith [barC_rootEdge_order_gap_pos]
   have hClose : ∀ label, label ≠ .root →
       redRootBlueTriangleReach configuration label - R ≤
         redChildBlueTriangleReach configuration .right label := by
@@ -353,12 +354,12 @@ theorem redRootEdge_failure_routes_to_child_balanced
   have hroute := rootEdge_failure_routing hRPos.le (redRootEdge_split_failure h hfailure)
   rcases rootEdge_failure_reduces_to_three_types hRPos hRootRoot hChildRoot hLeftLower
       hLeftLargest hClose hroute with hinternal | hleft | hright
-  · have hmatchingSlack : 0 ≤ matchingFailureSlack cStar L M
+  · have hmatchingSlack : 0 ≤ matchingFailureSlack barC L M
         (dist (configuration .red .left) (configuration .blue .left))
         (dist (configuration .red .right) (configuration .blue .right)) := by
       simpa [SelectedDiagonalMatchingFails, matchingFailureSlack, incidenceCrossDistance,
         incidenceChild, L, M] using hmatching
-    have hendpointSlack : 0 ≤ redEndpointFailureSlack cStar L M b₁ b₂
+    have hendpointSlack : 0 ≤ redEndpointFailureSlack barC L M b₁ b₂
         (dist (configuration .red .left) (configuration .blue .left)) := by
       simp [redSiblingTriangleFailure,
         siblingTriangleWitnessExceeds, incidenceFirst, incidenceSecond, incidenceChild,
@@ -369,10 +370,10 @@ theorem redRootEdge_failure_routes_to_child_balanced
       linarith
     have hnegative := configuration.redRootEdgeInternalSlack_neg_of_matching_endpoint h
       hmatchingSlack hendpointSlack
-    have hnegative' : 2 * M - cStar *
+    have hnegative' : 2 * M - barC *
         (R + (b₁ + b₂ + M) / 2) < 0 := by
       simpa [redRootEdgeInternalSlack, R, M, b₁, b₂] using hnegative
-    have hinternal' : cStar * (R + (b₁ + b₂ + M) / 2) < 2 * M := by
+    have hinternal' : barC * (R + (b₁ + b₂ + M) / 2) < 2 * M := by
       simpa [redRootEdgeTarget, rootedTriangleTotalRadius, R, M, b₁, b₂] using hinternal
     exfalso
     linarith
@@ -383,7 +384,7 @@ theorem redRootEdge_failure_routes_to_child_balanced
 
 /-- The color-reversed root--edge failure has the same two surviving balanced terms. -/
 theorem blueRootEdge_failure_routes_to_child_balanced
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration)
     (hendpoint : blueSiblingTriangleFailure configuration (.endpoint 0))
     (hfailure : BlueRootEdgeFails configuration h) :
@@ -401,14 +402,14 @@ theorem blueRootEdge_failure_routes_to_child_balanced
   let b₁ := dist (configuration .blue .root) (configuration .blue .left)
   let r₁ := dist (configuration .red .root) (configuration .red .left)
   let r₂ := dist (configuration .red .root) (configuration .red .right)
-  have hcOne : 1 < cStar := one_lt_cStar_and_cStar_lt_two.1
-  have hcTwo : cStar < 2 := one_lt_cStar_and_cStar_lt_two.2
+  have hcOne : 1 < barC := one_lt_barC_and_barC_lt_two.1
+  have hcTwo : barC < 2 := one_lt_barC_and_barC_lt_two.2
   have hrootReverse :
       dist (configuration .blue .root) (configuration .red .root) = 1 := by
     simpa [dist_comm] using h.root_distance
-  have hLLower : cStar ≤ L := by
+  have hLLower : barC ≤ L := by
     simpa [L] using (sibling_distance_mem_endpoint_interval h .red).1
-  have hMLower : cStar ≤ M := by
+  have hMLower : barC ≤ M := by
     simpa [M] using (sibling_distance_mem_endpoint_interval h .blue).1
   have hROne : R ≤ 1 := by
     simpa [R] using h.child_distance .blue .right (by simp)
@@ -424,7 +425,7 @@ theorem blueRootEdge_failure_routes_to_child_balanced
         simpa [M, R] using dist_triangle (configuration .blue .left)
           (configuration .blue .root) (configuration .blue .right)
       _ = b₁ + R := by rw [dist_comm]
-  have hRLower : cStar - 1 ≤ R := by linarith
+  have hRLower : barC - 1 ≤ R := by linarith
   have hRPos : 0 < R := by linarith
   have hRedTriangle : L ≤ r₁ + r₂ := by
     calc
@@ -434,10 +435,10 @@ theorem blueRootEdge_failure_routes_to_child_balanced
       _ = r₁ + r₂ := by rw [dist_comm]
   have hRootRoot :
       blueRootRedTriangleReach configuration .root ≤ blueRootEdgeTarget configuration - R := by
-    have hRScaled := mul_le_mul_of_nonneg_left hRLower (by linarith : 0 ≤ cStar - 1)
+    have hRScaled := mul_le_mul_of_nonneg_left hRLower (by linarith : 0 ≤ barC - 1)
     have hRedScaled := mul_le_mul_of_nonneg_left hRedTriangle
-      (by linarith : 0 ≤ (cStar - 1) / 2)
-    have hLScaled := mul_le_mul_of_nonneg_left hLLower cStar_pos.le
+      (by linarith : 0 ≤ (barC - 1) / 2)
+    have hLScaled := mul_le_mul_of_nonneg_left hLLower barC_pos.le
     simp [blueRootRedTriangleReach, blueRootEdgeTarget, rootedTriangleTotalRadius,
       canonicalTriangleRadius, R, hrootReverse]
     nlinarith
@@ -450,13 +451,13 @@ theorem blueRootEdge_failure_routes_to_child_balanced
             dist (configuration .blue .root) (configuration .red .root) :=
           dist_triangle _ _ _
         _ = R + 1 := by rw [dist_comm (configuration .blue .right), hrootReverse]
-    have hRScaled := mul_le_mul_of_nonpos_left hROne (by linarith : cStar - 2 ≤ 0)
+    have hRScaled := mul_le_mul_of_nonpos_left hROne (by linarith : barC - 2 ≤ 0)
     have hRedScaled := mul_le_mul_of_nonneg_left hRedTriangle
-      (by linarith : 0 ≤ (cStar - 1) / 2)
-    have hLScaled := mul_le_mul_of_nonneg_left hLLower cStar_pos.le
+      (by linarith : 0 ≤ (barC - 1) / 2)
+    have hLScaled := mul_le_mul_of_nonneg_left hLLower barC_pos.le
     simp [blueChildRedTriangleReach, blueRootEdgeTarget, rootedTriangleTotalRadius,
       canonicalTriangleRadius, R]
-    nlinarith [cStar_rootEdge_child_gap_pos]
+    nlinarith [barC_rootEdge_child_gap_pos]
   have hLeftLower : blueRootEdgeTarget configuration - R ≤
       blueRootRedTriangleReach configuration .left := by
     have hB₁₁Triangle :
@@ -467,9 +468,9 @@ theorem blueRootEdge_failure_routes_to_child_balanced
             dist (configuration .blue .root) (configuration .red .left) :=
           dist_triangle _ _ _
         _ = _ := by rw [dist_comm (configuration .blue .left)]
-    have hMRLower : cStar - 1 ≤ M - R := by linarith
+    have hMRLower : barC - 1 ≤ M - R := by linarith
     have hMRScaled := mul_le_mul_of_nonneg_left hMRLower
-      (by linarith : 0 ≤ cStar - 1)
+      (by linarith : 0 ≤ barC - 1)
     simp [blueSiblingTriangleFailure, transposeBlueEndpointWitness, transposeEndpointCode,
       siblingTriangleWitnessExceeds, incidenceFirst, incidenceSecond, incidenceChild,
       blueSiblingTriangleTarget, rootedTriangleTotalRadius, blueSiblingRedTriangleReach,
@@ -503,15 +504,15 @@ theorem blueRootEdge_failure_routes_to_child_balanced
           dist_triangle _ _ _
         _ = _ := by rw [dist_comm (configuration .blue .left)]
     have hMScaled := mul_le_mul_of_nonneg_left hMLower
-      (by linarith : 0 ≤ cStar - 1)
-    have hSumLower : 2 * cStar ≤ r₁ + r₂ + L := by linarith
+      (by linarith : 0 ≤ barC - 1)
+    have hSumLower : 2 * barC ≤ r₁ + r₂ + L := by linarith
     have hSumScaled := mul_le_mul_of_nonneg_left hSumLower
-      (by linarith : 0 ≤ cStar - 1)
+      (by linarith : 0 ≤ barC - 1)
     simp [blueSiblingTriangleFailure, transposeBlueEndpointWitness, transposeEndpointCode,
       siblingTriangleWitnessExceeds, incidenceFirst, incidenceSecond, incidenceChild,
       blueSiblingTriangleTarget, rootedTriangleTotalRadius, blueSiblingRedTriangleReach,
       canonicalTriangleRadius, blueRootRedTriangleReach] at hendpoint hreachOrder ⊢
-    nlinarith [cStar_rootEdge_order_gap_pos]
+    nlinarith [barC_rootEdge_order_gap_pos]
   have hClose : ∀ label, label ≠ .root →
       blueRootRedTriangleReach configuration label - R ≤
         blueChildRedTriangleReach configuration .right label := by
@@ -524,12 +525,12 @@ theorem blueRootEdge_failure_routes_to_child_balanced
   have hroute := rootEdge_failure_routing hRPos.le (blueRootEdge_split_failure h hfailure)
   rcases rootEdge_failure_reduces_to_three_types hRPos hRootRoot hChildRoot hLeftLower
       hLeftLargest hClose hroute with hinternal | hleft | hright
-  · have hmatchingSlack : 0 ≤ matchingFailureSlack cStar L M
+  · have hmatchingSlack : 0 ≤ matchingFailureSlack barC L M
         (dist (configuration .red .left) (configuration .blue .left))
         (dist (configuration .red .right) (configuration .blue .right)) := by
       simpa [SelectedDiagonalMatchingFails, matchingFailureSlack, incidenceCrossDistance,
         incidenceChild, L, M] using hmatching
-    have hendpointSlack : 0 ≤ blueEndpointFailureSlack cStar L M r₁ r₂
+    have hendpointSlack : 0 ≤ blueEndpointFailureSlack barC L M r₁ r₂
         (dist (configuration .red .left) (configuration .blue .left)) := by
       simp [blueSiblingTriangleFailure, transposeBlueEndpointWitness, transposeEndpointCode,
         siblingTriangleWitnessExceeds, incidenceFirst, incidenceSecond, incidenceChild,
@@ -541,10 +542,10 @@ theorem blueRootEdge_failure_routes_to_child_balanced
       linarith
     have hnegative := configuration.blueRootEdgeInternalSlack_neg_of_matching_endpoint h
       hmatchingSlack hendpointSlack
-    have hnegative' : 2 * L - cStar *
+    have hnegative' : 2 * L - barC *
         (R + (r₁ + r₂ + L) / 2) < 0 := by
       simpa [blueRootEdgeInternalSlack, R, L, r₁, r₂] using hnegative
-    have hinternal' : cStar * (R + (r₁ + r₂ + L) / 2) < 2 * L := by
+    have hinternal' : barC * (R + (r₁ + r₂ + L) / 2) < 2 * L := by
       simpa [blueRootEdgeTarget, rootedTriangleTotalRadius, R, L, r₁, r₂] using hinternal
     exfalso
     linarith

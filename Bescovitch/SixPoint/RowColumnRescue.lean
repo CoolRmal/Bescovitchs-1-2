@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.Certificates.EndpointBridge
 public import Bescovitch.SixPoint.EndpointGeometry
 public import Bescovitch.SixPoint.SiblingTriangle
@@ -192,39 +193,39 @@ private theorem rowUpper_le_vertices {c t₁ t₂ : ℝ} (ht₁_one : t₁ ≤ 1
       (le_max_left _ _)
 
 private theorem rowUpper_vertices_lt :
-    max (rowUpper cStar 1 1)
-      (max (rowUpper cStar 1 (cStar - 1)) (rowUpper cStar (cStar - 1) 1)) <
+    max (rowUpper barC 1 1)
+      (max (rowUpper barC 1 (barC - 1)) (rowUpper barC (barC - 1) 1)) <
         -8 / 25 := by
   rw [max_lt_iff, max_lt_iff]
-  rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
   constructor
   · norm_num [rowUpper, rowConstant, rowPositiveConstant, rowA1, rowA2, rowK,
       rowK1, rowK2, rowK3,
       rowRho1, rowRho2, rowRho3, rowSigma, rowEta] at hlower hupper ⊢
-    nlinarith [sq_nonneg (cStar - 13866128436518096 / 10 ^ 16)]
+    nlinarith [sq_nonneg (barC - 13866128436518096 / 10 ^ 16)]
   · constructor
     · norm_num [rowUpper, rowConstant, rowPositiveConstant, rowA1, rowA2, rowK,
         rowK1, rowK2, rowK3,
         rowRho1, rowRho2, rowRho3, rowSigma, rowEta] at hlower hupper ⊢
-      nlinarith [sq_nonneg (cStar - 13866128436518096 / 10 ^ 16)]
+      nlinarith [sq_nonneg (barC - 13866128436518096 / 10 ^ 16)]
     · norm_num [rowUpper, rowConstant, rowPositiveConstant, rowA1, rowA2, rowK,
         rowK1, rowK2, rowK3,
         rowRho1, rowRho2, rowRho3, rowSigma, rowEta] at hlower hupper ⊢
-      nlinarith [sq_nonneg (cStar - 13866128436518100 / 10 ^ 16)]
+      nlinarith [sq_nonneg (barC - 13866128436518100 / 10 ^ 16)]
 
 private theorem row_preconditioner_inner_le {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p w₁ w₂ : E) (hp : ‖p‖ ≤ 1)
-    (he : ‖e‖ = 1) (hseparation : cStar ≤ ‖w₁ - w₂‖) :
+    (he : ‖e‖ = 1) (hseparation : barC ≤ ‖w₁ - w₂‖) :
     2 * ⟪p, rowK1 • w₁ + rowK2 • w₂ - rowK • e⟫_ℝ ≤ rowSigma +
       (rowK * (rowK1 * ‖w₁‖ ^ 2 + rowK2 * ‖w₂‖ ^ 2) -
-        rowK1 * rowK2 * cStar ^ 2 + rowK ^ 2 -
+        rowK1 * rowK2 * barC ^ 2 + rowK ^ 2 -
         2 * rowK * ⟪e, rowK1 • w₁ + rowK2 • w₂⟫_ℝ) / rowSigma := by
   let z := rowK1 • w₁ + rowK2 • w₂ - rowK • e
   have hk1 : 0 ≤ rowK1 := by norm_num [rowK1, rowRho1]
   have hk2 : 0 ≤ rowK2 := by norm_num [rowK2, rowRho2]
   have hK : 0 ≤ rowK := add_nonneg hk1 hk2
-  have hseparation_sq : cStar ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
-    nlinarith [cStar_pos, norm_nonneg (w₁ - w₂)]
+  have hseparation_sq : barC ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
+    nlinarith [barC_pos, norm_nonneg (w₁ - w₂)]
   have hpz : 2 * ⟪p, z⟫_ℝ ≤ 2 * ‖z‖ := by
     have hinner := real_inner_le_norm p z
     nlinarith [norm_nonneg z, mul_le_mul_of_nonneg_right hp (norm_nonneg z)]
@@ -241,7 +242,7 @@ private theorem row_preconditioner_inner_le {E : Type*} [NormedAddCommGroup E]
     ring
   have hz_upper :
       ‖z‖ ^ 2 ≤ rowK * (rowK1 * ‖w₁‖ ^ 2 + rowK2 * ‖w₂‖ ^ 2) -
-        rowK1 * rowK2 * cStar ^ 2 + rowK ^ 2 -
+        rowK1 * rowK2 * barC ^ 2 + rowK ^ 2 -
         2 * rowK * ⟪e, rowK1 • w₁ + rowK2 • w₂⟫_ℝ := by
     have hproduct := mul_le_mul_of_nonneg_left hseparation_sq (mul_nonneg hk1 hk2)
     nlinarith
@@ -270,9 +271,9 @@ private theorem row_tangent_sq_expansion {E : Type*} [NormedAddCommGroup E]
 
 private theorem row_tangent_sum_le {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p w₁ w₂ : E) (he : ‖e‖ = 1) (hp : ‖p‖ ≤ 1)
-    (hseparation : cStar ≤ ‖w₁ - w₂‖) :
+    (hseparation : barC ≤ ‖w₁ - w₂‖) :
     10 * ‖e - p - w₁‖ + 10 * ‖e - p - w₂‖ + 9 * ‖e - w₁‖ ≤
-      rowPositiveConstant cStar + rowA1 * ‖w₁‖ ^ 2 + rowA2 * ‖w₂‖ ^ 2 -
+      rowPositiveConstant barC + rowA1 * ‖w₁‖ ^ 2 + rowA2 * ‖w₂‖ ^ 2 -
         2 * ⟪e, rowA1 • w₁ + rowA2 • w₂⟫_ℝ := by
   have htangent1 := weighted_norm_tangent (e - p - w₁) 10 rowRho1 rowK1
     (by norm_num [rowRho1])
@@ -301,7 +302,7 @@ private theorem row_tangent_sum_le {E : Type*} [NormedAddCommGroup E]
         rowK2 * ‖w₂‖ ^ 2 - 2 * ⟪e, (rowK1 + rowK3) • w₁ + rowK2 • w₂⟫_ℝ +
         rowK + (rowSigma +
           (rowK * (rowK1 * ‖w₁‖ ^ 2 + rowK2 * ‖w₂‖ ^ 2) -
-            rowK1 * rowK2 * cStar ^ 2 + rowK ^ 2 -
+            rowK1 * rowK2 * barC ^ 2 + rowK ^ 2 -
             2 * rowK * ⟪e, rowK1 • w₁ + rowK2 • w₂⟫_ℝ) / rowSigma) := by linarith
     _ = _ := by
       simp only [rowPositiveConstant, rowA1, rowA2, rowK, inner_add_right,
@@ -310,12 +311,12 @@ private theorem row_tangent_sum_le {E : Type*} [NormedAddCommGroup E]
 
 private theorem row_orientation_le_upper {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e w₁ w₂ : E) (he : ‖e‖ = 1)
-    (hseparation : cStar ≤ ‖w₁ - w₂‖) :
-    rowPositiveConstant cStar + rowA1 * ‖w₁‖ ^ 2 + rowA2 * ‖w₂‖ ^ 2 -
+    (hseparation : barC ≤ ‖w₁ - w₂‖) :
+    rowPositiveConstant barC + rowA1 * ‖w₁‖ ^ 2 + rowA2 * ‖w₂‖ ^ 2 -
         2 * ⟪e, rowA1 • w₁ + rowA2 • w₂⟫_ℝ ≤
-      rowPositiveConstant cStar + rowA1 * ‖w₁‖ ^ 2 + rowA2 * ‖w₂‖ ^ 2 +
+      rowPositiveConstant barC + rowA1 * ‖w₁‖ ^ 2 + rowA2 * ‖w₂‖ ^ 2 +
         rowEta + ((rowA1 + rowA2) * (rowA1 * ‖w₁‖ ^ 2 + rowA2 * ‖w₂‖ ^ 2) -
-          rowA1 * rowA2 * cStar ^ 2) / rowEta := by
+          rowA1 * rowA2 * barC ^ 2) / rowEta := by
   have hk1 : 0 ≤ rowK1 := by norm_num [rowK1, rowRho1]
   have hk2 : 0 ≤ rowK2 := by norm_num [rowK2, rowRho2]
   have hk3 : 0 ≤ rowK3 := by norm_num [rowK3, rowRho3]
@@ -325,11 +326,11 @@ private theorem row_orientation_le_upper {E : Type*} [NormedAddCommGroup E]
   have ha2 : 0 ≤ rowA2 := add_nonneg hk2 <|
     div_nonneg (mul_nonneg hK hk2) (by norm_num [rowSigma])
   let u := rowA1 • w₁ + rowA2 • w₂
-  have hseparation_sq : cStar ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
-    nlinarith [cStar_pos, norm_nonneg (w₁ - w₂)]
+  have hseparation_sq : barC ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
+    nlinarith [barC_pos, norm_nonneg (w₁ - w₂)]
   have hu_sq : ‖u‖ ^ 2 ≤
       (rowA1 + rowA2) * (rowA1 * ‖w₁‖ ^ 2 + rowA2 * ‖w₂‖ ^ 2) -
-        rowA1 * rowA2 * cStar ^ 2 := by
+        rowA1 * rowA2 * barC ^ 2 := by
     rw [show ‖u‖ ^ 2 =
       (rowA1 + rowA2) * (rowA1 * ‖w₁‖ ^ 2 + rowA2 * ‖w₂‖ ^ 2) -
         rowA1 * rowA2 * ‖w₁ - w₂‖ ^ 2 by
@@ -350,11 +351,11 @@ private theorem row_orientation_le_upper {E : Type*} [NormedAddCommGroup E]
 
 private theorem rowWeighted_le_upper {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p w₁ w₂ : E) (he : ‖e‖ = 1) (hp : ‖p‖ ≤ 1)
-    (hseparation : cStar ≤ ‖w₁ - w₂‖) :
-    10 * (‖e - p - w₁‖ + ‖e - p - w₂‖ - (4 * cStar ^ 2 - 3 * cStar + 2)) +
-        9 * (‖e - w₁‖ - (cStar - 1 +
-          ((cStar - 1) * (‖w₁‖ + cStar) + (cStar + 1) * ‖w₂‖) / 2)) ≤
-      rowUpper cStar ‖w₁‖ ‖w₂‖ := by
+    (hseparation : barC ≤ ‖w₁ - w₂‖) :
+    10 * (‖e - p - w₁‖ + ‖e - p - w₂‖ - (4 * barC ^ 2 - 3 * barC + 2)) +
+        9 * (‖e - w₁‖ - (barC - 1 +
+          ((barC - 1) * (‖w₁‖ + barC) + (barC + 1) * ‖w₂‖) / 2)) ≤
+      rowUpper barC ‖w₁‖ ‖w₂‖ := by
   have htangent := row_tangent_sum_le e p w₁ w₂ he hp hseparation
   have horientation := row_orientation_le_upper e w₁ w₂ he hseparation
   simp only [rowUpper, rowConstant] at ⊢
@@ -362,11 +363,11 @@ private theorem rowWeighted_le_upper {E : Type*} [NormedAddCommGroup E]
 
 private theorem rowWeighted_lt {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     (e p w₁ w₂ : E) (he : ‖e‖ = 1) (hp : ‖p‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
-    (hw₂ : ‖w₂‖ ≤ 1) (hseparation : cStar ≤ ‖w₁ - w₂‖) :
-    10 * (‖e - p - w₁‖ + ‖e - p - w₂‖ - (4 * cStar ^ 2 - 3 * cStar + 2)) +
-        9 * (‖e - w₁‖ - (cStar - 1 +
-          ((cStar - 1) * (‖w₁‖ + cStar) + (cStar + 1) * ‖w₂‖) / 2)) < 0 := by
-  have hsum : cStar ≤ ‖w₁‖ + ‖w₂‖ :=
+    (hw₂ : ‖w₂‖ ≤ 1) (hseparation : barC ≤ ‖w₁ - w₂‖) :
+    10 * (‖e - p - w₁‖ + ‖e - p - w₂‖ - (4 * barC ^ 2 - 3 * barC + 2)) +
+        9 * (‖e - w₁‖ - (barC - 1 +
+          ((barC - 1) * (‖w₁‖ + barC) + (barC + 1) * ‖w₂‖) / 2)) < 0 := by
+  have hsum : barC ≤ ‖w₁‖ + ‖w₂‖ :=
     hseparation.trans (norm_sub_le w₁ w₂)
   have hupper := rowWeighted_le_upper e p w₁ w₂ he hp hseparation
   have hvertices := rowUpper_le_vertices hw₁ hw₂ hsum
@@ -376,11 +377,11 @@ private theorem rowWeighted_lt {E : Type*} [NormedAddCommGroup E] [InnerProductS
 theorem row_obstruction_excludes_root_triangle_endpoint {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p w₁ w₂ : E) (he : ‖e‖ = 1) (hp : ‖p‖ ≤ 1)
     (hw₁ : ‖w₁‖ ≤ 1) (hw₂ : ‖w₂‖ ≤ 1)
-    (hseparation : cStar ≤ ‖w₁ - w₂‖)
-    (hrow : 4 * cStar ^ 2 - 3 * cStar + 2 ≤
+    (hseparation : barC ≤ ‖w₁ - w₂‖)
+    (hrow : 4 * barC ^ 2 - 3 * barC + 2 ≤
       ‖e - p - w₁‖ + ‖e - p - w₂‖) :
-    ‖e - w₁‖ < cStar - 1 +
-      ((cStar - 1) * (‖w₁‖ + cStar) + (cStar + 1) * ‖w₂‖) / 2 := by
+    ‖e - w₁‖ < barC - 1 +
+      ((barC - 1) * (‖w₁‖ + barC) + (barC + 1) * ‖w₂‖) / 2 := by
   have hweighted := rowWeighted_lt e p w₁ w₂ he hp hw₁ hw₂ hseparation
   by_contra hendpoint
   rw [not_lt] at hendpoint
@@ -635,7 +636,7 @@ private theorem triangle_pair_dist_le (configuration : SixPointConfiguration)
   · simpa using le_trans (by norm_num : (0 : ℝ) ≤ 2) htargetTwo
 
 private theorem red_root_blue_triangle_cross_le (configuration : SixPointConfiguration)
-    (h : configuration.IsAdmissibleAt sStar) {target : ℝ}
+    (h : configuration.IsAdmissibleAt barS) {target : ℝ}
     (hroot : 2 +
       (dist (configuration .blue .root) (configuration .blue .left) +
         dist (configuration .blue .root) (configuration .blue .right) -
@@ -665,7 +666,7 @@ private theorem red_root_blue_triangle_cross_le (configuration : SixPointConfigu
     simpa only [SixPointConfiguration.redDisplacement, sub_self, sub_zero] using hright
 
 private theorem blue_root_red_triangle_cross_le (configuration : SixPointConfiguration)
-    (h : configuration.IsAdmissibleAt sStar) {target : ℝ}
+    (h : configuration.IsAdmissibleAt barS) {target : ℝ}
     (hroot : 2 +
       (dist (configuration .red .root) (configuration .red .left) +
         dist (configuration .red .root) (configuration .red .right) -
@@ -820,24 +821,24 @@ private theorem blueRootRedTrianglePacking_virtualDiameter_le
   intro j hj
   exact hpair i j
 
-private theorem cStar_row_rescue_gaps :
-    0 < 3 * cStar - 4 ∧ 0 < cStar ^ 2 + (3 / 2) * cStar - 3 ∧
-      2 < cStar * (1 + cStar) := by
-  rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+private theorem barC_row_rescue_gaps :
+    0 < 3 * barC - 4 ∧ 0 < barC ^ 2 + (3 / 2) * barC - 3 ∧
+      2 < barC * (1 + barC) := by
+  rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
   norm_num at hlower hupper ⊢
   constructor
   · linarith
-  · constructor <;> nlinarith [sq_nonneg (cStar - 1)]
+  · constructor <;> nlinarith [sq_nonneg (barC - 1)]
 
 private theorem root_triangle_target_bounds {E : Type*} [NormedAddCommGroup E]
     (e w₁ w₂ : E) (hw₁ : ‖w₁‖ ≤ 1) (hw₂ : ‖w₂‖ ≤ 1)
-    (hM : cStar ≤ ‖w₁ - w₂‖)
-    (hleft : ‖e - w₁‖ < cStar - 1 +
-      ((cStar - 1) * (‖w₁‖ + cStar) + (cStar + 1) * ‖w₂‖) / 2)
-    (hright : ‖e - w₂‖ < cStar - 1 +
-      ((cStar - 1) * (‖w₂‖ + cStar) + (cStar + 1) * ‖w₁‖) / 2) :
+    (hM : barC ≤ ‖w₁ - w₂‖)
+    (hleft : ‖e - w₁‖ < barC - 1 +
+      ((barC - 1) * (‖w₁‖ + barC) + (barC + 1) * ‖w₂‖) / 2)
+    (hright : ‖e - w₂‖ < barC - 1 +
+      ((barC - 1) * (‖w₂‖ + barC) + (barC + 1) * ‖w₁‖) / 2) :
     let M := ‖w₁ - w₂‖
-    let target := cStar * (1 + (‖w₁‖ + ‖w₂‖ + M) / 2)
+    let target := barC * (1 + (‖w₁‖ + ‖w₂‖ + M) / 2)
     2 ≤ target ∧ 2 * M ≤ target ∧
       2 + (‖w₁‖ + ‖w₂‖ - M) / 2 ≤ target ∧
       ‖e - w₁‖ + 1 + (‖w₁‖ + M - ‖w₂‖) / 2 ≤ target ∧
@@ -847,67 +848,67 @@ private theorem root_triangle_target_bounds {E : Type*} [NormedAddCommGroup E]
   have hsumTwo : ‖w₁‖ + ‖w₂‖ ≤ 2 := by linarith
   have hMtwo : ‖w₁ - w₂‖ ≤ 2 := hsum.trans hsumTwo
   have htargetLower :
-      cStar * (1 + ‖w₁ - w₂‖) ≤
-        cStar * (1 + (‖w₁‖ + ‖w₂‖ + ‖w₁ - w₂‖) / 2) := by
-    apply mul_le_mul_of_nonneg_left _ cStar_pos.le
+      barC * (1 + ‖w₁ - w₂‖) ≤
+        barC * (1 + (‖w₁‖ + ‖w₂‖ + ‖w₁ - w₂‖) / 2) := by
+    apply mul_le_mul_of_nonneg_left _ barC_pos.le
     linarith
-  have hcc := mul_le_mul_of_nonneg_left hM cStar_pos.le
+  have hcc := mul_le_mul_of_nonneg_left hM barC_pos.le
   have htargetTwo : 2 ≤
-      cStar * (1 + (‖w₁‖ + ‖w₂‖ + ‖w₁ - w₂‖) / 2) :=
-    (cStar_row_rescue_gaps.2.2.le.trans (by nlinarith)).trans htargetLower
-  have hnegative : cStar - 2 ≤ 0 := by linarith [one_lt_cStar_and_cStar_lt_two.2]
+      barC * (1 + (‖w₁‖ + ‖w₂‖ + ‖w₁ - w₂‖) / 2) :=
+    (barC_row_rescue_gaps.2.2.le.trans (by nlinarith)).trans htargetLower
+  have hnegative : barC - 2 ≤ 0 := by linarith [one_lt_barC_and_barC_lt_two.2]
   have hMpart := mul_le_mul_of_nonpos_left hMtwo hnegative
   have htargetM : 2 * ‖w₁ - w₂‖ ≤
-      cStar * (1 + (‖w₁‖ + ‖w₂‖ + ‖w₁ - w₂‖) / 2) :=
-    (show 2 * ‖w₁ - w₂‖ ≤ cStar * (1 + ‖w₁ - w₂‖) by
-      nlinarith [cStar_row_rescue_gaps.1]).trans htargetLower
-  have hMmul : cStar * (cStar + 1) ≤ cStar * (‖w₁ - w₂‖ + 1) :=
-    mul_le_mul_of_nonneg_left (by linarith) cStar_pos.le
+      barC * (1 + (‖w₁‖ + ‖w₂‖ + ‖w₁ - w₂‖) / 2) :=
+    (show 2 * ‖w₁ - w₂‖ ≤ barC * (1 + ‖w₁ - w₂‖) by
+      nlinarith [barC_row_rescue_gaps.1]).trans htargetLower
+  have hMmul : barC * (barC + 1) ≤ barC * (‖w₁ - w₂‖ + 1) :=
+    mul_le_mul_of_nonneg_left (by linarith) barC_pos.le
   have hMcoef := mul_le_mul_of_nonneg_left hM
-    (sub_nonneg.mpr one_lt_cStar_and_cStar_lt_two.1.le)
-  exact ⟨htargetTwo, htargetM, by nlinarith [cStar_row_rescue_gaps.2.1],
+    (sub_nonneg.mpr one_lt_barC_and_barC_lt_two.1.le)
+  exact ⟨htargetTwo, htargetM, by nlinarith [barC_row_rescue_gaps.2.1],
     by nlinarith, by nlinarith⟩
 
 private theorem row_obstruction_endpoint_bounds
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (redLabel : SixPointLabel) (hredLabel : redLabel ≠ .root)
     (hrow :
-      2 + 2 * (cStar - 1) *
+      2 + 2 * (barC - 1) *
           dist (configuration .red .left) (configuration .red .right) +
-          (2 * cStar - 1) *
+          (2 * barC - 1) *
             dist (configuration .blue .left) (configuration .blue .right) ≤
         dist (configuration .red redLabel) (configuration .blue .left) +
           dist (configuration .red redLabel) (configuration .blue .right)) :
     let e := configuration.rootDisplacement
     let w₁ := configuration.bluePullback .left
     let w₂ := configuration.bluePullback .right
-    ‖e - w₁‖ < cStar - 1 +
-        ((cStar - 1) * (‖w₁‖ + cStar) + (cStar + 1) * ‖w₂‖) / 2 ∧
-      ‖e - w₂‖ < cStar - 1 +
-        ((cStar - 1) * (‖w₂‖ + cStar) + (cStar + 1) * ‖w₁‖) / 2 := by
+    ‖e - w₁‖ < barC - 1 +
+        ((barC - 1) * (‖w₁‖ + barC) + (barC + 1) * ‖w₂‖) / 2 ∧
+      ‖e - w₂‖ < barC - 1 +
+        ((barC - 1) * (‖w₂‖ + barC) + (barC + 1) * ‖w₁‖) / 2 := by
   dsimp only
   let p := configuration.redDisplacement redLabel
   have he := configuration.norm_rootDisplacement h
   have hp := configuration.norm_redDisplacement_le_one h hredLabel
   have hw₁ := configuration.norm_bluePullback_le_one h (by simp : SixPointLabel.left ≠ .root)
   have hw₂ := configuration.norm_bluePullback_le_one h (by simp : SixPointLabel.right ≠ .root)
-  have hM : cStar ≤
+  have hM : barC ≤
       ‖configuration.bluePullback .left - configuration.bluePullback .right‖ := by
     have hM' := configuration.two_mul_le_dist_bluePullback h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hM'
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hM'
     exact hM'
   have hL := h.sibling_distance .red
-  rw [sStar, show 2 * (cStar / 2) = cStar by ring] at hL
+  rw [barS, show 2 * (barC / 2) = barC by ring] at hL
   have hMdist : dist (configuration .blue .left) (configuration .blue .right) =
       ‖configuration.bluePullback .left - configuration.bluePullback .right‖ := by
     rw [← configuration.dist_bluePullback .left .right, dist_eq_norm]
-  have hfactor1 : 0 ≤ 2 * (cStar - 1) := by nlinarith [one_lt_cStar_and_cStar_lt_two.1]
-  have hfactor2 : 0 ≤ 2 * cStar - 1 := by nlinarith [one_lt_cStar_and_cStar_lt_two.1]
+  have hfactor1 : 0 ≤ 2 * (barC - 1) := by nlinarith [one_lt_barC_and_barC_lt_two.1]
+  have hfactor2 : 0 ≤ 2 * barC - 1 := by nlinarith [one_lt_barC_and_barC_lt_two.1]
   have hredPart := mul_le_mul_of_nonneg_left hL hfactor1
   have hbluePart := mul_le_mul_of_nonneg_left hM hfactor2
   rw [hMdist, configuration.dist_red_blue_eq_norm redLabel .left,
     configuration.dist_red_blue_eq_norm redLabel .right] at hrow
-  have hrowVector : 4 * cStar ^ 2 - 3 * cStar + 2 ≤
+  have hrowVector : 4 * barC ^ 2 - 3 * barC + 2 ≤
       ‖configuration.rootDisplacement - p - configuration.bluePullback .left‖ +
         ‖configuration.rootDisplacement - p - configuration.bluePullback .right‖ := by nlinarith
   exact ⟨row_obstruction_excludes_root_triangle_endpoint _ p _ _ he hp hw₁ hw₂ hM hrowVector,
@@ -915,22 +916,22 @@ private theorem row_obstruction_endpoint_bounds
       (by simpa [norm_sub_rev] using hM) (by simpa [add_comm] using hrowVector)⟩
 
 private theorem column_obstruction_endpoint_bounds
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (blueLabel : SixPointLabel) (hblueLabel : blueLabel ≠ .root)
     (hcolumn :
-      2 + 2 * (cStar - 1) *
+      2 + 2 * (barC - 1) *
           dist (configuration .blue .left) (configuration .blue .right) +
-          (2 * cStar - 1) *
+          (2 * barC - 1) *
             dist (configuration .red .left) (configuration .red .right) ≤
         dist (configuration .red .left) (configuration .blue blueLabel) +
           dist (configuration .red .right) (configuration .blue blueLabel)) :
     let e := configuration.rootDisplacement
     let w₁ := configuration.redDisplacement .left
     let w₂ := configuration.redDisplacement .right
-    ‖e - w₁‖ < cStar - 1 +
-        ((cStar - 1) * (‖w₁‖ + cStar) + (cStar + 1) * ‖w₂‖) / 2 ∧
-      ‖e - w₂‖ < cStar - 1 +
-        ((cStar - 1) * (‖w₂‖ + cStar) + (cStar + 1) * ‖w₁‖) / 2 := by
+    ‖e - w₁‖ < barC - 1 +
+        ((barC - 1) * (‖w₁‖ + barC) + (barC + 1) * ‖w₂‖) / 2 ∧
+      ‖e - w₂‖ < barC - 1 +
+        ((barC - 1) * (‖w₂‖ + barC) + (barC + 1) * ‖w₁‖) / 2 := by
   dsimp only
   let p := configuration.bluePullback blueLabel
   have he := configuration.norm_rootDisplacement h
@@ -939,23 +940,23 @@ private theorem column_obstruction_endpoint_bounds
     (by simp : SixPointLabel.left ≠ .root)
   have hw₂ := configuration.norm_redDisplacement_le_one h
     (by simp : SixPointLabel.right ≠ .root)
-  have hM : cStar ≤
+  have hM : barC ≤
       ‖configuration.redDisplacement .left - configuration.redDisplacement .right‖ := by
     have hM' := configuration.two_mul_le_dist_redDisplacement h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hM'
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hM'
     exact hM'
   have hblueSibling := h.sibling_distance .blue
-  rw [sStar, show 2 * (cStar / 2) = cStar by ring] at hblueSibling
+  rw [barS, show 2 * (barC / 2) = barC by ring] at hblueSibling
   have hMdist : dist (configuration .red .left) (configuration .red .right) =
       ‖configuration.redDisplacement .left - configuration.redDisplacement .right‖ := by
     rw [← configuration.dist_redDisplacement .left .right, dist_eq_norm]
-  have hfactor1 : 0 ≤ 2 * (cStar - 1) := by nlinarith [one_lt_cStar_and_cStar_lt_two.1]
-  have hfactor2 : 0 ≤ 2 * cStar - 1 := by nlinarith [one_lt_cStar_and_cStar_lt_two.1]
+  have hfactor1 : 0 ≤ 2 * (barC - 1) := by nlinarith [one_lt_barC_and_barC_lt_two.1]
+  have hfactor2 : 0 ≤ 2 * barC - 1 := by nlinarith [one_lt_barC_and_barC_lt_two.1]
   have hbluePart := mul_le_mul_of_nonneg_left hblueSibling hfactor1
   have hredPart := mul_le_mul_of_nonneg_left hM hfactor2
   rw [hMdist, configuration.dist_red_blue_eq_norm .left blueLabel,
     configuration.dist_red_blue_eq_norm .right blueLabel] at hcolumn
-  have hcolumnVector : 4 * cStar ^ 2 - 3 * cStar + 2 ≤
+  have hcolumnVector : 4 * barC ^ 2 - 3 * barC + 2 ≤
       ‖configuration.rootDisplacement - p - configuration.redDisplacement .left‖ +
         ‖configuration.rootDisplacement - p - configuration.redDisplacement .right‖ := by
     dsimp only [p]
@@ -974,16 +975,16 @@ private theorem column_obstruction_endpoint_bounds
       (by simpa [norm_sub_rev] using hM) (by simpa [add_comm] using hcolumnVector)⟩
 
 private theorem red_root_blue_triangle_target_bounds
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (hleft :
-      ‖configuration.rootDisplacement - configuration.bluePullback .left‖ < cStar - 1 +
-        ((cStar - 1) * (‖configuration.bluePullback .left‖ + cStar) +
-          (cStar + 1) * ‖configuration.bluePullback .right‖) / 2)
+      ‖configuration.rootDisplacement - configuration.bluePullback .left‖ < barC - 1 +
+        ((barC - 1) * (‖configuration.bluePullback .left‖ + barC) +
+          (barC + 1) * ‖configuration.bluePullback .right‖) / 2)
     (hright :
-      ‖configuration.rootDisplacement - configuration.bluePullback .right‖ < cStar - 1 +
-        ((cStar - 1) * (‖configuration.bluePullback .right‖ + cStar) +
-          (cStar + 1) * ‖configuration.bluePullback .left‖) / 2) :
-    let target := cStar * (1 +
+      ‖configuration.rootDisplacement - configuration.bluePullback .right‖ < barC - 1 +
+        ((barC - 1) * (‖configuration.bluePullback .right‖ + barC) +
+          (barC + 1) * ‖configuration.bluePullback .left‖) / 2) :
+    let target := barC * (1 +
       (dist (configuration .blue .root) (configuration .blue .left) +
         dist (configuration .blue .root) (configuration .blue .right) +
           dist (configuration .blue .left) (configuration .blue .right)) / 2)
@@ -1014,10 +1015,10 @@ private theorem red_root_blue_triangle_target_bounds
   have hb₂dist : dist (configuration .blue .root) (configuration .blue .right) =
       ‖configuration.bluePullback .right‖ := by
     simp [SixPointConfiguration.bluePullback, dist_eq_norm]
-  have hM : cStar ≤
+  have hM : barC ≤
       ‖configuration.bluePullback .left - configuration.bluePullback .right‖ := by
     have hM' := configuration.two_mul_le_dist_bluePullback h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hM'
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hM'
     exact hM'
   rw [hb₁dist, hb₂dist, hMdist]
   exact root_triangle_target_bounds configuration.rootDisplacement
@@ -1025,23 +1026,23 @@ private theorem red_root_blue_triangle_target_bounds
     hw₁ hw₂ hM hleft hright
 
 private theorem redRootBlueTrianglePacking_virtualDiameter_le_of_endpoint_bounds
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (hleft :
-      ‖configuration.rootDisplacement - configuration.bluePullback .left‖ < cStar - 1 +
-        ((cStar - 1) * (‖configuration.bluePullback .left‖ + cStar) +
-          (cStar + 1) * ‖configuration.bluePullback .right‖) / 2)
+      ‖configuration.rootDisplacement - configuration.bluePullback .left‖ < barC - 1 +
+        ((barC - 1) * (‖configuration.bluePullback .left‖ + barC) +
+          (barC + 1) * ‖configuration.bluePullback .right‖) / 2)
     (hright :
-      ‖configuration.rootDisplacement - configuration.bluePullback .right‖ < cStar - 1 +
-        ((cStar - 1) * (‖configuration.bluePullback .right‖ + cStar) +
-          (cStar + 1) * ‖configuration.bluePullback .left‖) / 2) :
+      ‖configuration.rootDisplacement - configuration.bluePullback .right‖ < barC - 1 +
+        ((barC - 1) * (‖configuration.bluePullback .right‖ + barC) +
+          (barC + 1) * ‖configuration.bluePullback .left‖) / 2) :
     (redRootBlueTrianglePacking configuration
       (h.child_distance .blue .left (by simp))
       (h.child_distance .blue .right (by simp))).virtualDiameter ≤
-        cStar * (1 +
+        barC * (1 +
           (dist (configuration .blue .root) (configuration .blue .left) +
             dist (configuration .blue .root) (configuration .blue .right) +
               dist (configuration .blue .left) (configuration .blue .right)) / 2) := by
-  let target := cStar * (1 +
+  let target := barC * (1 +
     (dist (configuration .blue .root) (configuration .blue .left) +
       dist (configuration .blue .root) (configuration .blue .right) +
         dist (configuration .blue .left) (configuration .blue .right)) / 2)
@@ -1061,38 +1062,38 @@ private theorem redRootBlueTrianglePacking_virtualDiameter_le_of_endpoint_bounds
     htargetTwo hblue hcross
 
 private theorem redRootBlueTriangle_score_nonnegative_of_endpoint_bounds
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (hleft :
-      ‖configuration.rootDisplacement - configuration.bluePullback .left‖ < cStar - 1 +
-        ((cStar - 1) * (‖configuration.bluePullback .left‖ + cStar) +
-          (cStar + 1) * ‖configuration.bluePullback .right‖) / 2)
+      ‖configuration.rootDisplacement - configuration.bluePullback .left‖ < barC - 1 +
+        ((barC - 1) * (‖configuration.bluePullback .left‖ + barC) +
+          (barC + 1) * ‖configuration.bluePullback .right‖) / 2)
     (hright :
-      ‖configuration.rootDisplacement - configuration.bluePullback .right‖ < cStar - 1 +
-        ((cStar - 1) * (‖configuration.bluePullback .right‖ + cStar) +
-          (cStar + 1) * ‖configuration.bluePullback .left‖) / 2) :
+      ‖configuration.rootDisplacement - configuration.bluePullback .right‖ < barC - 1 +
+        ((barC - 1) * (‖configuration.bluePullback .right‖ + barC) +
+          (barC + 1) * ‖configuration.bluePullback .left‖) / 2) :
     0 ≤ (redRootBlueTrianglePacking configuration
       (h.child_distance .blue .left (by simp))
-      (h.child_distance .blue .right (by simp))).score sStar := by
+      (h.child_distance .blue .right (by simp))).score barS := by
   have hvirtual := redRootBlueTrianglePacking_virtualDiameter_le_of_endpoint_bounds
     configuration h hleft hright
   rw [SixPointPacking.score, redRootBlueTrianglePacking_totalRadius]
-  simp only [sStar]
-  rw [show 2 * (cStar / 2) = cStar by ring]
+  simp only [barS]
+  rw [show 2 * (barC / 2) = barC by ring]
   apply sub_nonneg.mpr
-  apply (div_le_iff₀ cStar_pos).2
+  apply (div_le_iff₀ barC_pos).2
   simpa only [mul_comm] using hvirtual
 
 private theorem blue_root_red_triangle_target_bounds
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (hleft :
-      ‖configuration.rootDisplacement - configuration.redDisplacement .left‖ < cStar - 1 +
-        ((cStar - 1) * (‖configuration.redDisplacement .left‖ + cStar) +
-          (cStar + 1) * ‖configuration.redDisplacement .right‖) / 2)
+      ‖configuration.rootDisplacement - configuration.redDisplacement .left‖ < barC - 1 +
+        ((barC - 1) * (‖configuration.redDisplacement .left‖ + barC) +
+          (barC + 1) * ‖configuration.redDisplacement .right‖) / 2)
     (hright :
-      ‖configuration.rootDisplacement - configuration.redDisplacement .right‖ < cStar - 1 +
-        ((cStar - 1) * (‖configuration.redDisplacement .right‖ + cStar) +
-          (cStar + 1) * ‖configuration.redDisplacement .left‖) / 2) :
-    let target := cStar * (1 +
+      ‖configuration.rootDisplacement - configuration.redDisplacement .right‖ < barC - 1 +
+        ((barC - 1) * (‖configuration.redDisplacement .right‖ + barC) +
+          (barC + 1) * ‖configuration.redDisplacement .left‖) / 2) :
+    let target := barC * (1 +
       (dist (configuration .red .root) (configuration .red .left) +
         dist (configuration .red .root) (configuration .red .right) +
           dist (configuration .red .left) (configuration .red .right)) / 2)
@@ -1123,10 +1124,10 @@ private theorem blue_root_red_triangle_target_bounds
   have hr₂dist : dist (configuration .red .root) (configuration .red .right) =
       ‖configuration.redDisplacement .right‖ := by
     rw [SixPointConfiguration.redDisplacement, norm_sub_rev, dist_eq_norm]
-  have hM : cStar ≤
+  have hM : barC ≤
       ‖configuration.redDisplacement .left - configuration.redDisplacement .right‖ := by
     have hM' := configuration.two_mul_le_dist_redDisplacement h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hM'
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hM'
     exact hM'
   rw [hr₁dist, hr₂dist, hMdist]
   exact root_triangle_target_bounds configuration.rootDisplacement
@@ -1134,23 +1135,23 @@ private theorem blue_root_red_triangle_target_bounds
     hw₁ hw₂ hM hleft hright
 
 private theorem blueRootRedTrianglePacking_virtualDiameter_le_of_endpoint_bounds
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (hleft :
-      ‖configuration.rootDisplacement - configuration.redDisplacement .left‖ < cStar - 1 +
-        ((cStar - 1) * (‖configuration.redDisplacement .left‖ + cStar) +
-          (cStar + 1) * ‖configuration.redDisplacement .right‖) / 2)
+      ‖configuration.rootDisplacement - configuration.redDisplacement .left‖ < barC - 1 +
+        ((barC - 1) * (‖configuration.redDisplacement .left‖ + barC) +
+          (barC + 1) * ‖configuration.redDisplacement .right‖) / 2)
     (hright :
-      ‖configuration.rootDisplacement - configuration.redDisplacement .right‖ < cStar - 1 +
-        ((cStar - 1) * (‖configuration.redDisplacement .right‖ + cStar) +
-          (cStar + 1) * ‖configuration.redDisplacement .left‖) / 2) :
+      ‖configuration.rootDisplacement - configuration.redDisplacement .right‖ < barC - 1 +
+        ((barC - 1) * (‖configuration.redDisplacement .right‖ + barC) +
+          (barC + 1) * ‖configuration.redDisplacement .left‖) / 2) :
     (blueRootRedTrianglePacking configuration
       (h.child_distance .red .left (by simp))
       (h.child_distance .red .right (by simp))).virtualDiameter ≤
-        cStar * (1 +
+        barC * (1 +
           (dist (configuration .red .root) (configuration .red .left) +
             dist (configuration .red .root) (configuration .red .right) +
               dist (configuration .red .left) (configuration .red .right)) / 2) := by
-  let target := cStar * (1 +
+  let target := barC * (1 +
     (dist (configuration .red .root) (configuration .red .left) +
       dist (configuration .red .root) (configuration .red .right) +
         dist (configuration .red .left) (configuration .red .right)) / 2)
@@ -1170,59 +1171,59 @@ private theorem blueRootRedTrianglePacking_virtualDiameter_le_of_endpoint_bounds
     htargetTwo hred hcross
 
 private theorem blueRootRedTriangle_score_nonnegative_of_endpoint_bounds
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (hleft :
-      ‖configuration.rootDisplacement - configuration.redDisplacement .left‖ < cStar - 1 +
-        ((cStar - 1) * (‖configuration.redDisplacement .left‖ + cStar) +
-          (cStar + 1) * ‖configuration.redDisplacement .right‖) / 2)
+      ‖configuration.rootDisplacement - configuration.redDisplacement .left‖ < barC - 1 +
+        ((barC - 1) * (‖configuration.redDisplacement .left‖ + barC) +
+          (barC + 1) * ‖configuration.redDisplacement .right‖) / 2)
     (hright :
-      ‖configuration.rootDisplacement - configuration.redDisplacement .right‖ < cStar - 1 +
-        ((cStar - 1) * (‖configuration.redDisplacement .right‖ + cStar) +
-          (cStar + 1) * ‖configuration.redDisplacement .left‖) / 2) :
+      ‖configuration.rootDisplacement - configuration.redDisplacement .right‖ < barC - 1 +
+        ((barC - 1) * (‖configuration.redDisplacement .right‖ + barC) +
+          (barC + 1) * ‖configuration.redDisplacement .left‖) / 2) :
     0 ≤ (blueRootRedTrianglePacking configuration
       (h.child_distance .red .left (by simp))
-      (h.child_distance .red .right (by simp))).score sStar := by
+      (h.child_distance .red .right (by simp))).score barS := by
   have hvirtual := blueRootRedTrianglePacking_virtualDiameter_le_of_endpoint_bounds
     configuration h hleft hright
   rw [SixPointPacking.score, blueRootRedTrianglePacking_totalRadius]
-  simp only [sStar]
-  rw [show 2 * (cStar / 2) = cStar by ring]
+  simp only [barS]
+  rw [show 2 * (barC / 2) = barC by ring]
   apply sub_nonneg.mpr
-  apply (div_le_iff₀ cStar_pos).2
+  apply (div_le_iff₀ barC_pos).2
   simpa only [mul_comm] using hvirtual
 
 /-- A row obstruction makes support `17` a nonnegative-score endpoint packing. -/
 theorem red_root_blue_triangle_score_nonnegative_of_row_obstruction
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (redLabel : SixPointLabel) (hredLabel : redLabel ≠ .root)
     (hrow :
-      2 + 2 * (cStar - 1) *
+      2 + 2 * (barC - 1) *
           dist (configuration .red .left) (configuration .red .right) +
-          (2 * cStar - 1) *
+          (2 * barC - 1) *
             dist (configuration .blue .left) (configuration .blue .right) ≤
         dist (configuration .red redLabel) (configuration .blue .left) +
           dist (configuration .red redLabel) (configuration .blue .right)) :
     0 ≤ (redRootBlueTrianglePacking configuration
       (h.child_distance .blue .left (by simp))
-      (h.child_distance .blue .right (by simp))).score sStar := by
+      (h.child_distance .blue .right (by simp))).score barS := by
   obtain ⟨hleft, hright⟩ :=
     row_obstruction_endpoint_bounds configuration h redLabel hredLabel hrow
   exact redRootBlueTriangle_score_nonnegative_of_endpoint_bounds configuration h hleft hright
 
 /-- A column obstruction makes support `71` a nonnegative-score endpoint packing. -/
 theorem blue_root_red_triangle_score_nonnegative_of_column_obstruction
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (blueLabel : SixPointLabel) (hblueLabel : blueLabel ≠ .root)
     (hcolumn :
-      2 + 2 * (cStar - 1) *
+      2 + 2 * (barC - 1) *
           dist (configuration .blue .left) (configuration .blue .right) +
-          (2 * cStar - 1) *
+          (2 * barC - 1) *
             dist (configuration .red .left) (configuration .red .right) ≤
         dist (configuration .red .left) (configuration .blue blueLabel) +
           dist (configuration .red .right) (configuration .blue blueLabel)) :
     0 ≤ (blueRootRedTrianglePacking configuration
       (h.child_distance .red .left (by simp))
-      (h.child_distance .red .right (by simp))).score sStar := by
+      (h.child_distance .red .right (by simp))).score barS := by
   obtain ⟨hleft, hright⟩ :=
     column_obstruction_endpoint_bounds configuration h blueLabel hblueLabel hcolumn
   exact blueRootRedTriangle_score_nonnegative_of_endpoint_bounds configuration h hleft hright

@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.BlueChildSwap
 public import Bescovitch.SixPoint.EndpointFailureClosed
 public import Bescovitch.SixPoint.FiniteProperty
@@ -29,8 +30,8 @@ def WeightedGeometricBound : Prop :=
   ∀ e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2)),
     ‖e‖ = 1 →
     ‖p₁‖ ≤ 1 → ‖p₂‖ ≤ 1 → ‖w₁‖ ≤ 1 → ‖w₂‖ ≤ 1 →
-    cStar ≤ ‖p₁ - p₂‖ → cStar ≤ ‖w₁ - w₂‖ →
-    weightedPairScore e cStar endpointLambda endpointMu p₁ p₂ w₁ w₂ ≤ 0
+    barC ≤ ‖p₁ - p₂‖ → barC ≤ ‖w₁ - w₂‖ →
+    weightedPairScore e barC endpointLambda endpointMu p₁ p₂ w₁ w₂ ≤ 0
 
 /-- The lens-chart inequality implies the coordinate-free weighted geometric bound. -/
 theorem weightedGeometricBound_of_lensChartBound
@@ -41,8 +42,8 @@ theorem weightedGeometricBound_of_lensChartBound
 
 private theorem weightedGeometricBound_configuration
     (hweighted : WeightedGeometricBound) {configuration : SixPointConfiguration}
-    (h : configuration.IsAdmissibleAt sStar) :
-    weightedPairScore configuration.rootDisplacement cStar endpointLambda endpointMu
+    (h : configuration.IsAdmissibleAt barS) :
+    weightedPairScore configuration.rootDisplacement barC endpointLambda endpointMu
       (configuration.redDisplacement .left) (configuration.redDisplacement .right)
       (configuration.bluePullback .left) (configuration.bluePullback .right) ≤ 0 := by
   apply hweighted
@@ -52,19 +53,19 @@ private theorem weightedGeometricBound_configuration
   · exact configuration.norm_bluePullback_le_one h (by simp)
   · exact configuration.norm_bluePullback_le_one h (by simp)
   · have hchord := configuration.two_mul_le_dist_redDisplacement h
-    rw [sStar, dist_eq_norm] at hchord
+    rw [barS, dist_eq_norm] at hchord
     convert hchord using 1
     ring
   · have hchord := configuration.two_mul_le_dist_bluePullback h
-    rw [sStar, dist_eq_norm] at hchord
+    rw [barS, dist_eq_norm] at hchord
     convert hchord using 1
     ring
 
 private theorem exists_nonnegative_score_of_selected_diagonal
     (hweighted : WeightedGeometricBound) (configuration : SixPointConfiguration)
-    (h : configuration.IsAdmissibleAt sStar)
+    (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration) :
-    ∃ packing : SixPointPacking configuration, 0 ≤ packing.score sStar := by
+    ∃ packing : SixPointPacking configuration, 0 ≤ packing.score barS := by
   rcases exists_nonnegative_score_or_matched_sibling_endpoint configuration h hmatching with
     hpacking | ⟨code, hcode, hred, hblue⟩
   · exact hpacking
@@ -75,15 +76,15 @@ private theorem exists_nonnegative_score_of_selected_diagonal
         (weightedGeometricBound_configuration hweighted (IsAdmissibleAt.swapChildren h))
 
 /-- The weighted geometric bound implies the finite six-point property at the exact endpoint. -/
-theorem sixPointFiniteProperty_sStar_of_weightedGeometricBound
-    (hweighted : WeightedGeometricBound) : SixPointFiniteProperty sStar := by
+theorem sixPointFiniteProperty_barS_of_weightedGeometricBound
+    (hweighted : WeightedGeometricBound) : SixPointFiniteProperty barS := by
   intro configuration h
   rcases exists_nonnegative_score_or_matching_obstruction configuration h with
     hpacking | hdiagonal | hantiDiagonal
   · exact hpacking
   · exact exists_nonnegative_score_of_selected_diagonal hweighted configuration h hdiagonal
   · let swapped := swapBlueChildren configuration
-    have hadmissible : swapped.IsAdmissibleAt sStar := IsAdmissibleAt.swapBlueChildren h
+    have hadmissible : swapped.IsAdmissibleAt barS := IsAdmissibleAt.swapBlueChildren h
     have hmatching : SelectedDiagonalMatchingFails swapped :=
       (selectedDiagonalMatchingFails_swapBlueChildren configuration).2 hantiDiagonal
     obtain ⟨packing, hscore⟩ :=

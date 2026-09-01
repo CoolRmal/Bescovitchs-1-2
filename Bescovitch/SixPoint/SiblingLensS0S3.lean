@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.SiblingIncidenceLedger
 
 /-!
@@ -195,10 +196,10 @@ private theorem secant_le (x lower upper : ℝ) (hlower : lower ≤ x) (hupper :
     (sub_nonpos.mpr hupper)]
 
 private theorem s0s3_radius_floor {E : Type*} [NormedAddCommGroup E] (x y : E)
-    (hy : ‖y‖ ≤ 1) (hseparation : cStar ≤ ‖x - y‖) :
+    (hy : ‖y‖ ≤ 1) (hseparation : barC ≤ ‖x - y‖) :
     193 / 500 ≤ ‖x‖ := by
   have htriangle := norm_sub_le x y
-  have hc := cStar_mem_isolation_box.1
+  have hc := barC_mem_isolation_box.1
   norm_num at hc ⊢
   linarith
 
@@ -223,110 +224,110 @@ private theorem s0s3_high_radial_high_secant (x : ℝ) (hlower : 7 / 10 ≤ x)
   norm_num at h ⊢
   linarith
 
-private theorem s0s3_high_coefficient_le : 1193 / 50 ≤ 10 * (cStar + 1) := by
-  have hc := cStar_mem_isolation_box.1
+private theorem s0s3_high_coefficient_le : 1193 / 50 ≤ 10 * (barC + 1) := by
+  have hc := barC_mem_isolation_box.1
   norm_num at hc ⊢
   linarith
 
-private theorem s0s3_low_coefficient_le : 193 / 50 ≤ 10 * (cStar - 1) := by
-  have hc := cStar_mem_isolation_box.1
+private theorem s0s3_low_coefficient_le : 193 / 50 ≤ 10 * (barC - 1) := by
+  have hc := barC_mem_isolation_box.1
   norm_num at hc ⊢
   linarith
 
 private theorem s0s3_low_low_constant_neg :
-    815 / 12 + 1157 / 50 + 2 * (1263 / 50) - 2 * (871 / 100) * cStar ^ 2 -
+    815 / 12 + 1157 / 50 + 2 * (1263 / 50) - 2 * (871 / 100) * barC ^ 2 -
       2 * (37249 / 34650) - 2 * (1611743 / 271500) +
-      54 * cStar - 88 * cStar ^ 2 < 0 := by
-  have hc := cStar_mem_isolation_box.1
+      54 * barC - 88 * barC ^ 2 < 0 := by
+  have hc := barC_mem_isolation_box.1
   norm_num at hc ⊢
-  nlinarith [sq_nonneg (cStar - 1)]
+  nlinarith [sq_nonneg (barC - 1)]
 
 private theorem s0s3_low_high_constant_neg :
     815 / 12 + 621 / 25 + 2701 / 100 + 1863 / 100 -
-      (849 / 100 + 131 / 25) * cStar ^ 2 - 2 * (37249 / 34650) -
-      1611743 / 271500 - 8351 / 850 + 54 * cStar - 88 * cStar ^ 2 < 0 := by
-  have hc := cStar_mem_isolation_box.1
+      (849 / 100 + 131 / 25) * barC ^ 2 - 2 * (37249 / 34650) -
+      1611743 / 271500 - 8351 / 850 + 54 * barC - 88 * barC ^ 2 < 0 := by
+  have hc := barC_mem_isolation_box.1
   norm_num at hc ⊢
-  nlinarith [sq_nonneg (cStar - 1)]
+  nlinarith [sq_nonneg (barC - 1)]
 
 private theorem s0s3_high_high_constant_neg :
-    815 / 12 + 2641 / 100 + 2 * (2071 / 100) - 2 * (517 / 100) * cStar ^ 2 -
+    815 / 12 + 2641 / 100 + 2 * (2071 / 100) - 2 * (517 / 100) * barC ^ 2 -
       2 * (37249 / 34650) - 2 * (8351 / 850) +
-      54 * cStar - 88 * cStar ^ 2 < 0 := by
-  have hc := cStar_mem_isolation_box.1
+      54 * barC - 88 * barC ^ 2 < 0 := by
+  have hc := barC_mem_isolation_box.1
   norm_num at hc ⊢
-  nlinarith [sq_nonneg (cStar - 1)]
+  nlinarith [sq_nonneg (barC - 1)]
 
 private theorem s0s3_gramBound_low_low
     (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
-    (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
-    (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : barC ≤ ‖p₁ - p₂‖)
+    (hwsep : barC ≤ ‖w₁ - w₂‖) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
         ‖e - p₂ - w₂‖ ^ 2) - 11930 / 543 * (‖p₁‖ ^ 2 + ‖w₂‖ ^ 2) -
         1930 / 693 * (‖p₂‖ ^ 2 + ‖w₁‖ ^ 2) ≤
-      1157 / 50 + 2 * (1263 / 50) - 2 * (871 / 100) * cStar ^ 2 := by
+      1157 / 50 + 2 * (1263 / 50) - 2 * (871 / 100) * barC ^ 2 := by
   have hp₂Sq : ‖p₂‖ ^ 2 ≤ 1 := by nlinarith [norm_nonneg p₂]
   have hw₁Sq : ‖w₁‖ ^ 2 ≤ 1 := by nlinarith [norm_nonneg w₁]
-  have hpsepSq : cStar ^ 2 ≤ ‖p₁ - p₂‖ ^ 2 := by
-    nlinarith [cStar_pos, norm_nonneg (p₁ - p₂)]
-  have hwsepSq : cStar ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
-    nlinarith [cStar_pos, norm_nonneg (w₁ - w₂)]
+  have hpsepSq : barC ^ 2 ≤ ‖p₁ - p₂‖ ^ 2 := by
+    nlinarith [barC_pos, norm_nonneg (p₁ - p₂)]
+  have hwsepSq : barC ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
+    nlinarith [barC_pos, norm_nonneg (w₁ - w₂)]
   have hgram := s0s3_gram_low_low e p₁ p₂ w₁ w₂
   rw [he, one_pow] at hgram
   nlinarith only [hgram, hp₂Sq, hw₁Sq, hpsepSq, hwsepSq]
 
 private theorem s0s3_gramBound_low_high
     (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
-    (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
-    (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : barC ≤ ‖p₁ - p₂‖)
+    (hwsep : barC ≤ ‖w₁ - w₂‖) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
         ‖e - p₂ - w₂‖ ^ 2) - 11930 / 543 * ‖p₁‖ ^ 2 -
         1193 / 85 * ‖w₂‖ ^ 2 - 1930 / 693 * (‖p₂‖ ^ 2 + ‖w₁‖ ^ 2) ≤
       621 / 25 + 2701 / 100 + 1863 / 100 -
-        (849 / 100 + 131 / 25) * cStar ^ 2 := by
+        (849 / 100 + 131 / 25) * barC ^ 2 := by
   have hp₂Sq : ‖p₂‖ ^ 2 ≤ 1 := by nlinarith [norm_nonneg p₂]
   have hw₁Sq : ‖w₁‖ ^ 2 ≤ 1 := by nlinarith [norm_nonneg w₁]
-  have hpsepSq : cStar ^ 2 ≤ ‖p₁ - p₂‖ ^ 2 := by
-    nlinarith [cStar_pos, norm_nonneg (p₁ - p₂)]
-  have hwsepSq : cStar ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
-    nlinarith [cStar_pos, norm_nonneg (w₁ - w₂)]
+  have hpsepSq : barC ^ 2 ≤ ‖p₁ - p₂‖ ^ 2 := by
+    nlinarith [barC_pos, norm_nonneg (p₁ - p₂)]
+  have hwsepSq : barC ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
+    nlinarith [barC_pos, norm_nonneg (w₁ - w₂)]
   have hgram := s0s3_gram_low_high e p₁ p₂ w₁ w₂
   rw [he, one_pow] at hgram
   nlinarith only [hgram, hp₂Sq, hw₁Sq, hpsepSq, hwsepSq]
 
 private theorem s0s3_gramBound_high_low
     (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
-    (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
-    (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : barC ≤ ‖p₁ - p₂‖)
+    (hwsep : barC ≤ ‖w₁ - w₂‖) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
         ‖e - p₂ - w₂‖ ^ 2) - 1193 / 85 * ‖p₁‖ ^ 2 -
         11930 / 543 * ‖w₂‖ ^ 2 - 1930 / 693 * (‖p₂‖ ^ 2 + ‖w₁‖ ^ 2) ≤
       621 / 25 + 2701 / 100 + 1863 / 100 -
-        (849 / 100 + 131 / 25) * cStar ^ 2 := by
+        (849 / 100 + 131 / 25) * barC ^ 2 := by
   have hp₂Sq : ‖p₂‖ ^ 2 ≤ 1 := by nlinarith [norm_nonneg p₂]
   have hw₁Sq : ‖w₁‖ ^ 2 ≤ 1 := by nlinarith [norm_nonneg w₁]
-  have hpsepSq : cStar ^ 2 ≤ ‖p₁ - p₂‖ ^ 2 := by
-    nlinarith [cStar_pos, norm_nonneg (p₁ - p₂)]
-  have hwsepSq : cStar ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
-    nlinarith [cStar_pos, norm_nonneg (w₁ - w₂)]
+  have hpsepSq : barC ^ 2 ≤ ‖p₁ - p₂‖ ^ 2 := by
+    nlinarith [barC_pos, norm_nonneg (p₁ - p₂)]
+  have hwsepSq : barC ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
+    nlinarith [barC_pos, norm_nonneg (w₁ - w₂)]
   have hgram := s0s3_gram_high_low e p₁ p₂ w₁ w₂
   rw [he, one_pow] at hgram
   nlinarith only [hgram, hp₂Sq, hw₁Sq, hpsepSq, hwsepSq]
 
 private theorem s0s3_gramBound_high_high
     (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2))) (he : ‖e‖ = 1)
-    (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
-    (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1) (hpsep : barC ≤ ‖p₁ - p₂‖)
+    (hwsep : barC ≤ ‖w₁ - w₂‖) :
     18 / 5 * (‖e - p₁ - w₁‖ ^ 2 + ‖e - p₂ - w₁‖ ^ 2 +
         ‖e - p₂ - w₂‖ ^ 2) - 1193 / 85 * (‖p₁‖ ^ 2 + ‖w₂‖ ^ 2) -
         1930 / 693 * (‖p₂‖ ^ 2 + ‖w₁‖ ^ 2) ≤
-      2641 / 100 + 2 * (2071 / 100) - 2 * (517 / 100) * cStar ^ 2 := by
+      2641 / 100 + 2 * (2071 / 100) - 2 * (517 / 100) * barC ^ 2 := by
   have hp₂Sq : ‖p₂‖ ^ 2 ≤ 1 := by nlinarith [norm_nonneg p₂]
   have hw₁Sq : ‖w₁‖ ^ 2 ≤ 1 := by nlinarith [norm_nonneg w₁]
-  have hpsepSq : cStar ^ 2 ≤ ‖p₁ - p₂‖ ^ 2 := by
-    nlinarith [cStar_pos, norm_nonneg (p₁ - p₂)]
-  have hwsepSq : cStar ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
-    nlinarith [cStar_pos, norm_nonneg (w₁ - w₂)]
+  have hpsepSq : barC ^ 2 ≤ ‖p₁ - p₂‖ ^ 2 := by
+    nlinarith [barC_pos, norm_nonneg (p₁ - p₂)]
+  have hwsepSq : barC ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
+    nlinarith [barC_pos, norm_nonneg (w₁ - w₂)]
   have hgram := s0s3_gram_high_high e p₁ p₂ w₁ w₂
   rw [he, one_pow] at hgram
   nlinarith only [hgram, hp₂Sq, hw₁Sq, hpsepSq, hwsepSq]
@@ -340,8 +341,8 @@ private theorem s0s3_radialBound_of_secants (p₁ p₂ w₁ w₂ : (EuclideanSpa
     pSlope * ‖p₁‖ ^ 2 + wSlope * ‖w₂‖ ^ 2 +
         1930 / 693 * (‖p₂‖ ^ 2 + ‖w₁‖ ^ 2) +
         pConstant + wConstant + 2 * (37249 / 34650) ≤
-      10 * (cStar + 1) * (‖p₁‖ + ‖w₂‖) +
-        10 * (cStar - 1) * (‖p₂‖ + ‖w₁‖) := by
+      10 * (barC + 1) * (‖p₁‖ + ‖w₂‖) +
+        10 * (barC - 1) * (‖p₂‖ + ‖w₁‖) := by
   have hhigh := mul_le_mul_of_nonneg_right s0s3_high_coefficient_le
     (add_nonneg (norm_nonneg p₁) (norm_nonneg w₂))
   have hlow := mul_le_mul_of_nonneg_right s0s3_low_coefficient_le
@@ -355,13 +356,13 @@ private theorem s0s3_radialBound_of_secants (p₁ p₂ w₁ w₂ : (EuclideanSpa
 theorem gramCertificate_s0s3 (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2)))
     (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
-    (hw₂ : ‖w₂‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
-    (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hw₂ : ‖w₂‖ ≤ 1) (hpsep : barC ≤ ‖p₁ - p₂‖)
+    (hwsep : barC ≤ ‖w₁ - w₂‖) :
     17 * ‖e - p₁ - w₁‖ + 20 * ‖e - p₂ - w₁‖ +
         17 * ‖e - p₂ - w₂‖ -
-        10 * (cStar + 1) * (‖p₁‖ + ‖w₂‖) -
-        10 * (cStar - 1) * (‖p₂‖ + ‖w₁‖) +
-        54 * cStar - 88 * cStar ^ 2 < 0 := by
+        10 * (barC + 1) * (‖p₁‖ + ‖w₂‖) -
+        10 * (barC - 1) * (‖p₂‖ + ‖w₁‖) +
+        54 * barC - 88 * barC ^ 2 < 0 := by
   have hp₁Lower := s0s3_radius_floor p₁ p₂ hp₂ hpsep
   have hp₂Lower := s0s3_radius_floor p₂ p₁ hp₁ (by simpa [norm_sub_rev] using hpsep)
   have hw₁Lower := s0s3_radius_floor w₁ w₂ hw₂ hwsep
@@ -408,7 +409,7 @@ theorem gramCertificate_s0s3 (e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2
 
 /-- The `S0/S3` separator is strictly negative for every admissible configuration. -/
 theorem balancedBalancedS0S3GramBound_of_admissible
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar) :
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS) :
     7 * diagonalMatchingReducedSlack configuration +
         20 * redBalancedReducedSlack configuration 0 +
         20 * blueBalancedReducedSlack configuration 3 < 0 := by
@@ -417,13 +418,13 @@ theorem balancedBalancedS0S3GramBound_of_admissible
   let p₂ := configuration.redDisplacement .right
   let w₁ := configuration.bluePullback .left
   let w₂ := configuration.bluePullback .right
-  have hpsep : cStar ≤ ‖p₁ - p₂‖ := by
+  have hpsep : barC ≤ ‖p₁ - p₂‖ := by
     have hred := configuration.two_mul_le_dist_redDisplacement h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hred
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hred
     exact hred
-  have hwsep : cStar ≤ ‖w₁ - w₂‖ := by
+  have hwsep : barC ≤ ‖w₁ - w₂‖ := by
     have hblue := configuration.two_mul_le_dist_bluePullback h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hblue
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hblue
     exact hblue
   have hcertificate := gramCertificate_s0s3 e p₁ p₂ w₁ w₂
     (configuration.norm_rootDisplacement h)
@@ -440,7 +441,7 @@ theorem balancedBalancedS0S3GramBound_of_admissible
 
 /-- The `S0/S3` balanced/balanced representative is impossible. -/
 theorem not_redBalanced_zero_and_blueBalanced_three
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration) :
     ¬ (redSiblingTriangleFailure configuration (.balanced 0) ∧
       blueSiblingTriangleFailure configuration (.balanced 3)) := by

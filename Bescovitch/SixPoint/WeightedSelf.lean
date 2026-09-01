@@ -5,6 +5,8 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalEndpointData
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.EndpointWeights
 import Mathlib.Analysis.InnerProductSpace.GramMatrix
 import Mathlib.Analysis.Matrix.PosDef
@@ -167,28 +169,28 @@ private theorem weighted_sqrt_le_quarticNormTangent {weight target cap q : ℝ}
   exact h
 
 private theorem endpointSecondDistance_pos :
-    0 < endpointSecondDistance cStar certifiedEndpointPair.2 := by
+    0 < endpointSecondDistance barC barB := by
   rw [endpointSecondDistance]
-  have hc := cStar_mem_isolation_box.1
-  have hB := certifiedEndpointPair_second_mem_isolation_box.2
-  nlinarith [sq_nonneg (cStar - 1)]
+  have hc := barC_mem_isolation_box.1
+  have hB := barB_mem_isolation_box.2
+  nlinarith [sq_nonneg (barC - 1)]
 
 private theorem endpointFirstAuxiliaryDistance_pos :
-    0 < endpointFirstAuxiliaryDistance certifiedEndpointPair.2 := by
+    0 < endpointFirstAuxiliaryDistance barB := by
   rw [endpointFirstAuxiliaryDistance]
-  exact Real.sqrt_pos.2 certifiedEndpointPair_radicands_pos.1
+  exact Real.sqrt_pos.2 barB_radicands_pos.1
 
 private theorem endpointMixedAuxiliaryDistance_pos :
-    0 < endpointMixedAuxiliaryDistance cStar certifiedEndpointPair.2 := by
+    0 < endpointMixedAuxiliaryDistance barC barB := by
   rw [endpointMixedAuxiliaryDistance]
   apply Real.sqrt_pos.2
-  rw [endpointSecondDistance, cStar_eq_certifiedEndpointPair_fst]
-  exact certifiedEndpointPair_radicands_pos.2
+  rw [endpointSecondDistance]
+  exact barB_radicands_pos.2
 
 /-- The quartic coordinate expression before choosing the lower Gram branch. -/
 def weightedSelfCoordinateExpression (r b t y upper : ℝ) : ℝ :=
-  let c := cStar
-  let B := certifiedEndpointPair.2
+  let c := barC
+  let B := barB
   let D := endpointSecondDistance c B
   let A := endpointFirstAuxiliaryDistance B
   let C := endpointMixedAuxiliaryDistance c B
@@ -209,13 +211,13 @@ def weightedSelfCoordinateExpression (r b t y upper : ℝ) : ℝ :=
 /-- The quartic coordinate majorant on a bin with upper second radius `upper`. -/
 def weightedSelfCoordinateMajorant (r b t upper : ℝ) : ℝ :=
   weightedSelfCoordinateExpression r b t
-    (Real.sqrt (chordProjectionRadicand cStar r b t)) upper
+    (Real.sqrt (chordProjectionRadicand barC r b t)) upper
 
 /-- The constant coefficient after reducing the squared Gram ordinate. -/
 def weightedSelfPolynomialP (r b t upper : ℝ) : ℝ :=
   let value := fun y ↦ r ^ 2 * weightedSelfCoordinateExpression r b t y upper
   value 0 + ((value 1 + value (-1)) / 2 - value 0) *
-    chordProjectionRadicand cStar r b t
+    chordProjectionRadicand barC r b t
 
 /-- The linear coefficient after reducing the squared Gram ordinate. -/
 def weightedSelfPolynomialQ (r b t upper : ℝ) : ℝ :=
@@ -225,11 +227,11 @@ def weightedSelfPolynomialQ (r b t upper : ℝ) : ℝ :=
 /-- The discriminant controlling the reduced Gram branch. -/
 def weightedSelfDiscriminant (r b t upper : ℝ) : ℝ :=
   weightedSelfPolynomialP r b t upper ^ 2 -
-    weightedSelfPolynomialQ r b t upper ^ 2 * chordProjectionRadicand cStar r b t
+    weightedSelfPolynomialQ r b t upper ^ 2 * chordProjectionRadicand barC r b t
 
 /-- The coordinate expression is linear after reducing the squared Gram ordinate. -/
 theorem weightedSelfCoordinateExpression_reduction (r b t y upper : ℝ)
-    (hy : y ^ 2 = chordProjectionRadicand cStar r b t) :
+    (hy : y ^ 2 = chordProjectionRadicand barC r b t) :
     r ^ 2 * weightedSelfCoordinateExpression r b t y upper =
       weightedSelfPolynomialP r b t upper + weightedSelfPolynomialQ r b t upper * y := by
   simp only [weightedSelfPolynomialP, weightedSelfPolynomialQ]
@@ -239,47 +241,47 @@ theorem weightedSelfCoordinateExpression_reduction (r b t y upper : ℝ)
 
 /-- The Gram radicand is nonnegative throughout the feasible scalar region. -/
 theorem chordProjectionRadicand_nonneg_of_bounds {r b t : ℝ}
-    (hr : cStar - b ≤ r) (hrUpper : r ≤ 1) (hbUpper : b ≤ 1)
+    (hr : barC - b ≤ r) (hrUpper : r ≤ 1) (hbUpper : b ≤ 1)
     (htLower : -1 ≤ t) (htUpper : t ≤ 1) :
-    0 ≤ chordProjectionRadicand cStar r b t := by
-  have hc := one_lt_cStar_and_cStar_lt_two.1
+    0 ≤ chordProjectionRadicand barC r b t := by
+  have hc := one_lt_barC_and_barC_lt_two.1
   have hrZero : 0 ≤ r := by linarith
   have hbZero : 0 ≤ b := by linarith
-  have hsum : cStar ≤ r + b := by linarith
-  have hsumSq : cStar ^ 2 ≤ (r + b) ^ 2 :=
-    (sq_le_sq₀ cStar_pos.le (add_nonneg hrZero hbZero)).2 hsum
-  have hdiffLower : -cStar ≤ r - b := by linarith
-  have hdiffUpper : r - b ≤ cStar := by linarith
-  have hdiffSq : (r - b) ^ 2 ≤ cStar ^ 2 := by nlinarith
-  have hkLower : -(r * b) ≤ chordInnerProduct cStar r b := by
+  have hsum : barC ≤ r + b := by linarith
+  have hsumSq : barC ^ 2 ≤ (r + b) ^ 2 :=
+    (sq_le_sq₀ barC_pos.le (add_nonneg hrZero hbZero)).2 hsum
+  have hdiffLower : -barC ≤ r - b := by linarith
+  have hdiffUpper : r - b ≤ barC := by linarith
+  have hdiffSq : (r - b) ^ 2 ≤ barC ^ 2 := by nlinarith
+  have hkLower : -(r * b) ≤ chordInnerProduct barC r b := by
     rw [chordInnerProduct]
     nlinarith
-  have hkUpper : chordInnerProduct cStar r b ≤ r * b := by
+  have hkUpper : chordInnerProduct barC r b ≤ r * b := by
     rw [chordInnerProduct]
     nlinarith
-  have hkSq : chordInnerProduct cStar r b ^ 2 ≤ (r * b) ^ 2 := by
-    have hminus : 0 ≤ r * b - chordInnerProduct cStar r b := sub_nonneg.mpr hkUpper
-    have hplus : 0 ≤ r * b + chordInnerProduct cStar r b := by linarith
+  have hkSq : chordInnerProduct barC r b ^ 2 ≤ (r * b) ^ 2 := by
+    have hminus : 0 ≤ r * b - chordInnerProduct barC r b := sub_nonneg.mpr hkUpper
+    have hplus : 0 ≤ r * b + chordInnerProduct barC r b := by linarith
     have hproduct := mul_nonneg hminus hplus
     nlinarith
   have htSq : t ^ 2 ≤ 1 := by nlinarith
   rw [chordProjectionRadicand]
   have hfirst : 0 ≤ 1 - t ^ 2 := sub_nonneg.mpr htSq
-  have hsecond : 0 ≤ r ^ 2 * b ^ 2 - chordInnerProduct cStar r b ^ 2 := by
+  have hsecond : 0 ≤ r ^ 2 * b ^ 2 - chordInnerProduct barC r b ^ 2 := by
     nlinarith
   positivity
 
 /-- Signs of the reduced coefficients and discriminant imply the scalar majorant. -/
 theorem weightedSelfCoordinateMajorant_nonpos_of_polynomial_signs
     {r b t upper : ℝ} (hr : 0 < r)
-    (hR : 0 ≤ chordProjectionRadicand cStar r b t)
+    (hR : 0 ≤ chordProjectionRadicand barC r b t)
     (hP : weightedSelfPolynomialP r b t upper ≤ 0)
     (hQ : 0 ≤ weightedSelfPolynomialQ r b t upper)
     (hDelta : 0 ≤ weightedSelfDiscriminant r b t upper) :
     weightedSelfCoordinateMajorant r b t upper ≤ 0 := by
-  let y := Real.sqrt (chordProjectionRadicand cStar r b t)
+  let y := Real.sqrt (chordProjectionRadicand barC r b t)
   have hyZero : 0 ≤ y := Real.sqrt_nonneg _
-  have hySq : y ^ 2 = chordProjectionRadicand cStar r b t := Real.sq_sqrt hR
+  have hySq : y ^ 2 = chordProjectionRadicand barC r b t := Real.sq_sqrt hR
   have hQy : 0 ≤ weightedSelfPolynomialQ r b t upper * y := mul_nonneg hQ hyZero
   have hminusP : 0 ≤ -weightedSelfPolynomialP r b t upper := neg_nonneg.mpr hP
   have hsquares :
@@ -298,31 +300,31 @@ theorem weightedSelfCoordinateMajorant_nonpos_of_polynomial_signs
 /-- The scalar weighted-self estimate on one interval of second radii. -/
 def WeightedSelfRadiusBinBound (lower upper : ℝ) : Prop :=
   ∀ ⦃r b t : ℝ⦄,
-    lower ≤ b → b ≤ upper → cStar - b ≤ r → r ≤ 1 → -1 ≤ t → t ≤ 1 →
+    lower ≤ b → b ≤ upper → barC - b ≤ r → r ≤ 1 → -1 ≤ t → t ≤ 1 →
       weightedSelfCoordinateMajorant r b t upper ≤ 0
 
 theorem weightedPairScore_self_le_coordinateMajorant
     {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     (e p q : E) (he : ‖e‖ = 1) (hp : ‖p‖ ≤ 1) (hq : ‖q‖ ≤ 1)
-    (hchord : ‖p - q‖ = cStar) {upper : ℝ} (hbUpper : ‖q‖ ≤ upper) :
-    weightedPairScore e cStar endpointLambda endpointMu p q p q ≤
+    (hchord : ‖p - q‖ = barC) {upper : ℝ} (hbUpper : ‖q‖ ≤ upper) :
+    weightedPairScore e barC endpointLambda endpointMu p q p q ≤
       weightedSelfCoordinateMajorant ‖p‖ ‖q‖ (⟪e, p⟫_ℝ / ‖p‖) upper := by
   let r := ‖p‖
   let b := ‖q‖
   let t := ⟪e, p⟫_ℝ / r
-  let k := chordInnerProduct cStar r b
-  let z := chordLowerProjection cStar r b t
+  let k := chordInnerProduct barC r b
+  let z := chordLowerProjection barC r b t
   let qB := 1 + 4 * r ^ 2 - 4 * r * t
   let qD := 1 + 4 * b ^ 2 - 4 * z
   let qA := 1 + r ^ 2 - 2 * r * t
   let qC := 1 + r ^ 2 + b ^ 2 - 2 * r * t - 2 * z + 2 * k
-  have hcoordinates := chord_coordinate_bounds e p q he one_lt_cStar_and_cStar_lt_two.1
+  have hcoordinates := chord_coordinate_bounds e p q he one_lt_barC_and_barC_lt_two.1
     hp hq hchord
   have hcoordinateBounds :
-      cStar - 1 ≤ r ∧ r ≤ 1 ∧ cStar - b ≤ r ∧ b ≤ 1 ∧ -1 ≤ t ∧ t ≤ 1 := by
+      barC - 1 ≤ r ∧ r ≤ 1 ∧ barC - b ≤ r ∧ b ≤ 1 ∧ -1 ≤ t ∧ t ≤ 1 := by
     simpa [r, b, t] using hcoordinates
   have hrPos : 0 < r := by
-    linarith [hcoordinateBounds.1, one_lt_cStar_and_cStar_lt_two.1]
+    linarith [hcoordinateBounds.1, one_lt_barC_and_barC_lt_two.1]
   have hzBounds : -b ≤ z ∧ z ≤ ⟪e, q⟫_ℝ := by
     simpa [r, b, t, z] using
       chordLowerProjection_bounds e p q he (by simpa [r] using hrPos) hchord
@@ -395,16 +397,16 @@ theorem weightedPairScore_self_le_coordinateMajorant
     linarith [hcoordinateBounds.2.1]
   have hBtangent :
       (1 + endpointLambda) * ‖e - p - p‖ ≤
-        quarticNormTangent (1 + endpointLambda) certifiedEndpointPair.2 3 qB := by
+        quarticNormTangent (1 + endpointLambda) barB 3 qB := by
     have h := weighted_norm_tangent_with_remainder (e - p - p)
       (show 0 ≤ 1 + endpointLambda by linarith [endpointLambda_pos])
-      (show 0 < certifiedEndpointPair.2 by
-        linarith [certifiedEndpointPair_second_mem_isolation_box.1]) hBcap
+      (show 0 < barB by
+        linarith [barB_mem_isolation_box.1]) hBcap
     rw [hBsq] at h
     exact h
   have hDtangent :
       ‖e - q - q‖ ≤ quarticNormTangent 1
-        (endpointSecondDistance cStar certifiedEndpointPair.2) (1 + 2 * upper) qD := by
+        (endpointSecondDistance barC barB) (1 + 2 * upper) qD := by
     calc
       ‖e - q - q‖ ≤ Real.sqrt qD := Real.le_sqrt_of_sq_le hDsq
       _ = 1 * Real.sqrt qD := by ring
@@ -412,39 +414,39 @@ theorem weightedPairScore_self_le_coordinateMajorant
         endpointSecondDistance_pos hqD hDcap
   have hAtangent :
       endpointMu * ‖e - p‖ ≤ quarticNormTangent endpointMu
-        (endpointFirstAuxiliaryDistance certifiedEndpointPair.2) 2 qA := by
+        (endpointFirstAuxiliaryDistance barB) 2 qA := by
     have h := weighted_norm_tangent_with_remainder (e - p) endpointMu_pos.le
       endpointFirstAuxiliaryDistance_pos hAcap
     rw [hAsq] at h
     exact h
   have hCtangent :
       endpointMu * ‖e - p - q‖ ≤ quarticNormTangent endpointMu
-        (endpointMixedAuxiliaryDistance cStar certifiedEndpointPair.2) (2 + upper) qC := by
+        (endpointMixedAuxiliaryDistance barC barB) (2 + upper) qC := by
     calc
       endpointMu * ‖e - p - q‖ ≤ endpointMu * Real.sqrt qC :=
         mul_le_mul_of_nonneg_left (Real.le_sqrt_of_sq_le hCsq) endpointMu_pos.le
       _ ≤ _ := weighted_sqrt_le_quarticNormTangent endpointMu_pos.le
         endpointMixedAuxiliaryDistance_pos hqC hCcap
   calc
-    weightedPairScore e cStar endpointLambda endpointMu p q p q =
+    weightedPairScore e barC endpointLambda endpointMu p q p q =
         (1 + endpointLambda) * ‖e - p - p‖ + ‖e - q - q‖ +
           endpointMu * ‖e - p‖ + endpointMu * ‖e - p - q‖ -
-          weightedFirstPenalty cStar endpointLambda endpointMu * r -
-          weightedSecondPenalty cStar endpointLambda endpointMu * b -
-          weightedConstantTerm cStar endpointLambda endpointMu := by
+          weightedFirstPenalty barC endpointLambda endpointMu * r -
+          weightedSecondPenalty barC endpointLambda endpointMu * b -
+          weightedConstantTerm barC endpointLambda endpointMu := by
       simp only [weightedPairScore]
       dsimp [r, b]
       ring
-    _ ≤ quarticNormTangent (1 + endpointLambda) certifiedEndpointPair.2 3 qB +
-          quarticNormTangent 1 (endpointSecondDistance cStar certifiedEndpointPair.2)
+    _ ≤ quarticNormTangent (1 + endpointLambda) barB 3 qB +
+          quarticNormTangent 1 (endpointSecondDistance barC barB)
             (1 + 2 * upper) qD +
           quarticNormTangent endpointMu
-            (endpointFirstAuxiliaryDistance certifiedEndpointPair.2) 2 qA +
+            (endpointFirstAuxiliaryDistance barB) 2 qA +
           quarticNormTangent endpointMu
-            (endpointMixedAuxiliaryDistance cStar certifiedEndpointPair.2) (2 + upper) qC -
-          weightedFirstPenalty cStar endpointLambda endpointMu * r -
-          weightedSecondPenalty cStar endpointLambda endpointMu * b -
-          weightedConstantTerm cStar endpointLambda endpointMu := by linarith
+            (endpointMixedAuxiliaryDistance barC barB) (2 + upper) qC -
+          weightedFirstPenalty barC endpointLambda endpointMu * r -
+          weightedSecondPenalty barC endpointLambda endpointMu * b -
+          weightedConstantTerm barC endpointLambda endpointMu := by linarith
     _ = weightedSelfCoordinateMajorant ‖p‖ ‖q‖ (⟪e, p⟫_ℝ / ‖p‖) upper := by
       simp only [weightedSelfCoordinateMajorant]
       simp [weightedSelfCoordinateExpression, chordLowerProjection, r, b, t, k, z,
@@ -470,7 +472,7 @@ private theorem exists_weightedPairScore_self_chord_reduction
 
 /-- Seven scalar radius-bin estimates imply the weighted self inequality. -/
 theorem weightedSelf_nonpos_of_radius_bin_bounds
-    (h₀ : WeightedSelfRadiusBinBound (cStar - 1) (2 / 5))
+    (h₀ : WeightedSelfRadiusBinBound (barC - 1) (2 / 5))
     (h₁ : WeightedSelfRadiusBinBound (2 / 5) (1 / 2))
     (h₂ : WeightedSelfRadiusBinBound (1 / 2) (3 / 5))
     (h₃ : WeightedSelfRadiusBinBound (3 / 5) (7 / 10))
@@ -479,19 +481,19 @@ theorem weightedSelf_nonpos_of_radius_bin_bounds
     (h₆ : WeightedSelfRadiusBinBound (9 / 10) 1)
     {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     (e p₁ p₂ : E) (he : ‖e‖ = 1) (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1)
-    (hsep : cStar ≤ ‖p₁ - p₂‖) :
-    weightedPairScore e cStar endpointLambda endpointMu p₁ p₂ p₁ p₂ ≤ 0 := by
+    (hsep : barC ≤ ‖p₁ - p₂‖) :
+    weightedPairScore e barC endpointLambda endpointMu p₁ p₂ p₁ p₂ ≤ 0 := by
   obtain ⟨q, hchord, hqNorm, hscore⟩ :=
-    exists_weightedPairScore_self_chord_reduction e one_lt_cStar_and_cStar_lt_two.1 hp₁ hsep
-      endpointMu_pos.le endpoint_weight_reduction_margin
+    exists_weightedPairScore_self_chord_reduction e one_lt_barC_and_barC_lt_two.1 hp₁ hsep
+      endpointMu_pos.le barC_weight_reduction_margin
   have hq : ‖q‖ ≤ 1 := hqNorm.trans hp₂
-  have hcoordinates := chord_coordinate_bounds e p₁ q he one_lt_cStar_and_cStar_lt_two.1
+  have hcoordinates := chord_coordinate_bounds e p₁ q he one_lt_barC_and_barC_lt_two.1
     hp₁ hq hchord
-  have hbLower : cStar - 1 ≤ ‖q‖ := by
+  have hbLower : barC - 1 ≤ ‖q‖ := by
     linarith [hcoordinates.2.1, hcoordinates.2.2.1]
   have finish {lower upper : ℝ} (hbin : WeightedSelfRadiusBinBound lower upper)
       (hlower : lower ≤ ‖q‖) (hupper : ‖q‖ ≤ upper) :
-      weightedPairScore e cStar endpointLambda endpointMu p₁ q p₁ q ≤ 0 := by
+      weightedPairScore e barC endpointLambda endpointMu p₁ q p₁ q ≤ 0 := by
     refine (weightedPairScore_self_le_coordinateMajorant e p₁ q he hp₁ hq hchord hupper).trans
       (hbin hlower hupper ?_ hcoordinates.2.1 hcoordinates.2.2.2.2.1
         hcoordinates.2.2.2.2.2)

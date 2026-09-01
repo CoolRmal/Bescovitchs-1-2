@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.SiblingLens
 
 /-!
@@ -65,25 +66,25 @@ private theorem e1s0_cross_inner_le {E : Type*} [NormedAddCommGroup E]
   nlinarith
 
 private theorem e1s0_red_pair_maximum :
-    gramPairMaximum cStar (41177 / 30000) (7903 / 15000) (41 / 48) (4 / 15)
-      ((cStar - 1) / 2) ((cStar + 1) / 2) (68 / 625) (9 / 10) ≤ 53 / 25 := by
+    gramPairMaximum barC (41177 / 30000) (7903 / 15000) (41 / 48) (4 / 15)
+      ((barC - 1) / 2) ((barC + 1) / 2) (68 / 625) (9 / 10) ≤ 53 / 25 := by
   simp only [gramPairMaximum, max_le_iff]
-  rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
   norm_num [gramPairValue] at hlower hupper ⊢
   constructor
-  · nlinarith [sq_nonneg (cStar - 1)]
-  constructor <;> nlinarith [sq_nonneg (cStar - 1)]
+  · nlinarith [sq_nonneg (barC - 1)]
+  constructor <;> nlinarith [sq_nonneg (barC - 1)]
 
 private theorem e1s0_blue_pair_maximum :
-    gramPairMaximum cStar (9329977 / 8028160) (7915571 / 4515840) (31 / 80) (11 / 15)
-      (17 / 16 * (cStar + 1)) (17 / 16 * (cStar - 1)) (32271 / 100352)
+    gramPairMaximum barC (9329977 / 8028160) (7915571 / 4515840) (31 / 80) (11 / 15)
+      (17 / 16 * (barC + 1)) (17 / 16 * (barC - 1)) (32271 / 100352)
       (13 / 20) ≤ 11 / 10 := by
   simp only [gramPairMaximum, max_le_iff]
-  rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
   norm_num [gramPairValue] at hlower hupper ⊢
   constructor
-  · nlinarith [sq_nonneg (cStar - 1)]
-  constructor <;> nlinarith [sq_nonneg (cStar - 1)]
+  · nlinarith [sq_nonneg (barC - 1)]
+  constructor <;> nlinarith [sq_nonneg (barC - 1)]
 
 private theorem e1s0_positive_distances_le {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1) :
@@ -112,18 +113,18 @@ private theorem e1s0_positive_distances_le {E : Type*} [NormedAddCommGroup E]
 
 private theorem e1s0_cross_le_reduced {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (p₁ p₂ w₁ w₂ : E)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     2 * (31 / 80 : ℝ) * ⟪p₁, w₁⟫_ℝ +
         2 * (7 / 15 : ℝ) * ⟪p₁, w₂⟫_ℝ +
         2 * (4 / 15 : ℝ) * ⟪p₂, w₂⟫_ℝ ≤
       256 / 625 * ‖p₁‖ ^ 2 + 757 / 5000 * ‖p₂‖ ^ 2 +
-        68 / 625 * (‖p₁‖ ^ 2 + ‖p₂‖ ^ 2 - cStar ^ 2) +
+        68 / 625 * (‖p₁‖ ^ 2 + ‖p₂‖ ^ 2 - barC ^ 2) +
         727477 / 1605632 * ‖w₁‖ ^ 2 + 39397 / 56448 * ‖w₂‖ ^ 2 +
-        32271 / 100352 * (‖w₁‖ ^ 2 + ‖w₂‖ ^ 2 - cStar ^ 2) := by
-  have hpsepSq : cStar ^ 2 ≤ ‖p₁ - p₂‖ ^ 2 := by
-    nlinarith [cStar_pos, norm_nonneg (p₁ - p₂)]
-  have hwsepSq : cStar ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
-    nlinarith [cStar_pos, norm_nonneg (w₁ - w₂)]
+        32271 / 100352 * (‖w₁‖ ^ 2 + ‖w₂‖ ^ 2 - barC ^ 2) := by
+  have hpsepSq : barC ^ 2 ≤ ‖p₁ - p₂‖ ^ 2 := by
+    nlinarith [barC_pos, norm_nonneg (p₁ - p₂)]
+  have hwsepSq : barC ^ 2 ≤ ‖w₁ - w₂‖ ^ 2 := by
+    nlinarith [barC_pos, norm_nonneg (w₁ - w₂)]
   rw [norm_sub_sq_real] at hpsepSq hwsepSq
   have hpinnerScaled := mul_le_mul_of_nonneg_left hpsepSq
     (by norm_num : (0 : ℝ) ≤ 68 / 625)
@@ -133,42 +134,42 @@ private theorem e1s0_cross_le_reduced {E : Type*} [NormedAddCommGroup E]
   nlinarith
 
 private theorem e1s0_constant_neg :
-    269 / 240 + 4717 / 620 - 17 / 8 + 551 / 80 * cStar -
-      807 / 80 * cStar ^ 2 + 53 / 25 + 11 / 10 < 0 := by
-  rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+    269 / 240 + 4717 / 620 - 17 / 8 + 551 / 80 * barC -
+      807 / 80 * barC ^ 2 + 53 / 25 + 11 / 10 < 0 := by
+  rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
   norm_num at hlower hupper ⊢
-  nlinarith [sq_nonneg (cStar - 1)]
+  nlinarith [sq_nonneg (barC - 1)]
 
 private theorem e1s0_decomposition {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     37 / 20 * ‖e - p₁ - w₁‖ + 21 / 8 * ‖e - p₁ - w₂‖ +
         27 / 20 * ‖e - p₂ - w₂‖ -
-        ((cStar - 1) * ‖p₁‖ + (cStar + 1) * ‖p₂‖) / 2 -
-        17 / 16 * ((cStar + 1) * ‖w₁‖ + (cStar - 1) * ‖w₂‖) ≤
+        ((barC - 1) * ‖p₁‖ + (barC + 1) * ‖p₂‖) / 2 -
+        17 / 16 * ((barC + 1) * ‖w₁‖ + (barC - 1) * ‖w₂‖) ≤
       269 / 240 + 4717 / 620 +
         (41177 / 30000 * ‖p₁‖ ^ 2 + 7903 / 15000 * ‖p₂‖ ^ 2 -
           41 / 24 * ⟪e, p₁⟫_ℝ - 8 / 15 * ⟪e, p₂⟫_ℝ -
-          (cStar - 1) / 2 * ‖p₁‖ - (cStar + 1) / 2 * ‖p₂‖ -
-          68 / 625 * cStar ^ 2) +
+          (barC - 1) / 2 * ‖p₁‖ - (barC + 1) / 2 * ‖p₂‖ -
+          68 / 625 * barC ^ 2) +
         (9329977 / 8028160 * ‖w₁‖ ^ 2 + 7915571 / 4515840 * ‖w₂‖ ^ 2 -
           31 / 40 * ⟪e, w₁⟫_ℝ - 22 / 15 * ⟪e, w₂⟫_ℝ -
-          17 / 16 * (cStar + 1) * ‖w₁‖ -
-          17 / 16 * (cStar - 1) * ‖w₂‖ - 32271 / 100352 * cStar ^ 2) := by
+          17 / 16 * (barC + 1) * ‖w₁‖ -
+          17 / 16 * (barC - 1) * ‖w₂‖ - 32271 / 100352 * barC ^ 2) := by
   have htangent := e1s0_positive_distances_le e p₁ p₂ w₁ w₂ he
   have hcross := e1s0_cross_le_reduced p₁ p₂ w₁ w₂ hpsep hwsep
   nlinarith
 
 private theorem e1s0_red_pair_le {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ : E) (he : ‖e‖ = 1)
-    (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖) :
+    (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hpsep : barC ≤ ‖p₁ - p₂‖) :
     41177 / 30000 * ‖p₁‖ ^ 2 + 7903 / 15000 * ‖p₂‖ ^ 2 -
         41 / 24 * ⟪e, p₁⟫_ℝ - 8 / 15 * ⟪e, p₂⟫_ℝ -
-        (cStar - 1) / 2 * ‖p₁‖ - (cStar + 1) / 2 * ‖p₂‖ -
-        68 / 625 * cStar ^ 2 ≤ 53 / 25 := by
-  have hp := gramPairCore_le_vertices e p₁ p₂ cStar (41177 / 30000) (7903 / 15000)
-    (41 / 48) (4 / 15) ((cStar - 1) / 2) ((cStar + 1) / 2) (68 / 625) (9 / 10)
-    he hp₁ hp₂ hpsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+        (barC - 1) / 2 * ‖p₁‖ - (barC + 1) / 2 * ‖p₂‖ -
+        68 / 625 * barC ^ 2 ≤ 53 / 25 := by
+  have hp := gramPairCore_le_vertices e p₁ p₂ barC (41177 / 30000) (7903 / 15000)
+    (41 / 48) (4 / 15) ((barC - 1) / 2) ((barC + 1) / 2) (68 / 625) (9 / 10)
+    he hp₁ hp₂ hpsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
   have hpBound := hp.trans e1s0_red_pair_maximum
   simp only [inner_add_right, real_inner_smul_right] at hpBound
@@ -176,15 +177,15 @@ private theorem e1s0_red_pair_le {E : Type*} [NormedAddCommGroup E]
 
 private theorem e1s0_blue_pair_le {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e w₁ w₂ : E) (he : ‖e‖ = 1)
-    (hw₁ : ‖w₁‖ ≤ 1) (hw₂ : ‖w₂‖ ≤ 1) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hw₁ : ‖w₁‖ ≤ 1) (hw₂ : ‖w₂‖ ≤ 1) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     9329977 / 8028160 * ‖w₁‖ ^ 2 + 7915571 / 4515840 * ‖w₂‖ ^ 2 -
         31 / 40 * ⟪e, w₁⟫_ℝ - 22 / 15 * ⟪e, w₂⟫_ℝ -
-        17 / 16 * (cStar + 1) * ‖w₁‖ -
-        17 / 16 * (cStar - 1) * ‖w₂‖ - 32271 / 100352 * cStar ^ 2 ≤ 11 / 10 := by
-  have hw := gramPairCore_le_vertices e w₁ w₂ cStar
+        17 / 16 * (barC + 1) * ‖w₁‖ -
+        17 / 16 * (barC - 1) * ‖w₂‖ - 32271 / 100352 * barC ^ 2 ≤ 11 / 10 := by
+  have hw := gramPairCore_le_vertices e w₁ w₂ barC
     (9329977 / 8028160) (7915571 / 4515840) (31 / 80) (11 / 15)
-    (17 / 16 * (cStar + 1)) (17 / 16 * (cStar - 1)) (32271 / 100352) (13 / 20)
-    he hw₁ hw₂ hwsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+    (17 / 16 * (barC + 1)) (17 / 16 * (barC - 1)) (32271 / 100352) (13 / 20)
+    he hw₁ hw₂ hwsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
   have hwBound := hw.trans e1s0_blue_pair_maximum
   simp only [inner_add_right, real_inner_smul_right] at hwBound
@@ -194,13 +195,13 @@ private theorem e1s0_blue_pair_le {E : Type*} [NormedAddCommGroup E]
 theorem gramCertificate_e1s0 {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
-    (hw₂ : ‖w₂‖ ≤ 1) (hpsep : cStar ≤ ‖p₁ - p₂‖)
-    (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hw₂ : ‖w₂‖ ≤ 1) (hpsep : barC ≤ ‖p₁ - p₂‖)
+    (hwsep : barC ≤ ‖w₁ - w₂‖) :
     37 / 20 * ‖e - p₁ - w₁‖ + 21 / 8 * ‖e - p₁ - w₂‖ +
         27 / 20 * ‖e - p₂ - w₂‖ -
-        ((cStar - 1) * ‖p₁‖ + (cStar + 1) * ‖p₂‖) / 2 -
-        17 / 16 * ((cStar + 1) * ‖w₁‖ + (cStar - 1) * ‖w₂‖) -
-        17 / 8 + 551 / 80 * cStar - 807 / 80 * cStar ^ 2 < 0 := by
+        ((barC - 1) * ‖p₁‖ + (barC + 1) * ‖p₂‖) / 2 -
+        17 / 16 * ((barC + 1) * ‖w₁‖ + (barC - 1) * ‖w₂‖) -
+        17 / 8 + 551 / 80 * barC - 807 / 80 * barC ^ 2 < 0 := by
   have hdecompose := e1s0_decomposition e p₁ p₂ w₁ w₂ he hpsep hwsep
   have hpBound := e1s0_red_pair_le e p₁ p₂ he hp₁ hp₂ hpsep
   have hwBound := e1s0_blue_pair_le e w₁ w₂ he hw₁ hw₂ hwsep
@@ -208,7 +209,7 @@ theorem gramCertificate_e1s0 {E : Type*} [NormedAddCommGroup E]
 
 /-- The alternative positive separator is strictly negative for every admissible configuration. -/
 theorem endpointBalancedE1S0GramBound_of_admissible
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar) :
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS) :
     27 / 20 * diagonalMatchingReducedSlack configuration +
         17 / 8 * redEndpointReducedSlack configuration 1 +
         blueBalancedReducedSlack configuration 0 < 0 := by
@@ -217,13 +218,13 @@ theorem endpointBalancedE1S0GramBound_of_admissible
   let p₂ := configuration.redDisplacement .right
   let w₁ := configuration.bluePullback .left
   let w₂ := configuration.bluePullback .right
-  have hpsep : cStar ≤ ‖p₁ - p₂‖ := by
+  have hpsep : barC ≤ ‖p₁ - p₂‖ := by
     have hred := configuration.two_mul_le_dist_redDisplacement h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hred
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hred
     exact hred
-  have hwsep : cStar ≤ ‖w₁ - w₂‖ := by
+  have hwsep : barC ≤ ‖w₁ - w₂‖ := by
     have hblue := configuration.two_mul_le_dist_bluePullback h
-    rw [sStar, show 2 * (cStar / 2) = cStar by ring, dist_eq_norm] at hblue
+    rw [barS, show 2 * (barC / 2) = barC by ring, dist_eq_norm] at hblue
     exact hblue
   have hcertificate := gramCertificate_e1s0 e p₁ p₂ w₁ w₂
     (configuration.norm_rootDisplacement h)
@@ -240,7 +241,7 @@ theorem endpointBalancedE1S0GramBound_of_admissible
 
 /-- The `E1/S0` endpoint/balanced representative is impossible. -/
 theorem not_redEndpoint_one_and_blueBalanced_zero
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration) :
     ¬ (redSiblingTriangleFailure configuration (.endpoint 1) ∧
       blueSiblingTriangleFailure configuration (.balanced 0)) := by

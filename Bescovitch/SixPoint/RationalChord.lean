@@ -13,8 +13,8 @@ public import Bescovitch.Statement
 The six-point analysis computes the sharp constant `sStar`, but a Lean proof of
 `sigmaOne ≤ sStar` needs that endpoint to be attained exactly, and the resulting tightness is what
 makes the finite certificates expensive.  The argument is carried out instead at the rational
-threshold `barS = 699 / 1000`, which still improves on the published `0.7` and leaves the weighted
-score a margin of about `0.2` rather than `10 ^ -8`.
+threshold `barS = 6934 / 10000`, which still improves on the published `0.7` and leaves the weighted
+score a margin of about `3 * 10 ^ -3` rather than `10 ^ -8`.
 
 The routing and exclusion modules use a chord only through the two facts below: that it lies
 between one and two, and that it lies in an explicit rational box.  Both are immediate here.
@@ -27,18 +27,18 @@ noncomputable section
 namespace Bescovitch
 
 /-- Twice the rational threshold: the chord length of the retargeted argument. -/
-def barC : ℝ := 699 / 500
+def barC : ℝ := 3467 / 2500
 
 /-- The rational density threshold certified by the retargeted argument. -/
 def barS : ℝ := barC / 2
 
-/-- The rational threshold is `0.699`. -/
-theorem barS_eq : barS = 699 / 1000 := by
+/-- The rational threshold is `0.6934`. -/
+theorem barS_eq : barS = 6934 / 10000 := by
   norm_num [barS, barC]
 
 /-- The rational chord lies in an explicit isolation box. -/
 theorem barC_mem_isolation_box :
-    1397999 / 10 ^ 6 < barC ∧ barC < 1398001 / 10 ^ 6 := by
+    13867999999999999 / 10 ^ 16 < barC ∧ barC < 13868000000000001 / 10 ^ 16 := by
   constructor <;> norm_num [barC]
 
 /-- The rational chord is a genuine chord of the unit disk. -/
@@ -51,7 +51,7 @@ theorem barC_pos : 0 < barC := by
 
 /-- The rational threshold lies in an explicit isolation box. -/
 theorem barS_mem_isolation_box :
-    698999 / 10 ^ 6 ≤ barS ∧ barS < 699001 / 10 ^ 6 := by
+    6933999999999999 / 10 ^ 16 ≤ barS ∧ barS < 6934000000000001 / 10 ^ 16 := by
   constructor <;> norm_num [barS, barC]
 
 /-- The rational threshold lies strictly between one half and one. -/

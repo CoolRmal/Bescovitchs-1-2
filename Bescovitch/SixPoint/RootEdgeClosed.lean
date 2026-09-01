@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.RootEdgeFailureTree
 public import Bescovitch.SixPoint.RootEdgeType12
 
@@ -23,7 +24,7 @@ namespace Bescovitch
 
 /-- The selected matching and endpoint force a failed red root--edge support onto `(1,1)`. -/
 theorem redRootEdge_failure_forces_type11
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration)
     (hendpoint : redSiblingTriangleFailure configuration (.endpoint 0))
     (hfailure : RedRootEdgeFails configuration h) :
@@ -43,7 +44,7 @@ theorem redRootEdge_failure_forces_type11
 
 /-- The selected matching and endpoint force a failed blue root--edge support onto `(1,1)`. -/
 theorem blueRootEdge_failure_forces_type11
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration)
     (hendpoint : blueSiblingTriangleFailure configuration (.endpoint 0))
     (hfailure : BlueRootEdgeFails configuration h) :
@@ -69,11 +70,11 @@ theorem blueRootEdge_failure_forces_type11
 
 /-- The two root--edge supports either win or both leave the active `(1,1)` inequalities. -/
 theorem exists_nonnegative_score_or_rootEdge_type11_pair
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration)
     (hredEndpoint : redSiblingTriangleFailure configuration (.endpoint 0))
     (hblueEndpoint : blueSiblingTriangleFailure configuration (.endpoint 0)) :
-    (∃ packing : SixPointPacking configuration, 0 ≤ packing.score sStar) ∨
+    (∃ packing : SixPointPacking configuration, 0 ≤ packing.score barS) ∨
       (2 * redRootEdgeTarget configuration <
           dist (configuration .red .root) (configuration .red .right) +
             redRootBlueTriangleReach configuration .left +

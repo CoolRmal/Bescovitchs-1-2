@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalEndpointData
 public import Bescovitch.SixPoint.WeightedMixedTree
 
 /-!
@@ -21,28 +22,28 @@ noncomputable section
 
 namespace Bescovitch
 
-/-- Replacing `cStar` by the slightly smaller rational certificate chord preserves the second
+/-- Replacing `barC` by the slightly smaller rational certificate chord preserves the second
 unit-disk constraint. -/
 theorem second_disk_constraint_at_certificate_chord {a h : ℝ}
-    (hfirst : a ^ 2 + h ^ 2 ≤ 1) (hsecond : (a - cStar) ^ 2 + h ^ 2 ≤ 1) :
+    (hfirst : a ^ 2 + h ^ 2 ≤ 1) (hsecond : (a - barC) ^ 2 + h ^ 2 ≤ 1) :
     (a - certificateChord) ^ 2 + h ^ 2 ≤ 1 := by
   have ha : a ≤ 1 := by nlinarith [sq_nonneg a, sq_nonneg h]
-  have hc := cStar_certificateChord_distance.1
+  have hc := barC_certificateChord_distance.1
   have hcOne : 1 < certificateChord := by norm_num [certificateChord]
-  have hlong : (a - certificateChord) ^ 2 ≤ (a - cStar) ^ 2 := by
-    nlinarith [sq_nonneg (cStar - certificateChord)]
+  have hlong : (a - certificateChord) ^ 2 ≤ (a - barC) ^ 2 := by
+    nlinarith [sq_nonneg (barC - certificateChord)]
   linarith
 
 private theorem longitudinal_bounds_of_disk_constraints {a h : ℝ}
     (hfirst : a ^ 2 + h ^ 2 ≤ 1)
-    (hsecond : (a - cStar) ^ 2 + h ^ 2 ≤ 1) :
+    (hsecond : (a - barC) ^ 2 + h ^ 2 ≤ 1) :
     certificateChord - 1 ≤ a ∧ a ≤ 1 := by
   have hsecondCertificate := second_disk_constraint_at_certificate_chord hfirst hsecond
   constructor <;> nlinarith [sq_nonneg h]
 
 private theorem transverse_bounds_of_disk_constraints {a h : ℝ}
     (hfirst : a ^ 2 + h ^ 2 ≤ 1)
-    (hsecond : (a - cStar) ^ 2 + h ^ 2 ≤ 1) :
+    (hsecond : (a - barC) ^ 2 + h ^ 2 ≤ 1) :
     (-720643 / 10 ^ 6 : ℚ) ≤ h ∧ h ≤ (720643 / 10 ^ 6 : ℚ) := by
   have hsecondCertificate := second_disk_constraint_at_certificate_chord hfirst hsecond
   have hcentral : certificateChord ^ 2 + 4 * h ^ 2 ≤ 4 := by
@@ -57,7 +58,7 @@ private theorem exists_longitudinal_cap {a : ℝ}
     ∃ cap : Bool,
       if cap then (certificateChord / 2 ≤ a ∧ a ≤ 1)
       else certificateChord - 1 ≤ a ∧
-        a ≤ (13866128436518100 / 10 ^ 16 : ℝ) / 2 := by
+        a ≤ (13868000000000001 / 10 ^ 16 : ℝ) / 2 := by
   by_cases hcap : a ≤ certificateChord / 2
   · refine ⟨false, hlower, hcap.trans ?_⟩
     norm_num [certificateChord]
@@ -68,9 +69,9 @@ theorem exists_weighted_mixed_root_box
     (aP hP zP aW hW zW : ℝ)
     (hzP : 0 ≤ zP ∧ zP ≤ 1) (hzW : -1 ≤ zW ∧ zW ≤ 1)
     (hPFirst : aP ^ 2 + hP ^ 2 ≤ 1)
-    (hPSecond : (aP - cStar) ^ 2 + hP ^ 2 ≤ 1)
+    (hPSecond : (aP - barC) ^ 2 + hP ^ 2 ≤ 1)
     (hWFirst : aW ^ 2 + hW ^ 2 ≤ 1)
-    (hWSecond : (aW - cStar) ^ 2 + hW ^ 2 ≤ 1) :
+    (hWSecond : (aW - barC) ^ 2 + hW ^ 2 ≤ 1) :
     ∃ capP capW : Bool, ∀ i,
       (weightedMixedRootBox capP capW i).Contains
         ((![aP, hP, zP, aW, hW, zW] : Fin 6 → ℝ) i) := by

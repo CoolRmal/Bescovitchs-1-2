@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalEndpointData
 public import Bescovitch.Certificates.MultivariateDensePolynomial
 public import Bescovitch.SixPoint.WeightedMixedCertificateData.Basic
 public import Bescovitch.SixPoint.WeightedQuadraticMajorant
@@ -126,7 +127,7 @@ def degreeProfile : Fin 6 → MultivariateDensePolynomial.BernsteinDegree
 /-- The exact cleared polynomial attached to one mixed-certificate leaf. -/
 def leafPolynomial (sideP sideW : ℚ) (a h z b k w : Polynomial)
     (rho : Fin 6 → ℚ) (slope eta : Fin 4 → ℚ) : Polynomial :=
-  let c : ℚ := 13866128436518096 / 10 ^ 16
+  let c : ℚ := 3467 / 2500
   let lambda : ℚ := 8947642540885 / 10 ^ 14
   let mu : ℚ := 92883833887540 / 10 ^ 14
   let dP := denominator z
@@ -379,7 +380,7 @@ private theorem degree_bound_leaf_polynomial (sideP sideW : ℚ) (a h z b k w : 
     MultivariateDensePolynomial.DegreeBound certificateDegree
       (leafPolynomial sideP sideW a h z b k w rho slope eta) := by
   rw [leafPolynomial]
-  let c : ℚ := 13866128436518096 / 10 ^ 16
+  let c : ℚ := 3467 / 2500
   let lambda : ℚ := 8947642540885 / 10 ^ 14
   let mu : ℚ := 92883833887540 / 10 ^ 14
   let dP := denominator z
@@ -827,31 +828,31 @@ theorem eval_leaf_polynomial_eq_cleared_majorant
   let dP := denominator z
   let dW := denominator w
   let p₁ := chordNumerator sideP a h z
-  let p₂ := chordNumerator sideP (sub a (C (13866128436518096 / 10 ^ 16))) h z
+  let p₂ := chordNumerator sideP (sub a (C (3467 / 2500))) h z
   let w₁ := chordNumerator sideW b k w
-  let w₂ := chordNumerator sideW (sub b (C (13866128436518096 / 10 ^ 16))) k w
-  let firstPenalty : ℚ := (13866128436518096 / 10 ^ 16 - 1) *
+  let w₂ := chordNumerator sideW (sub b (C (3467 / 2500))) k w
+  let firstPenalty : ℚ := (3467 / 2500 - 1) *
     (8947642540885 / 10 ^ 14 / 2 + 92883833887540 / 10 ^ 14)
-  let secondPenalty : ℚ := (13866128436518096 / 10 ^ 16 + 1) *
+  let secondPenalty : ℚ := (3467 / 2500 + 1) *
     (8947642540885 / 10 ^ 14) / 2 +
-      3 * (13866128436518096 / 10 ^ 16) * (92883833887540 / 10 ^ 14)
+      3 * (3467 / 2500) * (92883833887540 / 10 ^ 14)
   have hdP : MultivariateDensePolynomial.eval dP x = 1 + Z ^ 2 := by
     simp [dP, eval_denominator, hz]
   have hdW : MultivariateDensePolynomial.eval dW x = 1 + W ^ 2 := by
     simp [dW, eval_denominator, hw]
   have hp₁ : p₁.eval x = (1 + Z ^ 2) • chordChartFirst sideP A H Z := by
     simpa [p₁, ha, hh, hz] using eval_chord_numerator sideP a h z x
-  have hc : ((13866128436518096 / 10 ^ 16 : ℚ) : ℝ) = certificateChord := by
+  have hc : ((3467 / 2500 : ℚ) : ℝ) = certificateChord := by
     norm_num [certificateChord]
   have hp₂ : p₂.eval x = (1 + Z ^ 2) •
-      chordChartSecond sideP ((13866128436518096 / 10 ^ 16 : ℚ) : ℝ) A H Z := by
+      chordChartSecond sideP ((3467 / 2500 : ℚ) : ℝ) A H Z := by
     dsimp [p₂]
     rw [eval_chord_numerator_second, ha, hh, hz]
   rw [hc] at hp₂
   have hw₁ : w₁.eval x = (1 + W ^ 2) • chordChartFirst sideW B K W := by
     simpa [w₁, hb, hk, hw] using eval_chord_numerator sideW b k w x
   have hw₂ : w₂.eval x = (1 + W ^ 2) •
-      chordChartSecond sideW ((13866128436518096 / 10 ^ 16 : ℚ) : ℝ) B K W := by
+      chordChartSecond sideW ((3467 / 2500 : ℚ) : ℝ) B K W := by
     dsimp [w₂]
     rw [eval_chord_numerator_second, hb, hk, hw]
   rw [hc] at hw₂
@@ -887,9 +888,9 @@ theorem eval_leaf_polynomial_eq_cleared_majorant
     MultivariateDensePolynomial.eval_pow, MultivariateDensePolynomial.eval_constant]
   rw [show denominator z = dP by rfl, show denominator w = dW by rfl]
   rw [show chordNumerator sideP a h z = p₁ by rfl,
-    show chordNumerator sideP (sub a (C (13866128436518096 / 10 ^ 16))) h z = p₂ by rfl,
+    show chordNumerator sideP (sub a (C (3467 / 2500))) h z = p₂ by rfl,
     show chordNumerator sideW b k w = w₁ by rfl,
-    show chordNumerator sideW (sub b (C (13866128436518096 / 10 ^ 16))) k w = w₂ by rfl]
+    show chordNumerator sideW (sub b (C (3467 / 2500))) k w = w₂ by rfl]
   rw [hP, hW, h₁₁, h₂₂, h₁₂, h₂₁, hsP₁, hsW₁, hsP₂, hsW₂, hdP, hdW,
     ha, hh, hb, hk]
   rw [weightedLensQuadraticCertificateMajorant, weightedPairScoreQuadraticMajorant,

@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.ChildSwapPacking
 public import Bescovitch.SixPoint.RootEdgeClosed
 public import Bescovitch.SixPoint.WeightedFailure
@@ -25,14 +26,14 @@ namespace Bescovitch
 
 /-- The weighted geometric bound closes the endpoint at the two left children. -/
 theorem exists_nonnegative_score_of_matched_endpoint_zero
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration)
     (hred : redSiblingTriangleFailure configuration (.endpoint 0))
     (hblue : blueSiblingTriangleFailure configuration (.endpoint 0))
-    (hweighted : weightedPairScore configuration.rootDisplacement cStar endpointLambda endpointMu
+    (hweighted : weightedPairScore configuration.rootDisplacement barC endpointLambda endpointMu
       (configuration.redDisplacement .left) (configuration.redDisplacement .right)
       (configuration.bluePullback .left) (configuration.bluePullback .right) ≤ 0) :
-    ∃ packing : SixPointPacking configuration, 0 ≤ packing.score sStar := by
+    ∃ packing : SixPointPacking configuration, 0 ≤ packing.score barS := by
   rcases exists_nonnegative_score_or_rootEdge_type11_pair configuration h hmatching hred hblue with
     hpacking | htype11
   · exact hpacking
@@ -45,20 +46,20 @@ theorem exists_nonnegative_score_of_matched_endpoint_zero
 
 /-- The weighted geometric bound closes the endpoint at the two right children. -/
 theorem exists_nonnegative_score_of_matched_endpoint_three
-    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt sStar)
+    (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration)
     (hred : redSiblingTriangleFailure configuration (.endpoint 3))
     (hblue : blueSiblingTriangleFailure configuration (.endpoint 3))
     (hweighted :
       weightedPairScore (swapConfigurationChildren configuration).rootDisplacement
-        cStar endpointLambda endpointMu
+        barC endpointLambda endpointMu
         ((swapConfigurationChildren configuration).redDisplacement .left)
         ((swapConfigurationChildren configuration).redDisplacement .right)
         ((swapConfigurationChildren configuration).bluePullback .left)
         ((swapConfigurationChildren configuration).bluePullback .right) ≤ 0) :
-    ∃ packing : SixPointPacking configuration, 0 ≤ packing.score sStar := by
+    ∃ packing : SixPointPacking configuration, 0 ≤ packing.score barS := by
   let swapped := swapConfigurationChildren configuration
-  have hadmissible : swapped.IsAdmissibleAt sStar := IsAdmissibleAt.swapChildren h
+  have hadmissible : swapped.IsAdmissibleAt barS := IsAdmissibleAt.swapChildren h
   have hmatching' : SelectedDiagonalMatchingFails swapped :=
     (selectedDiagonalMatchingFails_swapChildren configuration).2 hmatching
   have hred' : redSiblingTriangleFailure swapped (.endpoint 0) :=

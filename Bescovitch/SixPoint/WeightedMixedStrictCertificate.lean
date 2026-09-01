@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalEndpointData
 public import Bescovitch.SixPoint.WeightedMixedSymmetry
 import Bescovitch.SixPoint.WeightedMixedRootCover
 
@@ -85,14 +86,14 @@ private theorem weighted_pair_score_le_leaf_quadratic_majorant
     (hrho : ∀ i, 0 < data.rhoNumerator i)
     (hsideP : (sideP : ℝ) ^ 2 = 1) (hsideW : (sideW : ℝ) ^ 2 = 1)
     (hPFirst : x 0 ^ 2 + x 1 ^ 2 ≤ 1)
-    (hPSecond : (x 0 - cStar) ^ 2 + x 1 ^ 2 ≤ 1)
+    (hPSecond : (x 0 - barC) ^ 2 + x 1 ^ 2 ≤ 1)
     (hWFirst : x 3 ^ 2 + x 4 ^ 2 ≤ 1)
-    (hWSecond : (x 3 - cStar) ^ 2 + x 4 ^ 2 ≤ 1) :
-    weightedPairScore !₂[1, 0] cStar endpointLambda endpointMu
+    (hWSecond : (x 3 - barC) ^ 2 + x 4 ^ 2 ≤ 1) :
+    weightedPairScore !₂[1, 0] barC endpointLambda endpointMu
       (chordChartFirst sideP (x 0) (x 1) (x 2))
-      (chordChartSecond sideP cStar (x 0) (x 1) (x 2))
+      (chordChartSecond sideP barC (x 0) (x 1) (x 2))
       (chordChartFirst sideW (x 3) (x 4) (x 5))
-      (chordChartSecond sideW cStar (x 3) (x 4) (x 5)) ≤
+      (chordChartSecond sideW barC (x 3) (x 4) (x 5)) ≤
         data.quadraticMajorant sideP (x 2) (x 0) (x 1) sideW (x 5) (x 3) (x 4) := by
   simpa only [WeightedMixedLeaf.quadraticMajorant] using
     weightedPairScore_le_lensQuadraticCertificateMajorant
@@ -120,14 +121,14 @@ theorem weighted_pair_score_nonpos_of_weighted_mixed_leaf_check
     (hx : ∀ i, (leafBox i).Contains (x i))
     (hsideP : (sideP : ℝ) ^ 2 = 1) (hsideW : (sideW : ℝ) ^ 2 = 1)
     (hPFirst : x 0 ^ 2 + x 1 ^ 2 ≤ 1)
-    (hPSecond : (x 0 - cStar) ^ 2 + x 1 ^ 2 ≤ 1)
+    (hPSecond : (x 0 - barC) ^ 2 + x 1 ^ 2 ≤ 1)
     (hWFirst : x 3 ^ 2 + x 4 ^ 2 ≤ 1)
-    (hWSecond : (x 3 - cStar) ^ 2 + x 4 ^ 2 ≤ 1) :
-    weightedPairScore !₂[1, 0] cStar endpointLambda endpointMu
+    (hWSecond : (x 3 - barC) ^ 2 + x 4 ^ 2 ≤ 1) :
+    weightedPairScore !₂[1, 0] barC endpointLambda endpointMu
       (chordChartFirst sideP (x 0) (x 1) (x 2))
-      (chordChartSecond sideP cStar (x 0) (x 1) (x 2))
+      (chordChartSecond sideP barC (x 0) (x 1) (x 2))
       (chordChartFirst sideW (x 3) (x 4) (x 5))
-      (chordChartSecond sideW cStar (x 3) (x 4) (x 5)) ≤ 0 := by
+      (chordChartSecond sideW barC (x 3) (x 4) (x 5)) ≤ 0 := by
   rw [weightedMixedLeafCheck, Bool.and_eq_true, decide_eq_true_eq] at hcheck
   have hpolynomial :=
     MultivariateDensePolynomial.eval_nonpos_of_centeredBernstein_check_of_degree_bound
@@ -147,14 +148,14 @@ theorem weighted_pair_score_nonpos_of_weighted_mixed_tree_check
     (hx : ∀ i, (box i).Contains (x i))
     (hsideP : (sideP : ℝ) ^ 2 = 1) (hsideW : (sideW : ℝ) ^ 2 = 1)
     (hPFirst : x 0 ^ 2 + x 1 ^ 2 ≤ 1)
-    (hPSecond : (x 0 - cStar) ^ 2 + x 1 ^ 2 ≤ 1)
+    (hPSecond : (x 0 - barC) ^ 2 + x 1 ^ 2 ≤ 1)
     (hWFirst : x 3 ^ 2 + x 4 ^ 2 ≤ 1)
-    (hWSecond : (x 3 - cStar) ^ 2 + x 4 ^ 2 ≤ 1) :
-    weightedPairScore !₂[1, 0] cStar endpointLambda endpointMu
+    (hWSecond : (x 3 - barC) ^ 2 + x 4 ^ 2 ≤ 1) :
+    weightedPairScore !₂[1, 0] barC endpointLambda endpointMu
       (chordChartFirst sideP (x 0) (x 1) (x 2))
-      (chordChartSecond sideP cStar (x 0) (x 1) (x 2))
+      (chordChartSecond sideP barC (x 0) (x 1) (x 2))
       (chordChartFirst sideW (x 3) (x 4) (x 5))
-      (chordChartSecond sideW cStar (x 3) (x 4) (x 5)) ≤ 0 := by
+      (chordChartSecond sideW barC (x 3) (x 4) (x 5)) ≤ 0 := by
   have hPSecondCertificate := second_disk_constraint_at_certificate_chord hPFirst hPSecond
   have hWSecondCertificate := second_disk_constraint_at_certificate_chord hWFirst hWSecond
   have hdisk : WeightedMixedDiskConstraints x := by

@@ -5,13 +5,14 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalEndpointData
 public import Bescovitch.SixPoint.WeightedSelf
 
 /-!
 # Exact certificate for the weighted self inequality
 
 This module assembles the seven exact scalar radius-bin certificates. The first rational bin
-starts just below the physical radius range; the isolation interval for `cStar` supplies the
+starts just below the physical radius range; the isolation interval for `barC` supplies the
 small restriction needed by the analytic theorem.
 -/
 
@@ -30,12 +31,12 @@ theorem weightedSelf_nonpos_of_certificate_radius_bins
     (h₆ : WeightedSelfRadiusBinBound (9 / 10) 1)
     {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     (e p₁ p₂ : E) (he : ‖e‖ = 1) (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1)
-    (hsep : cStar ≤ ‖p₁ - p₂‖) :
-    weightedPairScore e cStar endpointLambda endpointMu p₁ p₂ p₁ p₂ ≤ 0 := by
-  have h₀' : WeightedSelfRadiusBinBound (cStar - 1) (2 / 5) := by
+    (hsep : barC ≤ ‖p₁ - p₂‖) :
+    weightedPairScore e barC endpointLambda endpointMu p₁ p₂ p₁ p₂ ≤ 0 := by
+  have h₀' : WeightedSelfRadiusBinBound (barC - 1) (2 / 5) := by
     intro r b t hbLower hbUpper hrLower hrUpper htLower htUpper
     apply h₀
-    · nlinarith [cStar_mem_isolation_box.1]
+    · nlinarith [barC_mem_isolation_box.1]
     · exact hbUpper
     · exact hrLower
     · exact hrUpper

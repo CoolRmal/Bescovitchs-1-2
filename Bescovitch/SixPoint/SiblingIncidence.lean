@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.SixPoint.SiblingTriangle
 public import Bescovitch.SixPoint.SiblingTangent
 
@@ -233,12 +234,12 @@ def rootedTriangleTotalRadius (configuration : SixPointConfiguration)
 
 /-- The diameter threshold for support `67` at the exact endpoint. -/
 def redSiblingTriangleTarget (configuration : SixPointConfiguration) : ℝ :=
-  cStar * (dist (configuration .red .left) (configuration .red .right) +
+  barC * (dist (configuration .red .left) (configuration .red .right) +
     rootedTriangleTotalRadius configuration .blue)
 
 /-- The diameter threshold for support `76` at the exact endpoint. -/
 def blueSiblingTriangleTarget (configuration : SixPointConfiguration) : ℝ :=
-  cStar * (dist (configuration .blue .left) (configuration .blue .right) +
+  barC * (dist (configuration .blue .left) (configuration .blue .right) +
     rootedTriangleTotalRadius configuration .red)
 
 /-- The exact endpoint or balanced failure inequality for support `67`. -/
@@ -265,32 +266,32 @@ def matchedChildAverage (configuration : SixPointConfiguration) (child : Fin 2) 
   (dist (configuration .red .root) (configuration .red (incidenceChild child)) +
     dist (configuration .blue .root) (configuration .blue (incidenceChild child))) / 2
 
-private theorem cStar_internal_gap_pos : 0 < cStar ^ 2 + 2 * cStar - 4 := by
-  have hc := cStar_mem_isolation_box.1
+private theorem barC_internal_gap_pos : 0 < barC ^ 2 + 2 * barC - 4 := by
+  have hc := barC_mem_isolation_box.1
   norm_num at hc ⊢
-  nlinarith [sq_nonneg (cStar - 1)]
+  nlinarith [sq_nonneg (barC - 1)]
 
-private theorem cStar_root_endpoint_gap_pos : 0 < 2 * cStar ^ 2 - cStar / 2 - 2 := by
-  have hc := cStar_mem_isolation_box.1
+private theorem barC_root_endpoint_gap_pos : 0 < 2 * barC ^ 2 - barC / 2 - 2 := by
+  have hc := barC_mem_isolation_box.1
   norm_num at hc ⊢
-  nlinarith [sq_nonneg (cStar - 1)]
+  nlinarith [sq_nonneg (barC - 1)]
 
-private theorem cStar_balanced_root_gap_pos : 6 < 4 * cStar ^ 2 - cStar := by
-  have hc := cStar_mem_isolation_box.1
+private theorem barC_balanced_root_gap_pos : 6 < 4 * barC ^ 2 - barC := by
+  have hc := barC_mem_isolation_box.1
   norm_num at hc ⊢
-  nlinarith [sq_nonneg (cStar - 1)]
+  nlinarith [sq_nonneg (barC - 1)]
 
-private theorem cStar_disjoint_gap_neg : 2 + 4 * cStar - 4 * cStar ^ 2 < 0 := by
-  have hc := cStar_mem_isolation_box.1
+private theorem barC_disjoint_gap_neg : 2 + 4 * barC - 4 * barC ^ 2 < 0 := by
+  have hc := barC_mem_isolation_box.1
   norm_num at hc ⊢
-  nlinarith [sq_nonneg (cStar - 1)]
+  nlinarith [sq_nonneg (barC - 1)]
 
 private theorem sibling_internal_terms_le_target {L M U : ℝ}
-    (hL : cStar ≤ L ∧ L ≤ 2) (hM : cStar ≤ M ∧ M ≤ 2) (hMU : M ≤ U) :
-    2 * L ≤ cStar * (L + U) ∧ 2 * M ≤ cStar * (L + U) := by
-  have hc_two : cStar - 2 ≤ 0 := by linarith [one_lt_cStar_and_cStar_lt_two.2]
-  have hc_nonneg : 0 ≤ cStar := cStar_pos.le
-  have htarget : cStar * (L + M) ≤ cStar * (L + U) := by
+    (hL : barC ≤ L ∧ L ≤ 2) (hM : barC ≤ M ∧ M ≤ 2) (hMU : M ≤ U) :
+    2 * L ≤ barC * (L + U) ∧ 2 * M ≤ barC * (L + U) := by
+  have hc_two : barC - 2 ≤ 0 := by linarith [one_lt_barC_and_barC_lt_two.2]
+  have hc_nonneg : 0 ≤ barC := barC_pos.le
+  have htarget : barC * (L + M) ≤ barC * (L + U) := by
     apply mul_le_mul_of_nonneg_left _ hc_nonneg
     linarith
   have hLM := mul_le_mul_of_nonneg_left hM.1 hc_nonneg
@@ -299,44 +300,44 @@ private theorem sibling_internal_terms_le_target {L M U : ℝ}
   have hMnegative := mul_le_mul_of_nonpos_left hM.2 hc_two
   constructor
   · apply le_trans (le_of_lt ?_) htarget
-    nlinarith [cStar_internal_gap_pos]
+    nlinarith [barC_internal_gap_pos]
   · apply le_trans (le_of_lt ?_) htarget
-    nlinarith [cStar_internal_gap_pos]
+    nlinarith [barC_internal_gap_pos]
 
 private theorem root_endpoint_le_target {L M U reach : ℝ}
-    (hL : cStar ≤ L) (hM : cStar ≤ M) (hMU : M ≤ U)
-    (hreach : reach ≤ 3 - M / 2) : L - 1 + reach ≤ cStar * (L + U) := by
-  have hc_nonneg : 0 ≤ cStar := cStar_pos.le
-  have hc_sub_one : 0 ≤ cStar - 1 := by linarith [one_lt_cStar_and_cStar_lt_two.1]
-  have hc_add_half : 0 ≤ cStar + 1 / 2 := by positivity
+    (hL : barC ≤ L) (hM : barC ≤ M) (hMU : M ≤ U)
+    (hreach : reach ≤ 3 - M / 2) : L - 1 + reach ≤ barC * (L + U) := by
+  have hc_nonneg : 0 ≤ barC := barC_pos.le
+  have hc_sub_one : 0 ≤ barC - 1 := by linarith [one_lt_barC_and_barC_lt_two.1]
+  have hc_add_half : 0 ≤ barC + 1 / 2 := by positivity
   have hLscaled := mul_le_mul_of_nonneg_left hL hc_sub_one
   have hMscaled := mul_le_mul_of_nonneg_left hM hc_add_half
-  have htarget : cStar * (L + M) ≤ cStar * (L + U) := by
+  have htarget : barC * (L + M) ≤ barC * (L + U) := by
     apply mul_le_mul_of_nonneg_left _ hc_nonneg
     linarith
-  nlinarith [cStar_root_endpoint_gap_pos]
+  nlinarith [barC_root_endpoint_gap_pos]
 
 private theorem balanced_root_le_target {L M U reachSum : ℝ}
-    (hL : cStar ≤ L) (hM : cStar ≤ M) (hMU : M ≤ U)
-    (hreach : reachSum ≤ 6) : L + reachSum ≤ 2 * (cStar * (L + U)) := by
-  have hc_nonneg : 0 ≤ cStar := cStar_pos.le
-  have htwoCSubOne : 0 ≤ 2 * cStar - 1 := by nlinarith [one_lt_cStar_and_cStar_lt_two.1]
-  have htwoC : 0 ≤ 2 * cStar := by positivity
+    (hL : barC ≤ L) (hM : barC ≤ M) (hMU : M ≤ U)
+    (hreach : reachSum ≤ 6) : L + reachSum ≤ 2 * (barC * (L + U)) := by
+  have hc_nonneg : 0 ≤ barC := barC_pos.le
+  have htwoCSubOne : 0 ≤ 2 * barC - 1 := by nlinarith [one_lt_barC_and_barC_lt_two.1]
+  have htwoC : 0 ≤ 2 * barC := by positivity
   have hLscaled := mul_le_mul_of_nonneg_left hL htwoCSubOne
   have hMscaled := mul_le_mul_of_nonneg_left hM htwoC
-  have htarget : cStar * (L + M) ≤ cStar * (L + U) := by
+  have htarget : barC * (L + M) ≤ barC * (L + U) := by
     apply mul_le_mul_of_nonneg_left _ hc_nonneg
     linarith
-  nlinarith [cStar_balanced_root_gap_pos]
+  nlinarith [barC_balanced_root_gap_pos]
 
-/-- Each sibling length in an endpoint-admissible configuration lies between `cStar` and two. -/
+/-- Each sibling length in an endpoint-admissible configuration lies between `barC` and two. -/
 theorem sibling_distance_mem_endpoint_interval {configuration : SixPointConfiguration}
-    (h : configuration.IsAdmissibleAt sStar) (color : SixPointColor) :
-    cStar ≤ dist (configuration color .left) (configuration color .right) ∧
+    (h : configuration.IsAdmissibleAt barS) (color : SixPointColor) :
+    barC ≤ dist (configuration color .left) (configuration color .right) ∧
       dist (configuration color .left) (configuration color .right) ≤ 2 := by
   constructor
   · have hsibling := h.sibling_distance color
-    rw [sStar] at hsibling
+    rw [barS] at hsibling
     linarith
   · calc
       dist (configuration color .left) (configuration color .right) ≤
@@ -349,7 +350,7 @@ theorem sibling_distance_mem_endpoint_interval {configuration : SixPointConfigur
 
 /-- The canonical triangle total lies between its sibling side and two. -/
 theorem rootedTriangleTotalRadius_mem_endpoint_interval
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (color : SixPointColor) :
     dist (configuration color .left) (configuration color .right) ≤
         rootedTriangleTotalRadius configuration color ∧
@@ -364,7 +365,7 @@ theorem rootedTriangleTotalRadius_mem_endpoint_interval
   constructor <;> nlinarith
 
 private theorem red_child_blue_root_distance_le_two {configuration : SixPointConfiguration}
-    (h : configuration.IsAdmissibleAt sStar) (redLabel : SixPointLabel)
+    (h : configuration.IsAdmissibleAt barS) (redLabel : SixPointLabel)
     (hred : redLabel ≠ .root) :
     dist (configuration .red redLabel) (configuration .blue .root) ≤ 2 := by
   calc
@@ -375,7 +376,7 @@ private theorem red_child_blue_root_distance_le_two {configuration : SixPointCon
     _ = 2 := by norm_num
 
 private theorem blue_child_red_root_distance_le_two {configuration : SixPointConfiguration}
-    (h : configuration.IsAdmissibleAt sStar) (blueLabel : SixPointLabel)
+    (h : configuration.IsAdmissibleAt barS) (blueLabel : SixPointLabel)
     (hblue : blueLabel ≠ .root) :
     dist (configuration .blue blueLabel) (configuration .red .root) ≤ 2 := by
   calc
@@ -386,7 +387,7 @@ private theorem blue_child_red_root_distance_le_two {configuration : SixPointCon
     _ = 2 := by norm_num
 
 private theorem cross_child_distance_le_three {configuration : SixPointConfiguration}
-    (h : configuration.IsAdmissibleAt sStar) (redLabel blueLabel : SixPointLabel)
+    (h : configuration.IsAdmissibleAt barS) (redLabel blueLabel : SixPointLabel)
     (hred : redLabel ≠ .root) (hblue : blueLabel ≠ .root) :
     dist (configuration .red redLabel) (configuration .blue blueLabel) ≤ 3 := by
   calc
@@ -397,7 +398,7 @@ private theorem cross_child_distance_le_three {configuration : SixPointConfigura
     _ = 3 := by norm_num
 
 private theorem cross_child_distance_le_one_add_root_distances
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (redLabel blueLabel : SixPointLabel) :
     dist (configuration .red redLabel) (configuration .blue blueLabel) ≤
       1 + dist (configuration .red .root) (configuration .red redLabel) +
@@ -414,7 +415,7 @@ private theorem cross_child_distance_le_one_add_root_distances
     _ = _ := by rw [h.root_distance, dist_comm (configuration .red redLabel)]; ring
 
 private theorem red_reach_root_le {configuration : SixPointConfiguration}
-    (h : configuration.IsAdmissibleAt sStar) (redLabel : SixPointLabel)
+    (h : configuration.IsAdmissibleAt barS) (redLabel : SixPointLabel)
     (hred : redLabel ≠ .root) :
     redSiblingBlueTriangleReach configuration redLabel .root ≤
       3 - dist (configuration .blue .left) (configuration .blue .right) / 2 := by
@@ -425,7 +426,7 @@ private theorem red_reach_root_le {configuration : SixPointConfiguration}
   nlinarith
 
 private theorem blue_reach_root_le {configuration : SixPointConfiguration}
-    (h : configuration.IsAdmissibleAt sStar) (blueLabel : SixPointLabel)
+    (h : configuration.IsAdmissibleAt barS) (blueLabel : SixPointLabel)
     (hblue : blueLabel ≠ .root) :
     blueSiblingRedTriangleReach configuration blueLabel .root ≤
       3 - dist (configuration .red .left) (configuration .red .right) / 2 := by
@@ -436,7 +437,7 @@ private theorem blue_reach_root_le {configuration : SixPointConfiguration}
   nlinarith
 
 private theorem red_balanced_root_reaches_le_six {configuration : SixPointConfiguration}
-    (h : configuration.IsAdmissibleAt sStar) (leftTarget rightTarget : SixPointLabel)
+    (h : configuration.IsAdmissibleAt barS) (leftTarget rightTarget : SixPointLabel)
     (hroot : leftTarget = .root ∨ rightTarget = .root) :
     redSiblingBlueTriangleReach configuration .left leftTarget +
       redSiblingBlueTriangleReach configuration .right rightTarget ≤ 6 := by
@@ -483,7 +484,7 @@ private theorem red_balanced_root_reaches_le_six {configuration : SixPointConfig
   · simp at hroot
 
 private theorem blue_balanced_root_reaches_le_six {configuration : SixPointConfiguration}
-    (h : configuration.IsAdmissibleAt sStar) (leftTarget rightTarget : SixPointLabel)
+    (h : configuration.IsAdmissibleAt barS) (leftTarget rightTarget : SixPointLabel)
     (hroot : leftTarget = .root ∨ rightTarget = .root) :
     blueSiblingRedTriangleReach configuration .left leftTarget +
       blueSiblingRedTriangleReach configuration .right rightTarget ≤ 6 := by
@@ -535,7 +536,7 @@ private theorem blue_balanced_root_reaches_le_six {configuration : SixPointConfi
 
 /-- Failure of every radius split in support `67` has a child-labelled incidence witness. -/
 theorem exists_redSiblingTriangleFailure_of_split_failure
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hfail : ∀ x : ℝ,
       dist (configuration .red .left) (configuration .red .right) - 1 ≤ x → x ≤ 1 →
         redSiblingTriangleTarget configuration <
@@ -572,7 +573,7 @@ theorem exists_redSiblingTriangleFailure_of_split_failure
 
 /-- Failure of every radius split in support `76` has a child-labelled incidence witness. -/
 theorem exists_blueSiblingTriangleFailure_of_split_failure
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hfail : ∀ y : ℝ,
       dist (configuration .blue .left) (configuration .blue .right) - 1 ≤ y → y ≤ 1 →
         blueSiblingTriangleTarget configuration <
@@ -618,61 +619,61 @@ theorem exists_blueSiblingTriangleFailure_of_split_failure
 
 /-- The support `67` packing with its actual sibling length at the exact endpoint. -/
 def redSiblingTrianglePackingAtEndpoint (configuration : SixPointConfiguration)
-    (h : configuration.IsAdmissibleAt sStar) (x : ℝ)
+    (h : configuration.IsAdmissibleAt barS) (x : ℝ)
     (hxLower : dist (configuration .red .left) (configuration .red .right) - 1 ≤ x)
     (hxUpper : x ≤ 1) : SixPointPacking configuration :=
   redSiblingBlueTrianglePacking configuration rfl
-    (one_lt_cStar_and_cStar_lt_two.1.le.trans
+    (one_lt_barC_and_barC_lt_two.1.le.trans
       (sibling_distance_mem_endpoint_interval h .red).1)
     hxLower hxUpper (h.child_distance .blue .left (by simp))
     (h.child_distance .blue .right (by simp))
 
 /-- The support `76` packing with its actual sibling length at the exact endpoint. -/
 def blueSiblingTrianglePackingAtEndpoint (configuration : SixPointConfiguration)
-    (h : configuration.IsAdmissibleAt sStar) (y : ℝ)
+    (h : configuration.IsAdmissibleAt barS) (y : ℝ)
     (hyLower : dist (configuration .blue .left) (configuration .blue .right) - 1 ≤ y)
     (hyUpper : y ≤ 1) : SixPointPacking configuration :=
   blueSiblingRedTrianglePacking configuration rfl
-    (one_lt_cStar_and_cStar_lt_two.1.le.trans
+    (one_lt_barC_and_barC_lt_two.1.le.trans
       (sibling_distance_mem_endpoint_interval h .blue).1)
     hyLower hyUpper (h.child_distance .red .left (by simp))
     (h.child_distance .red .right (by simp))
 
 /-- Every feasible support `67` radius split has negative endpoint score. -/
 def RedSiblingTriangleFails (configuration : SixPointConfiguration)
-    (h : configuration.IsAdmissibleAt sStar) : Prop :=
+    (h : configuration.IsAdmissibleAt barS) : Prop :=
   ∀ (x : ℝ)
     (hxLower : dist (configuration .red .left) (configuration .red .right) - 1 ≤ x)
     (hxUpper : x ≤ 1),
-    (redSiblingTrianglePackingAtEndpoint configuration h x hxLower hxUpper).score sStar < 0
+    (redSiblingTrianglePackingAtEndpoint configuration h x hxLower hxUpper).score barS < 0
 
 /-- Every feasible support `76` radius split has negative endpoint score. -/
 def BlueSiblingTriangleFails (configuration : SixPointConfiguration)
-    (h : configuration.IsAdmissibleAt sStar) : Prop :=
+    (h : configuration.IsAdmissibleAt barS) : Prop :=
   ∀ (y : ℝ)
     (hyLower : dist (configuration .blue .left) (configuration .blue .right) - 1 ≤ y)
     (hyUpper : y ≤ 1),
-    (blueSiblingTrianglePackingAtEndpoint configuration h y hyLower hyUpper).score sStar < 0
+    (blueSiblingTrianglePackingAtEndpoint configuration h y hyLower hyUpper).score barS < 0
 
 /-- Negative score for every support `67` split yields a child-labelled failure witness. -/
 theorem exists_redSiblingTriangleFailure_of_score_failure
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hfailure : RedSiblingTriangleFails configuration h) :
     ∃ witness, redSiblingTriangleFailure configuration witness := by
   apply exists_redSiblingTriangleFailure_of_split_failure h
   intro x hxLower hxUpper
   have hscore := hfailure x hxLower hxUpper
   have hredOne : 1 ≤ dist (configuration .red .left) (configuration .red .right) :=
-    one_lt_cStar_and_cStar_lt_two.1.le.trans
+    one_lt_barC_and_barC_lt_two.1.le.trans
       (sibling_distance_mem_endpoint_interval h .red).1
   have hblueOne : 1 ≤ dist (configuration .blue .left) (configuration .blue .right) :=
-    one_lt_cStar_and_cStar_lt_two.1.le.trans
+    one_lt_barC_and_barC_lt_two.1.le.trans
       (sibling_distance_mem_endpoint_interval h .blue).1
   simp only [redSiblingTrianglePackingAtEndpoint, SixPointPacking.score] at hscore
   rw [redSiblingBlueTrianglePacking_totalRadius,
     redSiblingBlueTrianglePacking_virtualDiameter (hM := hblueOne) (hMdist := rfl)] at hscore
-  rw [sStar] at hscore
-  rw [show 2 * (cStar / 2) = cStar by ring] at hscore
+  rw [barS] at hscore
+  rw [show 2 * (barC / 2) = barC by ring] at hscore
   have hquotient :
       dist (configuration .red .left) (configuration .red .right) +
           rootedTriangleTotalRadius configuration .blue <
@@ -680,31 +681,31 @@ theorem exists_redSiblingTriangleFailure_of_score_failure
             (dist (configuration .red .left) (configuration .red .right))
             (dist (configuration .blue .left) (configuration .blue .right)) x
             (redSiblingBlueTriangleReach configuration .left)
-            (redSiblingBlueTriangleReach configuration .right) / cStar := by
+            (redSiblingBlueTriangleReach configuration .right) / barC := by
     simp only [rootedTriangleTotalRadius]
     linarith
   rw [redSiblingTriangleTarget]
-  nlinarith [(lt_div_iff₀ cStar_pos).1 hquotient]
+  nlinarith [(lt_div_iff₀ barC_pos).1 hquotient]
 
 /-- Negative score for every support `76` split yields a child-labelled failure witness. -/
 theorem exists_blueSiblingTriangleFailure_of_score_failure
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hfailure : BlueSiblingTriangleFails configuration h) :
     ∃ witness, blueSiblingTriangleFailure configuration witness := by
   apply exists_blueSiblingTriangleFailure_of_split_failure h
   intro y hyLower hyUpper
   have hscore := hfailure y hyLower hyUpper
   have hblueOne : 1 ≤ dist (configuration .blue .left) (configuration .blue .right) :=
-    one_lt_cStar_and_cStar_lt_two.1.le.trans
+    one_lt_barC_and_barC_lt_two.1.le.trans
       (sibling_distance_mem_endpoint_interval h .blue).1
   have hredOne : 1 ≤ dist (configuration .red .left) (configuration .red .right) :=
-    one_lt_cStar_and_cStar_lt_two.1.le.trans
+    one_lt_barC_and_barC_lt_two.1.le.trans
       (sibling_distance_mem_endpoint_interval h .red).1
   simp only [blueSiblingTrianglePackingAtEndpoint, SixPointPacking.score] at hscore
   rw [blueSiblingRedTrianglePacking_totalRadius,
     blueSiblingRedTrianglePacking_virtualDiameter (hL := hredOne) (hLdist := rfl)] at hscore
-  rw [sStar] at hscore
-  rw [show 2 * (cStar / 2) = cStar by ring] at hscore
+  rw [barS] at hscore
+  rw [show 2 * (barC / 2) = barC by ring] at hscore
   have hquotient :
       dist (configuration .blue .left) (configuration .blue .right) +
           rootedTriangleTotalRadius configuration .red <
@@ -712,26 +713,26 @@ theorem exists_blueSiblingTriangleFailure_of_score_failure
             (dist (configuration .blue .left) (configuration .blue .right))
             (dist (configuration .red .left) (configuration .red .right)) y
             (blueSiblingRedTriangleReach configuration .left)
-            (blueSiblingRedTriangleReach configuration .right) / cStar := by
+            (blueSiblingRedTriangleReach configuration .right) / barC := by
     simp only [rootedTriangleTotalRadius]
     linarith
   rw [blueSiblingTriangleTarget]
-  nlinarith [(lt_div_iff₀ cStar_pos).1 hquotient]
+  nlinarith [(lt_div_iff₀ barC_pos).1 hquotient]
 
 /-- Coincident endpoint failures at `B11` imply the first exact `q2` inequality. -/
 theorem q2_strict_of_matched_endpoint_zero {configuration : SixPointConfiguration}
-    (h : configuration.IsAdmissibleAt sStar)
+    (h : configuration.IsAdmissibleAt barS)
     (hred : redSiblingTriangleFailure configuration (.endpoint 0))
     (hblue : blueSiblingTriangleFailure configuration (.endpoint 0)) :
-    ((cStar - 1) * matchedChildAverage configuration 0 +
-        (cStar + 1) * matchedChildAverage configuration 1 +
-        3 * cStar ^ 2 - 3 * cStar + 2) / 2 <
+    ((barC - 1) * matchedChildAverage configuration 0 +
+        (barC + 1) * matchedChildAverage configuration 1 +
+        3 * barC ^ 2 - 3 * barC + 2) / 2 <
       dist (configuration .red .left) (configuration .blue .left) := by
   have hL := (sibling_distance_mem_endpoint_interval h .red).1
   have hM := (sibling_distance_mem_endpoint_interval h .blue).1
-  have hcoefficient : 0 ≤ 3 * (cStar - 1) / 2 := by
-    nlinarith [one_lt_cStar_and_cStar_lt_two.1]
-  have hsiblingSum := mul_le_mul_of_nonneg_left (show 2 * cStar ≤
+  have hcoefficient : 0 ≤ 3 * (barC - 1) / 2 := by
+    nlinarith [one_lt_barC_and_barC_lt_two.1]
+  have hsiblingSum := mul_le_mul_of_nonneg_left (show 2 * barC ≤
       dist (configuration .red .left) (configuration .red .right) +
         dist (configuration .blue .left) (configuration .blue .right) by linarith)
     hcoefficient
@@ -746,18 +747,18 @@ theorem q2_strict_of_matched_endpoint_zero {configuration : SixPointConfiguratio
 
 /-- Coincident endpoint failures at `B22` imply the child-swapped exact `q2` inequality. -/
 theorem q2_strict_of_matched_endpoint_three {configuration : SixPointConfiguration}
-    (h : configuration.IsAdmissibleAt sStar)
+    (h : configuration.IsAdmissibleAt barS)
     (hred : redSiblingTriangleFailure configuration (.endpoint 3))
     (hblue : blueSiblingTriangleFailure configuration (.endpoint 3)) :
-    ((cStar - 1) * matchedChildAverage configuration 1 +
-        (cStar + 1) * matchedChildAverage configuration 0 +
-        3 * cStar ^ 2 - 3 * cStar + 2) / 2 <
+    ((barC - 1) * matchedChildAverage configuration 1 +
+        (barC + 1) * matchedChildAverage configuration 0 +
+        3 * barC ^ 2 - 3 * barC + 2) / 2 <
       dist (configuration .red .right) (configuration .blue .right) := by
   have hL := (sibling_distance_mem_endpoint_interval h .red).1
   have hM := (sibling_distance_mem_endpoint_interval h .blue).1
-  have hcoefficient : 0 ≤ 3 * (cStar - 1) / 2 := by
-    nlinarith [one_lt_cStar_and_cStar_lt_two.1]
-  have hsiblingSum := mul_le_mul_of_nonneg_left (show 2 * cStar ≤
+  have hcoefficient : 0 ≤ 3 * (barC - 1) / 2 := by
+    nlinarith [one_lt_barC_and_barC_lt_two.1]
+  have hsiblingSum := mul_le_mul_of_nonneg_left (show 2 * barC ≤
       dist (configuration .red .left) (configuration .red .right) +
         dist (configuration .blue .left) (configuration .blue .right) by linarith)
     hcoefficient
@@ -772,7 +773,7 @@ theorem q2_strict_of_matched_endpoint_three {configuration : SixPointConfigurati
 
 /-- The selected-matching disjoint endpoint incidence is impossible. -/
 theorem not_redEndpoint_zero_and_blueEndpoint_three
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar) :
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS) :
     ¬ (redSiblingTriangleFailure configuration (.endpoint 0) ∧
       blueSiblingTriangleFailure configuration (.endpoint 3)) := by
   rintro ⟨hred, hblue⟩
@@ -801,11 +802,11 @@ theorem not_redEndpoint_zero_and_blueEndpoint_three
             dist (configuration .blue .root) (configuration .blue .right)) := by
     linarith
   have hsumScaled := mul_le_mul_of_nonpos_left hsum
-    (show (1 - cStar) / 2 ≤ 0 by nlinarith [one_lt_cStar_and_cStar_lt_two.1])
-  have hPscaled := mul_le_mul_of_nonpos_left (show 2 * cStar ≤
+    (show (1 - barC) / 2 ≤ 0 by nlinarith [one_lt_barC_and_barC_lt_two.1])
+  have hPscaled := mul_le_mul_of_nonpos_left (show 2 * barC ≤
       dist (configuration .red .left) (configuration .red .right) +
         dist (configuration .blue .left) (configuration .blue .right) by linarith)
-    (show 2 * (1 - cStar) ≤ 0 by nlinarith [one_lt_cStar_and_cStar_lt_two.1])
+    (show 2 * (1 - barC) ≤ 0 by nlinarith [one_lt_barC_and_barC_lt_two.1])
   simp [redSiblingTriangleFailure, blueSiblingTriangleFailure,
     transposeBlueEndpointWitness, transposeEndpointCode,
     siblingTriangleWitnessExceeds, incidenceFirst, incidenceSecond, incidenceChild,
@@ -813,11 +814,11 @@ theorem not_redEndpoint_zero_and_blueEndpoint_three
     redSiblingBlueTriangleReach, blueSiblingRedTriangleReach, canonicalTriangleRadius]
     at hred hblue
   rw [dist_comm (configuration .blue .right) (configuration .red .right)] at hblue
-  nlinarith [cStar_disjoint_gap_neg]
+  nlinarith [barC_disjoint_gap_neg]
 
 /-- The off-matching disjoint endpoint incidence is impossible. -/
 theorem not_redEndpoint_one_and_blueEndpoint_two
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar) :
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS) :
     ¬ (redSiblingTriangleFailure configuration (.endpoint 1) ∧
       blueSiblingTriangleFailure configuration (.endpoint 2)) := by
   rintro ⟨hred, hblue⟩
@@ -846,11 +847,11 @@ theorem not_redEndpoint_one_and_blueEndpoint_two
             dist (configuration .blue .root) (configuration .blue .left)) := by
     linarith
   have hsumScaled := mul_le_mul_of_nonpos_left hsum
-    (show (1 - cStar) / 2 ≤ 0 by nlinarith [one_lt_cStar_and_cStar_lt_two.1])
-  have hPscaled := mul_le_mul_of_nonpos_left (show 2 * cStar ≤
+    (show (1 - barC) / 2 ≤ 0 by nlinarith [one_lt_barC_and_barC_lt_two.1])
+  have hPscaled := mul_le_mul_of_nonpos_left (show 2 * barC ≤
       dist (configuration .red .left) (configuration .red .right) +
         dist (configuration .blue .left) (configuration .blue .right) by linarith)
-    (show 2 * (1 - cStar) ≤ 0 by nlinarith [one_lt_cStar_and_cStar_lt_two.1])
+    (show 2 * (1 - barC) ≤ 0 by nlinarith [one_lt_barC_and_barC_lt_two.1])
   simp [redSiblingTriangleFailure, blueSiblingTriangleFailure,
     transposeBlueEndpointWitness, transposeEndpointCode,
     siblingTriangleWitnessExceeds, incidenceFirst, incidenceSecond, incidenceChild,
@@ -858,7 +859,7 @@ theorem not_redEndpoint_one_and_blueEndpoint_two
     redSiblingBlueTriangleReach, blueSiblingRedTriangleReach, canonicalTriangleRadius]
     at hred hblue
   rw [dist_comm (configuration .blue .left) (configuration .red .right)] at hblue
-  nlinarith [cStar_disjoint_gap_neg]
+  nlinarith [barC_disjoint_gap_neg]
 
 /-- The analytic exclusions required by the complete sibling-incidence ledger. -/
 structure SiblingIncidenceExclusions
@@ -904,7 +905,7 @@ theorem exists_matched_endpoint_of_siblingIncidenceExclusions
 
 /-- If supports `67` and `76` both fail, the incidence ledger selects one diagonal endpoint. -/
 theorem exists_matched_endpoint_of_siblingTriangle_score_failures
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hred : RedSiblingTriangleFails configuration h)
     (hblue : BlueSiblingTriangleFails configuration h)
     (hexclusions : SiblingIncidenceExclusions (redSiblingTriangleFailure configuration)
@@ -918,18 +919,18 @@ theorem exists_matched_endpoint_of_siblingTriangle_score_failures
 
 /-- Simultaneous `67` and `76` failures force the exact `q2` inequality at one matched child. -/
 theorem q2_strict_of_siblingTriangle_score_failures
-    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt sStar)
+    {configuration : SixPointConfiguration} (h : configuration.IsAdmissibleAt barS)
     (hred : RedSiblingTriangleFails configuration h)
     (hblue : BlueSiblingTriangleFails configuration h)
     (hexclusions : SiblingIncidenceExclusions (redSiblingTriangleFailure configuration)
       (blueSiblingTriangleFailure configuration)) :
-    ((cStar - 1) * matchedChildAverage configuration 0 +
-          (cStar + 1) * matchedChildAverage configuration 1 +
-          3 * cStar ^ 2 - 3 * cStar + 2) / 2 <
+    ((barC - 1) * matchedChildAverage configuration 0 +
+          (barC + 1) * matchedChildAverage configuration 1 +
+          3 * barC ^ 2 - 3 * barC + 2) / 2 <
         dist (configuration .red .left) (configuration .blue .left) ∨
-      ((cStar - 1) * matchedChildAverage configuration 1 +
-          (cStar + 1) * matchedChildAverage configuration 0 +
-          3 * cStar ^ 2 - 3 * cStar + 2) / 2 <
+      ((barC - 1) * matchedChildAverage configuration 1 +
+          (barC + 1) * matchedChildAverage configuration 0 +
+          3 * barC ^ 2 - 3 * barC + 2) / 2 <
         dist (configuration .red .right) (configuration .blue .right) := by
   obtain ⟨code, hcode, hredCode, hblueCode⟩ :=
     exists_matched_endpoint_of_siblingTriangle_score_failures h hred hblue hexclusions

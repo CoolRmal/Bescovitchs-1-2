@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.Main.Bound
 public import Bescovitch.SixPoint.EndpointPacking
 
@@ -21,10 +22,10 @@ noncomputable section
 namespace Bescovitch
 
 /-- The weighted geometric bound implies the desired bound for the planar density threshold. -/
-theorem sigmaOne_plane_le_sStar_of_weightedGeometricBound
+theorem sigmaOne_plane_le_barS_of_weightedGeometricBound
     (hweighted : WeightedGeometricBound) :
-    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ sStar :=
-  sigmaOne_plane_le_sStar_of_sixPointFiniteProperty
-    (sixPointFiniteProperty_sStar_of_weightedGeometricBound hweighted)
+    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ barS :=
+  sigmaOne_plane_le_barS_of_sixPointFiniteProperty
+    (sixPointFiniteProperty_barS_of_weightedGeometricBound hweighted)
 
 end Bescovitch

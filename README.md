@@ -17,13 +17,13 @@ still has a development hole and must not yet be treated as a completed proof. S
 **The formalization currently targets the weaker rational bound**
 
 $$
-\sigma_1(\mathbb{R}^2) \le \frac{699}{1000},
+\sigma_1(\mathbb{R}^2) \le \frac{6934}{10000},
 $$
 
 which still improves on the published $0.7$. The sharp constant $s_{\ast}$ is what the six-point
 analysis below actually computes, but certifying it in Lean requires the endpoint to be attained
 exactly, and that tightness is what makes the finite certificates expensive. Away from the
-endpoint the same argument carries a margin of about $0.2$ instead of $10^{-8}$, which is what
+endpoint the same argument carries a margin of about $3\times10^{-3}$ instead of $10^{-8}$, which is what
 makes the rational target reachable. `DEVELOPMENT_PLAN.md` records the measurements behind that
 choice.
 

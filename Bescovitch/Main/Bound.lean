@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.BPC.Rectifiability
 public import Bescovitch.BPC.SixPointTransfer
 public import Bescovitch.Certificates.EndpointBridge
@@ -54,9 +55,9 @@ theorem SixPointFiniteProperty.sigmaOne_plane_le {s : ℝ}
 
 /-- The desired planar bound follows from the finite six-point property at the certified
 endpoint. -/
-theorem sigmaOne_plane_le_sStar_of_sixPointFiniteProperty
-    (hfinite : SixPointFiniteProperty sStar) :
-    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ sStar :=
-  hfinite.sigmaOne_plane_le sStar_pos sStar_lt_one
+theorem sigmaOne_plane_le_barS_of_sixPointFiniteProperty
+    (hfinite : SixPointFiniteProperty barS) :
+    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ barS :=
+  hfinite.sigmaOne_plane_le barS_pos barS_lt_one
 
 end Bescovitch

@@ -50,8 +50,8 @@ def sigmaOne (X : Type*) [MetricSpace X] [MeasurableSpace X] [BorelSpace X] : �
   sInf {β : ℝ | 0 ≤ β ∧ ForcesOneRectifiability X (ENNReal.ofReal β)}
 
 /-- The planar one-dimensional rectifiability threshold is below the previous record. -/
-theorem sigma_one_plane_le_699_div_1000 :
-    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ 699 / 1000 := by
+theorem sigma_one_plane_le_6934_div_10000 :
+    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ 6934 / 10000 := by
   sorry
 
 end Bescovitch

@@ -5,6 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
+public import Bescovitch.SixPoint.RationalChord
 public import Bescovitch.Certificates.EndpointBridge
 public import Bescovitch.SixPoint.EndpointGeometry
 
@@ -13,7 +14,7 @@ public import Bescovitch.SixPoint.EndpointGeometry
 
 This file proves the two-point tangent inequality used by the rational cells in the complete
 sibling-incidence ledger. Its endpoint checks use only rational arithmetic and the certified
-isolation interval for `cStar`.
+isolation interval for `barC`.
 -/
 
 @[expose] public section
@@ -315,151 +316,151 @@ theorem twoPointTangent_le_vertices {E : Type*} [NormedAddCommGroup E]
 
 local macro "verify_pair_tangent_maximum" : tactic => `(tactic|
   (simp only [pairTangentMaximum, max_le_iff]
-   rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+   rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
    constructor
    · norm_num [pairTangentValue]
-     nlinarith [sq_nonneg (cStar - 1)]
+     nlinarith [sq_nonneg (barC - 1)]
    constructor
    · norm_num [pairTangentValue]
-     nlinarith [sq_nonneg (cStar - 1)]
+     nlinarith [sq_nonneg (barC - 1)]
    · norm_num [pairTangentValue]
-     nlinarith [sq_nonneg (cStar - 1)]))
+     nlinarith [sq_nonneg (barC - 1)]))
 
 private theorem tangentMaximum_e0s1_red :
-    pairTangentMaximum cStar (29 / 4) (15 / 4) (13 * cStar / 2) (13 * cStar / 2)
+    pairTangentMaximum barC (29 / 4) (15 / 4) (13 * barC / 2) (13 * barC / 2)
       (2903 / 1000) (2104 / 1000) (2599 / 1000) ≤ 1687 / 125 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_e0s1_blue :
-    pairTangentMaximum cStar (29 / 4) (15 / 4) (7 * (cStar - 1) / 2)
-      (7 * (cStar + 1) / 2) (2910 / 1000) (2220 / 1000) (2669 / 1000) ≤
+    pairTangentMaximum barC (29 / 4) (15 / 4) (7 * (barC - 1) / 2)
+      (7 * (barC + 1) / 2) (2910 / 1000) (2220 / 1000) (2669 / 1000) ≤
         21643 / 1000 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_e0s2_red :
-    pairTangentMaximum cStar (9 / 4) (5 / 4) (3 * cStar / 2) (3 * cStar / 2)
+    pairTangentMaximum barC (9 / 4) (5 / 4) (3 * barC / 2) (3 * barC / 2)
       (2904 / 1000) (2675 / 1000) (920 / 1000) ≤ 229 / 40 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_e0s2_blue :
-    pairTangentMaximum cStar (9 / 4) (5 / 4) (cStar - 1) (cStar + 1)
+    pairTangentMaximum barC (9 / 4) (5 / 4) (barC - 1) (barC + 1)
       (2901 / 1000) (2495 / 1000) (890 / 1000) ≤ 1781 / 250 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_e0s3_red :
-    pairTangentMaximum cStar 23 (59 / 2) (27 * (cStar + 1)) (27 * (cStar - 1))
+    pairTangentMaximum barC 23 (59 / 2) (27 * (barC + 1)) (27 * (barC - 1))
       (1999 / 1000) (2813 / 1000) (10791 / 1000) ≤ 7871 / 100 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_e0s3_blue :
-    pairTangentMaximum cStar (73 / 2) 16 (41 * (cStar - 1) / 2)
-      (41 * (cStar + 1) / 2) (2908 / 1000) (1739 / 1000) (11850 / 1000) ≤
+    pairTangentMaximum barC (73 / 2) 16 (41 * (barC - 1) / 2)
+      (41 * (barC + 1) / 2) (2908 / 1000) (1739 / 1000) (11850 / 1000) ≤
         19511 / 200 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_e1s1_red :
-    pairTangentMaximum cStar 7 (7 / 2) (6 * cStar) (6 * cStar)
+    pairTangentMaximum barC 7 (7 / 2) (6 * barC) (6 * barC)
       (2903 / 1000) (2116 / 1000) (2499 / 1000) ≤ 13433 / 1000 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_e1s1_blue :
-    pairTangentMaximum cStar (7 / 2) 7 (7 * (cStar + 1) / 2)
-      (7 * (cStar - 1) / 2) (2102 / 1000) (2896 / 1000) (2524 / 1000) ≤
+    pairTangentMaximum barC (7 / 2) 7 (7 * (barC + 1) / 2)
+      (7 * (barC - 1) / 2) (2102 / 1000) (2896 / 1000) (2524 / 1000) ≤
         2547 / 125 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_e1s3_red :
-    pairTangentMaximum cStar 7 (19 / 2) (8 * (cStar + 1)) (8 * (cStar - 1))
+    pairTangentMaximum barC 7 (19 / 2) (8 * (barC + 1)) (8 * (barC - 1))
       (2024 / 1000) (2832 / 1000) (3439 / 1000) ≤ 12917 / 500 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_e1s3_blue :
-    pairTangentMaximum cStar (11 / 2) 11 (11 * (cStar + 1) / 2)
-      (11 * (cStar - 1) / 2) (2113 / 1000) (2915 / 1000) (3895 / 1000) ≤
+    pairTangentMaximum barC (11 / 2) 11 (11 * (barC + 1) / 2)
+      (11 * (barC - 1) / 2) (2113 / 1000) (2915 / 1000) (3895 / 1000) ≤
         16009 / 500 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_s1s1_red :
-    pairTangentMaximum cStar (13 / 2) (13 / 2) (6 * cStar) (6 * cStar)
+    pairTangentMaximum barC (13 / 2) (13 / 2) (6 * barC) (6 * barC)
       (2807 / 1000) (2808 / 1000) (3337 / 1000) ≤ 993 / 50 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_s1s1_blue :
-    pairTangentMaximum cStar (13 / 2) (13 / 2) (6 * cStar) (6 * cStar)
+    pairTangentMaximum barC (13 / 2) (13 / 2) (6 * barC) (6 * barC)
       (2808 / 1000) (2806 / 1000) (3338 / 1000) ≤ 993 / 50 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_s2s2_red :
-    pairTangentMaximum cStar (9 / 2) (9 / 2) (4 * cStar) (4 * cStar)
+    pairTangentMaximum barC (9 / 2) (9 / 2) (4 * barC) (4 * barC)
       (2807 / 1000) (2808 / 1000) (2310 / 1000) ≤ 1772 / 125 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_s2s2_blue :
-    pairTangentMaximum cStar (9 / 2) (9 / 2) (4 * cStar) (4 * cStar)
+    pairTangentMaximum barC (9 / 2) (9 / 2) (4 * barC) (4 * barC)
       (2808 / 1000) (2808 / 1000) (2310 / 1000) ≤ 1772 / 125 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_e1s2_red :
-    pairTangentMaximum cStar (13 / 4) (7 / 4) (7 * cStar / 2) (7 * cStar / 2)
+    pairTangentMaximum barC (13 / 4) (7 / 4) (7 * barC / 2) (7 * barC / 2)
       (2889 / 1000) (1919 / 1000) (1109 / 1000) ≤ 4833 / 1000 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_e1s2_blue :
-    pairTangentMaximum cStar (7 / 4) (13 / 4) (3 * (cStar + 1) / 2)
-      (3 * (cStar - 1) / 2) (2373 / 1000) (2901 / 1000) (1238 / 1000) ≤
+    pairTangentMaximum barC (7 / 4) (13 / 4) (3 * (barC + 1) / 2)
+      (3 * (barC - 1) / 2) (2373 / 1000) (2901 / 1000) (1238 / 1000) ≤
         5009 / 500 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_s0s1_red :
-    pairTangentMaximum cStar (7 / 4) (7 / 4) (5 * cStar / 2) (5 * cStar / 2)
+    pairTangentMaximum barC (7 / 4) (7 / 4) (5 * barC / 2) (5 * barC / 2)
       (2580 / 1000) (2580 / 1000) (804 / 1000) ≤ 2967 / 1000 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_s0s1_blue :
-    pairTangentMaximum cStar (9 / 4) (5 / 4) (cStar - 1) (cStar + 1)
+    pairTangentMaximum barC (9 / 4) (5 / 4) (barC - 1) (barC + 1)
       (2902 / 1000) (2491 / 1000) (893 / 1000) ≤ 1781 / 250 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_s0s2_red :
-    pairTangentMaximum cStar (7 / 4) (7 / 4) (5 * cStar / 2) (5 * cStar / 2)
+    pairTangentMaximum barC (7 / 4) (7 / 4) (5 * barC / 2) (5 * barC / 2)
       (2584 / 1000) (2584 / 1000) (801 / 1000) ≤ 1483 / 500 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_s0s2_blue :
-    pairTangentMaximum cStar (9 / 4) (5 / 4) (cStar - 1) (cStar + 1)
+    pairTangentMaximum barC (9 / 4) (5 / 4) (barC - 1) (barC + 1)
       (2897 / 1000) (2493 / 1000) (892 / 1000) ≤ 1781 / 250 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_s1s2_red :
-    pairTangentMaximum cStar (7 / 4) (7 / 4) (5 * cStar / 2) (5 * cStar / 2)
+    pairTangentMaximum barC (7 / 4) (7 / 4) (5 * barC / 2) (5 * barC / 2)
       (2583 / 1000) (2583 / 1000) (802 / 1000) ≤ 1483 / 500 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_s1s2_blue :
-    pairTangentMaximum cStar (7 / 4) (7 / 4) cStar cStar
+    pairTangentMaximum barC (7 / 4) (7 / 4) barC barC
       (2804 / 1000) (2808 / 1000) (897 / 1000) ≤ 3527 / 500 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_adjacentFirst_red :
-    pairTangentMaximum cStar (9 / 4) (1 / 2) (7 * (cStar - 1) / 8)
-      (7 * (cStar + 1) / 8) (49 / 16) (5 / 4) (13 / 20) ≤ 742013 / 125000 := by
+    pairTangentMaximum barC (9 / 4) (1 / 2) (7 * (barC - 1) / 8)
+      (7 * (barC + 1) / 8) (49 / 16) (5 / 4) (13 / 20) ≤ 742013 / 125000 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_adjacentFirst_blue :
-    pairTangentMaximum cStar (11 / 8) (11 / 8) (7 * (cStar - 1) / 8)
-      (7 * (cStar + 1) / 8) (351 / 125) (351 / 125) (353 / 500) ≤
+    pairTangentMaximum barC (11 / 8) (11 / 8) (7 * (barC - 1) / 8)
+      (7 * (barC + 1) / 8) (351 / 125) (351 / 125) (353 / 500) ≤
         2647153 / 500000 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_adjacentSecond_red :
-    pairTangentMaximum cStar (11 / 8) (11 / 8) (7 * (cStar + 1) / 8)
-      (7 * (cStar - 1) / 8) (2808 / 1000) (2808 / 1000) (706 / 1000) ≤
+    pairTangentMaximum barC (11 / 8) (11 / 8) (7 * (barC + 1) / 8)
+      (7 * (barC - 1) / 8) (2808 / 1000) (2808 / 1000) (706 / 1000) ≤
         2647153 / 500000 := by
   verify_pair_tangent_maximum
 
 private theorem tangentMaximum_adjacentSecond_blue :
-    pairTangentMaximum cStar (9 / 4) (1 / 2) (7 * (cStar - 1) / 8)
-      (7 * (cStar + 1) / 8) (2973 / 1000) (1247 / 1000) (660 / 1000) ≤
+    pairTangentMaximum barC (9 / 4) (1 / 2) (7 * (barC - 1) / 8)
+      (7 * (barC + 1) / 8) (2973 / 1000) (1247 / 1000) (660 / 1000) ≤
         237273 / 40000 := by
   verify_pair_tangent_maximum
 
@@ -468,26 +469,26 @@ theorem tangentCertificate_e0s1 {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     29 / 2 * ‖e - p₁ - w₁‖ + 15 / 2 * ‖e - p₂ - w₂‖ -
-        13 * cStar / 2 * ‖p₁‖ - 13 * cStar / 2 * ‖p₂‖ -
-        7 * (cStar - 1) / 2 * ‖w₁‖ - 7 * (cStar + 1) / 2 * ‖w₂‖ - 7 +
-        51 / 2 * cStar - 34 * cStar ^ 2 < 0 := by
+        13 * barC / 2 * ‖p₁‖ - 13 * barC / 2 * ‖p₂‖ -
+        7 * (barC - 1) / 2 * ‖w₁‖ - 7 * (barC + 1) / 2 * ‖w₂‖ - 7 +
+        51 / 2 * barC - 34 * barC ^ 2 < 0 := by
   have hmid := weightedCrossDistances_le e p₁ p₂ w₁ w₂ (29 / 2) 0 0 (15 / 2)
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hp := twoPointTangent_le_vertices e p₁ p₂ cStar (29 / 4) (15 / 4)
-    (13 * cStar / 2) (13 * cStar / 2) (2903 / 1000) (2104 / 1000) (2599 / 1000)
-    he hp₁ hp₂ hpsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hp := twoPointTangent_le_vertices e p₁ p₂ barC (29 / 4) (15 / 4)
+    (13 * barC / 2) (13 * barC / 2) (2903 / 1000) (2104 / 1000) (2599 / 1000)
+    he hp₁ hp₂ hpsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hw := twoPointTangent_le_vertices e w₁ w₂ cStar (29 / 4) (15 / 4)
-    (7 * (cStar - 1) / 2) (7 * (cStar + 1) / 2) (2910 / 1000) (2220 / 1000)
-    (2669 / 1000) he hw₁ hw₂ hwsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num)
+  have hw := twoPointTangent_le_vertices e w₁ w₂ barC (29 / 4) (15 / 4)
+    (7 * (barC - 1) / 2) (7 * (barC + 1) / 2) (2910 / 1000) (2220 / 1000)
+    (2669 / 1000) he hw₁ hw₂ hwsep barC_pos.le (by norm_num) (by norm_num) (by norm_num)
       (by norm_num) (by norm_num)
-  have hconstant : 1687 / 125 + 21643 / 1000 - 7 + 51 / 2 * cStar -
-      34 * cStar ^ 2 < 0 := by
-    rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  have hconstant : 1687 / 125 + 21643 / 1000 - 7 + 51 / 2 * barC -
+      34 * barC ^ 2 < 0 := by
+    rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
     norm_num at hlower hupper ⊢
-    nlinarith [sq_nonneg (cStar - 1)]
+    nlinarith [sq_nonneg (barC - 1)]
   nlinarith [tangentMaximum_e0s1_red, tangentMaximum_e0s1_blue]
 
 /-- The rational tangent separator for the `E0/S2` incidence representative. -/
@@ -495,27 +496,27 @@ theorem tangentCertificate_e0s2 {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     3 * ‖e - p₁ - w₁‖ + 3 / 2 * ‖e - p₁ - w₂‖ +
         3 / 2 * ‖e - p₂ - w₁‖ + ‖e - p₂ - w₂‖ -
-        3 * cStar / 2 * ‖p₁‖ - 3 * cStar / 2 * ‖p₂‖ -
-        (cStar - 1) * ‖w₁‖ - (cStar + 1) * ‖w₂‖ - 2 + 8 * cStar -
-        23 / 2 * cStar ^ 2 < 0 := by
+        3 * barC / 2 * ‖p₁‖ - 3 * barC / 2 * ‖p₂‖ -
+        (barC - 1) * ‖w₁‖ - (barC + 1) * ‖w₂‖ - 2 + 8 * barC -
+        23 / 2 * barC ^ 2 < 0 := by
   have hmid := weightedCrossDistances_le e p₁ p₂ w₁ w₂ 3 (3 / 2) (3 / 2) 1
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hp := twoPointTangent_le_vertices e p₁ p₂ cStar (9 / 4) (5 / 4)
-    (3 * cStar / 2) (3 * cStar / 2) (2904 / 1000) (2675 / 1000) (920 / 1000)
-    he hp₁ hp₂ hpsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hp := twoPointTangent_le_vertices e p₁ p₂ barC (9 / 4) (5 / 4)
+    (3 * barC / 2) (3 * barC / 2) (2904 / 1000) (2675 / 1000) (920 / 1000)
+    he hp₁ hp₂ hpsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hw := twoPointTangent_le_vertices e w₁ w₂ cStar (9 / 4) (5 / 4)
-    (cStar - 1) (cStar + 1) (2901 / 1000) (2495 / 1000) (890 / 1000)
-    he hw₁ hw₂ hwsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hw := twoPointTangent_le_vertices e w₁ w₂ barC (9 / 4) (5 / 4)
+    (barC - 1) (barC + 1) (2901 / 1000) (2495 / 1000) (890 / 1000)
+    he hw₁ hw₂ hwsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hconstant : 229 / 40 + 1781 / 250 - 2 + 8 * cStar -
-      23 / 2 * cStar ^ 2 < 0 := by
-    rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  have hconstant : 229 / 40 + 1781 / 250 - 2 + 8 * barC -
+      23 / 2 * barC ^ 2 < 0 := by
+    rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
     norm_num at hlower hupper ⊢
-    nlinarith [sq_nonneg (cStar - 1)]
+    nlinarith [sq_nonneg (barC - 1)]
   nlinarith [tangentMaximum_e0s2_red, tangentMaximum_e0s2_blue]
 
 /-- The rational tangent separator for the `E0/S3` incidence representative. -/
@@ -523,26 +524,26 @@ theorem tangentCertificate_e0s3 {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     46 * ‖e - p₁ - w₁‖ + 27 * ‖e - p₂ - w₁‖ + 32 * ‖e - p₂ - w₂‖ -
-        27 * (cStar + 1) * ‖p₁‖ - 27 * (cStar - 1) * ‖p₂‖ -
-        41 * (cStar - 1) / 2 * ‖w₁‖ - 41 * (cStar + 1) / 2 * ‖w₂‖ - 41 +
-        251 / 2 * cStar - 325 / 2 * cStar ^ 2 < 0 := by
+        27 * (barC + 1) * ‖p₁‖ - 27 * (barC - 1) * ‖p₂‖ -
+        41 * (barC - 1) / 2 * ‖w₁‖ - 41 * (barC + 1) / 2 * ‖w₂‖ - 41 +
+        251 / 2 * barC - 325 / 2 * barC ^ 2 < 0 := by
   have hmid := weightedCrossDistances_le e p₁ p₂ w₁ w₂ 46 0 27 32
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hp := twoPointTangent_le_vertices e p₁ p₂ cStar 23 (59 / 2)
-    (27 * (cStar + 1)) (27 * (cStar - 1)) (1999 / 1000) (2813 / 1000)
-    (10791 / 1000) he hp₁ hp₂ hpsep cStar_pos.le (by norm_num) (by norm_num)
+  have hp := twoPointTangent_le_vertices e p₁ p₂ barC 23 (59 / 2)
+    (27 * (barC + 1)) (27 * (barC - 1)) (1999 / 1000) (2813 / 1000)
+    (10791 / 1000) he hp₁ hp₂ hpsep barC_pos.le (by norm_num) (by norm_num)
       (by norm_num) (by norm_num) (by norm_num)
-  have hw := twoPointTangent_le_vertices e w₁ w₂ cStar (73 / 2) 16
-    (41 * (cStar - 1) / 2) (41 * (cStar + 1) / 2) (2908 / 1000) (1739 / 1000)
-    (11850 / 1000) he hw₁ hw₂ hwsep cStar_pos.le (by norm_num) (by norm_num)
+  have hw := twoPointTangent_le_vertices e w₁ w₂ barC (73 / 2) 16
+    (41 * (barC - 1) / 2) (41 * (barC + 1) / 2) (2908 / 1000) (1739 / 1000)
+    (11850 / 1000) he hw₁ hw₂ hwsep barC_pos.le (by norm_num) (by norm_num)
       (by norm_num) (by norm_num) (by norm_num)
-  have hconstant : 7871 / 100 + 19511 / 200 - 41 + 251 / 2 * cStar -
-      325 / 2 * cStar ^ 2 < 0 := by
-    rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  have hconstant : 7871 / 100 + 19511 / 200 - 41 + 251 / 2 * barC -
+      325 / 2 * barC ^ 2 < 0 := by
+    rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
     norm_num at hlower hupper ⊢
-    nlinarith [sq_nonneg (cStar - 1)]
+    nlinarith [sq_nonneg (barC - 1)]
   nlinarith [tangentMaximum_e0s3_red, tangentMaximum_e0s3_blue]
 
 /-- The rational tangent separator for the `E1/S1` incidence representative. -/
@@ -550,26 +551,26 @@ theorem tangentCertificate_e1s1 {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     7 * ‖e - p₁ - w₁‖ + 7 * ‖e - p₁ - w₂‖ + 7 * ‖e - p₂ - w₂‖ -
-        6 * cStar * ‖p₁‖ - 6 * cStar * ‖p₂‖ -
-        7 * (cStar + 1) / 2 * ‖w₁‖ - 7 * (cStar - 1) / 2 * ‖w₂‖ - 7 +
-        49 / 2 * cStar - 65 / 2 * cStar ^ 2 < 0 := by
+        6 * barC * ‖p₁‖ - 6 * barC * ‖p₂‖ -
+        7 * (barC + 1) / 2 * ‖w₁‖ - 7 * (barC - 1) / 2 * ‖w₂‖ - 7 +
+        49 / 2 * barC - 65 / 2 * barC ^ 2 < 0 := by
   have hmid := weightedCrossDistances_le e p₁ p₂ w₁ w₂ 7 7 0 7
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hp := twoPointTangent_le_vertices e p₁ p₂ cStar 7 (7 / 2) (6 * cStar)
-    (6 * cStar) (2903 / 1000) (2116 / 1000) (2499 / 1000)
-    he hp₁ hp₂ hpsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hp := twoPointTangent_le_vertices e p₁ p₂ barC 7 (7 / 2) (6 * barC)
+    (6 * barC) (2903 / 1000) (2116 / 1000) (2499 / 1000)
+    he hp₁ hp₂ hpsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hw := twoPointTangent_le_vertices e w₁ w₂ cStar (7 / 2) 7
-    (7 * (cStar + 1) / 2) (7 * (cStar - 1) / 2) (2102 / 1000) (2896 / 1000)
-    (2524 / 1000) he hw₁ hw₂ hwsep cStar_pos.le (by norm_num) (by norm_num)
+  have hw := twoPointTangent_le_vertices e w₁ w₂ barC (7 / 2) 7
+    (7 * (barC + 1) / 2) (7 * (barC - 1) / 2) (2102 / 1000) (2896 / 1000)
+    (2524 / 1000) he hw₁ hw₂ hwsep barC_pos.le (by norm_num) (by norm_num)
       (by norm_num) (by norm_num) (by norm_num)
-  have hconstant : 13433 / 1000 + 2547 / 125 - 7 + 49 / 2 * cStar -
-      65 / 2 * cStar ^ 2 < 0 := by
-    rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  have hconstant : 13433 / 1000 + 2547 / 125 - 7 + 49 / 2 * barC -
+      65 / 2 * barC ^ 2 < 0 := by
+    rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
     norm_num at hlower hupper ⊢
-    nlinarith [sq_nonneg (cStar - 1)]
+    nlinarith [sq_nonneg (barC - 1)]
   nlinarith [tangentMaximum_e1s1_red, tangentMaximum_e1s1_blue]
 
 /-- The rational tangent separator for the `E1/S3` incidence representative. -/
@@ -577,27 +578,27 @@ theorem tangentCertificate_e1s3 {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     3 * ‖e - p₁ - w₁‖ + 11 * ‖e - p₁ - w₂‖ +
         8 * ‖e - p₂ - w₁‖ + 11 * ‖e - p₂ - w₂‖ -
-        8 * (cStar + 1) * ‖p₁‖ - 8 * (cStar - 1) * ‖p₂‖ -
-        11 * (cStar + 1) / 2 * ‖w₁‖ - 11 * (cStar - 1) / 2 * ‖w₂‖ - 11 +
-        77 / 2 * cStar - 105 / 2 * cStar ^ 2 < 0 := by
+        8 * (barC + 1) * ‖p₁‖ - 8 * (barC - 1) * ‖p₂‖ -
+        11 * (barC + 1) / 2 * ‖w₁‖ - 11 * (barC - 1) / 2 * ‖w₂‖ - 11 +
+        77 / 2 * barC - 105 / 2 * barC ^ 2 < 0 := by
   have hmid := weightedCrossDistances_le e p₁ p₂ w₁ w₂ 3 11 8 11
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hp := twoPointTangent_le_vertices e p₁ p₂ cStar 7 (19 / 2)
-    (8 * (cStar + 1)) (8 * (cStar - 1)) (2024 / 1000) (2832 / 1000)
-    (3439 / 1000) he hp₁ hp₂ hpsep cStar_pos.le (by norm_num) (by norm_num)
+  have hp := twoPointTangent_le_vertices e p₁ p₂ barC 7 (19 / 2)
+    (8 * (barC + 1)) (8 * (barC - 1)) (2024 / 1000) (2832 / 1000)
+    (3439 / 1000) he hp₁ hp₂ hpsep barC_pos.le (by norm_num) (by norm_num)
       (by norm_num) (by norm_num) (by norm_num)
-  have hw := twoPointTangent_le_vertices e w₁ w₂ cStar (11 / 2) 11
-    (11 * (cStar + 1) / 2) (11 * (cStar - 1) / 2) (2113 / 1000) (2915 / 1000)
-    (3895 / 1000) he hw₁ hw₂ hwsep cStar_pos.le (by norm_num) (by norm_num)
+  have hw := twoPointTangent_le_vertices e w₁ w₂ barC (11 / 2) 11
+    (11 * (barC + 1) / 2) (11 * (barC - 1) / 2) (2113 / 1000) (2915 / 1000)
+    (3895 / 1000) he hw₁ hw₂ hwsep barC_pos.le (by norm_num) (by norm_num)
       (by norm_num) (by norm_num) (by norm_num)
-  have hconstant : 12917 / 500 + 16009 / 500 - 11 + 77 / 2 * cStar -
-      105 / 2 * cStar ^ 2 < 0 := by
-    rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  have hconstant : 12917 / 500 + 16009 / 500 - 11 + 77 / 2 * barC -
+      105 / 2 * barC ^ 2 < 0 := by
+    rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
     norm_num at hlower hupper ⊢
-    nlinarith [sq_nonneg (cStar - 1)]
+    nlinarith [sq_nonneg (barC - 1)]
   nlinarith [tangentMaximum_e1s3_red, tangentMaximum_e1s3_blue]
 
 /-- The rational tangent separator for the `S1/S1` incidence representative. -/
@@ -605,24 +606,24 @@ theorem tangentCertificate_s1s1 {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     13 * ‖e - p₁ - w₁‖ + 13 * ‖e - p₂ - w₂‖ -
-        6 * cStar * ‖p₁‖ - 6 * cStar * ‖p₂‖ -
-        6 * cStar * ‖w₁‖ - 6 * cStar * ‖w₂‖ + 26 * cStar - 40 * cStar ^ 2 < 0 := by
+        6 * barC * ‖p₁‖ - 6 * barC * ‖p₂‖ -
+        6 * barC * ‖w₁‖ - 6 * barC * ‖w₂‖ + 26 * barC - 40 * barC ^ 2 < 0 := by
   have hmid := weightedCrossDistances_le e p₁ p₂ w₁ w₂ 13 0 0 13
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hp := twoPointTangent_le_vertices e p₁ p₂ cStar (13 / 2) (13 / 2)
-    (6 * cStar) (6 * cStar) (2807 / 1000) (2808 / 1000) (3337 / 1000)
-    he hp₁ hp₂ hpsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hp := twoPointTangent_le_vertices e p₁ p₂ barC (13 / 2) (13 / 2)
+    (6 * barC) (6 * barC) (2807 / 1000) (2808 / 1000) (3337 / 1000)
+    he hp₁ hp₂ hpsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hw := twoPointTangent_le_vertices e w₁ w₂ cStar (13 / 2) (13 / 2)
-    (6 * cStar) (6 * cStar) (2808 / 1000) (2806 / 1000) (3338 / 1000)
-    he hw₁ hw₂ hwsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hw := twoPointTangent_le_vertices e w₁ w₂ barC (13 / 2) (13 / 2)
+    (6 * barC) (6 * barC) (2808 / 1000) (2806 / 1000) (3338 / 1000)
+    he hw₁ hw₂ hwsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hconstant : 993 / 50 + 993 / 50 + 26 * cStar - 40 * cStar ^ 2 < 0 := by
-    rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  have hconstant : 993 / 50 + 993 / 50 + 26 * barC - 40 * barC ^ 2 < 0 := by
+    rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
     norm_num at hlower hupper ⊢
-    nlinarith [sq_nonneg (cStar - 1)]
+    nlinarith [sq_nonneg (barC - 1)]
   nlinarith [tangentMaximum_s1s1_red, tangentMaximum_s1s1_blue]
 
 /-- The rational tangent separator for the `S2/S2` incidence representative. -/
@@ -630,25 +631,25 @@ theorem tangentCertificate_s2s2 {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     ‖e - p₁ - w₁‖ + 8 * ‖e - p₁ - w₂‖ +
         8 * ‖e - p₂ - w₁‖ + ‖e - p₂ - w₂‖ -
-        4 * cStar * ‖p₁‖ - 4 * cStar * ‖p₂‖ -
-        4 * cStar * ‖w₁‖ - 4 * cStar * ‖w₂‖ + 18 * cStar - 28 * cStar ^ 2 < 0 := by
+        4 * barC * ‖p₁‖ - 4 * barC * ‖p₂‖ -
+        4 * barC * ‖w₁‖ - 4 * barC * ‖w₂‖ + 18 * barC - 28 * barC ^ 2 < 0 := by
   have hmid := weightedCrossDistances_le e p₁ p₂ w₁ w₂ 1 8 8 1
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hp := twoPointTangent_le_vertices e p₁ p₂ cStar (9 / 2) (9 / 2)
-    (4 * cStar) (4 * cStar) (2807 / 1000) (2808 / 1000) (2310 / 1000)
-    he hp₁ hp₂ hpsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hp := twoPointTangent_le_vertices e p₁ p₂ barC (9 / 2) (9 / 2)
+    (4 * barC) (4 * barC) (2807 / 1000) (2808 / 1000) (2310 / 1000)
+    he hp₁ hp₂ hpsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hw := twoPointTangent_le_vertices e w₁ w₂ cStar (9 / 2) (9 / 2)
-    (4 * cStar) (4 * cStar) (2808 / 1000) (2808 / 1000) (2310 / 1000)
-    he hw₁ hw₂ hwsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hw := twoPointTangent_le_vertices e w₁ w₂ barC (9 / 2) (9 / 2)
+    (4 * barC) (4 * barC) (2808 / 1000) (2808 / 1000) (2310 / 1000)
+    he hw₁ hw₂ hwsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hconstant : 1772 / 125 + 1772 / 125 + 18 * cStar - 28 * cStar ^ 2 < 0 := by
-    rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  have hconstant : 1772 / 125 + 1772 / 125 + 18 * barC - 28 * barC ^ 2 < 0 := by
+    rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
     norm_num at hlower hupper ⊢
-    nlinarith [sq_nonneg (cStar - 1)]
+    nlinarith [sq_nonneg (barC - 1)]
   nlinarith [tangentMaximum_s2s2_red, tangentMaximum_s2s2_blue]
 
 /-- The rational tangent separator for the `E1/S2` incidence representative. -/
@@ -656,26 +657,26 @@ theorem tangentCertificate_e1s2 {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     13 / 2 * ‖e - p₁ - w₂‖ + 7 / 2 * ‖e - p₂ - w₁‖ -
-        7 * cStar / 2 * ‖p₁‖ - 7 * cStar / 2 * ‖p₂‖ -
-        3 * (cStar + 1) / 2 * ‖w₁‖ - 3 * (cStar - 1) / 2 * ‖w₂‖ - 3 +
-        23 / 2 * cStar - 15 * cStar ^ 2 < 0 := by
+        7 * barC / 2 * ‖p₁‖ - 7 * barC / 2 * ‖p₂‖ -
+        3 * (barC + 1) / 2 * ‖w₁‖ - 3 * (barC - 1) / 2 * ‖w₂‖ - 3 +
+        23 / 2 * barC - 15 * barC ^ 2 < 0 := by
   have hmid := weightedCrossDistances_le e p₁ p₂ w₁ w₂ 0 (13 / 2) (7 / 2) 0
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hp := twoPointTangent_le_vertices e p₁ p₂ cStar (13 / 4) (7 / 4)
-    (7 * cStar / 2) (7 * cStar / 2) (2889 / 1000) (1919 / 1000) (1109 / 1000)
-    he hp₁ hp₂ hpsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hp := twoPointTangent_le_vertices e p₁ p₂ barC (13 / 4) (7 / 4)
+    (7 * barC / 2) (7 * barC / 2) (2889 / 1000) (1919 / 1000) (1109 / 1000)
+    he hp₁ hp₂ hpsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hw := twoPointTangent_le_vertices e w₁ w₂ cStar (7 / 4) (13 / 4)
-    (3 * (cStar + 1) / 2) (3 * (cStar - 1) / 2) (2373 / 1000) (2901 / 1000)
-    (1238 / 1000) he hw₁ hw₂ hwsep cStar_pos.le (by norm_num) (by norm_num)
+  have hw := twoPointTangent_le_vertices e w₁ w₂ barC (7 / 4) (13 / 4)
+    (3 * (barC + 1) / 2) (3 * (barC - 1) / 2) (2373 / 1000) (2901 / 1000)
+    (1238 / 1000) he hw₁ hw₂ hwsep barC_pos.le (by norm_num) (by norm_num)
       (by norm_num) (by norm_num) (by norm_num)
-  have hconstant : 4833 / 1000 + 5009 / 500 - 3 + 23 / 2 * cStar -
-      15 * cStar ^ 2 < 0 := by
-    rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  have hconstant : 4833 / 1000 + 5009 / 500 - 3 + 23 / 2 * barC -
+      15 * barC ^ 2 < 0 := by
+    rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
     norm_num at hlower hupper ⊢
-    nlinarith [sq_nonneg (cStar - 1)]
+    nlinarith [sq_nonneg (barC - 1)]
   nlinarith [tangentMaximum_e1s2_red, tangentMaximum_e1s2_blue]
 
 /-- The rational tangent separator for the `S0/S1` incidence representative. -/
@@ -683,26 +684,26 @@ theorem tangentCertificate_s0s1 {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     7 / 2 * ‖e - p₁ - w₁‖ + ‖e - p₂ - w₁‖ +
-        5 / 2 * ‖e - p₂ - w₂‖ - 5 * cStar / 2 * ‖p₁‖ -
-        5 * cStar / 2 * ‖p₂‖ - (cStar - 1) * ‖w₁‖ -
-        (cStar + 1) * ‖w₂‖ + 7 * cStar - 21 / 2 * cStar ^ 2 < 0 := by
+        5 / 2 * ‖e - p₂ - w₂‖ - 5 * barC / 2 * ‖p₁‖ -
+        5 * barC / 2 * ‖p₂‖ - (barC - 1) * ‖w₁‖ -
+        (barC + 1) * ‖w₂‖ + 7 * barC - 21 / 2 * barC ^ 2 < 0 := by
   have hmid := weightedCrossDistances_le e p₁ p₂ w₁ w₂ (7 / 2) 0 1 (5 / 2)
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hp := twoPointTangent_le_vertices e p₁ p₂ cStar (7 / 4) (7 / 4)
-    (5 * cStar / 2) (5 * cStar / 2) (2580 / 1000) (2580 / 1000) (804 / 1000)
-    he hp₁ hp₂ hpsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hp := twoPointTangent_le_vertices e p₁ p₂ barC (7 / 4) (7 / 4)
+    (5 * barC / 2) (5 * barC / 2) (2580 / 1000) (2580 / 1000) (804 / 1000)
+    he hp₁ hp₂ hpsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hw := twoPointTangent_le_vertices e w₁ w₂ cStar (9 / 4) (5 / 4)
-    (cStar - 1) (cStar + 1) (2902 / 1000) (2491 / 1000) (893 / 1000)
-    he hw₁ hw₂ hwsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hw := twoPointTangent_le_vertices e w₁ w₂ barC (9 / 4) (5 / 4)
+    (barC - 1) (barC + 1) (2902 / 1000) (2491 / 1000) (893 / 1000)
+    he hw₁ hw₂ hwsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hconstant : 2967 / 1000 + 1781 / 250 + 7 * cStar -
-      21 / 2 * cStar ^ 2 < 0 := by
-    rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  have hconstant : 2967 / 1000 + 1781 / 250 + 7 * barC -
+      21 / 2 * barC ^ 2 < 0 := by
+    rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
     norm_num at hlower hupper ⊢
-    nlinarith [sq_nonneg (cStar - 1)]
+    nlinarith [sq_nonneg (barC - 1)]
   nlinarith [tangentMaximum_s0s1_red, tangentMaximum_s0s1_blue]
 
 /-- The rational tangent separator for the `S0/S2` incidence representative. -/
@@ -710,26 +711,26 @@ theorem tangentCertificate_s0s2 {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     ‖e - p₁ - w₁‖ + 5 / 2 * ‖e - p₁ - w₂‖ +
-        7 / 2 * ‖e - p₂ - w₁‖ - 5 * cStar / 2 * ‖p₁‖ -
-        5 * cStar / 2 * ‖p₂‖ - (cStar - 1) * ‖w₁‖ -
-        (cStar + 1) * ‖w₂‖ + 7 * cStar - 21 / 2 * cStar ^ 2 < 0 := by
+        7 / 2 * ‖e - p₂ - w₁‖ - 5 * barC / 2 * ‖p₁‖ -
+        5 * barC / 2 * ‖p₂‖ - (barC - 1) * ‖w₁‖ -
+        (barC + 1) * ‖w₂‖ + 7 * barC - 21 / 2 * barC ^ 2 < 0 := by
   have hmid := weightedCrossDistances_le e p₁ p₂ w₁ w₂ 1 (5 / 2) (7 / 2) 0
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hp := twoPointTangent_le_vertices e p₁ p₂ cStar (7 / 4) (7 / 4)
-    (5 * cStar / 2) (5 * cStar / 2) (2584 / 1000) (2584 / 1000) (801 / 1000)
-    he hp₁ hp₂ hpsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hp := twoPointTangent_le_vertices e p₁ p₂ barC (7 / 4) (7 / 4)
+    (5 * barC / 2) (5 * barC / 2) (2584 / 1000) (2584 / 1000) (801 / 1000)
+    he hp₁ hp₂ hpsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hw := twoPointTangent_le_vertices e w₁ w₂ cStar (9 / 4) (5 / 4)
-    (cStar - 1) (cStar + 1) (2897 / 1000) (2493 / 1000) (892 / 1000)
-    he hw₁ hw₂ hwsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hw := twoPointTangent_le_vertices e w₁ w₂ barC (9 / 4) (5 / 4)
+    (barC - 1) (barC + 1) (2897 / 1000) (2493 / 1000) (892 / 1000)
+    he hw₁ hw₂ hwsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hconstant : 1483 / 500 + 1781 / 250 + 7 * cStar -
-      21 / 2 * cStar ^ 2 < 0 := by
-    rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  have hconstant : 1483 / 500 + 1781 / 250 + 7 * barC -
+      21 / 2 * barC ^ 2 < 0 := by
+    rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
     norm_num at hlower hupper ⊢
-    nlinarith [sq_nonneg (cStar - 1)]
+    nlinarith [sq_nonneg (barC - 1)]
   nlinarith [tangentMaximum_s0s2_red, tangentMaximum_s0s2_blue]
 
 /-- The rational tangent separator for the `S1/S2` incidence representative. -/
@@ -737,25 +738,25 @@ theorem tangentCertificate_s1s2 {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     ‖e - p₁ - w₁‖ + 5 / 2 * ‖e - p₁ - w₂‖ +
         5 / 2 * ‖e - p₂ - w₁‖ + ‖e - p₂ - w₂‖ -
-        5 * cStar / 2 * ‖p₁‖ - 5 * cStar / 2 * ‖p₂‖ -
-        cStar * ‖w₁‖ - cStar * ‖w₂‖ + 7 * cStar - 21 / 2 * cStar ^ 2 < 0 := by
+        5 * barC / 2 * ‖p₁‖ - 5 * barC / 2 * ‖p₂‖ -
+        barC * ‖w₁‖ - barC * ‖w₂‖ + 7 * barC - 21 / 2 * barC ^ 2 < 0 := by
   have hmid := weightedCrossDistances_le e p₁ p₂ w₁ w₂ 1 (5 / 2) (5 / 2) 1
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hp := twoPointTangent_le_vertices e p₁ p₂ cStar (7 / 4) (7 / 4)
-    (5 * cStar / 2) (5 * cStar / 2) (2583 / 1000) (2583 / 1000) (802 / 1000)
-    he hp₁ hp₂ hpsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hp := twoPointTangent_le_vertices e p₁ p₂ barC (7 / 4) (7 / 4)
+    (5 * barC / 2) (5 * barC / 2) (2583 / 1000) (2583 / 1000) (802 / 1000)
+    he hp₁ hp₂ hpsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hw := twoPointTangent_le_vertices e w₁ w₂ cStar (7 / 4) (7 / 4) cStar cStar
-    (2804 / 1000) (2808 / 1000) (897 / 1000) he hw₁ hw₂ hwsep cStar_pos.le
+  have hw := twoPointTangent_le_vertices e w₁ w₂ barC (7 / 4) (7 / 4) barC barC
+    (2804 / 1000) (2808 / 1000) (897 / 1000) he hw₁ hw₂ hwsep barC_pos.le
       (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hconstant : 1483 / 500 + 3527 / 500 + 7 * cStar -
-      21 / 2 * cStar ^ 2 < 0 := by
-    rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+  have hconstant : 1483 / 500 + 3527 / 500 + 7 * barC -
+      21 / 2 * barC ^ 2 < 0 := by
+    rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
     norm_num at hlower hupper ⊢
-    nlinarith [sq_nonneg (cStar - 1)]
+    nlinarith [sq_nonneg (barC - 1)]
   nlinarith [tangentMaximum_s1s2_red, tangentMaximum_s1s2_blue]
 
 /-- The rational tangent separator for the first adjacent endpoint orbit. -/
@@ -763,27 +764,27 @@ theorem tangentCertificate_adjacentFirst {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     11 / 4 * ‖e - p₁ - w₁‖ + 7 / 4 * ‖e - p₁ - w₂‖ +
-        ‖e - p₂ - w₂‖ - 7 * (cStar - 1) / 8 * ‖p₁‖ -
-        7 * (cStar + 1) / 8 * ‖p₂‖ - 7 * (cStar - 1) / 8 * ‖w₁‖ -
-        7 * (cStar + 1) / 8 * ‖w₂‖ - 7 / 2 + 29 / 4 * cStar -
-        37 / 4 * cStar ^ 2 < 0 := by
+        ‖e - p₂ - w₂‖ - 7 * (barC - 1) / 8 * ‖p₁‖ -
+        7 * (barC + 1) / 8 * ‖p₂‖ - 7 * (barC - 1) / 8 * ‖w₁‖ -
+        7 * (barC + 1) / 8 * ‖w₂‖ - 7 / 2 + 29 / 4 * barC -
+        37 / 4 * barC ^ 2 < 0 := by
   have hmid := weightedCrossDistances_le e p₁ p₂ w₁ w₂ (11 / 4) (7 / 4) 0 1
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hp := twoPointTangent_le_vertices e p₁ p₂ cStar (9 / 4) (1 / 2)
-    (7 * (cStar - 1) / 8) (7 * (cStar + 1) / 8) (49 / 16) (5 / 4) (13 / 20)
-    he hp₁ hp₂ hpsep cStar_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  have hp := twoPointTangent_le_vertices e p₁ p₂ barC (9 / 4) (1 / 2)
+    (7 * (barC - 1) / 8) (7 * (barC + 1) / 8) (49 / 16) (5 / 4) (13 / 20)
+    he hp₁ hp₂ hpsep barC_pos.le (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num)
-  have hw := twoPointTangent_le_vertices e w₁ w₂ cStar (11 / 8) (11 / 8)
-    (7 * (cStar - 1) / 8) (7 * (cStar + 1) / 8) (351 / 125) (351 / 125)
-    (353 / 500) he hw₁ hw₂ hwsep cStar_pos.le (by norm_num) (by norm_num)
+  have hw := twoPointTangent_le_vertices e w₁ w₂ barC (11 / 8) (11 / 8)
+    (7 * (barC - 1) / 8) (7 * (barC + 1) / 8) (351 / 125) (351 / 125)
+    (353 / 500) he hw₁ hw₂ hwsep barC_pos.le (by norm_num) (by norm_num)
       (by norm_num) (by norm_num) (by norm_num)
   have hconstant : 742013 / 125000 + 2647153 / 500000 - 7 / 2 +
-      29 / 4 * cStar - 37 / 4 * cStar ^ 2 < 0 := by
-    rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+      29 / 4 * barC - 37 / 4 * barC ^ 2 < 0 := by
+    rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
     norm_num at hlower hupper ⊢
-    nlinarith [sq_nonneg (cStar - 1)]
+    nlinarith [sq_nonneg (barC - 1)]
   nlinarith [tangentMaximum_adjacentFirst_red, tangentMaximum_adjacentFirst_blue]
 
 /-- The rational tangent separator for the second adjacent endpoint orbit. -/
@@ -791,27 +792,27 @@ theorem tangentCertificate_adjacentSecond {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1)
     (hp₁ : ‖p₁‖ ≤ 1) (hp₂ : ‖p₂‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
     (hw₂ : ‖w₂‖ ≤ 1)
-    (hpsep : cStar ≤ ‖p₁ - p₂‖) (hwsep : cStar ≤ ‖w₁ - w₂‖) :
+    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖) :
     11 / 4 * ‖e - p₁ - w₁‖ + 7 / 4 * ‖e - p₂ - w₁‖ +
-        ‖e - p₂ - w₂‖ - 7 * (cStar + 1) / 8 * ‖p₁‖ -
-        7 * (cStar - 1) / 8 * ‖p₂‖ - 7 * (cStar - 1) / 8 * ‖w₁‖ -
-        7 * (cStar + 1) / 8 * ‖w₂‖ - 7 / 2 + 29 / 4 * cStar -
-        37 / 4 * cStar ^ 2 < 0 := by
+        ‖e - p₂ - w₂‖ - 7 * (barC + 1) / 8 * ‖p₁‖ -
+        7 * (barC - 1) / 8 * ‖p₂‖ - 7 * (barC - 1) / 8 * ‖w₁‖ -
+        7 * (barC + 1) / 8 * ‖w₂‖ - 7 / 2 + 29 / 4 * barC -
+        37 / 4 * barC ^ 2 < 0 := by
   have hmid := weightedCrossDistances_le e p₁ p₂ w₁ w₂ (11 / 4) 0 (7 / 4) 1
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  have hp := twoPointTangent_le_vertices e p₁ p₂ cStar (11 / 8) (11 / 8)
-    (7 * (cStar + 1) / 8) (7 * (cStar - 1) / 8) (2808 / 1000) (2808 / 1000)
-    (706 / 1000) he hp₁ hp₂ hpsep cStar_pos.le (by norm_num) (by norm_num)
+  have hp := twoPointTangent_le_vertices e p₁ p₂ barC (11 / 8) (11 / 8)
+    (7 * (barC + 1) / 8) (7 * (barC - 1) / 8) (2808 / 1000) (2808 / 1000)
+    (706 / 1000) he hp₁ hp₂ hpsep barC_pos.le (by norm_num) (by norm_num)
       (by norm_num) (by norm_num) (by norm_num)
-  have hw := twoPointTangent_le_vertices e w₁ w₂ cStar (9 / 4) (1 / 2)
-    (7 * (cStar - 1) / 8) (7 * (cStar + 1) / 8) (2973 / 1000) (1247 / 1000)
-    (660 / 1000) he hw₁ hw₂ hwsep cStar_pos.le (by norm_num) (by norm_num)
+  have hw := twoPointTangent_le_vertices e w₁ w₂ barC (9 / 4) (1 / 2)
+    (7 * (barC - 1) / 8) (7 * (barC + 1) / 8) (2973 / 1000) (1247 / 1000)
+    (660 / 1000) he hw₁ hw₂ hwsep barC_pos.le (by norm_num) (by norm_num)
       (by norm_num) (by norm_num) (by norm_num)
   have hconstant : 2647153 / 500000 + 237273 / 40000 - 7 / 2 +
-      29 / 4 * cStar - 37 / 4 * cStar ^ 2 < 0 := by
-    rcases cStar_mem_isolation_box with ⟨hlower, hupper⟩
+      29 / 4 * barC - 37 / 4 * barC ^ 2 < 0 := by
+    rcases barC_mem_isolation_box with ⟨hlower, hupper⟩
     norm_num at hlower hupper ⊢
-    nlinarith [sq_nonneg (cStar - 1)]
+    nlinarith [sq_nonneg (barC - 1)]
   nlinarith [tangentMaximum_adjacentSecond_red, tangentMaximum_adjacentSecond_blue]
 
 end Bescovitch
