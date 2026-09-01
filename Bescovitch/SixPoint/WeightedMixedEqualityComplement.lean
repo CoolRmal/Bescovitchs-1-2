@@ -6,6 +6,7 @@ Authors: Yongxi Lin
 module
 
 public import Bescovitch.SixPoint.WeightedMixedEqualityPartition
+public import Bescovitch.SixPoint.WeightedMixedStrictCertificate
 import Bescovitch.SixPoint.WeightedMixedRootCover
 
 /-!
@@ -147,5 +148,22 @@ theorem weightedMixedEqualityComplementBound_of_tree_checks
   exact weighted_mixed_equality_complement_sound leafCheck leafSound (tree cell hcell)
     (weightedMixedEqualityCellBox cell) (hcheck cell hcell) x hx
     hPFirst hPSecond hWFirst hWSecond
+
+/-- Exact mixed-leaf checks on all noncentral trees prove the equality-complement bound. -/
+theorem weightedMixedEqualityComplementBound_of_leaf_checks
+    (tree : ∀ cell, cell ≠ weightedMixedEqualityLocalCell →
+      WeightedMixedEqualityComplementTree)
+    (hcheck : ∀ (cell) (hcell : cell ≠ weightedMixedEqualityLocalCell),
+      weightedMixedEqualityComplementCheck (weightedMixedLeafCheck (-1) (-1))
+        (weightedMixedEqualityCellBox cell) (tree cell hcell) = true) :
+    WeightedMixedEqualityComplementBound := by
+  apply weightedMixedEqualityComplementBound_of_tree_checks
+    (weightedMixedLeafCheck (-1) (-1)) _ tree hcheck
+  intro box data hdata x hx hPFirst hPSecond hWFirst hWSecond
+  have hscore :=
+    weighted_pair_score_nonpos_of_weighted_mixed_leaf_check (-1) (-1) box data x
+      hdata hx (by norm_num) (by norm_num) hPFirst hPSecond hWFirst hWSecond
+  norm_num only [Rat.cast_neg, Rat.cast_one] at hscore
+  simpa only [weightedMixedEqualityScore] using hscore
 
 end Bescovitch
