@@ -54,6 +54,7 @@ jobs:
           Bescovitch.SixPoint.WeightedMixedBernsteinPass
           Bescovitch.SixPoint.WeightedMixedEquality
           Bescovitch.SixPoint.WeightedMixedEqualityCalculus
+          Bescovitch.SixPoint.WeightedMixedEqualityCertificateData.Basic
           Bescovitch.SixPoint.WeightedMixedEqualityComplement
           Bescovitch.SixPoint.WeightedMixedEqualityFace
           Bescovitch.SixPoint.WeightedMixedEqualityLocalCertificate

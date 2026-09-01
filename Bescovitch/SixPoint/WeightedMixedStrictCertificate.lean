@@ -112,6 +112,32 @@ private theorem weighted_pair_score_le_leaf_quadratic_majorant
       (leaf_slack_nonneg data 0) (leaf_slack_nonneg data 1)
       (leaf_slack_nonneg data 2) (leaf_slack_nonneg data 3)
 
+/-- A successful exact leaf check bounds the mixed score at every feasible point of its box. -/
+theorem weighted_pair_score_nonpos_of_weighted_mixed_leaf_check
+    (sideP sideW : ℚ) (leafBox : Fin 6 → RationalInterval)
+    (data : WeightedMixedLeaf) (x : Fin 6 → ℝ)
+    (hcheck : weightedMixedLeafCheck sideP sideW leafBox data = true)
+    (hx : ∀ i, (leafBox i).Contains (x i))
+    (hsideP : (sideP : ℝ) ^ 2 = 1) (hsideW : (sideW : ℝ) ^ 2 = 1)
+    (hPFirst : x 0 ^ 2 + x 1 ^ 2 ≤ 1)
+    (hPSecond : (x 0 - cStar) ^ 2 + x 1 ^ 2 ≤ 1)
+    (hWFirst : x 3 ^ 2 + x 4 ^ 2 ≤ 1)
+    (hWSecond : (x 3 - cStar) ^ 2 + x 4 ^ 2 ≤ 1) :
+    weightedPairScore !₂[1, 0] cStar endpointLambda endpointMu
+      (chordChartFirst sideP (x 0) (x 1) (x 2))
+      (chordChartSecond sideP cStar (x 0) (x 1) (x 2))
+      (chordChartFirst sideW (x 3) (x 4) (x 5))
+      (chordChartSecond sideW cStar (x 3) (x 4) (x 5)) ≤ 0 := by
+  rw [weightedMixedLeafCheck, Bool.and_eq_true, decide_eq_true_eq] at hcheck
+  have hpolynomial :=
+    MultivariateDensePolynomial.eval_nonpos_of_centeredBernstein_check_of_degree_bound
+      degreeProfile _ (polynomial_of_leaf_degree_bound sideP sideW _ _ data) hcheck.2 _
+      (fun i ↦ (leafBox i).abs_centered_coordinate_le_one (hx i))
+  exact (weighted_pair_score_le_leaf_quadratic_majorant sideP sideW data x hcheck.1
+    hsideP hsideW hPFirst hPSecond hWFirst hWSecond).trans
+      (leaf_quadratic_majorant_nonpos sideP sideW leafBox data x hcheck.1 hx
+        hpolynomial hsideP hsideW)
+
 /-- A successful exact tree check proves the mixed score throughout every feasible point of its
 root box. -/
 theorem weighted_pair_score_nonpos_of_weighted_mixed_tree_check

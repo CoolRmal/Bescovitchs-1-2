@@ -67,16 +67,20 @@ def weightedMixedUpperHalf (depth : ℕ) (box : Fin 6 → RationalInterval) :
     ⟨((box i).lower + (box i).upper) / 2, (box i).upper, by
       linarith [(box i).lower_le_upper]⟩
 
+/-- Exact Bernstein check for one certified mixed-certificate leaf. -/
+def weightedMixedLeafCheck (sideP sideW : ℚ) (box : Fin 6 → RationalInterval)
+    (data : WeightedMixedLeaf) : Bool :=
+  decide (∀ i, 0 < data.rhoNumerator i) &&
+    MultivariateDensePolynomial.allNonpositive
+      (MultivariateDensePolynomial.centeredBernstein degreeProfile
+        (polynomialOfLeaf sideP sideW (fun i ↦ (box i).lower)
+          (fun i ↦ (box i).upper) data))
+
 /-- The exact checker for one adaptive mixed-certificate tree. -/
 def weightedMixedTreeCheck (sideP sideW : ℚ) (depth : ℕ)
     (box : Fin 6 → RationalInterval) : WeightedMixedTree → Bool
   | .outside => weightedMixedOutside box
-  | .certified data =>
-      decide (∀ i, 0 < data.rhoNumerator i) &&
-        MultivariateDensePolynomial.allNonpositive
-          (MultivariateDensePolynomial.centeredBernstein degreeProfile
-            (polynomialOfLeaf sideP sideW (fun i ↦ (box i).lower)
-              (fun i ↦ (box i).upper) data))
+  | .certified data => weightedMixedLeafCheck sideP sideW box data
   | .split left right =>
       weightedMixedTreeCheck sideP sideW (depth + 1) (weightedMixedLowerHalf depth box) left &&
         weightedMixedTreeCheck sideP sideW (depth + 1) (weightedMixedUpperHalf depth box) right
@@ -243,7 +247,8 @@ theorem exists_certified_leaf_of_weighted_mixed_tree_check
         weighted_mixed_outside_eq_false_of_constraints hx hdisk] at hcheck
       contradiction
   | certified data =>
-      rw [weightedMixedTreeCheck, Bool.and_eq_true, decide_eq_true_eq] at hcheck
+      rw [weightedMixedTreeCheck, weightedMixedLeafCheck, Bool.and_eq_true,
+        decide_eq_true_eq] at hcheck
       refine ⟨box, data, hcheck.1, hx, ?_⟩
       exact MultivariateDensePolynomial.eval_nonpos_of_centeredBernstein_check_of_degree_bound
         degreeProfile _ (polynomial_of_leaf_degree_bound sideP sideW _ _ data) hcheck.2 _
