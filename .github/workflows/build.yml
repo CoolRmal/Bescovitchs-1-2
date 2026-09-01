@@ -38,6 +38,7 @@ jobs:
           Bescovitch.Certificates.FixedDenseBernstein
           Bescovitch.Certificates.FixedDensePolynomial
           Bescovitch.Certificates.FixedDyadicInterval
+          Bescovitch.Certificates.ScalarTraceVerifier
           Bescovitch.Certificates.IntervalBernstein
           Bescovitch.Certificates.IntervalPolynomial
           Bescovitch.Certificates.RawDenseBernstein
