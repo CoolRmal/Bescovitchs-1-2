@@ -17,8 +17,6 @@ basis to the Bernstein basis.  Its coefficient expressions remain exact.
 
 @[expose] public section
 
-noncomputable section
-
 open scoped BigOperators unitInterval
 
 namespace Bescovitch
@@ -41,11 +39,12 @@ theorem eval_finSum {n N : ℕ} (f : Fin N → RadicalExpression n) (input : Fin
 end RadicalExpression
 
 /-- Evaluate a degree-`degree` padded power coefficient vector. -/
-def paddedPowerEval (degree : ℕ) (a : Fin (degree + 1) → ℝ) (x : ℝ) : ℝ :=
+noncomputable def paddedPowerEval (degree : ℕ) (a : Fin (degree + 1) → ℝ)
+    (x : ℝ) : ℝ :=
   ∑ i, a i * x ^ (i : ℕ)
 
 /-- Convert one padded power coefficient to the Bernstein basis. -/
-def powerToBernstein (degree : ℕ) (a : Fin (degree + 1) → ℝ)
+noncomputable def powerToBernstein (degree : ℕ) (a : Fin (degree + 1) → ℝ)
     (i : Fin (degree + 1)) : ℝ :=
   ∑ j : Fin (degree + 1), if (j : ℕ) ≤ i then
     a j * (Nat.choose (i : ℕ) (j : ℕ) / (Nat.choose degree (j : ℕ) : ℝ)) else 0
@@ -88,7 +87,7 @@ theorem paddedPowerEval_four_eq (a : Fin 5 → ℝ) (x : I) :
   ring
 
 /-- Convert all three coordinates of a `12 × 12 × 4` padded power tensor. -/
-def tensorPowerToBernstein (a : Fin 13 → Fin 13 → Fin 5 → ℝ)
+noncomputable def tensorPowerToBernstein (a : Fin 13 → Fin 13 → Fin 5 → ℝ)
     (i j : Fin 13) (k : Fin 5) : ℝ :=
   powerToBernstein 4
     (fun k' => powerToBernstein 12
@@ -235,23 +234,23 @@ theorem paddedPowerTensor_eq_tensorBernstein (a : Fin 13 → Fin 13 → Fin 5 �
   ring
 
 /-- Left-half de Casteljau coefficients in degree twelve. -/
-def bernsteinLeftTwelve (a : Fin 13 → ℝ) (i : Fin 13) : ℝ :=
+noncomputable def bernsteinLeftTwelve (a : Fin 13 → ℝ) (i : Fin 13) : ℝ :=
   ∑ j : Fin 13, if (j : ℕ) ≤ i then
     a j * (Nat.choose (i : ℕ) (j : ℕ) / 2 ^ (i : ℕ) : ℝ) else 0
 
 /-- Right-half de Casteljau coefficients in degree twelve. -/
-def bernsteinRightTwelve (a : Fin 13 → ℝ) (i : Fin 13) : ℝ :=
+noncomputable def bernsteinRightTwelve (a : Fin 13 → ℝ) (i : Fin 13) : ℝ :=
   ∑ j : Fin 13, if h : (j : ℕ) ≤ 12 - (i : ℕ) then
     a ⟨(i : ℕ) + j, by omega⟩ *
       (Nat.choose (12 - (i : ℕ)) (j : ℕ) / 2 ^ (12 - (i : ℕ)) : ℝ) else 0
 
 /-- Left-half de Casteljau coefficients in degree four. -/
-def bernsteinLeftFour (a : Fin 5 → ℝ) (i : Fin 5) : ℝ :=
+noncomputable def bernsteinLeftFour (a : Fin 5 → ℝ) (i : Fin 5) : ℝ :=
   ∑ j : Fin 5, if (j : ℕ) ≤ i then
     a j * (Nat.choose (i : ℕ) (j : ℕ) / 2 ^ (i : ℕ) : ℝ) else 0
 
 /-- Right-half de Casteljau coefficients in degree four. -/
-def bernsteinRightFour (a : Fin 5 → ℝ) (i : Fin 5) : ℝ :=
+noncomputable def bernsteinRightFour (a : Fin 5 → ℝ) (i : Fin 5) : ℝ :=
   ∑ j : Fin 5, if h : (j : ℕ) ≤ 4 - (i : ℕ) then
     a ⟨(i : ℕ) + j, by omega⟩ *
       (Nat.choose (4 - (i : ℕ)) (j : ℕ) / 2 ^ (4 - (i : ℕ)) : ℝ) else 0
@@ -356,27 +355,27 @@ private theorem eval_radicalBernsteinRightFour {n : ℕ}
   intro j hj
   split_ifs <;> simp [RadicalExpression.eval]
 
-private def splitFirstLeft (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :
+private noncomputable def splitFirstLeft (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :
     Fin 13 → Fin 13 → Fin 5 → ℝ :=
   fun i j k => bernsteinLeftTwelve (fun h => a h j k) i
 
-private def splitFirstRight (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :
+private noncomputable def splitFirstRight (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :
     Fin 13 → Fin 13 → Fin 5 → ℝ :=
   fun i j k => bernsteinRightTwelve (fun h => a h j k) i
 
-private def splitSecondLeft (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :
+private noncomputable def splitSecondLeft (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :
     Fin 13 → Fin 13 → Fin 5 → ℝ :=
   fun i j k => bernsteinLeftTwelve (fun h => a i h k) j
 
-private def splitSecondRight (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :
+private noncomputable def splitSecondRight (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :
     Fin 13 → Fin 13 → Fin 5 → ℝ :=
   fun i j k => bernsteinRightTwelve (fun h => a i h k) j
 
-private def splitThirdLeft (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :
+private noncomputable def splitThirdLeft (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :
     Fin 13 → Fin 13 → Fin 5 → ℝ :=
   fun i j k => bernsteinLeftFour (fun h => a i j h) k
 
-private def splitThirdRight (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :
+private noncomputable def splitThirdRight (a : Fin 13 → Fin 13 → Fin 5 → ℝ) :
     Fin 13 → Fin 13 → Fin 5 → ℝ :=
   fun i j k => bernsteinRightFour (fun h => a i j h) k
 

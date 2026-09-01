@@ -19,8 +19,6 @@ without replacing the algebraic endpoint data by decimal constants.
 
 @[expose] public section
 
-noncomputable section
-
 namespace Bescovitch
 
 /-- A dense univariate polynomial with radical-expression coefficients. -/
@@ -60,7 +58,7 @@ def pow {n : ℕ} (p : RadicalUnivariate n) : ℕ → RadicalUnivariate n
   | k + 1 => mul (pow p k) p
 
 /-- Evaluate by Horner's rule after evaluating the exact coefficients. -/
-def eval {n : ℕ} : RadicalUnivariate n → (Fin n → ℝ) → ℝ → ℝ
+noncomputable def eval {n : ℕ} : RadicalUnivariate n → (Fin n → ℝ) → ℝ → ℝ
   | [], _, _ => 0
   | a :: p, input, x => a.eval input + x * eval p input x
 
@@ -180,7 +178,8 @@ def pow {n : ℕ} (p : RadicalBivariate n) : ℕ → RadicalBivariate n
   | k + 1 => mul (pow p k) p
 
 /-- Evaluate by nested Horner rules. -/
-def eval {n : ℕ} : RadicalBivariate n → (Fin n → ℝ) → ℝ → ℝ → ℝ
+noncomputable def eval {n : ℕ} :
+    RadicalBivariate n → (Fin n → ℝ) → ℝ → ℝ → ℝ
   | [], _, _, _ => 0
   | a :: p, input, x, y => RadicalUnivariate.eval a input y + x * eval p input x y
 
@@ -309,7 +308,7 @@ def pow {n : ℕ} (p : RadicalTrivariate n) : ℕ → RadicalTrivariate n
   | k + 1 => mul (pow p k) p
 
 /-- Evaluate by three nested Horner rules. -/
-def eval {n : ℕ} :
+noncomputable def eval {n : ℕ} :
     RadicalTrivariate n → (Fin n → ℝ) → ℝ → ℝ → ℝ → ℝ
   | [], _, _, _, _ => 0
   | a :: p, input, x, y, z =>

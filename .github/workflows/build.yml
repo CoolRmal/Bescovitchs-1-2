@@ -33,6 +33,10 @@ jobs:
           Bescovitch.BPC.RootBalls Bescovitch.Certificates.Krawczyk
           Bescovitch.Certificates.BernsteinPass
           Bescovitch.Certificates.DyadicInterval
+          Bescovitch.Certificates.DyadicIntervalBernstein
+          Bescovitch.Certificates.DyadicIntervalPolynomial
+          Bescovitch.Certificates.IntervalBernstein
+          Bescovitch.Certificates.IntervalPolynomial
           Bescovitch.Certificates.RawDenseBernstein
           Bescovitch.Certificates.RawDensePolynomial
           Bescovitch.Certificates.RawRat
