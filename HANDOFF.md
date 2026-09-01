@@ -91,6 +91,21 @@ lines. The routing modules to convert, largest first, are `RootEdge`, `RowColumn
 the endpoint nowhere and need no change: `SixPointFiniteProperty.sigmaOne_plane_le` is already
 generic in `s`.
 
+## What the retarget already gave
+
+The retarget is complete and the project builds green at `barC = 3467 / 2500`. The self side then
+turned out to need far less than expected:
+
+- The fourteen curvature enclosures recompute by interval arithmetic over the new endpoint data,
+  and `weightedSelfKappaBoxes_certify` and `weightedSelfDirectQCertificates` both go through, so
+  `Q >= 0` is certified on all seven radius bins.
+- **The subdivision trees carry over unchanged.** The chord moved by only `1.4 * 10 ^ -4`, and the
+  `-P` and discriminant certificates of the second bin still hold on the old trees at the same
+  cost. So the self bins need no regeneration, and the bin `[7/10, 4/5]` is no longer exceptional:
+  above the sharp constant it carries no equality configuration, so a plain certificate covers it.
+
+That leaves the mixed root boxes as the only certificates to generate.
+
 ## Step 2 --- regenerate the certificates
 
 The trees under `SixPoint/WeightedMixedCertificateData` and the self-bin trees are specific to the
