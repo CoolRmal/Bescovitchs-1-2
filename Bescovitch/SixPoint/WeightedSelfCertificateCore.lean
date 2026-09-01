@@ -312,11 +312,11 @@ private noncomputable def endpointCertificateInput : Fin 7 → ℝ
 
 /-- Tight rational intervals for the seven exact endpoint quantities. -/
 def weightedSelfEndpointBox : Fin 7 → RationalInterval
-  | 0 => ⟨3467 / 2500, 13868000000000001 / 10 ^ 16, by norm_num⟩
+  | 0 => ⟨13867999999999999 / 10 ^ 16, 13868000000000001 / 10 ^ 16, by norm_num⟩
   | 1 => ⟨2873744161801659 / 10 ^ 15, 2873744161801662 / 10 ^ 15, by norm_num⟩
-  | 2 => ⟨204381086361534 / 10 ^ 14, 204381086361536 / 10 ^ 14, by norm_num⟩
+  | 2 => ⟨204551279819833 / 10 ^ 14, 204551279819835 / 10 ^ 14, by norm_num⟩
   | 3 => ⟨190504665395484 / 10 ^ 14, 190504665395485 / 10 ^ 14, by norm_num⟩
-  | 4 => ⟨207245964946978 / 10 ^ 14, 207245964946981 / 10 ^ 14, by norm_num⟩
+  | 4 => ⟨207317385125829 / 10 ^ 14, 207317385125830 / 10 ^ 14, by norm_num⟩
   | 5 => ⟨8947642540845 / 10 ^ 14, 8947642540925 / 10 ^ 14, by norm_num⟩
   | 6 => ⟨92883833887503 / 10 ^ 14, 92883833887577 / 10 ^ 14, by norm_num⟩
 
@@ -327,13 +327,13 @@ private theorem endpointCertificateInput_mem :
   · simpa [weightedSelfEndpointBox, endpointCertificateInput, RationalInterval.Contains] using
       ⟨barC_mem_isolation_box.1.le, barC_mem_isolation_box.2.le⟩
   · simpa [weightedSelfEndpointBox, endpointCertificateInput, RationalInterval.Contains] using
-      endpointB_tight_bounds
+      barB_tight_bounds
   · simpa [weightedSelfEndpointBox, endpointCertificateInput, RationalInterval.Contains] using
-      endpointSecondDistance_tight_bounds
+      barD_tight_bounds
   · simpa [weightedSelfEndpointBox, endpointCertificateInput, RationalInterval.Contains] using
-      endpointFirstAuxiliaryDistance_tight_bounds
+      barA_tight_bounds
   · simpa [weightedSelfEndpointBox, endpointCertificateInput, RationalInterval.Contains] using
-      endpointMixedAuxiliaryDistance_tight_bounds
+      barCAux_tight_bounds
   · simpa [weightedSelfEndpointBox, endpointCertificateInput, RationalInterval.Contains] using
       endpointLambda_tight_bounds
   · simpa [weightedSelfEndpointBox, endpointCertificateInput, RationalInterval.Contains] using
@@ -431,15 +431,15 @@ def weightedSelfCoefficientBox
   weightedSelfEndpointBox 6,
   ⟨189556961939 / 10 ^ 12, 189556961942 / 10 ^ 12, by norm_num⟩,
   ⟨5494266065 / 10 ^ 12, 5494266068 / 10 ^ 12, by norm_num⟩,
-  ⟨244641032543 / 10 ^ 12, 244641032546 / 10 ^ 12, by norm_num⟩,
+  ⟨244437483079 / 10 ^ 12, 244437483082 / 10 ^ 12, by norm_num⟩,
   kappaDBox,
   ⟨243783619929 / 10 ^ 12, 243783619933 / 10 ^ 12, by norm_num⟩,
   ⟨15986451260 / 10 ^ 12, 15986451263 / 10 ^ 12, by norm_num⟩,
-  ⟨224090813808 / 10 ^ 12, 224090813812 / 10 ^ 12, by norm_num⟩,
+  ⟨224013615237 / 10 ^ 12, 224013615240 / 10 ^ 12, by norm_num⟩,
   kappaCBox,
-  ⟨376397199117 / 10 ^ 12, 376397199121 / 10 ^ 12, by norm_num⟩,
-  ⟨39705903040 / 10 ^ 10, 39705903043 / 10 ^ 10, by norm_num⟩,
-  ⟨55769153722 / 10 ^ 10, 55769153727 / 10 ^ 10, by norm_num⟩]
+  ⟨376579410149 / 10 ^ 12, 376579410153 / 10 ^ 12, by norm_num⟩,
+  ⟨39711201910 / 10 ^ 10, 39711201913 / 10 ^ 10, by norm_num⟩,
+  ⟨55789701400 / 10 ^ 10, 55789701403 / 10 ^ 10, by norm_num⟩]
 
 set_option maxHeartbeats 5000000 in
 set_option maxRecDepth 10000 in
@@ -614,13 +614,13 @@ private theorem certificateLegacyPolynomials_eq_weightedSelf
     certificatePolynomialPLegacy r b t upper = weightedSelfPolynomialP r b t upper ∧
       certificatePolynomialQLegacy r b t upper = weightedSelfPolynomialQ r b t upper := by
   have hB : barB ≠ 0 := by
-    linarith [endpointB_tight_bounds.1]
+    linarith [barB_tight_bounds.1]
   have hD : endpointSecondDistance barC barB ≠ 0 := by
-    linarith [endpointSecondDistance_tight_bounds.1]
+    linarith [barD_tight_bounds.1]
   have hA : endpointFirstAuxiliaryDistance barB ≠ 0 := by
-    linarith [endpointFirstAuxiliaryDistance_tight_bounds.1]
+    linarith [barA_tight_bounds.1]
   have hC : endpointMixedAuxiliaryDistance barC barB ≠ 0 := by
-    linarith [endpointMixedAuxiliaryDistance_tight_bounds.1]
+    linarith [barCAux_tight_bounds.1]
   simp only [certificatePolynomialPLegacy, certificatePolynomialQLegacy,
     certificatePolynomialPLegacyAtoms, certificatePolynomialQLegacyAtoms,
     weightedSelfCoefficientInput, weightedSelfPolynomialP, weightedSelfPolynomialQ,

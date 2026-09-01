@@ -9,7 +9,7 @@ the arbiter at every step.
 Certifying `sigmaOne <= sStar` needs the six-point endpoint to be attained exactly. The weighted
 score is then zero at the extremal configuration, so every finite certificate has to separate a
 tight inequality and the existing ones carry a margin of `10 ^ -8`. At `6934 / 10000` the same score
-has a margin of about `3 * 10 ^ -3`, and the extremal configuration is no longer tight at all, so the
+has a margin of about `3 * 10 ^ -3`, and the extremal configuration is no longer tight, so the
 exceptional chart, the equality complement and the exceptional self bin disappear outright.
 
 Measured, so that none of it is re-litigated:
@@ -118,6 +118,43 @@ process then got a tenth of a core; the same module built alone finished in sixt
 `lake env lean` blocks on the lake lock while a build runs. To run a generator alongside a build,
 invoke the toolchain's `lean` directly with `LEAN_PATH` set over the package build
 directories `.lake/packages/*/.lake/build/lib/lean` and `.lake/build/lib/lean`.
+
+## The retargeted constants
+
+`barC = 3467 / 2500` and `barB = 2873744161801660 / 10 ^ 15`.  The seven quantities of
+`weightedSelfEndpointBox` follow, and only three of them change: `A` depends on `B` alone, and
+the two weights are untouched.
+
+| slot | quantity | value at the rational chord |
+|---|---|---|
+| 0 | `c` | `3467 / 2500` exactly |
+| 1 | `B` | `2873744161801660 / 10 ^ 15` exactly |
+| 2 | `D = 4c^2 - 2c - B` | `102275639909917 / 50000000000000` exactly |
+| 3 | `A = sqrt((B^2-1)/2)` | `1.90504665395484808450...` (unchanged) |
+| 4 | `C = sqrt((B^2+D^2)/2 - c^2)` | `2.07317385125829814362...` |
+| 5 | `lambda` | unchanged |
+| 6 | `mu` | unchanged |
+
+with `A ^ 2 = 18146013768722813524642946889 / 5000000000000000000000000000` and
+`C ^ 2 = 10745124543852910288258946889 / 2500000000000000000000000000`.
+
+Slots 0, 1 and 2 are rational, so their box memberships are `norm_num`.  Slots 3 and 4 need
+rational bounds on a square root, which follow from `Real.sqrt_le_sqrt` and `Real.sq_sqrt` against
+the exact squares above.  The five tight-bound lemmas that `endpointCertificateInput_mem` cites
+are stated for the old endpoint and have to be replaced by these.
+
+## Why 6934 and not more
+
+The routing separators cap how far above the sharp constant the argument can be pushed. One of
+them, in `RootEdgeType12`, reduces to
+
+```
+c * 219977687 < (2 * c - 1) * 172000000  →  False
+```
+
+which holds only for `c < 1.386850`, that is `s < 0.693425`. At `6934 / 10000` it passes with a
+relative margin of `1.9 * 10 ^ -5`; at `69345 / 100000` and above it fails. Do not raise the
+threshold.
 
 ## Gates that still apply
 

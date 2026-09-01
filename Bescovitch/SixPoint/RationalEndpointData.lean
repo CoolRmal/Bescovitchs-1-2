@@ -50,4 +50,42 @@ theorem barC_weight_reduction_margin :
   norm_num [barC] at hlambda hmu ⊢
   nlinarith [hmu.1, hmu.2, hlambda]
 
+/-- The rational tangent distance in the tight box of the certificate input. -/
+theorem barB_tight_bounds :
+    2873744161801659 / 10 ^ 15 ≤ barB ∧ barB ≤ 2873744161801662 / 10 ^ 15 := by
+  constructor <;> norm_num [barB]
+
+/-- The second distance of the rational tangent configuration is exactly rational. -/
+theorem barD_tight_bounds :
+    204551279819833 / 10 ^ 14 ≤ endpointSecondDistance barC barB ∧
+      endpointSecondDistance barC barB ≤ 204551279819835 / 10 ^ 14 := by
+  rw [endpointSecondDistance]
+  constructor <;> norm_num [barB, barC]
+
+private theorem sqrt_mem_of_sq_bounds {lower upper value : ℝ}
+    (hlower : 0 ≤ lower) (hupper : 0 ≤ upper)
+    (hlow : lower ^ 2 ≤ value) (hhigh : value ≤ upper ^ 2) :
+    lower ≤ Real.sqrt value ∧ Real.sqrt value ≤ upper := by
+  constructor
+  · rw [show lower = Real.sqrt (lower ^ 2) from (Real.sqrt_sq hlower).symm]
+    exact Real.sqrt_le_sqrt hlow
+  · rw [show upper = Real.sqrt (upper ^ 2) from (Real.sqrt_sq hupper).symm]
+    exact Real.sqrt_le_sqrt hhigh
+
+/-- The first auxiliary distance of the rational tangent configuration. -/
+theorem barA_tight_bounds :
+    190504665395484 / 10 ^ 14 ≤ endpointFirstAuxiliaryDistance barB ∧
+      endpointFirstAuxiliaryDistance barB ≤ 190504665395485 / 10 ^ 14 := by
+  rw [endpointFirstAuxiliaryDistance]
+  exact sqrt_mem_of_sq_bounds (by norm_num) (by norm_num) (by norm_num [barB])
+    (by norm_num [barB])
+
+/-- The mixed auxiliary distance of the rational tangent configuration. -/
+theorem barCAux_tight_bounds :
+    207317385125829 / 10 ^ 14 ≤ endpointMixedAuxiliaryDistance barC barB ∧
+      endpointMixedAuxiliaryDistance barC barB ≤ 207317385125830 / 10 ^ 14 := by
+  rw [endpointMixedAuxiliaryDistance, endpointSecondDistance]
+  exact sqrt_mem_of_sq_bounds (by norm_num) (by norm_num) (by norm_num [barB, barC])
+    (by norm_num [barB, barC])
+
 end Bescovitch
