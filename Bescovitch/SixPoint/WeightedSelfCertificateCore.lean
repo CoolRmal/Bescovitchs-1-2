@@ -7,6 +7,7 @@ module
 
 public import Bescovitch.Certificates.EndpointTightBounds
 public import Bescovitch.Certificates.IntervalBernstein
+public import Bescovitch.Certificates.IntervalHorner
 public import Bescovitch.SixPoint.WeightedSelfFormula
 
 /-!
@@ -853,6 +854,51 @@ private theorem radiusBinBound_of_certificates (lower upper : ℚ)
       data.discriminant.enclosure (weightedSelfCoefficientInput upper)
       data.discriminant.valid discriminantTree hdiscriminant
 
+set_option maxHeartbeats 10000000 in
+private theorem radiusBinBound_of_horner_bernstein_certificates (lower upper : ℚ)
+    (hwidth : (lower : ℝ) < upper) (hupper : (upper : ℝ) ≤ 1)
+    (box : Fin 18 → RationalInterval)
+    (hinput : ∀ i, (box i).Contains (weightedSelfCoefficientInput upper i))
+    (negativePTree qTree discriminantTree : TensorSubdivision)
+    (hnegativeP :
+      let data := weightedSelfCertifiedPolynomials lower upper
+        (weightedSelfCoefficientInput upper) box hinput
+      intervalPolynomialSubdivisionCertifiesNonnegative negativePTree
+        data.negativeP.enclosure .unit .unit .unit = true)
+    (hq :
+      let data := weightedSelfCertifiedPolynomials lower upper
+        (weightedSelfCoefficientInput upper) box hinput
+      intervalPolynomialSubdivisionCertifiesNonnegative qTree
+        data.q.enclosure .unit .unit .unit = true)
+    (hdiscriminant :
+      let data := weightedSelfCertifiedPolynomials lower upper
+        (weightedSelfCoefficientInput upper) box hinput
+      intervalTensorSubdivisionCertifiesNonnegative discriminantTree
+        data.discriminant.enclosure.bernsteinCoefficients = true) :
+    WeightedSelfRadiusBinBound lower upper := by
+  let data := weightedSelfCertifiedPolynomials lower upper
+    (weightedSelfCoefficientInput upper) box hinput
+  have hfits := weightedSelfCertifiedPolynomials_fits lower upper
+    (weightedSelfCoefficientInput upper) box hinput
+  have hunit (x : I) : RationalInterval.unit.Contains (x : ℝ) := by
+    simpa only [RationalInterval.unit, RationalInterval.Contains, Rat.cast_zero,
+      Rat.cast_one, Set.mem_Icc] using x.property
+  apply radiusBinBound_of_cube_signs lower upper hwidth hupper box hinput
+  · change ∀ x y z : I,
+      0 ≤ data.negativeP.exact.eval (weightedSelfCoefficientInput upper) x y z
+    intro x y z
+    exact data.negativeP.exact.nonneg_of_interval_box_certificate data.negativeP.enclosure
+      (weightedSelfCoefficientInput upper) data.negativeP.valid negativePTree hnegativeP
+      (hunit x) (hunit y) (hunit z)
+  · change ∀ x y z : I, 0 ≤ data.q.exact.eval (weightedSelfCoefficientInput upper) x y z
+    intro x y z
+    exact data.q.exact.nonneg_of_interval_box_certificate data.q.enclosure
+      (weightedSelfCoefficientInput upper) data.q.valid qTree hq
+      (hunit x) (hunit y) (hunit z)
+  · exact data.discriminant.exact.nonneg_of_interval_bernstein_certificate hfits.2.2
+      data.discriminant.enclosure (weightedSelfCoefficientInput upper)
+      data.discriminant.valid discriminantTree hdiscriminant
+
 /-- Rational interval operations on dense trivariate polynomials. -/
 def intervalPolynomialOperations :
     WeightedSelfFormulaOperations IntervalTrivariate :=
@@ -977,6 +1023,50 @@ theorem weightedSelfRadiusBinBound_of_interval_certificates
     simpa only [weightedSelfNegativePIntervalPolynomial, box] using hnegativeP
   · change intervalTensorSubdivisionCertifiesNonnegative qTree
       data.q.enclosure.bernsteinCoefficients = true
+    rw [hformula.2.1]
+    simpa only [weightedSelfQIntervalPolynomial, box] using hq
+  · change intervalTensorSubdivisionCertifiesNonnegative discriminantTree
+      data.discriminant.enclosure.bernsteinCoefficients = true
+    rw [WeightedSelfCertifiedPolynomials.discriminant_enclosure,
+      hformula.1, hformula.2.1, hformula.2.2]
+    simpa only [weightedSelfDiscriminantIntervalPolynomial, box] using hdiscriminant
+
+set_option maxHeartbeats 5000000 in
+/-- Interval-Horner checks for `-P` and `Q`, together with a Bernstein discriminant check,
+imply the weighted-self estimate on one radius bin. -/
+theorem weightedSelfRadiusBinBound_of_horner_bernstein_certificates
+    (lower upper : ℚ) (hwidth : (lower : ℝ) < upper) (hupper : (upper : ℝ) ≤ 1)
+    (kappaDBox kappaCBox : RationalInterval)
+    (hD : (weightedSelfCoefficientExpression upper 10).certifiesWithin
+      weightedSelfEndpointBox kappaDBox = true)
+    (hC : (weightedSelfCoefficientExpression upper 14).certifiesWithin
+      weightedSelfEndpointBox kappaCBox = true)
+    (negativePTree qTree discriminantTree : TensorSubdivision)
+    (hnegativeP : intervalPolynomialSubdivisionCertifiesNonnegative negativePTree
+      (weightedSelfNegativePIntervalPolynomial lower upper
+        (weightedSelfCoefficientBox kappaDBox kappaCBox))
+      .unit .unit .unit = true)
+    (hq : intervalPolynomialSubdivisionCertifiesNonnegative qTree
+      (weightedSelfQIntervalPolynomial lower upper
+        (weightedSelfCoefficientBox kappaDBox kappaCBox))
+      .unit .unit .unit = true)
+    (hdiscriminant : intervalTensorSubdivisionCertifiesNonnegative discriminantTree
+      (weightedSelfDiscriminantIntervalPolynomial lower upper
+        (weightedSelfCoefficientBox kappaDBox kappaCBox)).bernsteinCoefficients = true) :
+    WeightedSelfRadiusBinBound lower upper := by
+  let box := weightedSelfCoefficientBox kappaDBox kappaCBox
+  have hinput := weightedSelfCoefficientInput_mem upper kappaDBox kappaCBox hD hC
+  let data := weightedSelfCertifiedPolynomials lower upper
+    (weightedSelfCoefficientInput upper) box hinput
+  have hformula := weightedSelfCertified_enclosures lower upper box hinput
+  apply radiusBinBound_of_horner_bernstein_certificates lower upper hwidth hupper box hinput
+    negativePTree qTree discriminantTree
+  · change intervalPolynomialSubdivisionCertifiesNonnegative negativePTree
+      data.negativeP.enclosure .unit .unit .unit = true
+    rw [WeightedSelfCertifiedPolynomials.negativeP_enclosure, hformula.1]
+    simpa only [weightedSelfNegativePIntervalPolynomial, box] using hnegativeP
+  · change intervalPolynomialSubdivisionCertifiesNonnegative qTree
+      data.q.enclosure .unit .unit .unit = true
     rw [hformula.2.1]
     simpa only [weightedSelfQIntervalPolynomial, box] using hq
   · change intervalTensorSubdivisionCertifiesNonnegative discriminantTree

@@ -40,6 +40,7 @@ jobs:
           Bescovitch.Certificates.FixedDyadicInterval
           Bescovitch.Certificates.ScalarTraceVerifier
           Bescovitch.Certificates.IntervalBernstein
+          Bescovitch.Certificates.IntervalHorner
           Bescovitch.Certificates.IntervalPolynomial
           Bescovitch.Certificates.RawDenseBernstein
           Bescovitch.Certificates.RawDensePolynomial
