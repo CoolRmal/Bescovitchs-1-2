@@ -59,6 +59,11 @@ def mul (I J : RationalInterval) : RationalInterval where
     (min_le_left _ _).trans <| (min_le_left _ _).trans <|
       (le_max_left _ _).trans (le_max_left _ _)
 
+/-- Natural powers of a rational interval. -/
+def pow (I : RationalInterval) : ℕ → RationalInterval
+  | 0 => singleton 1
+  | n + 1 => (pow I n).mul I
+
 /-- An interval which avoids zero has a well-defined reciprocal interval. -/
 def inv (I : RationalInterval) (h : 0 < I.lower ∨ I.upper < 0) : RationalInterval where
   lower := 1 / I.upper
@@ -122,6 +127,13 @@ theorem mul_contains {I J : RationalInterval} {x y : ℝ}
     (hx : I.Contains x) (hy : J.Contains y) : (I.mul J).Contains (x * y) := by
   simpa only [Contains, mul, Rat.cast_min, Rat.cast_max, Rat.cast_mul] using
     mul_mem_Icc hx hy
+
+/-- Interval powers contain the corresponding real powers. -/
+theorem pow_contains {I : RationalInterval} {x : ℝ} (hx : I.Contains x) :
+    ∀ n, (I.pow n).Contains (x ^ n)
+  | 0 => by simpa [pow] using singleton_contains 1
+  | n + 1 => by
+      simpa [pow, pow_succ] using mul_contains (pow_contains hx n) hx
 
 theorem inv_contains {I : RationalInterval} {x : ℝ} (hx : I.Contains x)
     (h : 0 < I.lower ∨ I.upper < 0) : (I.inv h).Contains x⁻¹ := by

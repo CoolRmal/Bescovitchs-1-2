@@ -5,7 +5,7 @@ Authors: Yongxi Lin
 -/
 module
 
-public import Bescovitch.SixPoint.WeightedSelfCertificateCore
+public import Bescovitch.SixPoint.WeightedSelfDirectInterval
 
 /-!
 # Rational boxes for the weighted-self bins
@@ -78,5 +78,40 @@ theorem weightedSelfKappaBoxes_certify (i : Fin 7) :
       RadicalExpression.enclosure, RadicalExpression.div, RadicalExpression.pow,
       RationalInterval.singleton, RationalInterval.add, RationalInterval.mul,
       RationalInterval.inv]
+
+set_option maxHeartbeats 5000000 in
+set_option maxRecDepth 10000 in
+/-- Direct interval evaluation certifies `Q ≥ 0` on each complete parameter cube. -/
+theorem weightedSelfDirectQCertificates (i : Fin 7) :
+    weightedSelfDirectQCertifiesNonnegative
+      (weightedSelfBinLower i) (weightedSelfBinUpper i)
+      (weightedSelfCoefficientBox (weightedSelfKappaDBox i) (weightedSelfKappaCBox i))
+      .unit .unit .unit = true := by
+  fin_cases i <;> with_unfolding_all rfl
+
+/-- The reduced linear coefficient `Q` is nonnegative on every certified radius bin. -/
+theorem weightedSelfPolynomialQ_nonneg_on_certificate_bin
+    (i : Fin 7) (x y z : Set.Icc (0 : ℝ) 1) :
+    0 ≤ weightedSelfPolynomialQ
+      (weightedSelfRealChart (weightedSelfBinLower i) (weightedSelfBinUpper i) x y z).r
+      (weightedSelfRealChart (weightedSelfBinLower i) (weightedSelfBinUpper i) x y z).b
+      (weightedSelfRealChart (weightedSelfBinLower i) (weightedSelfBinUpper i) x y z).t
+      (weightedSelfBinUpper i) := by
+  obtain ⟨hD, hC⟩ := weightedSelfKappaBoxes_certify i
+  have hinput := weightedSelfCoefficientInput_mem
+    (weightedSelfBinUpper i) (weightedSelfKappaDBox i) (weightedSelfKappaCBox i) hD hC
+  have hunit (u : Set.Icc (0 : ℝ) 1) : RationalInterval.unit.Contains (u : ℝ) := by
+    simpa only [RationalInterval.unit, RationalInterval.Contains, Rat.cast_zero,
+      Rat.cast_one, Set.mem_Icc] using u.property
+  apply weightedSelfPolynomialQ_nonneg_of_direct_interval_certificate
+    (weightedSelfBinLower i) (weightedSelfBinUpper i)
+    (weightedSelfCoefficientBox (weightedSelfKappaDBox i) (weightedSelfKappaCBox i))
+    hinput (weightedSelfDirectQCertificates i) (hunit x) (hunit y) (hunit z)
+  apply ne_of_gt
+  apply weightedSelfRealChart_first_pos
+  · fin_cases i <;> norm_num [weightedSelfBinLower, weightedSelfBinUpper]
+  · fin_cases i <;> norm_num [weightedSelfBinUpper]
+  · exact x.property
+  · exact y.property
 
 end Bescovitch

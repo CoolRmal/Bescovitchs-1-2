@@ -192,4 +192,34 @@ structure WeightedSelfChart (α : Type*) where
   /-- Normalized first projection. -/
   t : α
 
+/-- The affine unit-cube chart for one interval of second radii. -/
+noncomputable def weightedSelfRealChart (lower upper x y z : ℝ) : WeightedSelfChart ℝ :=
+  let b := lower + (upper - lower) * y
+  let r := cStar - b + (1 - cStar + b) * x
+  let t := -1 + 2 * z
+  ⟨r, b, t⟩
+
+/-- The first radius in the affine chart is positive on every bin below radius one. -/
+theorem weightedSelfRealChart_first_pos {lower upper x y z : ℝ}
+    (hwidth : lower ≤ upper) (hupper : upper ≤ 1)
+    (hx : x ∈ Set.Icc (0 : ℝ) 1) (hy : y ∈ Set.Icc (0 : ℝ) 1) :
+    0 < (weightedSelfRealChart lower upper x y z).r := by
+  let b := lower + (upper - lower) * y
+  have hbUpper : b ≤ upper := by
+    dsimp only [b]
+    calc
+      lower + (upper - lower) * y ≤ lower + (upper - lower) * 1 := by
+        simpa only [add_comm] using add_le_add_left
+          (mul_le_mul_of_nonneg_left hy.2 (sub_nonneg.mpr hwidth)) lower
+      _ = upper := by ring
+  have hcb : 0 < cStar - b := by
+    linarith [one_lt_cStar_and_cStar_lt_two.1]
+  have hconvex : 0 < (cStar - b) * (1 - x) + x := by
+    by_cases hxZero : x = 0
+    · simpa [hxZero] using hcb
+    · exact add_pos_of_nonneg_of_pos
+        (mul_nonneg hcb.le (sub_nonneg.mpr hx.2)) (lt_of_le_of_ne hx.1 (Ne.symm hxZero))
+  change 0 < cStar - b + (1 - cStar + b) * x
+  nlinarith [hconvex]
+
 end Bescovitch
