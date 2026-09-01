@@ -31,10 +31,33 @@ The routing and exclusion modules use only two facts about `cStar`:
 `one_lt_cStar_and_cStar_lt_two` and `cStar_mem_isolation_box`. Everything else is `nlinarith`
 over those bounds.
 
-Retargeting `SixPoint/SiblingTangent.lean` (817 lines, 216 occurrences) by hand produced twenty-six
-errors, **all of them application type mismatches against neighbouring modules that still mention
-`cStar`, and none of them arithmetic failures**. The separators hold with room to spare at the
-larger chord.
+Retargeting `SixPoint/SiblingTangent.lean` (817 lines, 216 occurrences, 14 uses of the isolation
+box) **compiles with zero errors at the new chord**, once the shim also supplies `cStar_pos`.
+Every `nlinarith` in it goes through unchanged. It is the one routing module low enough in the
+import graph to be tested in isolation, which is why it is the honest data point.
+
+The remaining modules were each rewritten the same way and compiled alone. That test is
+confounded --- a module high in the graph still refers to neighbours stated with the old chord, and
+those broken references cascade into spurious `linarith` failures --- but the modules with no
+cross-module mismatch give a clean reading:
+
+| module | lines | genuine failures |
+|---|---|---|
+| `SiblingTangent` | 817 | 0 |
+| `RootEdge` | 1267 | 1 |
+| `RowColumnRescue` | 1230 | 4 |
+| `LensEndpointBalancedE0S0` | 1026 | 1 |
+| `RootEdgeType12` | 684 | 7 |
+| `BlueChildSwap` | 231 | 1 |
+
+Fourteen failures across five thousand lines, and most of them are explained by a detail the
+rewrite missed: several of these files also contain the chord as a **decimal literal**
+(`13866128436518096 / 10 ^ 16`, forty-three occurrences across seventeen files), so after renaming
+the constant they mix two different chords. Replace those literals as well.
+
+The conclusion to work from: the routing layer retargets close to free, with of order tens of
+numeric repairs, and it must be done **bottom-up in import order** so that each module's
+dependencies already speak of the new chord. Do not judge a module by compiling it in isolation.
 
 So: introduce the chord as a parameter with an interval hypothesis, replace `cStar` throughout,
 and let the mismatches propagate outward module by module. Order the work by the import graph.
