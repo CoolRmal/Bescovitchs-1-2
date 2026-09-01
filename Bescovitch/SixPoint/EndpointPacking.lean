@@ -9,6 +9,7 @@ public import Bescovitch.SixPoint.BlueChildSwap
 public import Bescovitch.SixPoint.EndpointFailureClosed
 public import Bescovitch.SixPoint.FiniteProperty
 public import Bescovitch.SixPoint.SiblingIncidenceClosed
+public import Bescovitch.SixPoint.WeightedChart
 
 /-!
 # The endpoint packing theorem
@@ -30,6 +31,13 @@ def WeightedGeometricBound : Prop :=
     ‖p₁‖ ≤ 1 → ‖p₂‖ ≤ 1 → ‖w₁‖ ≤ 1 → ‖w₂‖ ≤ 1 →
     cStar ≤ ‖p₁ - p₂‖ → cStar ≤ ‖w₁ - w₂‖ →
     weightedPairScore e cStar endpointLambda endpointMu p₁ p₂ w₁ w₂ ≤ 0
+
+/-- The lens-chart inequality implies the coordinate-free weighted geometric bound. -/
+theorem weightedGeometricBound_of_lensChartBound
+    (hchart : WeightedLensChartBound) : WeightedGeometricBound := by
+  intro e p₁ p₂ w₁ w₂ he hp₁ hp₂ hw₁ hw₂ hpChord hwChord
+  exact weightedPairScore_nonpos_of_lensChartBound_of_separated hchart
+    e p₁ p₂ w₁ w₂ he hp₁ hp₂ hw₁ hw₂ hpChord hwChord
 
 private theorem weightedGeometricBound_configuration
     (hweighted : WeightedGeometricBound) {configuration : SixPointConfiguration}
