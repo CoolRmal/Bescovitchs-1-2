@@ -42,6 +42,7 @@ end
 
 namespace MultivariateDensePolynomial
 
+/-- Coefficient sequences used by recursive dense polynomials. -/
 abbrev Coefficients := MultivariateDenseCoefficients
 
 /-- The two coordinate degrees occurring in the mixed geometric certificate. -/

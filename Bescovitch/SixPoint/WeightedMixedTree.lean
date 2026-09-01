@@ -183,7 +183,8 @@ private theorem unit_disk_excluded_eq_false_of_mem {center : ℚ}
   norm_num at htrans
   linarith
 
-private theorem weighted_mixed_outside_eq_false_of_constraints
+/-- A box containing a point satisfying all four disk constraints is not an outside box. -/
+theorem weighted_mixed_outside_eq_false_of_constraints
     {box : Fin 6 → RationalInterval} {x : Fin 6 → ℝ}
     (hx : ∀ i, (box i).Contains (x i)) (hdisk : WeightedMixedDiskConstraints x) :
     weightedMixedOutside box = false := by
