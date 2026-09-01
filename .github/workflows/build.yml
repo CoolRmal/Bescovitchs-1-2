@@ -60,6 +60,7 @@ jobs:
           Bescovitch.SixPoint.WeightedMixedEqualityTransverse
           Bescovitch.SixPoint.WeightedMixedRootAssembly
           Bescovitch.SixPoint.WeightedMixedStrictCertificate
+          Bescovitch.SixPoint.WeightedSelfCertificate
           Bescovitch.SixPoint.WeightedSelfCertificateCore
           Bescovitch.SixPoint.WeightedSelfCertificateData.Boxes
           Bescovitch.SixPoint.WeightedSelfCertificateData.NonexceptionalTrees
