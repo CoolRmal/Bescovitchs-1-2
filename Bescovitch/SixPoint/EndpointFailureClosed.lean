@@ -27,10 +27,11 @@ namespace Bescovitch
 /-- The weighted geometric bound closes the endpoint at the two left children. -/
 theorem exists_nonnegative_score_of_matched_endpoint_zero
     (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
+    {lambda mu : ℝ} (hlambda : 0 < lambda) (hmu : 0 < mu)
     (hmatching : SelectedDiagonalMatchingFails configuration)
     (hred : redSiblingTriangleFailure configuration (.endpoint 0))
     (hblue : blueSiblingTriangleFailure configuration (.endpoint 0))
-    (hweighted : weightedPairScore configuration.rootDisplacement barC endpointLambda endpointMu
+    (hweighted : weightedPairScore configuration.rootDisplacement barC lambda mu
       (configuration.redDisplacement .left) (configuration.redDisplacement .right)
       (configuration.bluePullback .left) (configuration.bluePullback .right) ≤ 0) :
     ∃ packing : SixPointPacking configuration, 0 ≤ packing.score barS := by
@@ -40,19 +41,20 @@ theorem exists_nonnegative_score_of_matched_endpoint_zero
   · have hq₁ := firstActiveFailureSlack_nonneg h hmatching
     have hq₂ := secondActiveFailureSlack_pos h hred hblue
     have hq₃ := thirdActiveFailureSlack_pos h htype11.1 htype11.2
-    have hpositive := activeFailureCombination_pos hq₁ hq₂ hq₃
+    have hpositive := activeFailureCombination_pos hlambda hmu hq₁ hq₂ hq₃
     rw [← weightedPairScore_configuration_eq_activeFailureCombination] at hpositive
     exact (not_lt_of_ge hweighted hpositive).elim
 
 /-- The weighted geometric bound closes the endpoint at the two right children. -/
 theorem exists_nonnegative_score_of_matched_endpoint_three
     (configuration : SixPointConfiguration) (h : configuration.IsAdmissibleAt barS)
+    {lambda mu : ℝ} (hlambda : 0 < lambda) (hmu : 0 < mu)
     (hmatching : SelectedDiagonalMatchingFails configuration)
     (hred : redSiblingTriangleFailure configuration (.endpoint 3))
     (hblue : blueSiblingTriangleFailure configuration (.endpoint 3))
     (hweighted :
       weightedPairScore (swapConfigurationChildren configuration).rootDisplacement
-        barC endpointLambda endpointMu
+        barC lambda mu
         ((swapConfigurationChildren configuration).redDisplacement .left)
         ((swapConfigurationChildren configuration).redDisplacement .right)
         ((swapConfigurationChildren configuration).bluePullback .left)
@@ -67,7 +69,7 @@ theorem exists_nonnegative_score_of_matched_endpoint_three
   have hblue' : blueSiblingTriangleFailure swapped (.endpoint 0) :=
     (blueEndpointFailure_swapChildren configuration 3).2 hblue
   obtain ⟨packing, hscore⟩ := exists_nonnegative_score_of_matched_endpoint_zero swapped
-    hadmissible hmatching' hred' hblue' hweighted
+    hadmissible hlambda hmu hmatching' hred' hblue' hweighted
   exact ⟨packing.unswapChildren, by simpa only [packing.unswapChildren_score] using hscore⟩
 
 end Bescovitch

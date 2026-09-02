@@ -10,7 +10,6 @@ public import Bescovitch.SixPoint.BlueChildSwap
 public import Bescovitch.SixPoint.EndpointFailureClosed
 public import Bescovitch.SixPoint.FiniteProperty
 public import Bescovitch.SixPoint.SiblingIncidenceClosed
-public import Bescovitch.SixPoint.WeightedChart
 
 /-!
 # The endpoint packing theorem
@@ -26,24 +25,17 @@ noncomputable section
 namespace Bescovitch
 
 /-- The weighted geometric inequality for two ordered sibling pairs in the unit disk. -/
-def WeightedGeometricBound : Prop :=
+def WeightedGeometricBound (lambda mu : ℝ) : Prop :=
   ∀ e p₁ p₂ w₁ w₂ : (EuclideanSpace ℝ (Fin 2)),
     ‖e‖ = 1 →
     ‖p₁‖ ≤ 1 → ‖p₂‖ ≤ 1 → ‖w₁‖ ≤ 1 → ‖w₂‖ ≤ 1 →
     barC ≤ ‖p₁ - p₂‖ → barC ≤ ‖w₁ - w₂‖ →
-    weightedPairScore e barC endpointLambda endpointMu p₁ p₂ w₁ w₂ ≤ 0
+    weightedPairScore e barC lambda mu p₁ p₂ w₁ w₂ ≤ 0
 
-/-- The lens-chart inequality implies the coordinate-free weighted geometric bound. -/
-theorem weightedGeometricBound_of_lensChartBound
-    (hchart : WeightedLensChartBound) : WeightedGeometricBound := by
-  intro e p₁ p₂ w₁ w₂ he hp₁ hp₂ hw₁ hw₂ hpChord hwChord
-  exact weightedPairScore_nonpos_of_lensChartBound_of_separated hchart
-    e p₁ p₂ w₁ w₂ he hp₁ hp₂ hw₁ hw₂ hpChord hwChord
-
-private theorem weightedGeometricBound_configuration
-    (hweighted : WeightedGeometricBound) {configuration : SixPointConfiguration}
+private theorem weightedGeometricBound_configuration {lambda mu : ℝ}
+    (hweighted : WeightedGeometricBound lambda mu) {configuration : SixPointConfiguration}
     (h : configuration.IsAdmissibleAt barS) :
-    weightedPairScore configuration.rootDisplacement barC endpointLambda endpointMu
+    weightedPairScore configuration.rootDisplacement barC lambda mu
       (configuration.redDisplacement .left) (configuration.redDisplacement .right)
       (configuration.bluePullback .left) (configuration.bluePullback .right) ≤ 0 := by
   apply hweighted
@@ -61,8 +53,9 @@ private theorem weightedGeometricBound_configuration
     convert hchord using 1
     ring
 
-private theorem exists_nonnegative_score_of_selected_diagonal
-    (hweighted : WeightedGeometricBound) (configuration : SixPointConfiguration)
+private theorem exists_nonnegative_score_of_selected_diagonal {lambda mu : ℝ}
+    (hlambda : 0 < lambda) (hmu : 0 < mu)
+    (hweighted : WeightedGeometricBound lambda mu) (configuration : SixPointConfiguration)
     (h : configuration.IsAdmissibleAt barS)
     (hmatching : SelectedDiagonalMatchingFails configuration) :
     ∃ packing : SixPointPacking configuration, 0 ≤ packing.score barS := by
@@ -70,25 +63,29 @@ private theorem exists_nonnegative_score_of_selected_diagonal
     hpacking | ⟨code, hcode, hred, hblue⟩
   · exact hpacking
   · rcases hcode with rfl | rfl
-    · exact exists_nonnegative_score_of_matched_endpoint_zero configuration h hmatching hred hblue
-        (weightedGeometricBound_configuration hweighted h)
-    · exact exists_nonnegative_score_of_matched_endpoint_three configuration h hmatching hred hblue
+    · exact exists_nonnegative_score_of_matched_endpoint_zero configuration h hlambda hmu
+        hmatching hred hblue (weightedGeometricBound_configuration hweighted h)
+    · exact exists_nonnegative_score_of_matched_endpoint_three configuration h hlambda hmu
+        hmatching hred hblue
         (weightedGeometricBound_configuration hweighted (IsAdmissibleAt.swapChildren h))
 
 /-- The weighted geometric bound implies the finite six-point property at the exact endpoint. -/
-theorem sixPointFiniteProperty_barS_of_weightedGeometricBound
-    (hweighted : WeightedGeometricBound) : SixPointFiniteProperty barS := by
+theorem sixPointFiniteProperty_barS_of_weightedGeometricBound {lambda mu : ℝ}
+    (hlambda : 0 < lambda) (hmu : 0 < mu)
+    (hweighted : WeightedGeometricBound lambda mu) : SixPointFiniteProperty barS := by
   intro configuration h
   rcases exists_nonnegative_score_or_matching_obstruction configuration h with
     hpacking | hdiagonal | hantiDiagonal
   · exact hpacking
-  · exact exists_nonnegative_score_of_selected_diagonal hweighted configuration h hdiagonal
+  · exact exists_nonnegative_score_of_selected_diagonal hlambda hmu hweighted configuration h
+      hdiagonal
   · let swapped := swapBlueChildren configuration
     have hadmissible : swapped.IsAdmissibleAt barS := IsAdmissibleAt.swapBlueChildren h
     have hmatching : SelectedDiagonalMatchingFails swapped :=
       (selectedDiagonalMatchingFails_swapBlueChildren configuration).2 hantiDiagonal
     obtain ⟨packing, hscore⟩ :=
-      exists_nonnegative_score_of_selected_diagonal hweighted swapped hadmissible hmatching
+      exists_nonnegative_score_of_selected_diagonal hlambda hmu hweighted swapped hadmissible
+        hmatching
     exact ⟨packing.unswapBlue, by simpa only [packing.unswapBlue_score] using hscore⟩
 
 end Bescovitch

@@ -100,13 +100,13 @@ theorem thirdActiveFailureSlack_pos
 
 /-- The weighted score of the displacement pairs is exactly `q1 + lambda*q2 + mu*q3`. -/
 theorem weightedPairScore_configuration_eq_activeFailureCombination
-    (configuration : SixPointConfiguration) :
-    weightedPairScore configuration.rootDisplacement barC endpointLambda endpointMu
+    (configuration : SixPointConfiguration) (lambda mu : ℝ) :
+    weightedPairScore configuration.rootDisplacement barC lambda mu
         (configuration.redDisplacement .left) (configuration.redDisplacement .right)
         (configuration.bluePullback .left) (configuration.bluePullback .right) =
       firstActiveFailureSlack configuration +
-        endpointLambda * secondActiveFailureSlack configuration +
-        endpointMu * thirdActiveFailureSlack configuration := by
+        lambda * secondActiveFailureSlack configuration +
+        mu * thirdActiveFailureSlack configuration := by
   have hB₁₁ := configuration.dist_red_blue_eq_norm .left .left
   have hB₂₂ := configuration.dist_red_blue_eq_norm .right .right
   have hB₁₂ := configuration.dist_red_blue_eq_norm .left .right
@@ -151,26 +151,28 @@ theorem weightedPairScore_configuration_eq_activeFailureCombination
 
 /-- Nonnegative active slacks make their exact weighted combination nonnegative. -/
 theorem activeFailureCombination_nonneg {configuration : SixPointConfiguration}
+    {lambda mu : ℝ} (hlambda : 0 ≤ lambda) (hmu : 0 ≤ mu)
     (hq₁ : 0 ≤ firstActiveFailureSlack configuration)
     (hq₂ : 0 ≤ secondActiveFailureSlack configuration)
     (hq₃ : 0 ≤ thirdActiveFailureSlack configuration) :
     0 ≤ firstActiveFailureSlack configuration +
-      endpointLambda * secondActiveFailureSlack configuration +
-      endpointMu * thirdActiveFailureSlack configuration := by
-  have hsecond := mul_nonneg endpointLambda_pos.le hq₂
-  have hthird := mul_nonneg endpointMu_pos.le hq₃
+      lambda * secondActiveFailureSlack configuration +
+      mu * thirdActiveFailureSlack configuration := by
+  have hsecond := mul_nonneg hlambda hq₂
+  have hthird := mul_nonneg hmu hq₃
   linarith
 
 /-- Strict second and third failure slacks make their weighted combination positive. -/
 theorem activeFailureCombination_pos {configuration : SixPointConfiguration}
+    {lambda mu : ℝ} (hlambda : 0 < lambda) (hmu : 0 < mu)
     (hq₁ : 0 ≤ firstActiveFailureSlack configuration)
     (hq₂ : 0 < secondActiveFailureSlack configuration)
     (hq₃ : 0 < thirdActiveFailureSlack configuration) :
     0 < firstActiveFailureSlack configuration +
-      endpointLambda * secondActiveFailureSlack configuration +
-      endpointMu * thirdActiveFailureSlack configuration := by
-  have hsecond := mul_pos endpointLambda_pos hq₂
-  have hthird := mul_pos endpointMu_pos hq₃
+      lambda * secondActiveFailureSlack configuration +
+      mu * thirdActiveFailureSlack configuration := by
+  have hsecond := mul_pos hlambda hq₂
+  have hthird := mul_pos hmu hq₃
   linarith
 
 end Bescovitch
