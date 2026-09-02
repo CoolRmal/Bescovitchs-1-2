@@ -2,7 +2,9 @@
 
 A Lean 4 + Mathlib formalization of
 
-$$\sigma_1(\mathbb{R}^2) \le \frac{6934}{10000} = 0.6934,$$
+$$
+\sigma_1(\mathbb{R}^2) \le \frac{6934}{10000} = 0.6934,
+$$
 
 improving the published bound of $0.7$. The proof is complete: `Solution.lean` contains no
 `sorry`, and the target theorem depends on exactly the three axioms `propext`,
@@ -23,7 +25,9 @@ analysis that produces the sharp constant $s_*$ discussed below.
 For a Borel set $E \subset \mathbb{R}^2$ with $\mathcal{H}^1(E) < \infty$, the **lower density**
 at a point $x$ is
 
-$$\Theta^1_*(E,x) = \liminf_{r \downarrow 0} \frac{\mathcal{H}^1(E \cap B(x,r))}{2r},$$
+$$
+\Theta^1_*(E,x) = \liminf_{r \downarrow 0} \frac{\mathcal{H}^1(E \cap B(x,r))}{2r},
+$$
 
 normalized by the diameter $2r$, so a straight segment has density $1$ at its interior points.
 **Besicovitch's 1/2 conjecture** asserts:
@@ -55,7 +59,9 @@ This is the first question a reader should ask, so it is answered up front.
 The finite problem this development solves — the **two-colour, six-centre** instance — has an
 exact optimal constant,
 
-$$\theta_6 = s_* = 0.693306421825904872690678414403710951\ldots,$$
+$$
+\theta_6 = s_* = 0.693306421825904872690678414403710951\ldots,
+$$
 
 an algebraic number pinned by an isolated pair of radical equations. The formalized bound is
 $9.36 \times 10^{-5}$ above it. That gap is not a gap in the mathematics; it is the price of
@@ -72,7 +78,9 @@ the extremiser, so no strict certificate of the assumed shape exists there at al
 
 **Moving the chord breaks every tie at once.** With
 
-$$c = \frac{3467}{2500} = 1.3868, \qquad s = \frac{c}{2} = 0.6934,$$
+$$
+c = \frac{3467}{2500} = 1.3868, \qquad s = \frac{c}{2} = 0.6934,
+$$
 
 the three mechanisms no longer agree, the extremal configuration is infeasible, and the score
 acquires a uniform negative margin of about $5.8 \times 10^{-4}$ — four orders of magnitude more
@@ -93,12 +101,16 @@ The failure tree reduces the failure of all nine packings at a matched sibling e
 scalar slacks $q_1 \ge 0$, $q_2 > 0$, $q_3 > 0$. An algebraic identity says that for **any**
 positive weights $\lambda, \mu$,
 
-$$q_1 + \lambda q_2 + \mu q_3 = \mathcal{W}_{c,\lambda,\mu}(e, p_1, p_2, w_1, w_2),$$
+$$
+q_1 + \lambda q_2 + \mu q_3 = \mathcal{W}_{c,\lambda,\mu}(e, p_1, p_2, w_1, w_2),
+$$
 
 so the weighted score is positive. The contradiction comes from bounding the same score *above*.
 Because the identity holds for arbitrary weights, we take the small rationals
 
-$$\lambda = \frac{1}{12}, \qquad \mu = \frac{13}{14},$$
+$$
+\lambda = \frac{1}{12}, \qquad \mu = \frac{13}{14},
+$$
 
 which makes every downstream coefficient a small rational and removes the entire exact-endpoint
 apparatus from the dependency path.
@@ -108,7 +120,10 @@ separation multipliers turn the score into a quadratic form in the five configur
 A rational $3 \times 5$ factor $F$, completed by elementary two-vector squares, dominates that
 form:
 
-$$M = F^{\mathsf{T}}F + \sum_{i<j} |\rho_{ij}| (e_i + \varepsilon_{ij} e_j)(e_i + \varepsilon_{ij} e_j)^{\mathsf{T}}$$
+$$
+M = F^{\top} F + \sum_{i \lt j} \lvert \rho_{ij} \rvert
+(e_i + \varepsilon_{ij} e_j)(e_i + \varepsilon_{ij} e_j)^{\top}
+$$
 
 is a sum of rank-one positive semidefinite matrices, so the Schur product theorem against the Gram
 matrix of the five vectors cancels every inner product. What remains is a single exact rational
@@ -116,7 +131,9 @@ number $U$ per rectangle, and thirty rectangles cover every feasible pair of rad
 
 The binding certificate is on $[7/10, 3/4] \times [4/5, 9/10]$, with
 
-$$U = -\frac{141718938311359411043}{245112420775950000000000} = -0.000578179\ldots < -\frac{1}{2000}.$$
+$$
+U = -\frac{141718938311359411043}{245112420775950000000000} = -0.000578179\ldots < -\frac{1}{2000}.
+$$
 
 ## Where a computer is used
 
