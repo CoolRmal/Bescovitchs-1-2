@@ -1,60 +1,39 @@
-# Bescovitch's 1/2
+# Besicovitch's 1/2-problem: a verified bound
 
-A Lean 4 and Mathlib project for the proposed bound
+A Lean 4 + Mathlib formalization of
 
-$$
-\sigma_1(\mathbb{R}^2) \le s_{\ast},
-\qquad
-s_{\ast} = 0.6933064218259048726\ldots,
-$$
+$$\sigma_1(\mathbb{R}^2) \le \frac{6934}{10000} = 0.6934,$$
 
-where `sStar` is defined by an exact isolated radical system rather than by a decimal.
+improving the published bound of $0.7$. The proof is complete: `Solution.lean` contains no
+`sorry`, and the target theorem depends on exactly the three axioms `propext`,
+`Classical.choice` and `Quot.sound`.
 
-The formalization is being developed in pushed, buildable milestones. The current solution theorem
-still has a development hole and must not yet be treated as a completed proof. See
-[`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md) for the proof graph and verification criteria.
+```
+theorem Bescovitch.sigma_one_plane_le_6934_div_10000 :
+    sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ 6934 / 10000
+```
 
-**The formalization currently targets the weaker rational bound**
-
-$$
-\sigma_1(\mathbb{R}^2) \le \frac{6934}{10000},
-$$
-
-which still improves on the published $0.7$. The sharp constant $s_{\ast}$ is what the six-point
-analysis below actually computes, but certifying it in Lean requires the endpoint to be attained
-exactly, and that tightness is what makes the finite certificates expensive. Away from the
-endpoint the same argument carries a margin of about $3\times10^{-3}$ instead of $10^{-8}$, which is what
-makes the rational target reachable. `DEVELOPMENT_PLAN.md` records the measurements behind that
-choice.
+📄 **[`paper/gram-certificate-bound.pdf`](paper/gram-certificate-bound.pdf)** — the proof of this
+bound, and the argument for the choice of constant.
+[`paper/six-point-constant.pdf`](paper/six-point-constant.pdf) is background: the six-point
+analysis that produces the sharp constant $s_*$ discussed below.
 
 ## The problem
 
-For a Borel set $E \subset \mathbb{R}^2$ with finite one-dimensional Hausdorff measure, the
-**lower density** at a point $x$ is
+For a Borel set $E \subset \mathbb{R}^2$ with $\mathcal{H}^1(E) < \infty$, the **lower density**
+at a point $x$ is
 
-$$
-\Theta^1_{\ast}(E,x) \;=\; \liminf_{r \downarrow 0} \frac{\mathcal{H}^1(E \cap B(x,r))}{2r},
-$$
+$$\Theta^1_*(E,x) = \liminf_{r \downarrow 0} \frac{\mathcal{H}^1(E \cap B(x,r))}{2r},$$
 
-normalized by the diameter $2r$ of the ball, so that a straight segment has density $1$ at its
-interior points. **Besicovitch's 1/2 conjecture** asserts that
+normalized by the diameter $2r$, so a straight segment has density $1$ at its interior points.
+**Besicovitch's 1/2 conjecture** asserts:
 
-> if $\mathcal{H}^1(E) < \infty$ and $\Theta^1_{\ast}(E,x) > 1/2$ for $\mathcal{H}^1$-almost every
-> $x \in E$, then $E$ is countably 1-rectifiable — covered up to null measure by countably many
-> Lipschitz curves.
+> if $\mathcal{H}^1(E) < \infty$ and $\Theta^1_*(E,x) > 1/2$ for $\mathcal{H}^1$-almost every
+> $x \in E$, then $E$ is countably 1-rectifiable.
 
-The threshold $1/2$ is the natural candidate: it is the value attained at the endpoint of a
-segment, and no known purely 1-unrectifiable set of finite length achieves a lower density above
-it. Writing
-
-$$
-\sigma_1(\mathbb{R}^2) = \inf\lbrace\beta \ge 0 : \text{every finite-measure Borel set with }
-\Theta^1_{\ast} \ge \beta \text{ a.e. is countably 1-rectifiable}\rbrace,
-$$
-
-the conjecture is the assertion $\sigma_1(\mathbb{R}^2) = 1/2$.
-
-## A short history
+Writing $\sigma_1(\mathbb{R}^2)$ for the least threshold $\beta \ge 0$ such that
+$\Theta^1_* \ge \beta$ almost everywhere forces countable 1-rectifiability, the conjecture is
+$\sigma_1(\mathbb{R}^2) = 1/2$.
 
 | year | bound | source |
 |---|---|---|
@@ -62,86 +41,150 @@ the conjecture is the assertion $\sigma_1(\mathbb{R}^2) = 1/2$.
 | 1938 | $3/4$ | Besicovitch |
 | 1992 | $(2+\sqrt{46})/12 = 0.73186\ldots$ | Preiss and Tišer |
 | 2024 | $0.7$ | De Lellis, Glaudo, Massaccesi and Vittone |
+| **here** | $\mathbf{0.6934}$ | **this repository, machine-checked** |
 
-Besicovitch introduced the problem in his 1928 study of linearly measurable plane sets and, ten
-years later, brought the threshold down to $3/4$. Preiss and Tišer reached
-$(2+\sqrt{46})/12$ in 1992 by a two-point inequality for *straight* measures — those satisfying
-$\mu(A) \le \operatorname{diam} A$ for every measurable $A$. That bound stood for more than three
-decades; the sharp threshold obtainable from the method is the unique positive root of
-$8s^3+4s^2-3s-3$, namely $0.72655\ldots$.
+De Lellis, Glaudo, Massaccesi and Vittone recast the question as a family of finite-dimensional
+optimization problems: the passage from a density hypothesis to rectifiability routes through a
+purely finite statement about disjoint balls centred at finitely many points. **The optimization
+approach here is inspired by theirs.**
 
-The decisive structural advance is due to De Lellis, Glaudo, Massaccesi and Vittone, who recast
-the question as a family of finite-dimensional optimization problems: the passage from a density
-hypothesis to rectifiability can be routed through a purely finite statement about disjoint balls
-centred at finitely many points, and that statement is a linear program once the centres are
-fixed. **The optimization approach in this repository is inspired by theirs.**
+## Why 0.6934 and not the sharp constant
 
-## What this project proves
+This is the first question a reader should ask, so it is answered up front.
 
-The finite problems are indexed by how many centres are used and how they are grouped. This
-project solves the **two-colour, six-centre** instance exactly. Two colours correspond to the two
-sets a separation argument produces; each colour contributes a root and two children. Its optimal
-constant is the algebraic number
+The finite problem this development solves — the **two-colour, six-centre** instance — has an
+exact optimal constant,
 
-$$
-\theta_6 = s_{\ast} = 0.693306421825904872690678414403710951\ldots,
-$$
+$$\theta_6 = s_* = 0.693306421825904872690678414403710951\ldots,$$
 
-pinned by an isolated pair of radical equations inside an explicit rational box — the decimal
-appears nowhere in the proof — with a unique extremal configuration up to the evident symmetries.
-That configuration is a half-turn pair of chords of length $c_{\ast} = 2s_{\ast}$ at which three
-structurally different packing mechanisms tie simultaneously, which is why the answer is an
-algebraic number of high degree rather than a round one.
+an algebraic number pinned by an isolated pair of radical equations. The formalized bound is
+$9.36 \times 10^{-5}$ above it. That gap is not a gap in the mathematics; it is the price of
+making the certificates finite.
 
-Combined with a direct six-centre transfer to the Besicovitch pair condition and the standard
-rectifiability machinery, this gives $\sigma_1(\mathbb{R}^2) \le s_{\ast}$.
+**Tightness destroys the certificates.** At $s_*$ the extremal configuration is *attained*: a
+half-turn pair of chords at which three structurally different packing mechanisms tie
+simultaneously. The weighted score that must be bounded above by zero therefore equals exactly
+zero at an interior point, with vanishing gradient. A certificate for a non-strict bound at a
+degenerate maximum has to resolve the geometry to the precision of the degeneracy. In practice
+the margin away from the extremiser was about $10^{-8}$, and the adaptive subdivision needed near
+the tie grew without bound — on one of the ten coordinate charts the score is identically zero at
+the extremiser, so no strict certificate of the assumed shape exists there at all.
 
-## The paper
+**Moving the chord breaks every tie at once.** With
 
-[`paper/six-point-constant.pdf`](paper/six-point-constant.pdf) — the full write-up, with the
-proof outline and geometric intuition first and the details afterwards. Source:
-[`paper/six-point-constant.tex`](paper/six-point-constant.tex).
+$$c = \frac{3467}{2500} = 1.3868, \qquad s = \frac{c}{2} = 0.6934,$$
 
-Build it with:
+the three mechanisms no longer agree, the extremal configuration is infeasible, and the score
+acquires a uniform negative margin of about $5.8 \times 10^{-4}$ — four orders of magnitude more
+room. That is what lets a *small, fixed* family of thirty certificates replace an unbounded
+adaptive search.
 
-```sh
-cd paper
-pdflatex six-point-constant.tex && pdflatex six-point-constant.tex
-```
+**The constant is also bounded from above.** The routing separators that prune the case tree are
+themselves inequalities in the chord and fail once $c$ exceeds about $1.386850$. So the admissible
+window is narrow: above $2s_*$ to break the tie, below that ceiling to keep the routing. The value
+$6934/10000$ sits inside it.
+
+A companion theorem, `sStar_le_6934_div_10000`, records that the exact endpoint does lie below the
+rational target, so the two statements are consistent.
+
+## How the proof works
+
+The failure tree reduces the failure of all nine packings at a matched sibling endpoint to three
+scalar slacks $q_1 \ge 0$, $q_2 > 0$, $q_3 > 0$. An algebraic identity says that for **any**
+positive weights $\lambda, \mu$,
+
+$$q_1 + \lambda q_2 + \mu q_3 = \mathcal{W}_{c,\lambda,\mu}(e, p_1, p_2, w_1, w_2),$$
+
+so the weighted score is positive. The contradiction comes from bounding the same score *above*.
+Because the identity holds for arbitrary weights, we take the small rationals
+
+$$\lambda = \frac{1}{12}, \qquad \mu = \frac{13}{14},$$
+
+which makes every downstream coefficient a small rational and removes the entire exact-endpoint
+apparatus from the dependency path.
+
+On a rectangle of second-child radii, six quadratic norm tangents, four radial secants and two
+separation multipliers turn the score into a quadratic form in the five configuration vectors.
+A rational $3 \times 5$ factor $F$, completed by elementary two-vector squares, dominates that
+form:
+
+$$M = F^{\mathsf{T}}F + \sum_{i<j} |\rho_{ij}| (e_i + \varepsilon_{ij} e_j)(e_i + \varepsilon_{ij} e_j)^{\mathsf{T}}$$
+
+is a sum of rank-one positive semidefinite matrices, so the Schur product theorem against the Gram
+matrix of the five vectors cancels every inner product. What remains is a single exact rational
+number $U$ per rectangle, and thirty rectangles cover every feasible pair of radii.
+
+The binding certificate is on $[7/10, 3/4] \times [4/5, 9/10]$, with
+
+$$U = -\frac{141718938311359411043}{245112420775950000000000} = -0.000578179\ldots < -\frac{1}{2000}.$$
 
 ## Where a computer is used
 
-Three ingredients are finite interval computations: isolation of the algebraic endpoint and its
-weights; a list of strict routing separators that prune the case tree; and the two analytic
-inequalities at the heart of the argument (a self inequality on one sibling pair, and a
-contraction relating a mixed pair to the two self terms).
+The certificate parameters were found by an unverified numerical search and stored as exact
+rationals with denominator $10^4$. **Nothing about how they were found enters the proof.** Lean
+recomputes every coefficient from the stored data by exact rational arithmetic and checks the sign
+conditions and $U \le -1/2000$ for all thirty records. Positive semidefiniteness is a *theorem*
+proved from the rank-one decomposition, not a numerical test — there is no eigenvalue computation
+anywhere.
 
-In each case the certified statement is a universal inequality on an explicitly covered compact
-domain, not the output of an optimizer. All interval endpoints are rational or dyadic, every
-arithmetic operation is rounded outward using integers, and every sign decision is an integer
-comparison. Bernstein conversion and the interval arithmetic are implemented and proved sound
-inside Lean. Hashes, program exit codes, floating-point samples, `native_decide`, and unchecked
-external computations are not proof objects.
-
-## Comparator layout
-
-- `Challenge.lean` contains every transparent statement definition and the requested theorem hole.
-- `Solution.lean` repeats the same theorem independently.
-- `Bescovitch/Statement.lean` contains the identical definitions used by the modular solution.
-- `comparator.json` permits only `propext`, `Quot.sound`, and `Classical.choice`.
-
-The comparator configuration intentionally has no `definition_names` escape hatch: the definitions
-reachable from the theorem statement are compared recursively.
+Hashes, program exit codes, floating-point samples, `native_decide`, `Lean.ofReduceBool`, and
+unchecked external computations are not used as proof objects.
 
 ## Build
 
 ```sh
 lake exe cache get
-lake build
-lake env lean Challenge.lean
+lake build Solution Challenge
 ```
 
-The project is pinned to Lean and Mathlib `v4.32.0`, matching the comparator toolchain.
+From a warm Mathlib cache this takes about **2.5 minutes wall / 12 CPU-minutes** in total. The
+certificate-specific part is a small fraction of that:
+
+| stage | cost |
+|---|---|
+| thirty certificate validity checks | 43 s |
+| Gram certificate core | 7 s |
+| band cover | 3 s |
+| everything else (measure theory, routing, transfers) | remainder |
+
+To check the result yourself:
+
+```sh
+echo 'import Solution
+#print axioms Bescovitch.sigma_one_plane_le_6934_div_10000' > /tmp/check.lean
+lake env lean /tmp/check.lean
+```
+
+which prints
+
+```
+'Bescovitch.sigma_one_plane_le_6934_div_10000' depends on axioms:
+  [propext, Classical.choice, Quot.sound]
+```
+
+The project is pinned to Lean and Mathlib `v4.32.0`.
+
+## Layout
+
+| path | contents |
+|---|---|
+| `Challenge.lean` | the problem statement, self-contained, with the theorem hole |
+| `Solution.lean` | the proved theorem |
+| `Bescovitch/Statement.lean` | the same definitions, for the modular development |
+| `Bescovitch/SixPoint/GramCertificateCore.lean` | the local certificate theorem |
+| `Bescovitch/SixPoint/GramCertificateData.lean` | the thirty certificates and their checks |
+| `Bescovitch/SixPoint/GramCertificateCover.lean` | the eight-band radius cover |
+| `Bescovitch/SixPoint/GramWeightedBound.lean` | the coordinate-free weighted bound |
+| `Bescovitch/Main/RationalBound.lean` | the reduction to the density bound |
+| `comparator.json` | permits only `propext`, `Quot.sound`, `Classical.choice` |
+
+`comparator.json` intentionally has no `definition_names` escape hatch: the definitions reachable
+from the theorem statement are compared recursively.
+
+An earlier form of this development pursued the sharp constant $s_*$ through six-variable
+Bernstein certificates. That branch needed an estimated 29 CPU-hours of kernel reduction over 3072
+adaptive leaves and was still incomplete — one of ten charts admitted no certificate tree. It was
+removed once the Gram argument superseded it, and remains in the history at commit `7a8c833`.
 
 ## References
 

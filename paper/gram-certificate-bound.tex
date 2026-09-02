@@ -1,0 +1,288 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\newcommand{\score}{\mathcal{W}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+
+\title{\bfseries A Gram-certificate proof that\\[0.2em]
+$\boldsymbol{\sigma_1(\R^2)\le 0.6934}$\\[0.6em]
+\large What is formalized in \texttt{Bescovitchs-1-2}, and why the constant is not sharp}
+\author{Yongxi Lin}
+\date{September 2, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This note describes the theorem verified in the Lean~4 development
+\texttt{Bescovitchs-1-2}: the planar one-dimensional rectifiability threshold satisfies
+$\sigma_1(\R^2)\le 6934/10000$, improving the published bound of $0.7$. The proof combines the
+six-point failure tree of the two-colour finite problem with thirty local Gram certificates. We
+explain the argument, state precisely what the machine checks, and — since this is the natural
+question — explain why the formalized constant is $0.6934$ rather than the sharp six-point
+endpoint $s_*=0.69330642\ldots$, and what it would take to close the remaining gap of
+$9.4\cdot10^{-5}$.
+\end{abstract}
+
+\section{The result}
+
+For a Borel set $E\subset\R^2$ with $\mathcal H^1(E)<\infty$, the lower density at $x$ is
+\[
+\Theta^1_*(E,x)=\liminf_{r\downarrow0}\frac{\mathcal H^1(E\cap B(x,r))}{2r},
+\]
+and $\sigma_1(\R^2)$ is the least threshold $\beta$ such that $\Theta^1_*\ge\beta$ almost
+everywhere forces countable $1$-rectifiability. Besicovitch's $1/2$ conjecture asserts
+$\sigma_1(\R^2)=1/2$. The verified statement is
+
+\begin{theorem}[\texttt{Bescovitch.sigma\_one\_plane\_le\_6934\_div\_10000}]
+\[
+\sigma_1(\R^2)\;\le\;\frac{6934}{10000}=0.6934 .
+\]
+\end{theorem}
+
+The proof term depends on exactly the three axioms \texttt{propext}, \texttt{Classical.choice} and
+\texttt{Quot.sound}. It uses no \texttt{native\_decide}, no \texttt{Lean.ofReduceBool}, no
+floating-point value, no hash, and no custom axiom.
+
+\section{Why the constant is not sharp}
+\label{sec:why}
+
+The six-point finite problem this development solves has an exact optimal constant,
+\[
+\theta_6=s_*=0.693306421825904872690678414403710951\ldots,
+\]
+an algebraic number pinned by an isolated pair of radical equations. So a natural target is
+$\sigma_1(\R^2)\le s_*$, and an earlier form of this repository pursued exactly that. The reason
+the formalized statement is the weaker rational bound is not that the mathematics fails at $s_*$;
+it is that \emph{tightness destroys the certificates}.
+
+At $s_*$ the extremal configuration is attained: a half-turn pair of chords at which three
+structurally different packing mechanisms tie \emph{simultaneously}. The weighted score that the
+argument must bound above by zero therefore has value exactly $0$ at an interior point of the
+domain, with vanishing gradient. Any certificate that establishes a non-strict bound at a
+degenerate maximum must resolve the geometry near that point to the precision of the degeneracy.
+Concretely, in the earlier Bernstein formulation the margin available away from the extremiser was
+about $10^{-8}$, and the adaptive subdivision needed to certify the neighbourhood of the tie grew
+until one of the ten coordinate charts admitted no finite tree at all: on that chart the score is
+identically $0$ at the extremiser, so no strict Positivstellensatz certificate of the assumed shape
+exists.
+
+Moving the chord to the rational value
+\[
+c=\frac{3467}{2500}=1.3868,\qquad s=\frac c2=\frac{6934}{10000},
+\]
+breaks every tie at once. The three mechanisms no longer agree, the extremal configuration is no
+longer feasible, and the weighted score acquires a uniform negative margin of about
+$5.8\cdot10^{-4}$ — roughly four orders of magnitude more room than at $s_*$. That margin is what
+makes a \emph{small, fixed} certificate family sufficient: thirty rectangles suffice where the
+sharp problem needed an unbounded adaptive tree.
+
+The cost of this trade is quantified exactly: the gap between what is proved and the sharp
+six-point constant is
+\[
+\frac{6934}{10000}-s_*\;=\;9.357817\cdot10^{-5}.
+\]
+The gap to the conjecture itself is of course far larger; $\sigma_1(\R^2)=1/2$ remains open, and
+the six-point method cannot reach below $\theta_6$ no matter how it is certified. A companion
+theorem in \texttt{Solution.lean}, \texttt{sStar\_le\_6934\_div\_10000}, records that the exact
+endpoint does lie below the rational target, so the two statements are consistent and the
+formalized bound is genuinely weaker only by the amount displayed above.
+
+\medskip
+There is a second, upper constraint on the choice, which is why the constant is $0.6934$ and not,
+say, $0.699$. The routing separators that prune the case tree are themselves inequalities in the
+chord, and they cease to hold once $c$ exceeds roughly $1.386850$. The rational chord above sits
+just under that ceiling while clearing $s_*$ from above, so the interval of admissible targets is
+narrow, and $6934/10000$ is a natural point inside it.
+
+\section{Input from the six-point failure tree}
+
+Let $e,p_1,p_2,w_1,w_2$ lie in a real inner-product space with
+\[
+\norm e=1,\qquad \norm{p_i}\le1,\qquad \norm{w_i}\le1,
+\]
+and suppose the two sibling pairs are separated,
+\begin{equation}
+c\le\norm{p_1-p_2},\qquad c\le\norm{w_1-w_2}.
+\label{eq:sep}
+\end{equation}
+The finite failure tree — retained unchanged from the sharp development — reduces the failure of
+all nine packings at a matched sibling endpoint to three scalar inequalities
+\begin{equation}
+q_1\ge0,\qquad q_2>0,\qquad q_3>0,
+\label{eq:slacks}
+\end{equation}
+in Lean \texttt{firstActiveFailureSlack\_nonneg}, \texttt{secondActiveFailureSlack\_pos} and
+\texttt{thirdActiveFailureSlack\_pos}.
+
+The weighted pair score is, for weights $\lambda,\mu>0$,
+\begin{align*}
+\score_{c,\lambda,\mu}
+={}&(1+\lambda)\norm{e-p_1-w_1}+\norm{e-p_2-w_2}\\
+&+\tfrac\mu2\bigl(\norm{e-p_1}+\norm{e-w_1}+\norm{e-p_1-w_2}+\norm{e-w_1-p_2}\bigr)\\
+&-\tfrac{(c-1)(\lambda/2+\mu)}2\bigl(\norm{p_1}+\norm{w_1}\bigr)
+-\tfrac{(c+1)\lambda/2+3c\mu}{2}\bigl(\norm{p_2}+\norm{w_2}\bigr)\\
+&-\Bigl(2c(2c-1)+\tfrac\lambda2(3c^2-3c+2)+\mu(c^2-c)\Bigr),
+\end{align*}
+and a purely algebraic identity gives
+$q_1+\lambda q_2+\mu q_3=\score_{c,\lambda,\mu}$ for \emph{every} $\lambda,\mu$
+(\texttt{weightedPairScore\_configuration\_eq\_activeFailureCombination}). Hence
+\eqref{eq:slacks} forces $\score_{c,\lambda,\mu}>0$.
+
+The contradiction we must produce is an upper bound $\score<0$. In the sharp development the
+weights were the Cramer weights of the endpoint system, algebraic numbers of high degree. Because
+the identity holds for arbitrary weights, we are free to pick
+\begin{equation}
+\lambda=\frac1{12},\qquad \mu=\frac{13}{14},
+\label{eq:weights}
+\end{equation}
+which is what makes every subsequent coefficient a small rational. This substitution alone removes
+the entire exact-endpoint apparatus from the dependency path of the theorem.
+
+\section{One local Gram certificate}
+
+Fix a rectangle of second-child radii
+\begin{equation}
+l_P\le\norm{p_2}\le u_P,\qquad l_W\le\norm{w_2}\le u_W .
+\label{eq:box}
+\end{equation}
+The triangle inequality and \eqref{eq:sep} give $c-u_P\le\norm{p_1}\le1$ and
+$c-u_W\le\norm{w_1}\le1$; note that the lower bound uses $u_P$, not $l_P$.
+
+Write $v_0=e$, $v_1=p_1$, $v_2=p_2$, $v_3=w_1$, $v_4=w_2$. With the weights \eqref{eq:weights}
+the six positively weighted terms of $\score$ are $\norm{\xi_t}$ for $\xi_t=\sum_j A_{tj}v_j$,
+\[
+A=\begin{pmatrix}
+1&-1&0&-1&0\\ 1&0&-1&0&-1\\ 1&-1&0&0&0\\
+1&0&0&-1&0\\ 1&-1&0&0&-1\\ 1&0&-1&-1&0
+\end{pmatrix},
+\qquad
+\omega=\Bigl(\tfrac{13}{12},1,\tfrac{13}{28},\tfrac{13}{28},\tfrac{13}{28},\tfrac{13}{28}\Bigr).
+\]
+Three elementary inequalities linearize the problem. For $\alpha_t>0$ the quadratic tangent
+$\omega_t\norm{\xi_t}\le\alpha_t\norm{\xi_t}^2+\omega_t^2/(4\alpha_t)$ replaces each norm by a
+quadratic form; the radial secant $-dr\le-\frac d{l+u}r^2-\frac{dlu}{l+u}$ (valid for
+$0\le l\le r\le u$) replaces each of the four radial penalties; and for
+$\eta_P,\eta_W\ge0$ the separation multipliers $\eta_P(\norm{p_1-p_2}^2-c^2)\ge0$ and
+$\eta_W(\norm{w_1-w_2}^2-c^2)\ge0$ may be added freely. Expanding the squared norms,
+\begin{equation}
+\score\;\le\;C+\sum_{i=0}^4 D_i\norm{v_i}^2+2\!\!\sum_{0\le i<j\le4}\!\!Q_{ij}\ip{v_i}{v_j},
+\label{eq:quad}
+\end{equation}
+with $C,D,Q$ explicit rational functions of the certificate parameters and the box.
+
+It remains to remove the inner products. A certificate carries a rational $3\times5$ matrix $F$;
+put $B=F^{\mathsf T}F$, let $\rho_{ij}=-Q_{ij}-B_{ij}$, and let
+$\varepsilon_{ij}=\operatorname{sign}\rho_{ij}$. The matrix
+\begin{equation}
+M=B+\sum_{i<j}|\rho_{ij}|\,(e_i+\varepsilon_{ij}e_j)(e_i+\varepsilon_{ij}e_j)^{\mathsf T}
+\label{eq:psd}
+\end{equation}
+is a sum of rank-one positive semidefinite matrices, hence positive semidefinite, and by
+construction $M_{ij}=-Q_{ij}$ off the diagonal. Since the Gram matrix
+$G=(\ip{v_i}{v_j})$ is also positive semidefinite, the Schur product theorem gives
+$\sum_{i,j}M_{ij}\ip{v_i}{v_j}\ge0$, that is
+\[
+0\;\le\;\sum_i m_i\norm{v_i}^2-2\sum_{i<j}Q_{ij}\ip{v_i}{v_j},
+\qquad m_i=B_{ii}+\sum_{j\ne i}|\rho_{ij}| .
+\]
+Adding this to \eqref{eq:quad} cancels every inner product and leaves
+$\score\le C+\sum_i\beta_i\norm{v_i}^2$ with $\beta_i=D_i+m_i$. Finally each
+$\beta_i\norm{v_i}^2$ is bounded on its radius interval by
+$T(\beta;l,u)=(\beta)_+u^2-(\beta)_-l^2$, giving a single rational number
+\begin{equation}
+U=C+\beta_0+T(\beta_1;c-u_P,1)+T(\beta_2;l_P,u_P)+T(\beta_3;c-u_W,1)+T(\beta_4;l_W,u_W).
+\label{eq:U}
+\end{equation}
+
+\begin{proposition}[\texttt{weightedPairScore\_le\_of\_gramCertificate}]
+If $\alpha_t>0$, $\eta_P,\eta_W\ge0$ and $U\le-\frac1{2000}$, then every configuration satisfying
+\eqref{eq:sep} and \eqref{eq:box} in the unit ball has $\score\le-\frac1{2000}<0$.
+\end{proposition}
+
+No eigenvalue computation, numerical positive-definiteness test, or polynomial arithmetic occurs
+anywhere: positive semidefiniteness is established \emph{identically} from the rank-one
+decomposition \eqref{eq:psd}.
+
+\section{The finite cover}
+
+Every feasible second-child radius lies in $[c-1,1]$. Seven intervals cover that range,
+\[
+\begin{array}{lll}
+I_0=[c-1,\tfrac12], & I_1=[\tfrac12,\tfrac35], & I_2=[\tfrac35,\tfrac7{10}],\\[2pt]
+I_3=[\tfrac7{10},\tfrac34], & I_4=[\tfrac34,\tfrac45], & I_5=[\tfrac45,\tfrac9{10}],\\[2pt]
+I_6=[\tfrac9{10},1]. &&
+\end{array}
+\]
+The score is symmetric under exchanging the two sibling pairs, so only the $28$ ordered pairs
+$I_i\times I_j$ with $i\le j$ are needed. The single square $I_2\times I_2$ carries too little
+margin and is split once more using $I_{2a}=[\tfrac35,\tfrac{13}{20}]$ and
+$I_{2b}=[\tfrac{13}{20},\tfrac7{10}]$, contributing three rectangles instead of one. The total is
+$28-1+3=30$.
+
+\begin{theorem}[\texttt{weightedGeometricBound\_gram}]
+For every $e,p_1,p_2,w_1,w_2$ in a real inner-product space with $\norm e=1$,
+$\norm{p_i},\norm{w_i}\le1$ and \eqref{eq:sep},
+\[
+\score_{c,1/12,13/14}\;\le\;-\frac1{2000}.
+\]
+\end{theorem}
+
+Combined with the failure tree this contradicts $\score>0$, so the six-point finite property holds
+at $s=6934/10000$; the already formalized six-point-to-BPC and BPC-to-rectifiability transfers
+then give the theorem.
+
+The binding certificate is the one on $I_3\times I_5$, whose exact upper bound is
+\[
+U=-\frac{141718938311359411043}{245112420775950000000000}=-0.000578179\ldots<-\frac1{2000},
+\]
+so the whole family clears the uniform threshold with about $16\%$ to spare.
+
+\section{What the machine checks}
+
+The certificate parameters were found by an unverified numerical search and are stored as exact
+rationals with denominator $10^4$. Nothing about how they were found enters the proof: Lean
+recomputes $C$, $D$, $Q$, $B$, $\rho$, $m$, $\beta$ and $U$ from the stored data by exact rational
+arithmetic and checks $\alpha_t>0$, $\eta_P,\eta_W\ge0$ and $U\le-1/2000$ for each of the thirty
+records (\texttt{gramCertificates\_valid}). The positive semidefiniteness is a theorem, not a
+computation. The cover is checked by deciding, for each of the $64$ ordered pairs of radius bands,
+that the band rectangle sits inside the rectangle of the assigned certificate.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+stage & cost\\
+\midrule
+thirty certificate validity checks & $43$ s\\
+band cover & $3$ s\\
+Gram certificate core & $7$ s\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For comparison, the six-variable Bernstein formulation this replaces required an estimated
+$29$ CPU-hours of kernel reduction over $3072$ adaptive leaves, and was in any case incomplete:
+one of the ten coordinate charts had no certificate tree.
+
+\section{Provenance of the certificate data}
+
+The thirty certificates were checked three times independently before formalization: by an exact
+rational verifier, by a symbolic reconstruction using a computer algebra system, and by a third
+transcription written directly against the definitions above, which reproduced all thirty
+published values of $U$ bit-for-bit. That agreement also validates the transcription into Lean,
+since a single mistyped integer would change $U$.
+
+\end{document}
