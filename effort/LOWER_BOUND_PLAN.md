@@ -62,13 +62,24 @@ D. pure unrectifiability                                                 ~1100
        (exists_partition_approximatesLinearOn_of_hasFDerivWithinAt) gives pieces on which f₁ is
        injective with |f₁ t − f₁ t'| ≥ c|t − t'|, so g∘f₁ = f₂ Lipschitz transfers to g on the
        image.  No area formula, no projection theorem.
-   D2 (holes, ~600): if g is L-Lipschitz on A then volume A = 0.
-       By (E2) a level-n boundary cannot have A-points within δ_n = α n /(2nL) on both sides, so
-       each boundary owns an A-free hole of length δ_n.  Let U_n = [0,1] minus holes of level ≤ n;
-       A ⊆ U_n.  Inside each level-(n−1) cell, U_(n−1) is one interval and the level-n interior
-       boundaries carve ≥ (length/α n − 4) disjoint holes, so
-           volume U_n ≤ (1 − 1/(2nL)) volume U_(n−1) + 2^{−(2n−1)}/(nL).
-       Since Σ 1/n = ∞ the product tends to 0 (Real.add_one_le_exp, the harmonic series).
+   D2 (~500, DONE up to the final recursion): if g is L-Lipschitz on A then volume A = 0.
+       The plan above (one-sided holes chosen per boundary) does NOT compound: a single hole is a
+       1/n fraction of any ball and sup-over-cells bounds refuse to multiply.  What works instead:
+       (a) Avoid.lean — by (E2) A cannot meet both sides of a level-n grid point within
+           margin L n = cellLength n/(2n(L+1))  [not_both_sides];
+       (b) Density.lean — a Lebesgue density point of A therefore cannot lie within margin of a
+           level-n grid point for infinitely many n (the ball of radius 2·margin about it contains
+           a hole of relative size 1/4, so the density along those radii is ≤ 3/4); hence almost
+           every point of A eventually lies in
+             avoid L n = {x | ∀ i, margin L n ≤ |x - i·cellLength n|}   (BOTH sides)
+           [ae_eventually_mem_avoid];
+       (c) Zero.lean — volume (Icc 0 1 ∩ ⋂ₙ avoid L (N+n)) = 0 by Capdevila's nested recursion,
+           which now applies verbatim because the avoided sets are two-sided and A-independent:
+           inside each level-M cell the surviving set is order-connected
+           [ordConnected_avoid_inter_cell], the level-(M+1) grid points inside it carve
+           ≥ ℓ/cellLength − 3 disjoint gaps of width 2·margin, so
+             volume ≤ (1 − 1/((M+1)(L+1)))·volume + summable error,
+           and tendsto_zero_of_recursive finishes.
    D3 (~100): μH[1] (Π \ ⋃ range f i) ≥ μH[1] Π − Σ 0 = 1 > 0.
 E. assembly                                                              ~100
    Π measurable (graph of a Borel function); finite measure; density; not rectifiable ⟹
@@ -76,6 +87,12 @@ E. assembly                                                              ~100
 ```
 
 Estimated total 2,500–3,500 lines. Risk is concentrated in D2 and C.
+
+## Status (2026-09-02, later)
+
+Built and pushed: Graph (A), Plane + Cover + Hull (B, with constant 2 — the sharp constant 1 is
+never needed), Measurable, Avoid + Density (D2 steps a–b), Recursion.  ~1,400 lines.
+Remaining: Zero (D2 step c), Reduction (D1), LowerDensity (C), assembly (E).
 
 ## Mathlib tools, verified present at this project's revision
 
