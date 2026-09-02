@@ -32,9 +32,12 @@ sources:
     note: >-
       Result origin declaration. The numerical bound 0.6934, the reduction of
       the six-point endpoint to thirty local Gram certificates, and the
-      certificate data itself are first presented by this project; they have not
-      been published elsewhere. The surrounding six-point framework is not
-      original and is recorded below as background.
+      certificate data itself are, to the best of the literature search recorded
+      under review.notes (performed 2026-09-02), first presented by this project.
+      That search found no published bound below 7/10; novelty and current
+      priority are asserted on that basis and could be overturned by work the
+      search did not reach. The surrounding six-point framework is not original
+      and is recorded below as background.
   - title: "Besicovitch's 1/2 problem and linear programming"
     authors:
       - "Camillo De Lellis"
@@ -52,6 +55,23 @@ sources:
       sigma_1(R^2) <= 7/10; the present development proves a strictly stronger
       bound by solving the two-colour six-centre instance of the same family.
       No statement or proof is transcribed from it.
+    license: "unknown"
+    author_endorsement: "not-contacted"
+  - title: >-
+      Besicovitch's example in higher dimensions: a purely unrectifiable set
+      with large lower density
+    authors:
+      - "Jaume Capdevila"
+    id: "arXiv:2607.05206"
+    type: "article"
+    location: "https://arxiv.org/abs/2607.05206"
+    relationship: "background"
+    note: >-
+      Found by the literature search (submitted 2026-07-06). Constructs purely
+      unrectifiable sets with lower density 1/2, the classical floor for the
+      problem; it does not improve the upper bound 7/10 and does not overlap
+      with the present result. Cited as evidence that the search reached work
+      posted after the 7/10 paper.
     license: "unknown"
     author_endorsement: "not-contacted"
   - title: "On Besicovitch's 1/2-problem"
@@ -103,6 +123,14 @@ status:
     above: the routing separators that prune the case tree fail once the chord
     exceeds about 1.386850, so the admissible window is narrow and 6934/10000
     sits inside it.
+
+    Also not formalized: any lower bound on sigma_1, such as 1/2 <= sigma_1(R^2).
+    That requires exhibiting a purely unrectifiable set of finite positive
+    measure with lower density close to 1/2 and proving its pure
+    unrectifiability; Mathlib contains no notion of rectifiability and no such
+    set, and this project constructs none. Consequently sigma_1 is shown to be a
+    genuine infimum (nonempty admissible set, bounded below) but its value is
+    bounded only from above.
 
     Also not formalized: Besicovitch's conjecture itself, which remains open;
     no claim is made about it. The six-point method cannot reach below theta_6
@@ -195,7 +223,8 @@ fidelity:
     background references supply framework and history only, and the bound
     proved here is stated for the first time by this project.
 
-    Two qualifications a reader should carry. First, the theorem is weaker than
+    Two qualifications a reader should carry, besides the standing one that
+    sigma_1 is an infimum whose attainment is not claimed. First, the theorem is weaker than
     the optimum of the finite problem it solves, by about 9.36e-5; the reason is
     recorded under scope. Second, the thirty certificates were discovered by an
     unverified numerical search. That search is not part of the proof: Lean
@@ -218,8 +247,23 @@ review:
     Classical.choice and Quot.sound. The repository contains no native_decide,
     no Lean.ofReduceBool, no admit and no axiom declaration. The certificate
     data was verified three times independently before formalization, as
-    described under automation. The Comparator itself has not been run by the
-    authors; only the conditions it checks have been reproduced by hand.
+    described under automation.
+
+    Literature search, 2026-09-02, for the novelty and record claims. Searched
+    arXiv listings and web search for the planar Besicovitch 1/2 problem, lower
+    density thresholds forcing rectifiability, and citations of
+    arXiv:2404.17536. Findings: De Lellis, Glaudo, Massaccesi and Vittone
+    (arXiv:2404.17536, April 2024) prove 7/10 and state that the previous best
+    was Preiss and Tiser (1992); Mattila's survey Rectifiability (arXiv:2112.00540,
+    2022) predates it; Capdevila (arXiv:2607.05206, July 2026) constructs
+    lower-density 1/2 examples and does not improve the upper bound. No source
+    stating a bound below 7/10 was found. The search is documented rather than
+    exhaustive; the novelty claim is qualified accordingly under sources.
+
+    The Comparator's first automated review, 2026-09-02, reported mechanical
+    verification succeeded and asked for the admissible set to be shown
+    nonempty and for the novelty claim to be supported; both are addressed in
+    this revision.
 
 alignment:
   namespace: "Besicovitch"
@@ -234,6 +278,38 @@ alignment:
         The submitted Comparator declaration, matching the hole in
         Challenge.lean. Complete proof term, no sorry, axioms limited to
         propext, Classical.choice and Quot.sound.
+    - source: >-
+        Every threshold strictly above 6934/10000 forces one-rectifiability in
+        the plane
+      lean: "Besicovitch.forcesOneRectifiability_plane_of_gt"
+      module: "Solution"
+      status: "proved"
+      note: >-
+        Compared declaration. The genuine admissible thresholds behind the
+        infimum bound; stated with strict inequality because the argument
+        yields a margin and nothing is claimed at the constant itself.
+    - source: "The planar admissible set of thresholds is nonempty"
+      lean: "Besicovitch.admissibleThresholds_plane_nonempty"
+      module: "Solution"
+      status: "proved"
+      note: "Compared declaration. Rules out the vacuous case sInf of the empty set."
+    - source: "The admissible set is bounded below, by 0"
+      lean: "Besicovitch.admissibleThresholds_bddBelow"
+      module: "Solution"
+      status: "proved"
+      note: "Compared declaration. The second condition for the real sInf to be the infimum."
+    - source: "Forcing one-rectifiability is monotone in the threshold"
+      lean: "Besicovitch.forcesOneRectifiability_mono"
+      module: "Solution"
+      status: "proved"
+      note: >-
+        Compared declaration. Shows the admissible set is closed upwards, hence
+        unbounded above; bounded-below is the relevant condition.
+    - source: "sigma_1 of the plane is the greatest lower bound of the admissible set"
+      lean: "Besicovitch.isGLB_sigmaOne_plane"
+      module: "Solution"
+      status: "proved"
+      note: "Compared declaration. The statement that sigma_1 is not a junk value."
     - source: >-
         Supporting bound: the exact six-point endpoint lies below the rational
         target

@@ -46,7 +46,12 @@ def ForcesOneRectifiability (X : Type*) [MetricSpace X] [MeasurableSpace X] [Bor
     (∀ᵐ x ∂μH[1].restrict s, β ≤ lowerOneDensity s x) →
       IsCountablyOneRectifiable s
 
-/-- The least nonnegative real threshold forcing one-rectifiability in `X`. -/
+/-- The infimum of the nonnegative real thresholds forcing one-rectifiability in `X`.
+
+It is an infimum, not a minimum: attainment at `sigmaOne X` itself is not claimed.  Lean's
+`sInf` on `ℝ` returns `0` for the empty set and for a set with no lower bound, so this number
+is meaningful only once the admissible set is shown nonempty and bounded below.  The theorems
+below establish both, so the bound on `sigmaOne` cannot hold vacuously. -/
 def sigmaOne (X : Type*) [MetricSpace X] [MeasurableSpace X] [BorelSpace X] : ℝ :=
   sInf {β : ℝ | 0 ≤ β ∧ ForcesOneRectifiability X (ENNReal.ofReal β)}
 

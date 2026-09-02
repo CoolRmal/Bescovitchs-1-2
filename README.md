@@ -35,9 +35,9 @@ normalized by the diameter $2r$, so a straight segment has density $1$ at its in
 > if $\mathcal{H}^1(E) < \infty$ and $\Theta^1_*(E,x) > 1/2$ for $\mathcal{H}^1$-almost every
 > $x \in E$, then $E$ is countably 1-rectifiable.
 
-Writing $\sigma_1(\mathbb{R}^2)$ for the least threshold $\beta \ge 0$ such that
+Writing $\sigma_1(\mathbb{R}^2)$ for the *infimum* of the thresholds $\beta \ge 0$ such that
 $\Theta^1_* \ge \beta$ almost everywhere forces countable 1-rectifiability, the conjecture is
-$\sigma_1(\mathbb{R}^2) = 1/2$.
+$\sigma_1(\mathbb{R}^2) = 1/2$. It is an infimum, not a minimum: nothing here claims it is attained.
 
 | year | bound | source |
 |---|---|---|
@@ -51,6 +51,24 @@ De Lellis, Glaudo, Massaccesi and Vittone recast the question as a family of fin
 optimization problems: the passage from a density hypothesis to rectifiability routes through a
 purely finite statement about disjoint balls centred at finitely many points. **The optimization
 approach here is inspired by theirs.**
+
+## The number is a genuine infimum
+
+Lean's `sInf` on `ℝ` returns `0` for the empty set and for a set with no lower bound, so a bound
+on `sigmaOne` could in principle hold for a bad reason. `Challenge.lean` therefore states, and
+`Solution.lean` proves, the facts that rule this out:
+
+| theorem | says |
+|---|---|
+| `forcesOneRectifiability_plane_of_gt` | every threshold strictly above $0.6934$ forces rectifiability — genuine admissible thresholds, not an infimum |
+| `admissibleThresholds_plane_nonempty` | the admissible set is nonempty |
+| `admissibleThresholds_bddBelow` | it is bounded below, by $0$ |
+| `forcesOneRectifiability_mono` | it is closed upwards — so it is *unbounded above*, and bounded-below is the relevant condition |
+| `isGLB_sigmaOne_plane` | `sigmaOne` is its greatest lower bound |
+
+What is **not** proved is a lower bound such as $1/2 \le \sigma_1(\mathbb{R}^2)$. That needs a
+purely unrectifiable set of positive lower density, and neither Mathlib nor this project
+contains one; formalizing Besicovitch's example is a separate project.
 
 ## Why 0.6934 and not the sharp constant
 

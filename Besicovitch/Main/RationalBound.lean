@@ -22,6 +22,12 @@ noncomputable section
 
 namespace Besicovitch
 
+/-- Every threshold above `barS` forces one-rectifiability in the plane. -/
+theorem forcesOneRectifiability_plane_of_barS_lt {β : ℝ} (hβ : barS < β) :
+    ForcesOneRectifiability (EuclideanSpace ℝ (Fin 2)) (ENNReal.ofReal β) :=
+  (sixPointFiniteProperty_barS_of_weightedGeometricBound gramLambda_pos gramMu_pos
+    weightedGeometricBound_gram).forcesOneRectifiability_of_gt barS_pos barS_lt_one hβ
+
 /-- The planar one-dimensional rectifiability threshold is at most `6934/10000`. -/
 theorem sigmaOne_plane_le_barS :
     sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ 6934 / 10000 := by

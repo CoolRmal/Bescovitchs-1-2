@@ -24,6 +24,17 @@ namespace Besicovitch
 
 variable (X : Type*) [MetricSpace X] [MeasurableSpace X] [BorelSpace X]
 
+/-- Forcing is monotone in the threshold: a larger density hypothesis is a stronger one. -/
+theorem ForcesOneRectifiability.mono {β β' : ℝ≥0∞} (h : β ≤ β')
+    (hβ : ForcesOneRectifiability X β) : ForcesOneRectifiability X β' := by
+  intro s hs hfinite hdensity
+  exact hβ s hs hfinite (hdensity.mono fun _ hx ↦ h.trans hx)
+
+/-- The admissible thresholds are bounded below, by `0`. -/
+theorem bddBelow_admissibleThresholds :
+    BddBelow {β : ℝ | 0 ≤ β ∧ ForcesOneRectifiability X (ENNReal.ofReal β)} :=
+  ⟨0, fun _ h ↦ h.1⟩
+
 /-- An admissible nonnegative threshold bounds `sigmaOne` from above. -/
 theorem sigmaOne_le_of_forces {b : ℝ} (hb : 0 ≤ b)
     (hforce : ForcesOneRectifiability X (ENNReal.ofReal b)) : sigmaOne X ≤ b := by
