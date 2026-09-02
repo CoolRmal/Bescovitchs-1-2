@@ -3,11 +3,7 @@
   "solution_module": "Solution",
   "theorem_names": [
     "Besicovitch.sigma_one_plane_le_6934_div_10000",
-    "Besicovitch.forcesOneRectifiability_plane_of_gt",
-    "Besicovitch.admissibleThresholds_plane_nonempty",
-    "Besicovitch.admissibleThresholds_bddBelow",
-    "Besicovitch.forcesOneRectifiability_mono",
-    "Besicovitch.isGLB_sigmaOne_plane"
+    "Besicovitch.forcesOneRectifiability_plane_of_gt"
   ],
   "permitted_axioms": [
     "propext",

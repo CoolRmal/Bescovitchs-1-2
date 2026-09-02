@@ -128,9 +128,8 @@ status:
     That requires exhibiting a purely unrectifiable set of finite positive
     measure with lower density close to 1/2 and proving its pure
     unrectifiability; Mathlib contains no notion of rectifiability and no such
-    set, and this project constructs none. Consequently sigma_1 is shown to be a
-    genuine infimum (nonempty admissible set, bounded below) but its value is
-    bounded only from above.
+    set. This is work in progress; until it lands, sigma_1 is bounded only from
+    above, with the admissible set shown nonempty.
 
     Also not formalized: Besicovitch's conjecture itself, which remains open;
     no claim is made about it. The six-point method cannot reach below theta_6
@@ -288,28 +287,6 @@ alignment:
         Compared declaration. The genuine admissible thresholds behind the
         infimum bound; stated with strict inequality because the argument
         yields a margin and nothing is claimed at the constant itself.
-    - source: "The planar admissible set of thresholds is nonempty"
-      lean: "Besicovitch.admissibleThresholds_plane_nonempty"
-      module: "Solution"
-      status: "proved"
-      note: "Compared declaration. Rules out the vacuous case sInf of the empty set."
-    - source: "The admissible set is bounded below, by 0"
-      lean: "Besicovitch.admissibleThresholds_bddBelow"
-      module: "Solution"
-      status: "proved"
-      note: "Compared declaration. The second condition for the real sInf to be the infimum."
-    - source: "Forcing one-rectifiability is monotone in the threshold"
-      lean: "Besicovitch.forcesOneRectifiability_mono"
-      module: "Solution"
-      status: "proved"
-      note: >-
-        Compared declaration. Shows the admissible set is closed upwards, hence
-        unbounded above; bounded-below is the relevant condition.
-    - source: "sigma_1 of the plane is the greatest lower bound of the admissible set"
-      lean: "Besicovitch.isGLB_sigmaOne_plane"
-      module: "Solution"
-      status: "proved"
-      note: "Compared declaration. The statement that sigma_1 is not a junk value."
     - source: >-
         Supporting bound: the exact six-point endpoint lies below the rational
         target

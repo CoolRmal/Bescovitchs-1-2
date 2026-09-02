@@ -52,23 +52,17 @@ optimization problems: the passage from a density hypothesis to rectifiability r
 purely finite statement about disjoint balls centred at finitely many points. **The optimization
 approach here is inspired by theirs.**
 
-## The number is a genuine infimum
+## What is compared
 
-Lean's `sInf` on `ℝ` returns `0` for the empty set and for a set with no lower bound, so a bound
-on `sigmaOne` could in principle hold for a bad reason. `Challenge.lean` therefore states, and
-`Solution.lean` proves, the facts that rule this out:
+Two statements, both proved in `Solution.lean`:
 
-| theorem | says |
-|---|---|
-| `forcesOneRectifiability_plane_of_gt` | every threshold strictly above $0.6934$ forces rectifiability — genuine admissible thresholds, not an infimum |
-| `admissibleThresholds_plane_nonempty` | the admissible set is nonempty |
-| `admissibleThresholds_bddBelow` | it is bounded below, by $0$ |
-| `forcesOneRectifiability_mono` | it is closed upwards — so it is *unbounded above*, and bounded-below is the relevant condition |
-| `isGLB_sigmaOne_plane` | `sigmaOne` is its greatest lower bound |
+- `forcesOneRectifiability_plane_of_gt` — every threshold strictly above $0.6934$ forces
+  rectifiability. This is the substantive content: genuine admissible thresholds, so the bound on
+  the infimum is not vacuous.
+- `sigma_one_plane_le_6934_div_10000` — the bound itself.
 
-What is **not** proved is a lower bound such as $1/2 \le \sigma_1(\mathbb{R}^2)$. That needs a
-purely unrectifiable set of positive lower density, and neither Mathlib nor this project
-contains one; formalizing Besicovitch's example is a separate project.
+A lower bound $1/2 \le \sigma_1(\mathbb{R}^2)$, which would pin the threshold to
+$[1/2, 0.6934]$, is the next target; see the plan in `effort/`.
 
 ## Why 0.6934 and not the sharp constant
 
