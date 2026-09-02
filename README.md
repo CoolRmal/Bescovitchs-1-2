@@ -62,7 +62,7 @@ Two statements, both proved in `Solution.lean`:
 - `sigma_one_plane_le_6934_div_10000` — the bound itself.
 
 A lower bound $1/2 \le \sigma_1(\mathbb{R}^2)$, which would pin the threshold to
-$[1/2, 0.6934]$, is the next target; see the plan in `effort/`.
+$[1/2, 0.6934]$, is the next target; see [`effort/LOWER_BOUND_PLAN.md`](effort/LOWER_BOUND_PLAN.md).
 
 ## Why 0.6934 and not the sharp constant
 
