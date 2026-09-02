@@ -1,366 +1,578 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
-version: "v0.4"
-
+version: v0.4
 project:
-  name: "A machine-checked bound of 0.6934 for Besicovitch's 1/2-problem"
-  description: >-
-    Besicovitch's 1/2-conjecture asserts that a Borel set in the plane with
-    finite one-dimensional Hausdorff measure whose lower density exceeds 1/2
-    almost everywhere is countably 1-rectifiable. Writing sigma_1(R^2) for the
-    least threshold that forces countable 1-rectifiability, the conjecture is
-    sigma_1(R^2) = 1/2. The previously published record is sigma_1(R^2) <= 7/10,
-    obtained by De Lellis, Glaudo, Massaccesi and Vittone.
-
-    This development proves, with a complete Lean 4 proof term,
-    sigma_1(R^2) <= 6934/10000 = 0.6934.
+  name: A machine-checked bound of 0.6934 for Besicovitch's 1/2-problem
+  description: |-
+    Besicovitch's 1/2-conjecture asserts that a Borel set in the plane with finite one-dimensional Hausdorff measure whose lower density exceeds 1/2 almost everywhere is countably 1-rectifiable. Writing sigma_1(R^2) for the least threshold that forces countable 1-rectifiability, the conjecture is sigma_1(R^2) = 1/2. The previously published record is sigma_1(R^2) <= 7/10, obtained by De Lellis, Glaudo, Massaccesi and Vittone.
+    This development proves, with a complete Lean 4 proof term, sigma_1(R^2) <= 6934/10000 = 0.6934.
   authors:
-    - "Yongxi Lin"
-  license: "Apache-2.0"
+  - Yongxi Lin
+  license: Apache-2.0
   responsible_maintainers:
-    - "Yongxi Lin"
-
+  - Yongxi Lin
 classification:
-  arxiv: ["math.CA", "math.MG"]
-  msc2020: ["28A75", "28A78", "49Q15", "68V20", "90C05"]
-
+  arxiv:
+  - math.CA
+  - math.MG
+  msc2020:
+  - 28A75
+  - 28A78
+  - 49Q15
+  - 68V20
+  - 90C05
 sources:
-  - title: >-
-      The bound sigma_1(R^2) <= 6934/10000 for Besicovitch's 1/2-problem, via
-      thirty rational Gram certificates for the two-colour six-centre problem
-    type: original-proof
-    relationship: other
-    note: >-
-      Result origin declaration. The numerical bound 0.6934, the reduction of
-      the six-point endpoint to thirty local Gram certificates, and the
-      certificate data itself are, to the best of the literature search recorded
-      under review.notes (performed 2026-09-02), first presented by this project.
-      That search found no published bound below 7/10; novelty and current
-      priority are asserted on that basis and could be overturned by work the
-      search did not reach. The surrounding six-point framework is not original
-      and is recorded below as background.
-  - title: "Besicovitch's 1/2 problem and linear programming"
-    authors:
-      - "Camillo De Lellis"
-      - "Federico Glaudo"
-      - "Annalisa Massaccesi"
-      - "Davide Vittone"
-    id: "arXiv:2404.17536"
-    type: "article"
-    location: "https://arxiv.org/abs/2404.17536"
-    relationship: "background"
-    note: >-
-      Supplies the structural framework this work builds on: the reduction of
-      the density hypothesis to a finite family of optimization problems about
-      disjoint balls at finitely many centres. That paper proves
-      sigma_1(R^2) <= 7/10; the present development proves a strictly stronger
-      bound by solving the two-colour six-centre instance of the same family.
-      No statement or proof is transcribed from it.
-    license: "unknown"
-    author_endorsement: "not-contacted"
-  - title: >-
-      Besicovitch's example in higher dimensions: a purely unrectifiable set
-      with large lower density
-    authors:
-      - "Jaume Capdevila"
-    id: "arXiv:2607.05206"
-    type: "article"
-    location: "https://arxiv.org/abs/2607.05206"
-    relationship: "other"
-    note: >-
-      Relationship other, explained here. The classical lower bound
-      1/2 <= sigma_1 compared by this submission is Besicovitch's example, and
-      its formalization follows the planar construction and estimates (E1),
-      (E2) of this paper's section 2 verbatim; the measure, density and
-      unrectifiability arguments are simplified where less is needed than the
-      paper proves. This is a formalization of a known result inside a
-      submission whose principal result is original, so the relationship is
-      recorded as other rather than formalizes, per the registry's rule that
-      result origins are not mixed. The paper does not improve the upper bound
-      7/10 and does not overlap with the original result.
-    license: "unknown"
-    author_endorsement: "not-contacted"
-  - title: >-
-      Study of extreme cases with respect to the densities of irregular
-      linearly measurable plane sets of points
-    authors:
-      - "D. B. Dickinson"
-    id: "Math. Ann. 116 (1939), 358-373"
-    type: "article"
-    relationship: "other"
-    note: >-
-      Relationship other, explained here: the original proof that Besicovitch's
-      example has lower density 1/2 almost everywhere, hence of the lower bound
-      formalized here. Not consulted directly; its content is taken from
-      Capdevila's account. Recorded as other rather than formalizes for the
-      reason given for that entry.
-    license: "unknown"
-    author_endorsement: "n/a"
-  - title: "On Besicovitch's 1/2-problem"
-    authors:
-      - "David Preiss"
-      - "Jaroslav Tiser"
-    id: "J. London Math. Soc. (2) 45 (1992), 279-287"
-    type: "article"
-    relationship: "background"
-    note: "Earlier record, sigma_1(R^2) <= (2 + sqrt 46)/12. Historical context only."
-    license: "unknown"
-    author_endorsement: "not-contacted"
-  - title: >-
-      On the fundamental geometrical properties of linearly measurable plane
-      sets of points, parts I and II
-    authors:
-      - "A. S. Besicovitch"
-    id: "Math. Ann. 98 (1928), 422-464; Math. Ann. 115 (1938), 296-329"
-    type: "article"
-    relationship: "background"
-    note: "Origin of the problem and of the 3/4 bound. Historical context only."
-    license: "unknown"
-    author_endorsement: "n/a"
-
+- title: |-
+    The bound sigma_1(R^2) <= 6934/10000 for Besicovitch's 1/2-problem, via thirty rational Gram certificates for the two-colour six-centre problem
+  type: original-proof
+  relationship: other
+  note: |-
+    Novelty qualification. The claim that sigma_1(R^2) <= 6934/10000 is new rests on the literature search recorded under review.notes, performed on 2026-09-02 in five passes (forward citations, arXiv, bibliographic databases and encyclopedias, author and talk pages, and an adversarial verification pass that read the published Trans. AMS text of De Lellis-Glaudo-Massaccesi-Vittone, Schechter's 2002 thesis, Farag's papers, Bate's Acta paper, Azzam-Hyde and Capdevila's July 2026 preprint in full). That search found no upper bound below 7/10 in any paper, preprint, thesis, talk abstract, encyclopedia entry or code repository it could reach; every citing work of the 7/10 paper (three in Google Scholar, none in Semantic Scholar, OpenAlex or Crossref, one more found by full text) restates 7/10 as the best known bound or cites it without a number, and the only sub-0.7 numbers in print are that paper's own 0.683 and 0.64368..., which its authors do not claim as bounds. It also found no occurrence of 0.6934 or 6934/10000 in connection with the problem, in the texts read, in the authors' companion code, in Google Scholar, arXiv abstracts, general web search or public GitHub code. The verifier put the confidence at about 95 percent for 7/10 being the published record and about 97 percent for 0.6934 being unpublished. Sources not reached were MathSciNet full search, Web of Science, NASA ADS, the Semantic Scholar search endpoint and Schechter's 1998 Diplomarbeit (whose bound, 0.72655..., is known from his 2002 thesis and from the published 7/10 paper, which credits it as the previous record). Novelty and priority are asserted on this basis alone and could be overturned by unindexed, forthcoming or paywalled work.
+- title: Besicovitch's 1/2 problem and linear programming
+  authors:
+  - Camillo De Lellis
+  - Federico Glaudo
+  - Annalisa Massaccesi
+  - Davide Vittone
+  id: arXiv:2404.17536
+  type: article
+  location: https://arxiv.org/abs/2404.17536
+  relationship: background
+  note: |-
+    Supplies the structural framework this work builds on: the reduction of the density hypothesis to a finite family of optimization problems about disjoint balls at finitely many centres. That paper proves sigma_1(R^2) <= 7/10; the present development proves a strictly stronger bound by solving the two-colour six-centre instance of the same family. No statement or proof is transcribed from it.
+  license: unknown
+  author_endorsement: not-contacted
+- title: |-
+    Besicovitch's example in higher dimensions: a purely unrectifiable set with large lower density
+  authors:
+  - Jaume Capdevila
+  id: arXiv:2607.05206
+  type: article
+  location: https://arxiv.org/abs/2607.05206
+  relationship: other
+  note: |-
+    Relationship other, explained here. The classical lower bound 1/2 <= sigma_1 compared by this submission is Besicovitch's example, and its formalization follows the planar construction and estimates (E1), (E2) of this paper's section 2 verbatim; the measure, density and unrectifiability arguments are simplified where less is needed than the paper proves. This is a formalization of a known result inside a submission whose principal result is original, so the relationship is recorded as other rather than formalizes, per the registry's rule that result origins are not mixed. The paper does not improve the upper bound 7/10 and does not overlap with the original result.
+  license: unknown
+  author_endorsement: not-contacted
+- title: |-
+    Study of extreme cases with respect to the densities of irregular linearly measurable plane sets of points
+  authors:
+  - D. B. Dickinson
+  id: Math. Ann. 116 (1939), 358-373
+  type: article
+  relationship: other
+  note: |-
+    Relationship other, explained here: the original proof that Besicovitch's example has lower density 1/2 almost everywhere, hence of the lower bound formalized here. Not consulted directly; its content is taken from Capdevila's account. Recorded as other rather than formalizes for the reason given for that entry.
+  license: unknown
+  author_endorsement: n/a
+- title: On Besicovitch's 1/2-problem
+  authors:
+  - David Preiss
+  - Jaroslav Tiser
+  id: J. London Math. Soc. (2) 45 (1992), 279-287
+  type: article
+  relationship: background
+  note: Earlier record, sigma_1(R^2) <= (2 + sqrt 46)/12. Historical context only.
+  license: unknown
+  author_endorsement: not-contacted
+- title: |-
+    On the fundamental geometrical properties of linearly measurable plane sets of points, parts I and II
+  authors:
+  - A. S. Besicovitch
+  id: Math. Ann. 98 (1928), 422-464; Math. Ann. 115 (1938), 296-329
+  type: article
+  relationship: background
+  note: Origin of the problem and of the 3/4 bound. Historical context only.
+  license: unknown
+  author_endorsement: n/a
 related_formalizations: []
-
 status:
-  scope: >-
-    Formalized in full: sigma_1(R^2) <= 6934/10000, stated as
-    Besicovitch.sigma_one_plane_le_6934_div_10000 over
-    EuclideanSpace R (Fin 2), with sigma_1 defined inside Challenge.lean as the
-    infimum of the thresholds that force countable 1-rectifiability. The proof
-    term is complete and uses only propext, Classical.choice and Quot.sound.
-    The supporting chain is formalized too: the geometric measure theory layer,
-    the Besicovitch pair condition, the six-point transfer, the packing failure
-    tree, the thirty Gram certificates and the radius cover.
-
-    Deliberately not formalized, and the reason. The sharp constant of the
-    two-colour six-centre problem is an algebraic number
-    theta_6 = 0.693306421825904872690678414403710951..., and the bound proved
-    here exceeds it by about 9.36e-5. The obstruction is not mathematical but
-    certificate-theoretic: at theta_6 the extremal configuration is attained,
-    three structurally different packing mechanisms tie simultaneously, and the
-    weighted score is exactly zero at an interior point with vanishing gradient,
-    so no strict certificate of the shape used here exists there. Moving the
-    chord to the rational value 3467/2500 breaks every tie and raises the
-    available margin from about 1e-8 to about 5.8e-4, which is what makes a
-    fixed family of thirty certificates sufficient. The constant is also bounded
-    above: the routing separators that prune the case tree fail once the chord
-    exceeds about 1.386850, so the admissible window is narrow and 6934/10000
-    sits inside it.
-
-    Formalized in full as a compared theorem: the lower bound 1/2 <= sigma_1(R^2),
-    Besicovitch.one_half_le_sigma_one_plane, by exhibiting Besicovitch's purely
-    unrectifiable graph with lower density at least 1/2 at every interior point.
-    Mathlib contains no notion of rectifiability and no purely unrectifiable
-    set, so the example and all three of its properties are constructed here
-    from scratch (Besicovitch/Example/). What is not proved about the example:
-    the matching upper density bound 1/2 (Capdevila's part D) and the sharp
-    equality of the graph's Hausdorff measure with its base measure; neither is
-    needed for the bound, and the crude constant 2 is used instead.
-
-    Also not formalized: Besicovitch's conjecture itself, which remains open;
-    no claim is made about it. The six-point method cannot reach below theta_6
-    however it is certified, so this development does not approach 1/2.
-
-    A companion theorem, Besicovitch.sStar_le_6934_div_10000, records that the
-    exact six-point endpoint lies below the rational target. It is not the
-    submitted Comparator declaration.
+  scope: |-
+    Formalized in full: sigma_1(R^2) <= 6934/10000, stated as Besicovitch.sigma_one_plane_le_6934_div_10000 over EuclideanSpace R (Fin 2), with sigma_1 defined inside Challenge.lean as the infimum of the thresholds that force countable 1-rectifiability. The proof term is complete and uses only propext, Classical.choice and Quot.sound. The supporting chain is formalized too: the geometric measure theory layer, the Besicovitch pair condition, the six-point transfer, the packing failure tree, the thirty Gram certificates and the radius cover.
+    Deliberately not formalized, and the reason. The sharp constant of the two-colour six-centre problem is an algebraic number theta_6 = 0.693306421825904872690678414403710951..., and the bound proved here exceeds it by about 9.36e-5. The obstruction is not mathematical but certificate-theoretic: at theta_6 the extremal configuration is attained, three structurally different packing mechanisms tie simultaneously, and the weighted score is exactly zero at an interior point with vanishing gradient, so no strict certificate of the shape used here exists there. Moving the chord to the rational value 3467/2500 breaks every tie and raises the available margin from about 1e-8 to about 5.8e-4, which is what makes a fixed family of thirty certificates sufficient. The constant is also bounded above: the routing separators that prune the case tree fail once the chord exceeds about 1.386850, so the admissible window is narrow and 6934/10000 sits inside it.
+    Formalized in full as a compared theorem: the lower bound 1/2 <= sigma_1(R^2), Besicovitch.one_half_le_sigma_one_plane, by exhibiting Besicovitch's purely unrectifiable graph with lower density at least 1/2 at every interior point. Mathlib contains no notion of rectifiability and no purely unrectifiable set, so the example and all three of its properties are constructed here from scratch (Besicovitch/Example/). What is not proved about the example: the matching upper density bound 1/2 (Capdevila's part D) and the sharp equality of the graph's Hausdorff measure with its base measure; neither is needed for the bound, and the crude constant 2 is used instead.
+    Also not formalized: Besicovitch's conjecture itself, which remains open; no claim is made about it. The six-point method cannot reach below theta_6 however it is certified, so this development does not approach 1/2.
+    A companion theorem, Besicovitch.sStar_le_6934_div_10000, records that the exact six-point endpoint lies below the rational target. It is not the submitted Comparator declaration.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: []
-
 automation:
   methods:
-    - method: "agent"
-      models: ["OpenAI ChatGPT project sessions; exact model versions not recorded locally"]
-      framework: "ChatGPT project workspace with local file mirror"
-      tool_setup: >-
-        The mathematics was developed in a ChatGPT project before any Lean was
-        written: the six-point analysis, the sharp constant, the packing failure
-        tree, and finally the Gram-certificate argument and its thirty exact
-        rational certificates. Output comprised 246 markdown research notes
-        (about 618,000 words), 86 C++ search programs, 16 LaTeX write-ups and 53
-        Python verifiers. The certificate family was checked three ways before
-        formalization: an exact rational verifier, an independent symbolic
-        reconstruction in SymPy, and a diagnostic sweep of 3000 random feasible
-        configurations.
-      cost:
-        wall_time: "research output spans 2026-08-26 to 2026-08-31 (6 days); session wall time not recorded"
-        spend_usd: "subscription-based"
-        hardware: "API-only"
-      prompting_notes: >-
-        Human-directed exploration of the six-point optimization problem;
-        transcripts are not retained locally, so no representative prompts can
-        be quoted.
-    - method: "agent"
-      models: ["claude-opus-5", "claude-fable-5-1"]
-      framework: "Claude Code"
-      tool_setup: >-
-        The Lean 4 development was written by an agent in Claude Code against
-        Mathlib, with the human directing scope, supplying the Gram-certificate
-        document, and deciding to abandon the earlier route. Measured from the
-        session transcripts: 3,326 API calls, 2,462,393 output tokens, and
-        47,951,563 tokens of input plus output plus cache writes, over 19 h 58 m
-        of wall clock. The work splits at the point the Gram-certificate
-        document arrived: an earlier attempt to certify the sharp constant
-        through six-variable Bernstein certificates consumed 94 percent of those
-        tokens and 75 percent of the wall clock and left no surviving line, and
-        the delivered proof cost about 2.7 million tokens over 5 hours. The
-        repository folder effort/ documents this and ships a script that
-        regenerates the figures.
-      cost:
-        wall_time: "19 h 58 m of agent session wall clock"
-        spend_usd: "subscription-based"
-        hardware: "local machine for Lean builds, API-only for inference"
-      prompting_notes: >-
-        Goal-directed with periodic human review. The decisive human
-        interventions were rejecting the sharp-constant target as infeasible,
-        supplying the Gram-certificate document, and requiring that certificate
-        data be rechecked inside Lean rather than trusted.
-    - method: "manual"
-      models: []
-      framework: "n/a"
-      tool_setup: >-
-        Human direction, mathematical judgement and review throughout: choice of
-        target constant, acceptance of the weaker rational bound, and final
-        reading of the statement and its definitions.
-      cost:
-        wall_time: "not tracked separately from the sessions above"
-        spend_usd: "not tracked"
-        hardware: "local machine"
-      prompting_notes: "n/a"
-  spend_usd: "subscription-based; not separately tracked"
-  notes: >-
-    Two stages with a clean handover. The mathematics was produced first in a
-    ChatGPT project and delivered as a written argument together with thirty
-    exact rational certificates and two independent verifiers. The Lean
-    formalization was then produced by an agent in Claude Code. Before any
-    formalization the certificate data was re-derived from the definitions in
-    exact rational arithmetic by a third independent transcription, which
-    reproduced all thirty published upper bounds exactly; that agreement also
-    guards the transcription into Lean, since one mistyped integer changes the
-    computed bound. All figures above are measured from machine records, not
-    estimated; the folder effort/ states which quantities could not be recovered
-    rather than guessing them.
-
+  - method: agent
+    models:
+    - OpenAI ChatGPT project sessions; exact model versions not recorded locally
+    framework: ChatGPT project workspace with local file mirror
+    tool_setup: |-
+      The mathematics was developed in a ChatGPT project before any Lean was written: the six-point analysis, the sharp constant, the packing failure tree, and finally the Gram-certificate argument and its thirty exact rational certificates. Output comprised 246 markdown research notes (about 618,000 words), 86 C++ search programs, 16 LaTeX write-ups and 53 Python verifiers. The certificate family was checked three ways before formalization: an exact rational verifier, an independent symbolic reconstruction in SymPy, and a diagnostic sweep of 3000 random feasible configurations.
+    cost:
+      wall_time: research output spans 2026-08-26 to 2026-08-31 (6 days); session wall time not recorded
+      spend_usd: subscription-based
+      hardware: API-only
+    prompting_notes: |-
+      Human-directed exploration of the six-point optimization problem; transcripts are not retained locally, so no representative prompts can be quoted.
+  - method: agent
+    models:
+    - claude-opus-5
+    - claude-fable-5-1
+    framework: Claude Code
+    tool_setup: |-
+      The Lean 4 development was written by an agent in Claude Code against Mathlib, with the human directing scope, supplying the Gram-certificate document, and deciding to abandon the earlier route. Measured from the session transcripts: 3,326 API calls, 2,462,393 output tokens, and 47,951,563 tokens of input plus output plus cache writes, over 19 h 58 m of wall clock. The work splits at the point the Gram-certificate document arrived: an earlier attempt to certify the sharp constant through six-variable Bernstein certificates consumed 94 percent of those tokens and 75 percent of the wall clock and left no surviving line, and the delivered proof cost about 2.7 million tokens over 5 hours. The repository folder effort/ documents this and ships a script that regenerates the figures.
+    cost:
+      wall_time: 19 h 58 m of agent session wall clock
+      spend_usd: subscription-based
+      hardware: local machine for Lean builds, API-only for inference
+    prompting_notes: |-
+      Goal-directed with periodic human review. The decisive human interventions were rejecting the sharp-constant target as infeasible, supplying the Gram-certificate document, and requiring that certificate data be rechecked inside Lean rather than trusted.
+  - method: manual
+    models: []
+    framework: n/a
+    tool_setup: |-
+      Human direction, mathematical judgement and review throughout: choice of target constant, acceptance of the weaker rational bound, and final reading of the statement and its definitions.
+    cost:
+      wall_time: not tracked separately from the sessions above
+      spend_usd: not tracked
+      hardware: local machine
+    prompting_notes: n/a
+  spend_usd: subscription-based; not separately tracked
+  notes: |-
+    Two stages with a clean handover. The mathematics was produced first in a ChatGPT project and delivered as a written argument together with thirty exact rational certificates and two independent verifiers. The Lean formalization was then produced by an agent in Claude Code. Before any formalization the certificate data was re-derived from the definitions in exact rational arithmetic by a third independent transcription, which reproduced all thirty published upper bounds exactly; that agreement also guards the transcription into Lean, since one mistyped integer changes the computed bound. All figures above are measured from machine records, not estimated; the folder effort/ states which quantities could not be recovered rather than guessing them.
 fidelity:
-  divergences: >-
-    None from a cited source, since no source result is being formalized: the
-    background references supply framework and history only, and the bound
-    proved here is stated for the first time by this project.
-
-    Two qualifications a reader should carry, besides the standing one that
-    sigma_1 is an infimum whose attainment is not claimed. First, the theorem is weaker than
-    the optimum of the finite problem it solves, by about 9.36e-5; the reason is
-    recorded under scope. Second, the thirty certificates were discovered by an
-    unverified numerical search. That search is not part of the proof: Lean
-    recomputes each certificate's exact rational upper bound from the stored
-    integers and rechecks every sign condition, and the positive semidefiniteness
-    on which the argument rests is proved identically from a rank-one
-    decomposition, with no eigenvalue computation or numerical test anywhere.
-
+  divergences: |-
+    None from a cited source, since no source result is being formalized: the background references supply framework and history only, and the bound proved here is stated for the first time by this project.
+    Two qualifications a reader should carry, besides the standing one that sigma_1 is an infimum whose attainment is not claimed. First, the theorem is weaker than the optimum of the finite problem it solves, by about 9.36e-5; the reason is recorded under scope. Second, the thirty certificates were discovered by an unverified numerical search. That search is not part of the proof: Lean recomputes each certificate's exact rational upper bound from the stored integers and rechecks every sign condition, and the positive semidefiniteness on which the argument rests is proved identically from a rank-one decomposition, with no eigenvalue computation or numerical test anywhere.
 review:
-  status: "self-assessed"
+  status: self-assessed
   reviewers:
-    - "none"
-  notes: >-
-    No external mathematical review. Checks performed by the authors. The
-    statement was audited by computing the transitive definition closure of the
-    submitted theorem and confirming it is identical between Challenge.lean and
-    Solution.lean: five constants, sigmaOne, ForcesOneRectifiability,
-    lowerOneDensity, IsCountablyOneRectifiable and one proof term. Axioms of the
-    submitted declaration were printed and are exactly propext,
-    Classical.choice and Quot.sound. The repository contains no native_decide,
-    no Lean.ofReduceBool, no admit and no axiom declaration. The certificate
-    data was verified three times independently before formalization, as
-    described under automation.
+  - none
+  notes: |-
+    No external mathematical review. Checks performed by the authors. The statement was audited by computing the transitive definition closure of the submitted theorem and confirming it is identical between Challenge.lean and Solution.lean: five constants, sigmaOne, ForcesOneRectifiability, lowerOneDensity, IsCountablyOneRectifiable and one proof term. Axioms of the submitted declaration were printed and are exactly propext, Classical.choice and Quot.sound. The repository contains no native_decide, no Lean.ofReduceBool, no admit and no axiom declaration. The certificate data was verified three times independently before formalization, as described under automation.
 
-    Literature search, 2026-09-02, for the novelty and record claims. Searched
-    arXiv listings and web search for the planar Besicovitch 1/2 problem, lower
-    density thresholds forcing rectifiability, and citations of
-    arXiv:2404.17536. Findings: De Lellis, Glaudo, Massaccesi and Vittone
-    (arXiv:2404.17536, April 2024) prove 7/10 and state that the previous best
-    was Preiss and Tiser (1992); Mattila's survey Rectifiability (arXiv:2112.00540,
-    2022) predates it; Capdevila (arXiv:2607.05206, July 2026) constructs
-    lower-density 1/2 examples and does not improve the upper bound. No source
-    stating a bound below 7/10 was found. The search is documented rather than
-    exhaustive; the novelty claim is qualified accordingly under sources.
+    Literature search (performed 2026-09-02)
 
-    The Comparator's first automated review, 2026-09-02, reported mechanical
-    verification succeeded and asked for the admissible set to be shown
-    nonempty and for the novelty claim to be supported. Both are addressed:
-    genuine admissible thresholds are compared (every threshold strictly above
-    the constant), the lower bound 1/2 is compared as well so the value is
-    pinned to [1/2, 6934/10000], sigmaOne is described as an infimum whose
-    attainment is not claimed, and the literature search above supports the
-    record claim with the novelty claim qualified accordingly.
+    Scope and method. The search asks two questions. (a) Does any published or publicly available work state an upper bound below 7/10 for sigma_1(R^2), the infimum of the thresholds sigma for which "lower 1-density >= sigma at H^1-almost every point forces countable 1-rectifiability" holds for every planar Borel set of finite H^1 measure (Definition 1.2 of De Lellis, Glaudo, Massaccesi and Vittone, cited below as DLGMV)? (b) Does the value 6934/10000 = 0.6934 proved by this project appear anywhere in connection with the problem? The search was run in five passes on 2026-09-02: four independent passes (forward citations of DLGMV; arXiv listings and API; bibliographic databases and encyclopedias; author pages and talk abstracts), followed by an adversarial verification pass that re-fetched every candidate the first four passes had flagged, read the sources they had not reached (in particular the published journal text of DLGMV and Schechter's 2002 thesis) and ran the searches they had omitted. Tools were WebFetch, WebSearch, and curl, pdftotext, grep and gh from the shell. Every query is listed below verbatim, grouped by tool or database, with its outcome in brackets. A query repeated by more than one pass is listed once; queries added by the verification pass are marked (verification).
 
+    Queries: arXiv abstract, HTML and PDF pages (WebFetch, or curl and pdftotext).
+    - https://arxiv.org/abs/2404.17536 [DLGMV; v1 26 Apr 2024, v2 23 May 2024, no v3; abstract states 7/10]
+    - https://arxiv.org/html/2404.17536v2 [Theorem 1.3 sigma-bar <= 0.7; other numbers 0.72655..., 0.683, conditional 0.64368...; no 0.6934]
+    - https://arxiv.org/pdf/2404.17536v2 [downloaded; pdftotext; no '6934', no '0.69', no 'theta_6']
+    - https://arxiv.org/abs/2607.05206 ; https://arxiv.org/html/2607.05206 ; https://arxiv.org/pdf/2607.05206 ; https://arxiv.org/pdf/2607.05206v1 [Capdevila, 6 Jul 2026; lower bound 1/2; 7/10 'currently the best known upper bound']
+    - https://arxiv.org/abs/2503.15159 ; https://arxiv.org/html/2503.15159 ; https://arxiv.org/html/2503.15159v2 ; https://arxiv.org/pdf/2503.15159 [Bate-Valentine; cites DLGMV without a number]
+    - https://arxiv.org/abs/2501.05920 ; https://arxiv.org/html/2501.05920 ; https://arxiv.org/pdf/2501.05920 [Bate; cites DLGMV as background; no bound]
+    - https://arxiv.org/abs/2508.15400 ; https://arxiv.org/html/2508.15400 ; https://arxiv.org/pdf/2508.15400 [Del Nin-Merlo; cites Preiss-Tiser only; no bound]
+    - https://arxiv.org/abs/2606.24461 ; https://arxiv.org/pdf/2606.24461 ; https://arxiv.org/html/2606.24461 [Jaye-Wang; HTML 404, PDF checked; no mention of DLGMV; unrelated]
+    - https://arxiv.org/pdf/2403.14479 [Krandel; cites Preiss-Tiser only]
+    - https://arxiv.org/html/2606.00381 [Li-Taylor; no mention of the problem]
+    - https://arxiv.org/abs/2509.07212 [Idu; Heisenberg group; no threshold]
+    - https://arxiv.org/abs/2412.11190 ; https://arxiv.org/abs/2501.02606 ; https://arxiv.org/abs/2602.00940 ; https://arxiv.org/abs/2511.12636 [Altaf; Litvinov; Gruner-Reimann; Tasso; none on the problem]
+    - https://arxiv.org/abs/2608.10253 ; https://arxiv.org/abs/2608.30166 ; https://arxiv.org/abs/2607.16457 [Bongers-Bright-Marshall-Taylor; Le; Tolsa survey; none mention the problem]
+    - https://arxiv.org/abs/2112.00540 [Mattila, Rectifiability; a survey; v3 1 Mar 2022, predates DLGMV]
+    - https://arxiv.org/abs/2607.05195 [unrelated; a mis-cited identifier]
+    - https://arxiv.org/abs/1712.07139 [Bate, Acta 2020; 'positive lower density' only; no threshold] (verification)
+
+    Queries: arXiv search interface, monthly listings and author pages.
+    - https://arxiv.org/search/?query=Besicovitch&searchtype=all&order=-announced_date_first&size=100 [233 results; first 100 reviewed; only 2607.05206 and 2404.17536 concern the threshold]
+    - https://arxiv.org/search/?query=Besicovitch+%221%2F2+problem%22&searchtype=all&order=-announced_date_first&size=50 [1 result: 2404.17536]
+    - https://arxiv.org/search/?query=Besicovitch+%22lower+density%22+rectifiable&searchtype=all&order=-announced_date_first&size=50 [3 results]
+    - https://arxiv.org/search/?query=Besicovitch+%22lower+density%22&searchtype=all&order=-announced_date_first&size=50 [newest 2607.05206, 2404.17536]
+    - https://arxiv.org/search/?query=%22Besicovitch%22+%221%2F2%22+rectifiable&searchtype=all&order=-announced_date_first&size=50 [2607.05206, 2404.17536, 1004.1369]
+    - https://arxiv.org/search/?query=Besicovitch+rectifiable&searchtype=all&order=-announced_date_first&size=50 [2025-2026: 2607.05206, 2511.12636]
+    - https://arxiv.org/search/?query=Besicovitch+density+conjecture&searchtype=all&order=-announced_date_first&size=50 [no 2025-2026 papers]
+    - https://arxiv.org/search/?query=Besicovitch+conjecture+density+rectifiable&searchtype=abstract&order=-announced_date_first&size=50 [2 results]
+    - https://arxiv.org/search/?query=%22one-half+conjecture%22+OR+%22half+conjecture%22+Besicovitch&searchtype=all&order=-announced_date_first&size=50 [233 results, OR-broadened; first 50 reviewed]
+    - arXiv advanced search: terms-0-term=Besicovitch, terms-0-field=all, classification-mathematics=y, date-from_date=2024-04, date-to_date=2026-10, date-date_type=submitted_date, size=200, order=-announced_date_first [51 results, all checked]
+    - arXiv advanced search: terms-0-term=Besicovitch (all) and terms-1-term=density (abstract), mathematics, 2024-04 to 2026-10, size=200 [4 results]
+    - arXiv advanced search: terms-0-term=Besicovitch and terms-1-term=rectifiab*, mathematics, 2024-04 to 2026-10, size=200 [no results; wildcard unsupported]
+    - arXiv advanced search: terms-0-term=%22lower+density%22 (abstract) and terms-1-term=rectifiable (abstract), mathematics, 2024-04 to 2026-10, size=200 [3 results]
+    - https://arxiv.org/search/?searchtype=author&query=Glaudo%2C+F&order=-announced_date_first&size=50 ; https://arxiv.org/search/?query=Glaudo%2C+Federico&searchtype=author&order=-announced_date_first&size=50 [only 2404.17536 on the problem]
+    - https://arxiv.org/search/?searchtype=author&query=Vittone%2C+D&order=-announced_date_first&size=50 ; https://arxiv.org/search/?query=Vittone%2C+Davide&searchtype=author&order=-announced_date_first&size=50 [no follow-up]
+    - https://arxiv.org/search/?searchtype=author&query=Massaccesi%2C+A&order=-announced_date_first&size=50 ; https://arxiv.org/search/?query=Massaccesi%2C+Annalisa&searchtype=author&order=-announced_date_first&size=50 [no follow-up]
+    - https://arxiv.org/search/?searchtype=author&query=Capdevila%2C+J&order=-announced_date_first&size=50 ; https://arxiv.org/search/?query=Capdevila%2C+Jaume&searchtype=author&order=-announced_date_first&size=50 [single relevant paper 2607.05206]
+    - https://arxiv.org/search/?query=Preiss%2C+David&searchtype=author&order=-announced_date_first&size=50 and the same with query=Preiss%2C+D [nothing after 2017]
+    - https://arxiv.org/search/?query=Ti%C5%A1er%2C+Jaroslav&searchtype=author&order=-announced_date_first&size=50 and the same with query=Tiser%2C+J [no results]
+    - https://arxiv.org/a/delellis_c_1 ; https://arxiv.org/a/delellis_c_1.html [83 papers; only 2404.17536 on the problem]
+    - https://arxiv.org/a/vittone_d_1 [stale, nothing after 2022] ; https://arxiv.org/a/glaudo_f_1 ; https://arxiv.org/a/glaudo_f_1.html ; https://arxiv.org/a/massaccesi_a_1 [HTTP 404]
+    - https://arxiv.org/list/math.CA/2026-09?show=2000 ; https://arxiv.org/list/math.CA/2026-08?show=2000 ; https://arxiv.org/list/math.CA/2026-07?show=2000 ; https://arxiv.org/list/math.MG/2026-09?show=2000 ; https://arxiv.org/list/math.MG/2026-08?show=2000 ; https://arxiv.org/list/math.MG/2026-07?show=2000 [curl; titles grepped for Besicovitch|rectifiab|lower density|half|1/2; only 2607.05206 concerns the problem]
+
+    Queries: arXiv API (https://export.arxiv.org/api/query, parameters verbatim).
+    - search_query=all:Besicovitch+AND+all:rectifiab*&sortBy=submittedDate&sortOrder=descending&max_results=100 [0; wildcard unsupported]
+    - search_query=all:%22Besicovitch%22+AND+all:%22rectifiab%22+AND+all:%22density%22&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending [0]
+    - search_query=all:Besicovitch+AND+all:rectifiable&sortBy=submittedDate&sortOrder=descending&max_results=100 [14]
+    - search_query=abs:Besicovitch+AND+abs:rectifiable&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending [13]
+    - search_query=abs:Besicovitch+AND+abs:density&sortBy=submittedDate&sortOrder=descending&max_results=100 (also with start=0) [17]
+    - search_query=abs:%22lower%20density%22+AND+abs:rectifiable&sortBy=submittedDate&sortOrder=descending&max_results=100 (also with start=0) [13]
+    - search_query=abs:%22Besicovitch%201%2F2%22+OR+abs:%22Besicovitch%20one-half%22+OR+abs:%22Besicovitch%20one%20half%22+OR+abs:%22Besicovitch%27s%201%2F2%22&sortBy=submittedDate&sortOrder=descending&max_results=100 [0]
+    - search_query=cat:math.CA+AND+all:Besicovitch&sortBy=submittedDate&sortOrder=descending&max_results=100 [68, complete]
+    - search_query=cat:math.MG+AND+all:Besicovitch&sortBy=submittedDate&sortOrder=descending&max_results=100 [34, complete]
+    - search_query=cat:math.AP+AND+all:Besicovitch&sortBy=submittedDate&sortOrder=descending&max_results=100 [21, complete]
+    - search_query=(cat:math.OC+OR+cat:math.FA+OR+cat:math.DG+OR+cat:math.PR)+AND+all:Besicovitch&max_results=100 [57]
+    - search_query=abs:%22lower%20density%22+AND+(cat:math.CA+OR+cat:math.MG+OR+cat:math.AP)&max_results=100 [34]
+    - search_query=abs:%22Besicovitch%20conjecture%22+OR+abs:%22Besicovitch%27s%20conjecture%22+OR+abs:%22circle%20pair%22+OR+(abs:Preiss+AND+abs:Ti%C5%A1er)+OR+(abs:Preiss+AND+abs:Tiser)&max_results=100 [14]
+    - search_query=(abs:%22one-half%22+OR+abs:%22one%20half%22+OR+abs:%22half%20conjecture%22)+AND+(abs:rectifiable+OR+abs:rectifiability+OR+abs:%22lower%20density%22)&max_results=100 [2, unrelated]
+    - search_query=(all:Besicovitch+AND+all:%22linear%20programming%22)+OR+(ti:Besicovitch+AND+ti:problem)+OR+(ti:Besicovitch+AND+ti:conjecture)&max_results=100 [3]
+    - search_query=abs:%22Besicovitch%20number%22+OR+(abs:%22Besicovitch%20conjecture%22+AND+abs:density)+OR+(abs:%22Besicovitch%27s%20conjecture%22+AND+abs:density)+OR+abs:%22half%20problem%22&max_results=100 [0]
+    - search_query=(abs:%227/10%22+OR+abs:%220.7%22+OR+abs:%220.69%22+OR+abs:%220.6934%22)+AND+(abs:rectifiable+OR+abs:rectifiability+OR+abs:unrectifiable)&max_results=100 [16; only 2404.17536 is mathematics; no arXiv abstract contains 0.6934]
+    - search_query=au:Glaudo_F+OR+au:Massaccesi_A&start=0&max_results=50&sortBy=submittedDate&sortOrder=descending [0; author syntax not matched]
+    - search_query=au:Vittone_D+OR+au:De_Lellis_C&start=0&max_results=50&sortBy=submittedDate&sortOrder=descending [2 entries from 2006; author syntax not matched]
+    - search_query=ti:%22Weak%20Carleson%20conditions%22+AND+au:Krandel&max_results=5 [2403.14479; unrelated]
+    - search_query=ti:%22weak%20lower%20density%22&max_results=5 [Azzam-Hyde 2005.02030] (verification)
+    - search_query=abs:unrectifiable+AND+abs:density&sortBy=submittedDate&sortOrder=descending&max_results=60 [5; no new bound] (verification)
+    - search_query=abs:%22lower%20density%22+AND+%28abs:rectifiable+OR+abs:rectifiability+OR+abs:unrectifiable+OR+abs:Hausdorff%29&sortBy=submittedDate&sortOrder=descending&max_results=60 [21, all categories; nothing from 2026 with a threshold] (verification)
+    - id_list=1712.07139 (verification)
+
+    Queries: Google Scholar (WebFetch).
+    - https://scholar.google.com/scholar?q=%22Besicovitch%27s+1%2F2+problem+and+linear+programming%22 ['Cited by 3'; cluster 3061277807759469856]
+    - https://scholar.google.com/scholar?cites=3061277807759469856&as_sdt=5,39&sciodt=0,39&hl=en (also with &oe=ASCII) [the 3 citing works: Bate-Valentine IMRN 2026; Capdevila arXiv:2607.05206; Capdevila Jove-Tolsa, Reports@SCM 2025]
+    - https://scholar.google.com/scholar?cluster=3061277807759469856&hl=en [4 versions: arXiv, NASA ADS, cvgmt, IAS; no Trans. AMS version merged]
+    - https://scholar.google.com/scholar?q=%22Besicovitch+1%2F2+problem%22&as_ylo=2024 [1 result: the companion-software record]
+    - https://scholar.google.com/scholar?as_ylo=2024&q=%22Besicovitch%22+%221%2F2+problem%22+rectifiable [5 results]
+    - https://scholar.google.com/scholar?as_ylo=2024&q=%22Preiss%22+%22Ti%C5%A1er%22+Besicovitch+density+rectifiable [8 results]
+    - https://scholar.google.com/scholar?as_ylo=2025&q=Besicovitch+%22lower+density%22+rectifiable+conjecture ; https://scholar.google.com/scholar?start=10&as_ylo=2025&q=Besicovitch+%22lower+density%22+rectifiable+conjecture [13 results plus page 2; nothing new]
+    - https://scholar.google.com/scholar?as_ylo=2024&q=Besicovitch+%227%2F10%22+rectifiable+density ; https://scholar.google.com/scholar?start=10&as_ylo=2024&q=Besicovitch+%227%2F10%22+rectifiable+density [12 results plus page 2; relevant ones restate 7/10]
+    - https://scholar.google.com/scholar?q=%22Besicovitch%22+%22lower+density%22+rectifiable+%227%2F10%22 [10 results; nothing below 0.7]
+    - https://scholar.google.com/scholar?q=%220.6934%22+OR+%226934%2F10000%22+Besicovitch+rectifiable [no results]
+    - https://scholar.google.com/scholar?q=%220.6934%22+Besicovitch+rectifiable ['did not match any articles']
+    - https://scholar.google.com/scholar?q=%220.6934%22+Besicovitch [1 result, a 1992 agronomy thesis]
+    - https://scholar.google.com/scholar?q=%226934%2F10000%22 [4 results, all unrelated]
+    - https://scholar.google.com/scholar?as_ylo=2025&q=Besicovitch+rectifiable+%22linear+programming%22+density [3 results]
+    - https://scholar.google.com/scholar?as_ylo=2026&q=Besicovitch+%221%2F2%22+rectifiable+%22lower+density%22 [11 results]
+    - https://scholar.google.com/scholar?q=Besicovitch+%22lower+density%22+rectifiable&as_ylo=2026 [11 results; none states a bound]
+    - https://scholar.google.com/scholar?q=Besicovitch+%221%2F2%22+problem+rectifiable+%22lower+density%22&as_ylo=2025 [10 results; none below 7/10]
+    - https://scholar.google.com/scholar?as_ylo=2025&q=Besicovitch+%22one-half%22+OR+%22one+half%22+conjecture+rectifiable [2 results]
+    - https://scholar.google.com/scholar?q=%22Besicovitch%22+%221%2F2-conjecture%22+OR+%22one-half+conjecture%22+OR+%22half+conjecture%22&as_ylo=2025 [5 results]
+    - https://scholar.google.com/scholar?q=%22purely+unrectifiable%22+%22lower+density%22+Besicovitch&as_ylo=2025 [5 results]
+    - https://scholar.google.com/scholar?q=%22On+Besicovitch%27s+1%2F2-problem%22+Preiss+Ti%C5%A1er [Preiss-Tiser 1992, 'Cited by 61']
+    - https://scholar.google.com/scholar?cites=11881762067807890911&as_sdt=5,39&sciodt=0,39&hl=en&as_ylo=2024 [6 works since 2024 citing Preiss-Tiser; none with a bound below 0.7]
+
+    Queries: Semantic Scholar API.
+    - https://api.semanticscholar.org/graph/v1/paper/arXiv:2404.17536/citations?fields=title,authors,year,externalIds,abstract&limit=100 [HTTP 200; data []]
+    - https://api.semanticscholar.org/graph/v1/paper/arXiv:2404.17536/citations?fields=title,authors,year,externalIds,abstract,publicationDate&limit=200 [data []]
+    - https://api.semanticscholar.org/graph/v1/paper/ARXIV:2404.17536/citations?fields=title,year,externalIds,authors&limit=100 [data []]
+    - https://api.semanticscholar.org/graph/v1/paper/arXiv:2404.17536/citations?fields=title,year,authors,externalIds,venue&limit=100 [data []]
+    - https://api.semanticscholar.org/graph/v1/paper/DOI:10.1090/tran/9609?fields=title,citationCount,citations.title,citations.year [HTTP 200; citationCount 0] (verification)
+    - https://api.semanticscholar.org/graph/v1/paper/arXiv:2404.17536?fields=title,authors,year,citationCount,referenceCount,externalIds,venue,publicationDate ; https://api.semanticscholar.org/graph/v1/paper/arXiv:2404.17536?fields=title,year,venue,externalIds,citationCount,citations.title,citations.year,citations.authors,citations.externalIds ; https://api.semanticscholar.org/graph/v1/paper/arXiv:2404.17536?fields=title,year,venue,citationCount,citations.title,citations.year,citations.externalIds ; https://api.semanticscholar.org/graph/v1/paper/arXiv:2404.17536?fields=citationCount ; https://api.semanticscholar.org/graph/v1/paper/ARXIV:2404.17536?fields=title,citationCount,... [all HTTP 429]
+    - https://api.semanticscholar.org/graph/v1/paper/DOI:10.48550/arXiv.2404.17536/citations?fields=title,year,externalIds,authors&limit=100 [HTTP 404]
+    - https://api.semanticscholar.org/graph/v1/paper/search?query=Besicovitch%201%2F2%20problem%20rectifiable%20lower%20density&fields=title,year,citationCount,externalIds,authors&limit=50 ; https://api.semanticscholar.org/graph/v1/paper/search?query=Besicovitch+1%2F2+problem+rectifiable+lower+density&year=2024-2026&fields=title,year,authors,externalIds,venue&limit=50 ; https://api.semanticscholar.org/graph/v1/paper/search?query=Besicovitch+one+half+conjecture+density+rectifiable&fields=title,year,authors,externalIds,venue&limit=50 ; https://api.semanticscholar.org/graph/v1/paper/search?query=Besicovitch+lower+density+rectifiable&year=2025-2026 ; https://api.semanticscholar.org/graph/v1/paper/search?query=Besicovitch+one-half+problem+density [all HTTP 429; the search endpoint was unusable]
+    - https://api.semanticscholar.org/graph/v1/paper/DOI:10.1006/aima.1999.1859?fields=title,year,venue,abstract,citationCount [Farag 2000; citationCount 6; abstract elided by publisher] (verification)
+    - https://www.semanticscholar.org/arxiv/2404.17536 [HTTP 404]
+
+    Queries: OpenAlex API.
+    - https://api.openalex.org/works?search=%22Besicovitch%27s%201/2%20problem%22&per-page=50 [22 works; DLGMV = W4396244041, cited_by_count 0; others pre-2024]
+    - https://api.openalex.org/works?search=%22Besicovitch%27s%201/2%20problem%20and%20linear%20programming%22&per_page=10 ; https://api.openalex.org/works?search=Besicovitch%27s%201/2%20problem%20and%20linear%20programming&per-page=5 [W4396244041, cited_by_count 0]
+    - https://api.openalex.org/works?filter=cites:W4396244041&per-page=50 (also per-page=100 and per_page=100) [meta.count 0]
+    - https://api.openalex.org/works/https://doi.org/10.1090/tran/9609 [Trans. AMS record W7130464003, publication_date 2026-02-18, cited_by_count 0]
+    - https://api.openalex.org/works?filter=cites:W7130464003&per-page=50 [meta.count 0]
+    - https://api.openalex.org/works?filter=cited_by:https://doi.org/10.48550/arXiv.2404.17536&per-page=50 [HTTP 400, invalid filter]
+    - https://api.openalex.org/works?filter=title.search:Besicovitch,from_publication_date:2024-04-01&per-page=50&select=id,title,publication_date,doi,cited_by_count,authorships [42 works; none on the threshold]
+    - https://api.openalex.org/works?filter=title.search:Besicovitch,from_publication_date:2024-04-01&per_page=100&sort=publication_date:desc [42 works]
+    - https://api.openalex.org/works?filter=title.search:Besicovitch,from_publication_date:2024-01-01&per-page=100&sort=publication_date:desc [46 works]
+    - https://api.openalex.org/works?filter=title.search:Besicovitch%20linear%20programming&per-page=10 [0; journal version not found by title search]
+    - https://api.openalex.org/works?search=Besicovitch%20one-half%20problem%20lower%20density%20rectifiable&filter=from_publication_date:2024-04-01&per_page=50 [33 works; none proposes a bound]
+    - https://api.openalex.org/works?search=Besicovitch%201%2F2%20problem%20rectifiable%20lower%20density&per-page=50&sort=publication_date:desc [415, noisy relevance search; newest relevant item Capdevila W7167747825]
+    - https://api.openalex.org/works?search=%22On%20Besicovitch%27s%201%2F2-problem%22&per-page=5 [no 2024+ item other than DLGMV] (verification)
+    - https://api.openalex.org/works/https://doi.org/10.1112/jlms/s2-45.2.279?select=id,title,cited_by_count [Preiss-Tiser = W2080237992, cited_by_count 6] (verification)
+    - https://api.openalex.org/works?filter=cites:W2080237992,from_publication_date:2024-01-01 [0] ; https://api.openalex.org/works?filter=cites:W2777147084,from_publication_date:2024-01-01 [8 works citing Bate Acta 2020, none on the threshold] ; https://api.openalex.org/works?filter=cites:W2037152445,from_publication_date:2024-01-01 [1 work citing Farag 2002: DLGMV] ; https://api.openalex.org/works?filter=cites:W7130464003,from_publication_date:2024-01-01 [0] (verification)
+    - https://api.openalex.org/works?search=%22Regularity%20and%20other%20properties%20of%20Hausdorff%20measures%22 [Schechter, 2002 dissertation] (verification)
+
+    Queries: Crossref API.
+    - https://api.crossref.org/works/10.1090/tran/9609 [is-referenced-by-count 0; published abstract credits the previous best bound to Schechter]
+    - https://api.crossref.org/works?query.bibliographic=Besicovitch%27s%201%2F2%20problem%20and%20linear%20programming&rows=5 [only unrelated items]
+    - https://api.crossref.org/works?query.title=Besicovitch%27s+1%2F2+problem+and+linear+programming&rows=5&select=DOI,title,author,container-title,issued,is-referenced-by-count [only unrelated items]
+    - https://api.crossref.org/works?query=Besicovitch+problem+linear+programming+De+Lellis+Glaudo&filter=from-pub-date:2025-01-01&rows=5&select=DOI,title,author,container-title,issued,is-referenced-by-count [only unrelated items]
+    - https://api.crossref.org/works?query.title=Besicovitch%20problem%20linear%20programming&query.author=De%20Lellis%20Glaudo&rows=5 [DOI 10.1090/tran/9609, published 2026-02-18, is-referenced-by-count 0]
+    - https://api.crossref.org/works?query=Besicovitch+1%2F2+problem+rectifiable+lower+density&filter=from-pub-date:2024-01-01&rows=50 [untyped relevance search; only relevant item Bate-Valentine 10.1093/imrn/rnag014]
+    - https://api.crossref.org/works?query.bibliographic=On+the+1%2F2-problem+of+Besicovitch+quasi-arcs+sharp+saw-teeth&rows=2&select=DOI,title,container-title,issued,abstract [Farag 2002, DOI 10.4171/rmi/310, abstract retrieved] (verification)
+    - https://api.crossref.org/works?query.bibliographic=Unrectifiable+1-sets+with+moderate+essential+flatness+satisfy+Besicovitch&rows=3 [Farag 2000, DOI 10.1006/aima.1999.1859] (verification)
+
+    Queries: zbMATH Open (web interface and REST API).
+    - https://zbmath.org/?q=%22Besicovitch%22+%221%2F2+problem%22 ; https://zbmath.org/?q=rf%3A8209863 ; https://zbmath.org/?q=%22Besicovitch+1%2F2+problem%22 ; https://zbmath.org/?q=Besicovitch+%22lower+density%22+rectifiable+cc%3A28A75 ; https://zbmath.org/?q=Besicovitch+%221%2F2%22+problem+linear+programming ; https://zbmath.org/?q=ti%3ABesicovitch+py%3A2025-2026 ; https://zbmath.org/?q=%22Besicovitch%22+%22half+problem%22+OR+%22Besicovitch%22+%22lower+density%22+py%3A2024-2026 [all HTTP 403 or a Cloudflare challenge page; the REST API was used instead]
+    - https://api.zbmath.org/v1/document/_search?search_string=Besicovitch%201%2F2%20problem&results_per_page=50 (also with page=0) [33 documents; none after 2024 with a bound; Preiss-Tiser = 120128]
+    - https://api.zbmath.org/v1/document/_search?search_string=Besicovitch%201%2F2%20problem%20linear%20programming [zbMATH 8209863]
+    - https://api.zbmath.org/v1/document/_search?search_string=%22linear%20programming%22%20Besicovitch&results_per_page=50 (also page=0&results_per_page=20) [1 document: 8209863]
+    - https://api.zbmath.org/v1/document/_search?search_string=Besicovitch%20density%20rectifiable&page=0&results_per_page=100 [13 documents; 2024+: 8209863, 8159682, 903096499]
+    - https://api.zbmath.org/v1/document/_search?search_string=ti%3ABesicovitch%20%26%20ti%3Aproblem&page=0&results_per_page=50 [13 documents]
+    - https://api.zbmath.org/v1/document/_search?search_string=%22lower%20density%22%20rectifiable%20cc%3A28A75&page=0&results_per_page=50 [11 documents; no 2023+ threshold]
+    - https://api.zbmath.org/v1/document/_search?search_string=%22purely%20unrectifiable%22%20%22lower%20density%22&page=0&results_per_page=50 [2 documents]
+    - https://api.zbmath.org/v1/document/_search?search_string=Besicovitch%20conjecture%20rectifiable%20density&page=0&results_per_page=50 [3 documents]
+    - https://api.zbmath.org/v1/document/_search?search_string=%22Besicovitch%22%20%26%20%22rectifiab*%22%20%26%20py%3A2025-2026&page=0&results_per_page=100 [7 documents; no threshold below 0.7 in any review]
+    - https://api.zbmath.org/v1/document/_search?search_string=cc%3A28A75%20%26%20py%3A2024-2026%20%26%20density&page=0&results_per_page=100 ; https://api.zbmath.org/v1/document/_search?search_string=cc%3A28A75%20%26%20py%3A2024-2026%20%26%20rectifiab*&page=0&results_per_page=100 [HTTP 404; range syntax not accepted]
+    - https://api.zbmath.org/v1/document/_search?search_string=rf%3A8209863 (also with &results_per_page=50 and &page=0&results_per_page=50) ; https://api.zbmath.org/v1/document/_search?search_string=ci%3A8209863 (also with &results_per_page=50) ; https://api.zbmath.org/v1/document/_search?search_string=ar%3A2404.17536&results_per_page=50 ; https://api.zbmath.org/v1/document/_search?search_string=ci%3A120128&page=0&results_per_page=100 [all HTTP 404, i.e. empty]
+    - https://api.zbmath.org/v1/document/_search?search_string=rf%3A120128&page=0&results_per_page=100 [6 documents citing Preiss-Tiser, none 2023+; DLGMV absent, so the zbMATH reference index is incomplete]
+    - https://api.zbmath.org/v1/document/_search?search_string=zzzqqqxxxnonexistentterm (also with &page=0&results_per_page=10) [HTTP 404; calibration showing that an empty result set returns 404]
+    - https://api.zbmath.org/v1/document/_search?search_string=ti%3A%22Comparison%20of%20Hausdorff%20measures%22%20Heisenberg [zbMATH 2057945] (verification)
+    - https://api.zbmath.org/v1/document/8209863 [DLGMV record; MSC 28A75, 49Q15, 90C05, 68V05; review text withheld] ; https://api.zbmath.org/v1/document/120128 [Preiss-Tiser record] ; https://api.zbmath.org/v1/document/1422991 ; https://api.zbmath.org/v1/document/1803982 ; https://api.zbmath.org/v1/document/7194389 [Farag 2000, Farag 2002, Bate 2020 records] (verification)
+
+    Queries: MathSciNet and MR Lookup.
+    - https://mathscinet.ams.org/mathscinet/publications-search?query=Besicovitch%27s%201%2F2%20problem%20and%20linear%20programming ; https://mathscinet.ams.org/mathscinet/publications-search?query=ti%3A%28Besicovitch%201%2F2%20problem%29 [subscription wall; only the application shell returned]
+    - https://mathscinet.ams.org/mrlookup?ti=Besicovitch+1%2F2&format=html [DLGMV MR5079942; Farag thesis MR2695866]
+    - https://mathscinet.ams.org/mrlookup?ti=Besicovitch+conjecture&format=html [5 matches, 3 shown: Babenko 2002, Farag 2000 MR1742355, Farag 1997]
+    - https://mathscinet.ams.org/mrlookup?ti=unrectifiable+lower+density&format=html [no results]
+    - https://mathscinet.ams.org/mrlookup?ti=1%2F2-conjecture&format=html [3 unrelated items]
+    - https://mathscinet.ams.org/mrlookup?ti=rectifiable&year=2026&format=html [3 most recent items; none on the problem]
+    - https://mathscinet.ams.org/mrlookup?ti=Besicovitch&year=2026&format=html [3 items including DLGMV]
+    - https://mathscinet.ams.org/mrlookup?ti=Besicovitch&year=2025&format=html [3 items; none on the problem]
+    - https://mathscinet.ams.org/mrlookup?au=Glaudo&format=html [3 items including DLGMV; no follow-up]
+
+    Queries: other indexes.
+    - https://inspirehep.net/api/literature?q=arxiv:2404.17536 [hits.total 0]
+    - https://ui.adsabs.harvard.edu/abs/2024arXiv240417536D/citations [TLS error; unreachable]
+    - https://api.archives-ouvertes.fr/search/?q=Besicovitch%20AND%20(density%20OR%20rectifiable)&sort=producedDate_s%20desc&rows=25 [7 records; none relevant] (verification)
+    - https://www.base-search.net/Search/Results?lookfor=Besicovitch+%22lower+density%22+rectifiable&type=all&sort=dcyear_sort+desc [JavaScript-only page; unusable] (verification)
+    - https://zenodo.org/api/records?q=besicovitch-half-conjecture&size=10 [no matching record]
+
+    Queries: AMS journal site and DOI resolver.
+    - https://doi.org/10.1090/tran/9609 [302 to https://www.ams.org/tran/0000-000-00/S0002-9947-2026-09609-6/, which returns HTTP 403]
+    - https://www.ams.org/journals/tran/2026-379-07/ ; https://pubs.ams.org/journals/tran/2026-379-07/ ; https://www.ams.org/journals/tran/2026-379-07/S0002-9947-2026-09609-X/ ; https://www.ams.org/tran/0000-000-00/S0002-9947-2026-09609-6/ [HTTP 403 or 524]
+    - https://www.ams.org/journals/tran/2026-379-07/tran-379-07-print-matter.pdf [HTTP 403 via WebFetch; reached via curl: the table of contents lists the paper at p. 5051]
+    - https://www.ams.org/journals/tran/2026-379-07/S0002-9947-2026-09609-6/S0002-9947-2026-09609-6.pdf [HTTP 200 via curl; the 48-page published text, read in full] (verification)
+
+    Queries: author and institutional pages.
+    - https://glaudo.github.io/research.html [15 papers; only DLGMV on the problem]
+    - https://cvgmt.sns.it/person/2701/ (Glaudo) ; https://cvgmt.sns.it/person/866/ (Massaccesi) ; https://cvgmt.sns.it/person/256/ (Vittone) ; https://cvgmt.sns.it/person/58/ (De Lellis) [DLGMV listed as accepted, Trans. AMS; no follow-up]
+    - https://cvgmt.sns.it/paper/6553/ ; https://cvgmt.sns.it/media/doc/paper/6553/Besicovitch_paper-13.pdf [paper page created 25 Apr 2024, last updated 12 Apr 2026; attached PDF identical in content to arXiv v2] (verification)
+    - https://www.math.ias.edu/delellis/publications ; https://www.math.ias.edu/delellis/biblio/filter ; https://www.math.ias.edu/delellis/sites/math.ias.edu.delellis/files/Besicovitch_paper-13.pdf [IAS copy identical in content to arXiv v2; no follow-up listed]
+    - https://warwick.ac.uk/fac/sci/maths/people/staff/david_preiss/ [nothing after 2021]
+    - https://www.research.unipd.it/simple-search?query=Besicovitch+linear+programming ; https://www.research.unipd.it/handle/11577/3604214 ; https://www.research.unipd.it/handle/11577/3578478 [published-version record with WOS:001694935500001; companion-software record 2025; no files]
+
+    Queries: full texts of other works (journal sites and repositories).
+    - https://academic.oup.com/imrn/article/2026/4/rnag014/8471049 [Bate-Valentine, IMRN 2026(4), published 10 Feb 2026; no bound]
+    - https://projecteuclid.org/journals/revista-matematica-iberoamericana/volume-18/issue-1/On-the-1-2-Problem-of-Besicovitch--quasi-arcs/rmi/1045578692.full [Farag 2002 abstract] (verification)
+    - https://www.sciencedirect.com/science/article/pii/S0001870899918602 [HTTP 403] ; https://ems.press/journals/rmi/articles/2015 [HTTP 404, wrong identifier] (verification)
+    - https://discovery.ucl.ac.uk/id/eprint/10102053/ [HTTP 403] ; https://discovery.ucl.ac.uk/id/eprint/10102053/1/Regularity_and_other_propertie.pdf [HTTP 200 via curl; Schechter's 2002 UCL thesis, read in full] ; https://discovery-pp.ucl.ac.uk/10102053/1/Regularity_and_other_propertie.pdf ; https://discovery-pp.ucl.ac.uk/id/eprint/10102053 ; https://core.ac.uk/search?q=%22Regularity+and+other+properties+of+Hausdorff+measures%22 [HTTP 403 or Cloudflare] (verification)
+    - https://diposit.ub.edu/bitstreams/8cc4fc0a-cb47-4312-bc4b-f91f028e0b89/download [HTTP 200; Capdevila Jove, UB master's thesis, 13 Jun 2025]
+    - https://publicacions.iec.cat/repository/pdf/00000535/00000073.pdf [HTTP 200; Reports@SCM 10 (2025) extended abstracts]
+    - https://www.raco.cat/index.php/ReportsSCM/article/download/980000002354/544369 ; https://www.raco.cat/index.php/ReportsSCM/article/view/980000002354 [HTTP 403 / Cloudflare]
+    - https://www.imo.universite-paris-saclay.fr/~pierre.pansu/Besicovitch-demi.pdf [Pansu seminar slides, 5 Nov 2020]
+
+    Queries: talk and event pages.
+    - https://memento.epfl.ch/event/besicovitch-12-conjecture-and-linear-programming [Glaudo, EPFL, 15 Mar 2024] ; https://memento.epfl.ch/event/besicovitch-1-2-conjecture-and-linear-programming/ [HTTP 404, wrong slug]
+    - https://www.gssi.it/seminars/seminars-and-events-2024/item/25373-math-colloquia-the-modelling-problem-of-complex-systems-evolution-from-big-data-analysis-to-stochastic-dynamical-systems [TLS error via WebFetch; reached via curl -k: De Lellis, GSSI colloquium, 29 Jul 2024]
+    - https://www.youtube.com/watch?v=onSYsZB0LQ4 [page footer only; the recording of the GSSI colloquium]
+    - https://dec.unibocconi.eu/events/camillo-de-lellis-besicovitchs-12-problem-and-linear-programming ; https://dec.unibocconi.eu/events/cancelled-camillo-de-lellis-besicovitchs-12-problem-and-linear-programming ; https://www.math-ub.it/seminars ; https://sites.google.com/view/mathubbocconi/seminars [De Lellis, Bocconi, 26 Feb 2025; the 22 Apr 2024 date was cancelled]
+    - https://math.ethz.ch/fim/activities/conferences/past-conferences/2025/FIM-60-years/talks.html ; https://math.ethz.ch/fim/activities/conferences/past-conferences/2025/FIM-60-years.html [De Lellis, ETH, 11-13 Jun 2025]
+    - https://sites.google.com/unitn.it/gmt-trento26/list-of-talks [23 talks; none on the problem]
+    - https://www.thierrydepauw.org/?page_id=660 [TLS error or HTTP 403 via WebFetch; reached via curl: Westlake winter school, 1-6 Feb 2026, programme on projection theorems]
+    - https://www.caltech.edu/campus-life-events/calendar/day/2025-01-15 [certificate error; the De Lellis talk of 15 Jan 2025 was confirmed by web search]
+
+    Queries: encyclopedias.
+    - https://en.wikipedia.org/wiki/Rectifiable_set ; https://en.wikipedia.org/wiki/Abram_Samoilovitch_Besicovitch ; https://en.wikipedia.org/wiki/List_of_unsolved_problems_in_mathematics ; https://en.wikipedia.org/wiki/David_Preiss ; https://en.wikipedia.org/wiki/Geometric_measure_theory [no mention of the problem or any threshold]
+    - https://en.wikipedia.org/w/index.php?search=%22Besicovitch%22+%221%2F2+problem%22+OR+%221%2F2+conjecture%22+OR+%22lower+density%22&fulltext=1&ns0=1 ; https://en.wikipedia.org/w/index.php?search=Besicovitch+rectifiable+%22lower+density%22+conjecture&fulltext=1&ns0=1 [no relevant article]
+    - https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=Besicovitch+rectifiable+%22lower+density%22&format=json&srlimit=50 ; https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=%22Besicovitch%22+%22conjecture%22+rectifiable&format=json&srlimit=50 [totalhits 0]
+    - curl -s "https://en.wikipedia.org/w/index.php?title=List_of_unsolved_problems_in_mathematics&action=raw" | grep -n -i -E "besicovitch|lower density|rectifiab" [0 matches]
+    - https://encyclopediaofmath.org/wiki/Rectifiable_set ; https://encyclopediaofmath.org/wiki/Density_of_a_set ; https://encyclopediaofmath.org/wiki/Hausdorff_measure ; https://encyclopediaofmath.org/wiki/Geometric_measure_theory ; https://encyclopediaofmath.org/index.php?search=Besicovitch+%221%2F2%22+density+rectifiable&fulltext=1 [Density of a set (last modified 2013) mentions 3/4 and the Preiss-Tiser improvement only; the others do not mention the problem]
+
+    Queries: code repositories.
+    - https://github.com/dario2994/besicovitch-half-conjecture ; https://github.com/dario2994/besicovitch-half-conjecture/commits/main [companion software; one commit, 24 Jul 2025; LICENSE and proof_07.cpp only]
+    - https://raw.githubusercontent.com/dario2994/besicovitch-half-conjecture/main/proof_07.cpp [curl and grep; the only bound constant is 'const double sigma = 0.7;']
+    - https://api.github.com/repos/dario2994/besicovitch-half-conjecture [HTTP 403]
+    - https://api.github.com/search/repositories?q=besicovitch+rectifiable+OR+besicovitch+density+OR+besicovitch+half&sort=updated [1 repository, the one above]
+    - https://github.com/openai/ten-proofs [no Besicovitch entry]
+    - gh search code "Besicovitch 6934" --limit 10 ; gh search code "Besicovitch 0.6934" --limit 10 [0 results each; calibration gh search code "Besicovitch covering" returns mathlib4 hits]
+    - gh search code "Besicovitch" --repo google-deepmind/formal-conjectures [0; calibration gh search code "Kakeya" --repo google-deepmind/formal-conjectures returns 4] (verification)
+    - gh search code "lowerDensity rectifiable Besicovitch" --limit 10 [0] ; gh search code "6934 / 10000" --limit 10 [10 hits, all machine-learning logs or unrelated Lean interval constants] (verification)
+
+    Queries: blogs.
+    - https://www.cantorsparadise.org/the-besicovitch-1-2-conjecture-ff60ce2263de/ [redirects to an unrelated domain] ; https://medium.com/cantors-paradise/the-besicovitch-1-2-conjecture-ff60ce2263de ; https://www.cantorsparadise.com/the-besicovitch-1-2-conjecture-ff60ce2263de [HTTP 403]
+
+    Local text checks on downloaded PDFs (pdftotext and grep).
+    - grep -n -i -E "theta_6|θ_6|θ6|\\theta" dgmv_arxiv.txt [0 matches]
+    - grep for '6934', '0.69' and '0.693' in the text of the published Trans. AMS article, arXiv v2, the IAS copy, the cvgmt copy, Schechter's 2002 thesis, Capdevila 2607.05206, the UB master's thesis, the Reports@SCM extended abstracts and the Pansu slides [0 matches in each]
+    - grep for 'Lellis' in the text of 2606.24461, 2403.14479, 2508.15400 and 2501.05920 [only 2501.05920 cites DLGMV]
+
+    Queries: general web search (WebSearch), each query string verbatim.
+    - "Besicovitch's 1/2 problem and linear programming" [arXiv, IAS copy, Trans. AMS 379(7) print matter, YouTube talk, 2607.05206]
+    - "Besicovitch 1/2 problem" rectifiability lower density bound 2025 [DLGMV, Capdevila, Reports@SCM, Bate-Valentine, Pansu; no new bound]
+    - "Besicovitch" "1/2 problem" arXiv 2026 density rectifiable [same set; 7/10 reported as best known]
+    - De Lellis Glaudo Massaccesi Vittone Besicovitch 1/2 problem cited by [talk pages, CV, cvgmt; nothing citing with a new bound]
+    - "Besicovitch" "one-half problem" OR "half problem" lower density 0.7 improvement rectifiable 2025 2026 [nothing below 0.7]
+    - "0.6934" Besicovitch [no document contains 0.6934 in this context]
+    - "0.6934" rectifiable OR rectifiability OR "lower density" [no document contains 0.6934]
+    - "6934/10000" [decimal-to-fraction calculators and real-estate listings only]
+    - "purely unrectifiable" "lower density" Besicovitch arXiv 2026 [Capdevila, Li-Taylor, Bate-Valentine, 2605.05098; no new bound]
+    - Besicovitch conjecture "7/10" rectifiable improved OR improvement OR "better bound" density [nothing beyond DLGMV and works restating 7/10]
+    - Schechter Besicovitch density rectifiability thesis "lower density" [Schechter surfaces only through DLGMV's acknowledgement]
+    - "Besicovitch" "1/2 problem" OR "1/2-problem" OR "half problem" formalization OR "Lean" OR "computer-assisted" 2025 2026 [no formalization or computer-assisted improvement]
+    - Westlake University February 2026 workshop De Pauw Besicovitch "1/2 problem" talk abstract [no new bound]
+    - Jaume Capdevila Besicovitch purely unrectifiable lower density "extended abstract" [Reports@SCM abstract and 2607.05206]
+    - "Besicovitch" rectifiable "lower density" "σ1" OR "sigma_1" OR "sigma one" upper bound 2026 new [only Capdevila and DLGMV]
+    - "Besicovitch" "1/2" conjecture "Vittone" OR "Massaccesi" OR "Glaudo" 2025 2026 talk OR seminar "lower density" new bound [no talk announcing a bound beyond 7/10]
+    - "Besicovitch" "one-half conjecture" OR "1/2-conjecture" OR "half conjecture" rectifiability 2025 OR 2026 arXiv new bound density [nothing new]
+    - "De Lellis" "Glaudo" "Massaccesi" "Vittone" Besicovitch cited [IAS bibliography, ETH talk page; nothing new]
+    - "Besicovitch" "1/2" problem rectifiable density "Trans. Amer. Math. Soc." 2026 "linear programming" cited OR citing OR "building on" [nothing new]
+    - Besicovitch lower density rectifiability threshold "0.69" OR "0.68" OR "0.67" OR "0.66" OR "2/3" improved 7/10 arXiv [nothing new]
+    - "Besicovitch" "1/2 problem" OR "1/2-problem" mathoverflow OR blog 7/10 "De Lellis" improved bound 2025 OR 2026 [Bocconi talk page, Princeton computer-assisted-proofs conference page; nothing below 0.7]
+    - "Besicovitch" "circle pair" OR "Besicovitch pair" rectifiability 2026 arXiv density threshold new [Bate-Valentine, Capdevila, Dabrowski 2408.03919; nothing new]
+    - research.unipd.it "Besicovitch's 1/2 problem and linear programming" Padua Research Archive [nothing beyond arXiv and EPFL pages]
+    - "Besicovitch 1/2 problem" arXiv 2025 [2404.17536, 2607.05206, unrelated Kakeya papers]
+    - "Besicovitch" "1/2 problem" OR "one-half problem" lower density rectifiable bound 7/10 improved [7/10 'currently the best known bound']
+    - site:arxiv.org Besicovitch "lower density" rectifiable "7/10" [nothing below 7/10]
+    - "0.6934" Besicovitch rectifiable density [no result contains 0.6934]
+    - "6934/10000" OR "0.6934" "lower density" OR "Besicovitch" [no result contains either string in connection with the problem]
+    - De Lellis Glaudo Massaccesi Vittone "Besicovitch" "1/2" problem citing new bound 2026 [journal version located; still 7/10]
+    - "Besicovitch" "one-half" OR "1/2" problem Preiss Tišer density rectifiability 2026 arXiv [2404.17536, 2503.15159, 2607.05206]
+    - site:arxiv.org "Besicovitch's 1/2 problem" OR "Besicovitch's one-half problem" OR "Besicovitch 1/2-problem" [only 2404.17536]
+    - arxiv math.CA 2025 Besicovitch lower density "countably rectifiable" threshold below "0.7" [nothing below 0.7]
+    - Besicovitch "1/2 problem" OR "one-half conjecture" new bound "0.69" OR "0.68" OR "0.67" OR "2/3" lower density rectifiable 2025 2026 [no sub-0.7 bound; only DLGMV's conjectural 0.64368]
+    - "Besicovitch" conjecture lower density rectifiable "improve" "7/10" 2026 preprint [no 2026 preprint improving 7/10]
+    - "linear programming" Besicovitch density rectifiability computer-assisted bound improvement 2025 arXiv "variational problem" [only 2404.17536]
+    - "Besicovitch" "sigma_1" OR "σ1" OR "sigma one" planar lower density threshold rectifiable "7/10" "improve" [only 2404.17536]
+    - arxiv.org 2026 "Besicovitch" "lower density" "purely unrectifiable" planar bound [2607.05206 only]
+    - "Besicovitch's 1/2 problem and linear programming" "Trans. Amer. Math. Soc." OR "Transactions of the American Mathematical Society" doi 10.1090/tran [no new bound]
+    - site:arxiv.org "Besicovitch" "7/10" "lower density" 2026 [only 2607.05206 and 2404.17536]
+    - "Besicovitch" "0.64368" OR "0.6436" OR "0.643" density rectifiable [0.64368 appears only inside DLGMV as a conjectural limit]
+    - Besicovitch 1/2 conjecture Wikipedia best known bound 7/10 De Lellis [no Wikipedia page; 7/10 best known]
+    - "Besicovitch" "one-half" conjecture "lower density" rectifiable formalization Lean OR "formal proof" OR "computer-assisted" 2026 [no formalization or new bound]
+    - ams.org tran 2026 379 "Besicovitch" "linear programming" De Lellis Glaudo Massaccesi Vittone 5051 [confirms Trans. AMS 379(7), p. 5051, bound 7/10]
+    - "Besicovitch" "0.693" OR "0.6931" OR "ln 2" OR "log 2" lower density rectifiable threshold [no occurrence in connection with the problem]
+    - "Besicovitch" "1/2" problem density rectifiable improvement "7/10" talk OR seminar OR conference 2025 2026 "new bound" [only DLGMV]
+    - "Besicovitch's 1/2 problem and linear programming" cited -site:arxiv.org 2025 OR 2026 rectifiable lower density [Bate-Valentine and a YouTube talk; no new bound]
+    - "Besicovitch" "1/2 problem" OR "1/2-problem" OR "one-half problem" arXiv 2026 rectifiab "we prove" density "0.6" [no 2026 paper with a bound near 0.6]
+    - "Besicovitch 1/2 problem" upper bound rectifiable lower density [bounds surfaced: 3/4, (2+sqrt46)/12, 7/10]
+    - "Besicovitch" "1/2 problem" 2025 OR 2026 new bound lower density rectifiability [2607.05206, Bate-Valentine, Trans. AMS version; nothing below 7/10]
+    - "6934/10000" Besicovitch [no hit contains the fraction]
+    - "0.69330" Besicovitch [no hit contains 0.69330]
+    - "theta_6" OR "θ_6" OR "theta 6" Besicovitch 1/2 problem density [no source uses this notation; only 0.7 mentioned]
+    - "Besicovitch's 1/2 problem and linear programming" Transactions of the American Mathematical Society 2026 [published electronically 18 Feb 2026; bound 7/10]
+    - Besicovitch "1/2" conjecture "lower density" rectifiable "0.69" [no source with 0.69]
+    - "Besicovitch" "7/10" rectifiable density improved 2025 arXiv purely unrectifiable [DLGMV and Capdevila only]
+    - Schechter Besicovitch 1/2 problem density bound [Schechter's 1998 Diplomarbeit known only through DLGMV; bound coincides with sigma_PT]
+    - "Besicovitch" "1/2-problem" OR "half problem" Farag OR "Preiss" OR "Tiser" 2024 2025 2026 improvement "sigma_1" [GSSI 2024 and EPFL 2024 talk pages; nothing newer]
+    - "6934" "Besicovitch" density rectifiable [no hit contains 6934]
+    - "0.64368" Besicovitch [matches only DLGMV; explicitly conditional]
+    - Besicovitch 1/2 conjecture Lean formalization OR "computer-assisted" bound 2026 [only DLGMV; no Lean formalization]
+    - "Besicovitch" "1/2" conjecture density rectifiable site:arxiv.org 2026 [2404.17536, 2607.05206, 2503.15159]
+    - Glaudo OR Massaccesi OR Vittone Besicovitch 1/2 problem 2025 OR 2026 talk OR preprint improved bound "7/10" [author pages and talk pages; no post-2024 preprint on the problem]
+    - "Extended Abstracts" Jov Colmenar García 2025 Besicovitch "lower density" IEC [located the Reports@SCM PDF]
+    - "Besicovitch" "0.7" OR "7/10" "lower density" rectifiable "we improve" OR "we show" 2026 -"linear programming" [nothing new]
+    - Besicovitch half conjecture "0.69" OR "0.68" OR "0.67" OR "0.66" OR "0.65" lower density rectifiable new upper bound [no source with any of these values as a bound]
+    - "Densities for Hausdorff measure and rectifiability" Besicovitch Capdevila Jové diposit.ub.edu [confirms the UB thesis; no new upper bound]
+    - "0.6934" "Hausdorff" OR "geometric measure theory" OR "rectifiability" [no hit contains 0.6934]
+    - "Besicovitch" "1/2" problem "best known" bound "7/10" 2026 [nothing lower than 7/10]
+    - "0.6934" Lean OR mathlib OR formalization Besicovitch rectifiable [no hit contains 0.6934; only Mathlib covering-theorem documentation]
+    - Jaroslav Tišer publications 2024 OR 2025 OR 2026 Besicovitch density rectifiable [nothing new by Tiser]
+    - Preiss Tišer Besicovitch 1/2 problem 2024 OR 2025 OR 2026 new paper lower density [no new Preiss or Tiser bound]
+    - Besicovitch 1/2 problem lower density rectifiable (restricted to arxiv.org) [2404.17536, 2503.15159, 2607.05206, 2112.00540, 2005.02030, 2311.00589, 2509.07212, 1602.03823; no bound below 7/10]
+    - "Besicovitch" "1/2" density rectifiable "0.6934" OR "6934/10000" [no page contains either string]
+    - Besicovitch "1/2" problem Lean OR mathlib OR formalization "0.6934" OR "6934" OR "0.7" rectifiable lower density github [no formalization or repository with 0.6934]
+    - "2404.17536" [only irrelevant numeric matches]
+    - "Besicovitch's 1/2 problem and linear programming" cited OR citing OR "follow-up" OR "building on" 2025 2026 [citers Capdevila and Bate-Valentine; no follow-up bound]
+    - "Trans. Amer. Math. Soc." 379 2026 "Besicovitch's 1/2 problem and linear programming" 5051 [confirms the journal listing]
+    - "Besicovitch's 1/2 problem and linear programming" journal published Annals OR Inventiones OR "Duke" OR "Acta" 2025 OR 2026 [no such journal]
+    - memento.epfl.ch Besicovitch 1/2 conjecture linear programming [located the EPFL talk page]
+    - "Besicovitch 1/2 conjecture" linear programming talk abstract [ETH, arXiv, IAS, YouTube; nothing below 0.7]
+    - Bocconi Mathub seminar April 2026 Besicovitch 1/2 problem speaker abstract [paraphrase of the De Lellis abstract; no new bound]
+    - De Lellis Caltech calendar Besicovitch 1/2 problem talk 2025 OR 2026 [Caltech talk 15 Jan 2025; same abstract]
+    - "Linde Hall" De Lellis "Besicovitch" 2025 Caltech analysis seminar [same]
+    - Besicovitch De Lellis linear programming (restricted to caltech.edu) [same]
+    - Glaudo Besicovitch 1/2 talk seminar 2025 OR 2026 density rectifiability [only the 15 Mar 2024 EPFL talk]
+    - "Federico Glaudo" Besicovitch "1/2" OR "one-half" seminar OR colloquium OR workshop 2025 OR 2026 [no 2025-2026 talk announcing an improvement]
+    - Massaccesi OR Vittone talk "Besicovitch" "1/2" OR "one-half" 2025 OR 2026 seminar abstract [none found]
+    - Vittone "Besicovitch" seminario OR seminar OR talk "1/2" 2025 Padova OR Trento OR Pisa [none found]
+    - Massaccesi "Besicovitch" seminario OR seminar OR talk "1/2" 2025 OR 2026 Padova [none found]
+    - "Besicovitch" "1/2" OR "one half" workshop 2026 "geometric measure theory" talk abstract density rectifiable Glaudo OR Vittone OR Massaccesi OR "De Lellis" [nothing beyond DLGMV, Bate-Valentine, Reports@SCM]
+    - Oberwolfach report "Besicovitch" "1/2" OR "one-half" lower density rectifiability 2025 OR 2026 extended abstract [no report on the problem]
+    - video.ias.edu OR youtube "Besicovitch" "1/2" De Lellis OR Glaudo talk 2025 OR 2026 linear programming [only the 2024 GSSI recording and the 2025 ETH talk]
+    - "OneMinM" OR "one-min-max" Besicovitch density rectifiable [term occurs only in DLGMV]
+    - "Besicovitch" "1/2" "k-point" OR "six-point" OR "six points" min-max density rectifiability optimization [only DLGMV]
+    - Glaudo OR "De Lellis" Besicovitch "1/2" github code "linear programming" certificate k-point OR "OneMinM" repository [no public repository beyond the DLGMV companion code]
+    - "quantitative Besicovitch" lower density rectifiable 2025 [projection-theorem literature only]
+    - De Lellis Glaudo Massaccesi Vittone Besicovitch 1/2 problem improvement 7/10 new bound [only DLGMV and its talks]
+    - Besicovitch one-half problem lower density rectifiability survey 2025 OR 2026 [Reports@SCM 2025 and Bate-Valentine 2026; both state 7/10 as best known]
+    - arxiv Besicovitch "1/2 problem" OR "one-half problem" lower density bound below 0.7 OR "better than 7/10" [nothing below 7/10]
+    - "Besicovitch" conjecture rectifiable lower density "improve" "7/10" 2026 arxiv new bound "0.69" OR "0.68" OR "0.67" OR "2/3" [only DLGMV]
+    - "Besicovitch" "lower density" rectifiable "improves" OR "improving" "7/10" OR "0.7" 2026 preprint new threshold [only DLGMV]
+    - Besicovitch conjecture rectifiable "lower density" 2026 arXiv "we improve" OR "improving the bound" OR "best known bound" 7/10 [only DLGMV]
+    - "Besicovitch" "1/2" OR "one-half" rectifiable lower density "computer-assisted" OR "computer assisted" 2025 OR 2026 improvement [only DLGMV]
+    - thesis OR dissertation "Besicovitch's 1/2 problem" OR "Besicovitch 1/2 conjecture" 2025 OR 2026 lower density rectifiable [UCL thesis record 10102053, a Chicago projections thesis, the UB thesis]
+    - mathoverflow Besicovitch 1/2 problem best known bound 7/10 2025 OR 2026 [no MathOverflow thread with a newer bound]
+    - "De Lellis" "Glaudo" "Massaccesi" "Vittone" Besicovitch 2026 -site:arxiv.org [Trans. AMS listing, IMRN 2026, author pages; no follow-up]
+    - Capdevila "Besicovitch's example in higher dimensions" purely unrectifiable lower density 2026 [confirms 2607.05206; no upper bound]
+    - "Densities for Hausdorff measure and rectifiability" Reports SCM Besicovitch 1/2 conjecture author 2025 [Reports@SCM 10 (2025) 77-78]
+    - "Regularity and other properties of Hausdorff measures" thesis UCL Besicovitch 1/2-problem author [Schechter, UCL PhD 2002] (verification)
+    - Schechter "Diplomarbeit" Besicovitch "oberen Schranke" 1998 pdf [the 1998 Diplomarbeit is not online; the UCL thesis restates its bound] (verification)
+    - Azzam Hyde "weak lower density condition and uniform rectifiability" arXiv abstract [confirms 2005.02030] (verification)
+    - google-deepmind formal-conjectures Besicovitch "1/2" OR "one-half" lower density rectifiable Lean [no formal-conjectures file for the problem] (verification)
+    - mathoverflow Besicovitch "1/2" problem "lower density" rectifiable best known bound [no thread; 7/10 best known] (verification)
+    - "Besicovitch" "lower density" purely unrectifiable metric space counterexample "greater than 1/2" OR "larger than 1/2" OR "exceeds 1/2" [nothing new below 0.7] (verification)
+    - cvgmt.sns.it "Besicovitch's 1/2 problem and linear programming" paper [cvgmt pages; 7/10 only] (verification)
+    - "Besicovitch" "1/2" OR "one-half" conjecture "lower density" rectifiable 2026 "we prove" OR "we show" σ OR sigma "≤" new upper bound -"7/10" [no new upper bound] (verification)
+    - Besicovitch problema 1/2 densità inferiore rettificabile OR "problème 1/2 de Besicovitch" densité inférieure rectifiable 2025 OR 2026 [Pisa course registers, DLGMV, Capdevila; nothing new] (verification)
+    - Besicovitch 1/2 猜想 下密度 可求长 OR гипотеза Безиковича 1/2 нижняя плотность спрямляемость 2025 2026 [nothing on the threshold] (verification)
+    - discovery.ucl.ac.uk 10102053 thesis Besicovitch density metric space [identified the UCL record and PDF link] (verification)
+
+    Sources examined and what each claims.
+    - De Lellis, Glaudo, Massaccesi, Vittone, Besicovitch's 1/2 problem and linear programming. arXiv:2404.17536 (v1 26 Apr 2024, v2 23 May 2024); Trans. Amer. Math. Soc. 379 (2026), no. 7, 5051-5098, DOI 10.1090/tran/9609, published electronically 18 Feb 2026; zbMATH 8209863; MR5079942; OpenAlex W4396244041 (arXiv) and W7130464003 (journal). Four copies were read in full text: arXiv v2, the IAS copy, the cvgmt copy (page updated 12 Apr 2026) and the published journal PDF. Proves sigma-bar <= 0.7 (Theorem 1.3; Definition 1.2 is the same normalisation as this project's sigma_1(R^2)), and sigma-bar(X,d) <= sigma_PT = 0.72655... for general metric spaces (Theorem 3.3, retitled 'Schechter (Preiss-Tiser on steroids)' in the journal version). Also contains, and explicitly does not claim as bounds, 2-OneMinM_0.683 = 0 (a limit of the second-generation method, Theorem 3.4) and OneMinM_0.64368... = 0 with 'If this conjecture were true, it would imply sigma-bar <= 0.64368...' and 'some weak experimental evidence that this may be the sharp bound' (Theorem 3.5 and discussion). No k >= 3 constant is computed. The published abstract credits the previous best bound to Schechter rather than to Preiss-Tiser. The strings 0.6934, 6934 and 0.69 do not occur in any copy; Appendix A and the companion code proof_07.cpp fix 'const double sigma = 0.7;'.
+    - Companion software of DLGMV: github.com/dario2994/besicovitch-half-conjecture (single commit 24 Jul 2025; LICENSE and proof_07.cpp; OR-Tools LP solver; sigma = 0.7 only); Padua Research Archive records 11577/3604214 (published version, WOS:001694935500001) and 11577/3578478 (software, 2025). No other value of sigma.
+    - Preiss and Tiser, On Besicovitch's 1/2-problem, J. London Math. Soc. (2) 45 (1992) 279-287; zbMATH 120128; OpenAlex W2080237992. Proves sigma_1(M) <= (2+sqrt46)/12 = 0.73186... for every metric space M. Google Scholar 'Cited by 61' (6 since 2024, none with a bound below 0.7); OpenAlex cited_by_count 6 (0 since 2024).
+    - Schechter, Eine Verbesserung der oberen Schranke im Besicovitch 1/2-Problem, Diplomarbeit, Universitaet Kaiserslautern, 1998 (unpublished; not online; cited as [Sch98] by DLGMV), and Regularity and Other Properties of Hausdorff Measures, PhD thesis, University College London, January 2002, supervisor David Preiss (UCL Discovery 10102053; ProQuest U643853; PDF read in full). The thesis restates the Diplomarbeit bound sigma_1(M) < .7266 for every metric space M (its progress table ends '1998 A. Schechter in [35] sigma_1(M) < .7266'; DLGMV identify this number with sigma_PT) and constructs a purely 2-unrectifiable translation-invariant metric on the real line with lower 2-density strictly greater than 1/2, showing the generalised metric-space conjecture is false. Neither is an upper bound below 0.7 on the planar threshold.
+    - Farag, Some affirmative results towards the Besicovitch 1/2-conjecture, PhD thesis, Yale, 1997 (MR2695866); Unrectifiable 1-sets with moderate essential flatness satisfy Besicovitch's 1/2-conjecture, Adv. Math. 149 (2000) 89-129, DOI 10.1006/aima.1999.1859 (MR1742355; zbMATH 1422991); On the 1/2-problem of Besicovitch: quasi-arcs do not contain sharp saw-teeth, Rev. Mat. Iberoam. 18 (2002) 17-40, DOI 10.4171/rmi/310 (zbMATH 1803982). Proves the value 1/2 only for totally unrectifiable 1-sets satisfying a measure-theoretic flatness condition at almost every point and small scales; conditional, and classified as such by DLGMV ('provided that the set E satisfies some additional condition'). OpenAlex lists one citing work since 2024: DLGMV.
+    - Bate, Purely unrectifiable metric spaces and perturbations of Lipschitz functions, Acta Math. 224 (2020) 1-65, arXiv:1712.07139 (zbMATH 7194389; OpenAlex W2777147084). Hypothesis 'positive lower density' only; a residuality statement replacing the Besicovitch-Federer projection theorem in metric spaces; no numerical threshold. Its 8 citing works since 2024 in OpenAlex are unrelated to the threshold.
+    - Azzam and Hyde, The weak lower density condition and uniform rectifiability, Ann. Fenn. Math. 47 (2022) 791-819, arXiv:2005.02030. A uniform-rectifiability criterion for Ahlfors regular sets under a Carleson condition, with Hausdorff-content normalisation; no bound on sigma-bar.
+    - Capdevila, Besicovitch's example in higher dimensions: a purely unrectifiable set with large lower density, arXiv:2607.05206, submitted 6 Jul 2026, math.CA (zbMATH 903096499; OpenAlex W7167747825). Proves the lower bound sigma_{d,n} >= 1/2 for all 0 < d < n; states 'Recently, in 2024, Camillo De Lellis et al. [dLGMV24] established that sigma_{1,n} <= 7/10, which is currently the best known upper bound.' Its only post-2024 reference is DLGMV.
+    - Capdevila Jove (supervisor Tolsa), Densities for Hausdorff measure and rectifiability. Besicovitch's 1/2-conjecture: UB Advanced Mathematics master's thesis, 13 Jun 2025 (diposit.ub.edu), and extended abstract in Reports@SCM 10 (2025) 75-92 (IEC repository PDF; the raco.cat copy returned 403). Both state that 7/10 is 'currently the best known upper bound' and extend Besicovitch's example to sigma_m(R^n) >= 1/2. No new upper bound.
+    - Bate and Valentine, Characterising 1-rectifiable metric spaces via connected tangent spaces, arXiv:2503.15159 (v1 19 Mar 2025, v2 19 Jan 2026); Int. Math. Res. Not. IMRN 2026, no. 4, rnag014, DOI 10.1093/imrn/rnag014, published 10 Feb 2026 (zbMATH 8159682). Qualitative rectifiability criterion; cites DLGMV once ('These results, and the progress towards the conjecture, were recently extended further by De Lellis, Glaudo, Massaccesi and Vittone') without any number.
+    - Bate, On 1-regular and 1-uniform metric measure spaces, arXiv:2501.05920 (10 Jan 2025). Cites DLGMV as background ('A related question is the Besicovitch 1/2 conjecture'); no bound. Found by full-text check; not in Google Scholar's cited-by list for DLGMV.
+    - Other 2024-2026 papers surfaced by the sweeps and checked as making no claim about the threshold: Del Nin-Merlo arXiv:2508.15400; Krandel arXiv:2403.14479 (IMRN 2025); Jaye-Wang arXiv:2606.24461; Li-Taylor arXiv:2606.00381; Idu arXiv:2509.07212; Tasso arXiv:2511.12636; Altaf arXiv:2412.11190; Dabrowski arXiv:2408.03919; Litvinov arXiv:2501.02606; Gruner-Reimann arXiv:2602.00940; Bate-Weigt arXiv:2501.02948; Bongers-Bright-Marshall-Taylor arXiv:2608.10253; Le arXiv:2608.30166; Tolsa arXiv:2607.16457; arXiv:2510.13525; Mattila's survey arXiv:2112.00540 (last revised 2022, before DLGMV); Rigot arXiv:1004.1369 (2010, Carnot groups). Balogh-Rickly-Serra Cassano, Publ. Mat. 47 (2003) 237-259, and Keith (2003) were not read in full; both predate DLGMV by two decades and are not cited for any planar bound by Preiss-Tiser's successors, Schechter's 2002 progress table, or DLGMV, and were classified as irrelevant on that basis.
+    - Talk abstracts: Glaudo, EPFL, 15 Mar 2024 (1/2, 3/4, about 0.732; 'further improvements'); De Lellis, GSSI colloquium, 29 Jul 2024 ('Our sharpest result is that Besicovitch's conjecture is correct if we replace 1/2 with 7/10'; recording on YouTube); De Lellis, Caltech, 15 Jan 2025; De Lellis, Bocconi, 26 Feb 2025 (the 22 Apr 2024 date was cancelled; 3/4, about 0.735, 'a substantially lower number'); De Lellis, ETH FIM 60 years, 11-13 Jun 2025 (3/4, about 0.735, 0.7). GMT Trento 2026 (23 talks) and the Westlake winter school of 1-6 Feb 2026 (projection theorems) announce nothing on the problem. None gives a number below 0.7.
+    - Pansu, On Besicovitch's 1/2-problem [after Preiss and Tiser], seminar slides, 5 Nov 2020: 3/4 and (2+sqrt46)/12 only; predates DLGMV.
+    - Encyclopedias: Wikipedia (Rectifiable set; Abram Samoilovitch Besicovitch; Geometric measure theory; List of unsolved problems in mathematics; David Preiss) and Encyclopedia of Mathematics (Rectifiable set; Density of a set; Hausdorff measure; Geometric measure theory). Either omit the problem or stop at Besicovitch's 3/4 and the Preiss-Tiser improvement; none mentions 7/10 or anything lower.
+    - Code and formalisation corpora: public GitHub code (gh search code), the GitHub repository search API, google-deepmind/formal-conjectures (no Besicovitch entry; calibrated), openai/ten-proofs (no Besicovitch entry), Zenodo. No Lean formalisation of the problem and no code stating a bound other than 0.7.
+
+    Citation counts for DLGMV on 2026-09-02: Google Scholar 3 (Bate-Valentine; Capdevila; Capdevila Jove-Tolsa); Semantic Scholar 0 (arXiv-id citations endpoint, and the journal-DOI record); OpenAlex 0 for both W4396244041 and W7130464003; Crossref is-referenced-by-count 0 for 10.1090/tran/9609; zbMATH no citing document indexed (rf: and ci: queries return the empty-set 404; the reference index also omits DLGMV among the citers of Preiss-Tiser, so it is incomplete); INSPIRE no record. Full-text checks added one citer missed by Google Scholar (Bate arXiv:2501.05920).
+
+    Sources not reached, stated plainly: MathSciNet full search and Web of Science (subscription; the free MR Lookup was used, which returns only the three most recent matches per query); NASA ADS (TLS error); zbMATH web interface (HTTP 403 or Cloudflare; the REST API was used); Semantic Scholar paper search endpoint (HTTP 429 on every attempt); BASE (JavaScript-only); the AMS article landing pages (HTTP 403; the journal PDF and print-matter PDF were reached by curl); Reports@SCM on raco.cat (403; the IEC copy was read); the UCL and CORE record pages (403; the thesis PDF was reached); ScienceDirect (403; Farag 2000's abstract not retrieved, its title and DLGMV's characterisation establish it is conditional); the Cantor's Paradise blog post (domain redirected or 403); MathOverflow (blocked for direct fetch; web search found no thread); the Caltech calendar and, via WebFetch, the GSSI and Westlake pages (certificate errors; the latter two were reached by curl); the YouTube page (footer only); Schechter's 1998 Diplomarbeit itself (not online; its bound is known from the 2002 thesis and from DLGMV).
+
+    Conclusion.
+    (a) 7/10 is the published record. As of 2026-09-02 no published paper, preprint, thesis, talk abstract, encyclopedia entry or public code repository found by any of the five passes states an upper bound below 7/10 for sigma_1(R^2). Every work that cites DLGMV either restates 7/10 as 'currently the best known upper bound' or cites it without a number; the most recent independent statement in the literature (Capdevila, 6 Jul 2026) says exactly that. The only numbers below 0.7 that occur anywhere are DLGMV's own 0.683 and 0.64368... (a method limit and an explicitly conditional remark, neither claimed as a theorem), Farag's 1/2 under a flatness hypothesis, and Schechter's metric-space lower bound; none is an unconditional upper bound on the planar threshold. The verification pass assigned this conclusion a confidence of about 95 percent. The residual risk is a preprint of the last few weeks not yet indexed, a thesis outside the indexed repositories, or material behind the MathSciNet and Web of Science subscription walls.
+    One correction to the historical record that the search produced: the published version of DLGMV credits the previous best bound to Schechter, not to Preiss-Tiser. The chronology of unconditional upper bounds is therefore 3/4 (Besicovitch), (2+sqrt46)/12 = 0.73186... (Preiss-Tiser, 1992), 0.72655... (Schechter, 1998, unpublished Diplomarbeit; restated in his 2002 UCL thesis; reproved as DLGMV Theorem 3.3, valid in any metric space), 7/10 (DLGMV, arXiv 2024, Trans. AMS 2026), and the 0.6934 of this project. The README table should carry the Schechter line.
+    (b) 0.6934 is unpublished. The strings 0.6934, 6934/10000, 0.69330, 0.693 and 6934 do not occur in any source examined: not in the four full texts of DLGMV, the companion code, Schechter's thesis, Capdevila's paper, the UB thesis, the Reports@SCM abstract or the Pansu slides; Google Scholar, arXiv abstract search, general web search in several languages and public GitHub code return no mathematical hit. The verification pass assigned this conclusion a confidence of about 97 percent; the residual risk is confined to sources that cannot be full-text searched (MathSciNet reviews, the 1998 Diplomarbeit).
+    Both conclusions are negative findings from the sources reachable on one day. They could be overturned by work that is unindexed, forthcoming, or paywalled, and the project asserts novelty and priority only on that basis.
+
+    The Comparator's first automated review, 2026-09-02, reported mechanical verification succeeded and asked for the admissible set to be shown nonempty and for the novelty claim to be supported. Both are addressed: genuine admissible thresholds are compared (every threshold strictly above the constant), the lower bound 1/2 is compared as well so the value is pinned to [1/2, 6934/10000], sigmaOne is described as an infimum whose attainment is not claimed, and the literature search above supports the record claim with the novelty claim qualified accordingly.
 alignment:
-  namespace: "Besicovitch"
+  namespace: Besicovitch
   statements:
-    - source: >-
-        Original result: the planar one-dimensional rectifiability threshold
-        satisfies sigma_1(R^2) <= 6934/10000
-      lean: "Besicovitch.sigma_one_plane_le_6934_div_10000"
-      module: "Solution"
-      status: "proved"
-      note: >-
-        The submitted Comparator declaration, matching the hole in
-        Challenge.lean. Complete proof term, no sorry, axioms limited to
-        propext, Classical.choice and Quot.sound.
-    - source: >-
-        Every threshold strictly above 6934/10000 forces one-rectifiability in
-        the plane
-      lean: "Besicovitch.forcesOneRectifiability_plane_of_gt"
-      module: "Solution"
-      status: "proved"
-      note: >-
-        Compared declaration. The genuine admissible thresholds behind the
-        infimum bound; stated with strict inequality because the argument
-        yields a margin and nothing is claimed at the constant itself.
-    - source: >-
-        Classical lower bound (Besicovitch 1938, Dickinson 1939): the planar
-        threshold is at least 1/2
-      lean: "Besicovitch.one_half_le_sigma_one_plane"
-      module: "Solution"
-      status: "proved"
-      note: >-
-        Compared declaration. Proved from Besicovitch's example following
-        Capdevila's account; the example is built from scratch in
-        Besicovitch/Example/ since Mathlib has no rectifiability theory.
-    - source: "Besicovitch's graph is not countably one-rectifiable"
-      lean: "Besicovitch.Example.not_isCountablyOneRectifiable_besicovitchSet"
-      module: "Besicovitch.Example.LowerBound"
-      status: "proved"
-      note: >-
-        The purely unrectifiable ingredient, proved by the elementary jump
-        argument rather than the projection theorem.
-    - source: "Besicovitch's graph has lower density at least 1/2 at every interior point"
-      lean: "Besicovitch.Example.one_half_le_lowerOneDensity_graphMap"
-      module: "Besicovitch.Example.LowerDensity"
-      status: "proved"
-      note: "Pointwise on the open base interval; the two endpoints are a null set."
-    - source: >-
-        Supporting bound: the exact six-point endpoint lies below the rational
-        target
-      lean: "Besicovitch.sStar_le_6934_div_10000"
-      module: "Solution"
-      status: "proved"
-      note: >-
-        Not part of the Comparator submission. Recorded because it shows the
-        formalized rational constant is consistent with, and close to, the sharp
-        constant of the finite problem.
-    - source: >-
-        Analytic endpoint: the weighted score is at most -1/2000 for every
-        separated pair of sibling pairs in the unit ball
-      lean: "Besicovitch.weightedGeometricBound_gram"
-      module: "Besicovitch.SixPoint.GramWeightedBound"
-      status: "proved"
-      note: >-
-        The mathematical content that the thirty Gram certificates supply, and
-        the only new analytic input to the six-point argument.
-
-acknowledgements: >-
-  Built on Lean 4 and Mathlib. The structural approach, reducing the density
-  hypothesis to a finite family of optimization problems, is due to De Lellis,
-  Glaudo, Massaccesi and Vittone. The Lean formalization was carried out with
-  Claude Code; the underlying mathematics was developed with ChatGPT. Neither
-  system is listed as an author, in line with Palomar's human-authorship
-  requirement; their roles are recorded in the automation section above.
+  - source: |-
+      Original result: the planar one-dimensional rectifiability threshold satisfies sigma_1(R^2) <= 6934/10000
+    lean: Besicovitch.sigma_one_plane_le_6934_div_10000
+    module: Solution
+    status: proved
+    note: |-
+      The submitted Comparator declaration, matching the hole in Challenge.lean. Complete proof term, no sorry, axioms limited to propext, Classical.choice and Quot.sound.
+  - source: Every threshold strictly above 6934/10000 forces one-rectifiability in the plane
+    lean: Besicovitch.forcesOneRectifiability_plane_of_gt
+    module: Solution
+    status: proved
+    note: |-
+      Compared declaration. The genuine admissible thresholds behind the infimum bound; stated with strict inequality because the argument yields a margin and nothing is claimed at the constant itself.
+  - source: |-
+      Classical lower bound (Besicovitch 1938, Dickinson 1939): the planar threshold is at least 1/2
+    lean: Besicovitch.one_half_le_sigma_one_plane
+    module: Solution
+    status: proved
+    note: |-
+      Compared declaration. Proved from Besicovitch's example following Capdevila's account; the example is built from scratch in Besicovitch/Example/ since Mathlib has no rectifiability theory.
+  - source: Besicovitch's graph is not countably one-rectifiable
+    lean: Besicovitch.Example.not_isCountablyOneRectifiable_besicovitchSet
+    module: Besicovitch.Example.LowerBound
+    status: proved
+    note: |-
+      The purely unrectifiable ingredient, proved by the elementary jump argument rather than the projection theorem.
+  - source: Besicovitch's graph has lower density at least 1/2 at every interior point
+    lean: Besicovitch.Example.one_half_le_lowerOneDensity_graphMap
+    module: Besicovitch.Example.LowerDensity
+    status: proved
+    note: Pointwise on the open base interval; the two endpoints are a null set.
+  - source: 'Supporting bound: the exact six-point endpoint lies below the rational target'
+    lean: Besicovitch.sStar_le_6934_div_10000
+    module: Solution
+    status: proved
+    note: |-
+      Not part of the Comparator submission. Recorded because it shows the formalized rational constant is consistent with, and close to, the sharp constant of the finite problem.
+  - source: |-
+      Analytic endpoint: the weighted score is at most -1/2000 for every separated pair of sibling pairs in the unit ball
+    lean: Besicovitch.weightedGeometricBound_gram
+    module: Besicovitch.SixPoint.GramWeightedBound
+    status: proved
+    note: |-
+      The mathematical content that the thirty Gram certificates supply, and the only new analytic input to the six-point argument.
+acknowledgements: |-
+  Built on Lean 4 and Mathlib. The structural approach, reducing the density hypothesis to a finite family of optimization problems, is due to De Lellis, Glaudo, Massaccesi and Vittone. The Lean formalization was carried out with Claude Code; the underlying mathematics was developed with ChatGPT. Neither system is listed as an author, in line with Palomar's human-authorship requirement; their roles are recorded in the automation section above.

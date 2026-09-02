@@ -47,6 +47,7 @@ $\sigma_1(\mathbb{R}^2) = 1/2$. It is an infimum, not a minimum: nothing here cl
 | 1928 | $1 - 10^{-2576}$ | Besicovitch |
 | 1938 | $3/4$ | Besicovitch |
 | 1992 | $(2+\sqrt{46})/12 = 0.73186\ldots$ | Preiss and Tišer |
+| 1998 | $0.72655\ldots$ | Schechter (Diplomarbeit; reproved as Theorem 3.3 of the 2024 paper) |
 | 2024 | $0.7$ | De Lellis, Glaudo, Massaccesi and Vittone |
 | **here** | $\mathbf{0.6934}$ | **this repository, machine-checked** |
 
@@ -93,6 +94,38 @@ driven by $\sum 1/n = \infty$, makes that set null.
 The proof uses no projection theorem, no tangent theory and no area formula: it is elementary
 throughout, which is what made it feasible to formalize. The modules live in
 [`Besicovitch/Example/`](Besicovitch/Example/).
+
+## Is it new? The literature search
+
+Before describing $0.6934$ as new, we searched (on 2026-09-02) for any upper bound below $7/10$ on
+$\sigma_1(\mathbb R^2)$ and for the value itself. Five passes were run: forward citations of De
+Lellis–Glaudo–Massaccesi–Vittone (arXiv:2404.17536; Trans. Amer. Math. Soc. 379 (2026) 5051-5098) in
+Google Scholar, Semantic Scholar, OpenAlex, Crossref and zbMATH; arXiv listings and API sweeps of
+math.CA, math.MG, math.AP, math.OC, math.FA, math.DG and math.PR through the September 2026
+listings; MR Lookup, zbMATH Open, HAL, INSPIRE, Wikipedia, the Encyclopedia of Mathematics, GitHub
+code search and the formal-conjectures corpus; the authors' arXiv, cvgmt, IAS and personal pages and
+every located talk abstract from March 2024 to June 2025 plus the 2026 GMT Trento and Westlake
+programmes; and an adversarial pass that read the published journal text of the paper, Schechter's
+2002 UCL thesis, Farag's 2000 and 2002 papers, Bate's Acta paper, Azzam–Hyde and Capdevila's July
+2026 preprint in full and re-ran the searches the first four passes had skipped. The paper has three
+citing works in Google Scholar (Bate–Valentine, IMRN 2026; Capdevila, arXiv:2607.05206; Capdevila
+Jove–Tolsa, Reports@SCM 2025), zero in Semantic Scholar, OpenAlex and Crossref, plus Bate
+arXiv:2501.05920 found by full text; each restates $7/10$ as the best known upper bound or cites
+without a number, and Capdevila (6 July 2026) is the latest to say so. The only numbers below 0.7
+anywhere in the literature are the paper's own $0.683$ and $0.64368\ldots$, which its authors
+present as a method limit and a conditional remark rather than as bounds; Farag's $1/2$ holds only
+under a flatness hypothesis; Schechter's metric-space result is a lower bound. The value 0.6934
+(also as 6934/10000, 0.69330, 0.693) occurs in none of the texts read, in the authors' companion
+code (which fixes sigma = 0.7), in Google Scholar, in arXiv abstracts, in web search in English,
+Italian, French, Chinese and Russian, or in public GitHub code. The verifier assigned about 95
+percent confidence to $7/10$ being the published record and about 97 percent to 0.6934 being
+unpublished. One correction: the published version credits the previous record to Schechter's 1998
+Diplomarbeit ($0.72655\ldots$, reproved as its Theorem 3.3), between Preiss–Tišer's $0.73186\ldots$
+and $7/10$; the table above now records it. Not reached: MathSciNet full search and Web of Science
+(subscription), NASA ADS, the Semantic Scholar search endpoint, and the 1998 Diplomarbeit itself.
+These are negative findings from indexed sources on one day; they could still be overturned by
+unindexed, forthcoming or paywalled work, and novelty is asserted only on that basis. The full query
+log is in formalization.yaml under review.notes.
 
 ## Why 0.6934 and not the sharp constant
 
