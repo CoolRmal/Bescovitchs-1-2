@@ -9,45 +9,10 @@ project:
     almost everywhere is countably 1-rectifiable. Writing sigma_1(R^2) for the
     least threshold that forces countable 1-rectifiability, the conjecture is
     sigma_1(R^2) = 1/2. The previously published record is sigma_1(R^2) <= 7/10,
-    obtained by De Lellis, Glaudo, Massaccesi and Vittone by recasting the
-    problem as a family of finite-dimensional optimization problems.
+    obtained by De Lellis, Glaudo, Massaccesi and Vittone.
 
     This development proves, with a complete Lean 4 proof term,
     sigma_1(R^2) <= 6934/10000 = 0.6934.
-
-    The proof solves the two-colour, six-centre instance of that finite family.
-    A packing failure tree reduces the failure of all nine packings at a matched
-    sibling endpoint to three scalar slacks q1 >= 0, q2 > 0, q3 > 0, and an
-    algebraic identity shows that for every pair of positive weights lambda, mu
-    the combination q1 + lambda q2 + mu q3 equals a coordinate-free weighted
-    score of the five configuration vectors. Choosing the small rational weights
-    lambda = 1/12 and mu = 13/14 makes every downstream coefficient rational.
-    On a rectangle of second-child radii, six quadratic norm tangents, four
-    radial secants and two separation multipliers turn the score into a
-    quadratic form in the five vectors; a rational 3-by-5 factor F, completed by
-    elementary two-vector squares, dominates that form, so the Schur product
-    theorem against the Gram matrix of the five vectors cancels every inner
-    product and leaves one exact rational number per rectangle. Thirty
-    rectangles cover every feasible pair of radii, and the worst of the thirty
-    upper bounds is -141718938311359411043/245112420775950000000000, which is
-    below -1/2000. Combined with the already formalized six-point transfer to
-    the Besicovitch pair condition and the standard rectifiability machinery,
-    this gives the stated bound.
-
-    The certificate parameters were found by an unverified numerical search and
-    are stored as exact rationals with denominator 10^4. Nothing about how they
-    were found enters the proof: Lean recomputes every coefficient from the
-    stored data in exact rational arithmetic and rechecks the sign conditions,
-    and positive semidefiniteness is a theorem proved from the rank-one
-    decomposition rather than a numerical test. The development uses no
-    native_decide, no Lean.ofReduceBool, no floating-point value and no custom
-    axiom; the target theorem depends only on propext, Classical.choice and
-    Quot.sound.
-
-    The bound proved here is not the sharp constant of the six-point problem.
-    That constant is an algebraic number theta_6 = 0.693306421825904872...,
-    and the formalized rational bound exceeds it by about 9.36e-5. Section
-    "scope" below records why.
   authors:
     - "Yongxi Lin"
   license: "Apache-2.0"
