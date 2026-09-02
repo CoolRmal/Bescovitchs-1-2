@@ -460,12 +460,14 @@ private theorem balance_mul_sq_le {a r l u : ℝ} (hl : 0 ≤ l) (hlr : l ≤ r)
 
 private theorem certificate_dual_bound {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (certificate : GramCertificate) (hvalid : certificate.Valid)
-    (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1) (hp₁ : ‖p₁‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
-    (hp₁Lower : redFirstLower certificate ≤ ‖p₁‖)
+    (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1) (hp₁ : ‖p₁‖ ≤ 1)
+    (hw₁ : ‖w₁‖ ≤ 1) (hp₁Lower : redFirstLower certificate ≤ ‖p₁‖)
     (hw₁Lower : blueFirstLower certificate ≤ ‖w₁‖)
     (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖)
-    (hpLower : (certificate.pLower : ℝ) ≤ ‖p₂‖) (hpUpper : ‖p₂‖ ≤ certificate.pUpper)
-    (hwLower : (certificate.wLower : ℝ) ≤ ‖w₂‖) (hwUpper : ‖w₂‖ ≤ certificate.wUpper) :
+    (hpLower : (certificate.pLower : ℝ) ≤ ‖p₂‖)
+    (hpUpper : ‖p₂‖ ≤ certificate.pUpper)
+    (hwLower : (certificate.wLower : ℝ) ≤ ‖w₂‖)
+    (hwUpper : ‖w₂‖ ≤ certificate.wUpper) :
     (certificate.alpha₀ + certificate.alpha₁ + certificate.alpha₂ + certificate.alpha₃ +
         certificate.alpha₄ + certificate.alpha₅) * ‖e‖ ^ 2 +
       (certificate.alpha₀ + certificate.alpha₂ + certificate.alpha₄ -
@@ -509,10 +511,13 @@ private theorem certificate_dual_bound {E : Type*} [NormedAddCommGroup E]
 /-- A valid certificate bounds the weighted pair score on its radius rectangle. -/
 theorem weightedPairScore_le_of_gramCertificate {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (certificate : GramCertificate) (hvalid : certificate.Valid)
-    (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1) (hp₁ : ‖p₁‖ ≤ 1) (hw₁ : ‖w₁‖ ≤ 1)
-    (hpsep : barC ≤ ‖p₁ - p₂‖) (hwsep : barC ≤ ‖w₁ - w₂‖)
-    (hpLower : (certificate.pLower : ℝ) ≤ ‖p₂‖) (hpUpper : ‖p₂‖ ≤ certificate.pUpper)
-    (hwLower : (certificate.wLower : ℝ) ≤ ‖w₂‖) (hwUpper : ‖w₂‖ ≤ certificate.wUpper) :
+    (e p₁ p₂ w₁ w₂ : E) (he : ‖e‖ = 1) (hp₁ : ‖p₁‖ ≤ 1)
+    (hw₁ : ‖w₁‖ ≤ 1) (hpsep : barC ≤ ‖p₁ - p₂‖)
+    (hwsep : barC ≤ ‖w₁ - w₂‖)
+    (hpLower : (certificate.pLower : ℝ) ≤ ‖p₂‖)
+    (hpUpper : ‖p₂‖ ≤ certificate.pUpper)
+    (hwLower : (certificate.wLower : ℝ) ≤ ‖w₂‖)
+    (hwUpper : ‖w₂‖ ≤ certificate.wUpper) :
     weightedPairScore e barC gramLambda gramMu p₁ p₂ w₁ w₂ ≤ -(1 / 2000) := by
   obtain ⟨hpL1, hpLU, hpU1, hwL1, hwLU, hwU1, ha₀, ha₁, ha₂, ha₃, ha₄, ha₅,
     hetaP, hetaW, hbound⟩ := hvalid
@@ -531,8 +536,9 @@ theorem weightedPairScore_le_of_gramCertificate {E : Type*} [NormedAddCommGroup 
   have hblueLower : (0 : ℝ) ≤ blueFirstLower certificate := by
     simp only [blueFirstLower]; linarith
   have hdual := certificate_dual_bound certificate
-    ⟨hpL1, hpLU, hpU1, hwL1, hwLU, hwU1, ha₀, ha₁, ha₂, ha₃, ha₄, ha₅, hetaP, hetaW, hbound⟩
-    e p₁ p₂ w₁ w₂ he hp₁ hw₁ hp₁Lower hw₁Lower hpsep hwsep hpLower hpUpper hwLower hwUpper
+    ⟨hpL1, hpLU, hpU1, hwL1, hwLU, hwU1, ha₀, ha₁, ha₂, ha₃, ha₄, ha₅, hetaP, hetaW,
+      hbound⟩ e p₁ p₂ w₁ w₂ he hp₁ hw₁ hp₁Lower hw₁Lower hpsep hwsep hpLower
+      hpUpper hwLower hwUpper
   -- six quadratic norm tangents
   have ht₀ := weighted_norm_tangent (e - p₁ - w₁) (1 + gramLambda) certificate.alpha₀ ha₀
   have ht₁ := weighted_norm_tangent (e - p₂ - w₂) 1 certificate.alpha₁ ha₁
