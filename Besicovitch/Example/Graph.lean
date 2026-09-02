@@ -13,10 +13,10 @@ public import Mathlib.Topology.Algebra.InfiniteSum.NatInt
 # Besicovitch's function
 
 Besicovitch's purely unrectifiable set with lower density `1/2` is the graph of the function
-`g = ∑ₙ fₙ`, where `fₙ` is a square wave of period `2 * 2^(-n²)` and amplitude `2^(-n²) / n`.
-This file defines the function and proves the two estimates that everything else rests on:
-inside a level-`n` cell `g` varies by at most `4 * 2^(-(n+1)²) / (n+1)`, and across a level-`n`
-cell boundary it jumps by at least `2^(-n²) / n`.
+`g = ∑ₙ fₙ`, where `fₙ` is a square wave of period `2 * 2^(-n²)` and amplitude
+`2^(-n²) / n`.  This file defines the function and proves the two estimates that everything
+else rests on: inside a level-`n` cell `g` varies by at most `4 * 2^(-(n+1)²) / (n+1)`, and
+across a level-`n` cell boundary it jumps by at least `2^(-n²) / n`.
 
 The construction follows Capdevila, *Besicovitch's example in higher dimensions*,
 arXiv:2607.05206, §2, which in turn follows Besicovitch (1938) and Dickinson (1939).
@@ -157,7 +157,8 @@ theorem cellIndex_eq_of_le {j n : ℕ} (hjn : j ≤ n) {x y : ℝ}
     (h : cellIndex n x = cellIndex n y) : cellIndex j x = cellIndex j y := by
   unfold cellIndex at *
   have hcell := cellLength_eq_mul hjn
-  have key : ∀ z : ℝ, z / cellLength j = z / cellLength n / ((2 ^ (n ^ 2 - j ^ 2) : ℕ) : ℝ) :=
+  have key : ∀ z : ℝ,
+      z / cellLength j = z / cellLength n / ((2 ^ (n ^ 2 - j ^ 2) : ℕ) : ℝ) :=
     fun z ↦ by rw [hcell, div_mul_eq_div_div]
   rw [key x, key y, Int.floor_div_natCast, Int.floor_div_natCast, h]
 
@@ -195,7 +196,8 @@ theorem tsum_jumpHeight_tail_le (n : ℕ) :
     intro m
     unfold jumpHeight
     have h1 : cellLength (n + 1 + m) ≤ cellLength (n + 1) * (1 / 2) ^ m := cellLength_add_le _ _
-    have h2 : (n : ℝ) + 1 ≤ ((n + 1 + m : ℕ) : ℝ) := by push_cast; linarith [Nat.cast_nonneg (α := ℝ) m]
+    have h2 : (n : ℝ) + 1 ≤ ((n + 1 + m : ℕ) : ℝ) := by
+      push_cast; linarith [Nat.cast_nonneg (α := ℝ) m]
     calc cellLength (n + 1 + m) / ((n + 1 + m : ℕ) : ℝ)
         ≤ cellLength (n + 1 + m) / ((n : ℝ) + 1) :=
           div_le_div_of_nonneg_left (cellLength_pos _).le hn h2
@@ -248,7 +250,8 @@ theorem abs_tail_le (n : ℕ) (x y : ℝ) :
   have h1 := norm_tsum_le_tsum_norm hnorm
   have h2 : ∑' m : ℕ, ‖squareWave (n + 1 + m) x - squareWave (n + 1 + m) y‖ ≤
       ∑' m : ℕ, 2 * jumpHeight (n + 1 + m) := Summable.tsum_le_tsum hle hnorm hsum
-  have h3 : ∑' m : ℕ, 2 * jumpHeight (n + 1 + m) ≤ 2 * (2 * cellLength (n + 1) / (n + 1)) := by
+  have h3 : ∑' m : ℕ, 2 * jumpHeight (n + 1 + m) ≤
+      2 * (2 * cellLength (n + 1) / (n + 1)) := by
     rw [tsum_mul_left]; gcongr; exact tsum_jumpHeight_tail_le n
   simp only [Real.norm_eq_abs] at h1 h2
   calc |∑' m : ℕ, (squareWave (n + 1 + m) x - squareWave (n + 1 + m) y)|
@@ -297,7 +300,8 @@ theorem le_abs_besicovitchFun_sub {n : ℕ} (hn : 1 ≤ n) {x y : ℝ}
   -- the least level `k ≥ 1` at which `x` and `y` separate
   classical
   have hex : ∃ k, 1 ≤ k ∧ cellIndex k x ≠ cellIndex k y := ⟨n, hn, hne⟩
-  obtain ⟨k, hk1, hkne, hkn, hmin⟩ : ∃ k, 1 ≤ k ∧ cellIndex k x ≠ cellIndex k y ∧ k ≤ n ∧
+  obtain ⟨k, hk1, hkne, hkn, hmin⟩ :
+      ∃ k, 1 ≤ k ∧ cellIndex k x ≠ cellIndex k y ∧ k ≤ n ∧
       ∀ j, 1 ≤ j → j < k → cellIndex j x = cellIndex j y :=
     ⟨Nat.find hex, (Nat.find_spec hex).1, (Nat.find_spec hex).2, Nat.find_min' hex ⟨hn, hne⟩,
       fun j hj hjk ↦ by_contra fun hc ↦ Nat.find_min hex hjk ⟨hj, hc⟩⟩

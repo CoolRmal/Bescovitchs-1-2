@@ -63,7 +63,8 @@ theorem lipschitzWith_proj : LipschitzWith 1 (fun p : Plane ↦ p 0) := by
   nlinarith [sq_nonneg (p 1 - q 1)]
 
 /-- The first coordinate recovers the base of a piece of the graph. -/
-theorem proj_image_graphMap_image (A : Set ℝ) : (fun p : Plane ↦ p 0) '' (graphMap '' A) = A := by
+theorem proj_image_graphMap_image (A : Set ℝ) :
+    (fun p : Plane ↦ p 0) '' (graphMap '' A) = A := by
   rw [image_image]; simp
 
 /-- **(B≥)** The Hausdorff measure of a piece of the graph is at least the measure of its base. -/
@@ -84,7 +85,8 @@ theorem mem_cell_iff {n : ℕ} {i : ℤ} {x : ℝ} : x ∈ cell n i ↔ cellInde
   have hpos := cellLength_pos n
   rw [cell, cellIndex, mem_Ico, Int.floor_eq_iff, le_div_iff₀ hpos, div_lt_iff₀ hpos]
 
-theorem mem_cell_cellIndex (n : ℕ) (x : ℝ) : x ∈ cell n (cellIndex n x) := mem_cell_iff.mpr rfl
+theorem mem_cell_cellIndex (n : ℕ) (x : ℝ) : x ∈ cell n (cellIndex n x) :=
+  mem_cell_iff.mpr rfl
 
 theorem volume_cell (n : ℕ) (i : ℤ) : volume (cell n i) = ENNReal.ofReal (cellLength n) := by
   rw [cell, Real.volume_Ico]; congr 1; ring

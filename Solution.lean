@@ -6,6 +6,7 @@ Authors: Yongxi Lin
 module
 
 public import Besicovitch.Certificates.EndpointBridge
+public import Besicovitch.Example.LowerBound
 public import Besicovitch.Main.RationalBound
 
 /-!
@@ -27,6 +28,12 @@ namespace Besicovitch
 theorem forcesOneRectifiability_plane_of_gt (β : ℝ) (hβ : 6934 / 10000 < β) :
     ForcesOneRectifiability (EuclideanSpace ℝ (Fin 2)) (ENNReal.ofReal β) :=
   forcesOneRectifiability_plane_of_barS_lt (by rw [barS_eq]; exact hβ)
+
+/-- The planar threshold is at least `1 / 2`: Besicovitch's purely unrectifiable graph has lower
+density `1 / 2`. -/
+theorem one_half_le_sigma_one_plane :
+    (1 / 2 : ℝ) ≤ sigmaOne (EuclideanSpace ℝ (Fin 2)) :=
+  Example.one_half_le_sigmaOne_plane
 
 /-- The planar threshold is at most `6934 / 10000`, below the published record `7 / 10`. -/
 theorem sigma_one_plane_le_6934_div_10000 :

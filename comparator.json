@@ -3,7 +3,8 @@
   "solution_module": "Solution",
   "theorem_names": [
     "Besicovitch.sigma_one_plane_le_6934_div_10000",
-    "Besicovitch.forcesOneRectifiability_plane_of_gt"
+    "Besicovitch.forcesOneRectifiability_plane_of_gt",
+    "Besicovitch.one_half_le_sigma_one_plane"
   ],
   "permitted_axioms": [
     "propext",

@@ -251,6 +251,60 @@ U=-\frac{141718938311359411043}{245112420775950000000000}=-0.000578179\ldots<-\f
 \]
 so the whole family clears the uniform threshold with about $16\%$ to spare.
 
+\section{The lower bound}
+\label{sec:lower}
+
+The registry review observed that Lean's real infimum returns $0$ on the empty set, so an upper
+bound on $\sigma_1$ could in principle hold vacuously. The formalization therefore also proves
+the classical lower bound
+\[
+\tfrac12\le\sigma_1(\R^2),
+\]
+which pins the threshold to $[\tfrac12,0.6934]$ and excludes the vacuous case outright. The
+statement \texttt{one\_half\_le\_sigma\_one\_plane} is compared alongside the upper bound.
+
+A lower bound needs a set of finite positive length that is not countably rectifiable and yet
+has lower density at least $\tfrac12$ almost everywhere. Besicovitch proposed one in 1938 and
+Dickinson proved its properties in 1939; we follow Capdevila's 2026 account. Let
+\[
+\alpha_n=2^{-n^2},\qquad \beta_n=\alpha_n/n,\qquad
+g=\sum_{n\ge1}f_n,
+\]
+where $f_n$ is the square wave of period $2\alpha_n$ and amplitude $\beta_n$, and let $\Pi$ be
+the graph of $g$ over $[0,1]$. Two estimates carry everything. Inside a level-$n$ cell
+$[i\alpha_n,(i+1)\alpha_n)$ the function varies by at most $4\alpha_{n+1}/(n+1)$; across a
+level-$n$ cell boundary it jumps by at least $\alpha_n/n$. Mathlib contains no notion of
+rectifiability and no purely unrectifiable set, so the example and its three properties are
+built from scratch.
+
+\emph{Measure.} The first-coordinate projection is $1$-Lipschitz, so $\mathcal H^1(\Pi(A))\ge|A|$
+for every $A\subset[0,1]$; covering the graph over a cell by a cylinder of diameter at most
+$2\alpha_n$ gives $\mathcal H^1(\Pi(A))\le 2|A|$, first on intervals, then on open sets through
+the cells they contain, then on arbitrary sets by outer regularity. The sharp constant $1$ is
+never needed. In particular the graph over a null set is null.
+
+\emph{Density.} At a point $x\in(0,1)$ and a small radius $r$, choose the level $n$ with
+$\alpha_{n+1}<r\le\alpha_n$. The graph over the part of $x$'s cell within $\theta r$ of $x$ lies
+in the ball of radius $r$ about $(x,g(x))$, because the vertical variation inside the cell is
+$O(r/n)$; and that part has length at least $\theta r$, since one side of $x$ reaches at least
+that far within a cell of length $\ge r$. Hence the density is at least $\theta/2$ for every
+$\theta<1$, so at least $\tfrac12$.
+
+\emph{Unrectifiability.} This is the step that is elementary here and not in general. If a
+Lipschitz curve met $\Pi$ in positive measure, Rademacher's theorem and Mathlib's partition of a
+differentiable map into pieces on which it approximates an invertible linear map would produce
+a set $A\subset[0,1]$ of positive measure on which $g$ is Lipschitz. But $g$ jumps by at least
+$\alpha_n/n$ across every level-$n$ boundary, so a set on which $g$ is $L$-Lipschitz cannot have
+points within $\alpha_n/(2n(L+1))$ of a boundary on both sides. That alone does not make $A$
+null — a single such hole is a vanishing fraction of any ball — but a Lebesgue density point of
+$A$ cannot lie that close to a level-$n$ boundary for infinitely many $n$, because the ball of
+twice that radius about it would then carry a hole of relative size $\tfrac14$. So almost every
+point of $A$ eventually keeps its distance from the grid on \emph{both} sides, and the set of
+points that do so at all fine levels is null by a nested recursion: inside each cell the
+surviving set is an interval, the grid points of the next level carve disjoint gaps out of it
+whose total is a fraction $1/(n(L+1))$ of its length, and $\sum 1/n=\infty$. No projection
+theorem, no tangent theory and no area formula are used.
+
 \section{What the machine checks}
 
 The certificate parameters were found by an unverified numerical search and are stored as exact

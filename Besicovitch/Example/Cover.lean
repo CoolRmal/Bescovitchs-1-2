@@ -60,7 +60,8 @@ theorem exists_cell_of_mem {n : ℕ} {a b x : ℝ} (hx : x ∈ Ico a b) :
 
 /-- The graph over `[a, b)` at level `n ≥ 1` is covered by `cellCount` cylinders. -/
 theorem graphMap_image_Ico_subset {n : ℕ} (a b : ℝ) :
-    graphMap '' Ico a b ⊆ ⋃ k : Fin (cellCount n a b), graphMap '' cell n (cellIndex n a + k) := by
+    graphMap '' Ico a b ⊆
+      ⋃ k : Fin (cellCount n a b), graphMap '' cell n (cellIndex n a + k) := by
   rintro _ ⟨x, hx, rfl⟩
   obtain ⟨k, hk⟩ := exists_cell_of_mem (n := n) hx
   exact mem_iUnion.mpr ⟨k, mem_image_of_mem _ hk⟩
@@ -81,10 +82,12 @@ theorem hausdorffMeasure_graphMap_image_Ico_le {a b : ℝ} (hab : a ≤ b) :
   refine key.trans ?_
   -- each level-`n` sum is at most `cellCount * 2 cellLength ≤ 2 (b - a) + 4 cellLength n`
   have hsum : ∀ n : ℕ, 1 ≤ n →
-      ∑ k : Fin (cellCount n a b), Metric.ediam (graphMap '' cell n (cellIndex n a + k)) ^ (1 : ℝ) ≤
+      ∑ k : Fin (cellCount n a b),
+        Metric.ediam (graphMap '' cell n (cellIndex n a + k)) ^ (1 : ℝ) ≤
         ENNReal.ofReal (2 * (b - a) + 4 * cellLength n) := by
     intro n hn
-    calc ∑ k : Fin (cellCount n a b), Metric.ediam (graphMap '' cell n (cellIndex n a + k)) ^ (1 : ℝ)
+    calc ∑ k : Fin (cellCount n a b),
+          Metric.ediam (graphMap '' cell n (cellIndex n a + k)) ^ (1 : ℝ)
         ≤ ∑ _k : Fin (cellCount n a b), ENNReal.ofReal (2 * cellLength n) := by
           gcongr with k
           rw [ENNReal.rpow_one]; exact diam_graphMap_image_cell_le hn _

@@ -59,20 +59,22 @@ was abandoned. The split is worth showing, because the two phases cost very diff
 
 | | Phase 1 — Bernstein (abandoned) | Phase 2 — Gram (delivered) | total |
 |---|---:|---:|---:|
-| wall clock | **14 h 54 m** | **5 h 04 m** | **19 h 58 m** |
-| API calls | 3,037 | 289 | 3,326 |
-| output tokens | 1,963,539 | 498,854 | **2,462,393** |
+| wall clock | **14 h 54 m** | **10:11:05** | see note |
+| API calls | 3,037 | 763 | 3,800 |
+| output tokens | 1,963,539 | 2,361,573 | **4,325,112** |
 | input tokens | 162,015 | 578 | 162,593 |
 | cache writes | 43,101,010 | 2,225,567 | 45,326,577 |
 | cache reads | 1,088,642,799 | 100,472,049 | 1,189,114,848 |
-| **input + output + cache write** | **45,226,564** | **2,724,999** | **47,951,563** |
+| **input + output + cache write** | **45,226,564** | **13,895,701** | **59,122,265** |
 
 Cache reads are listed separately because they are billed differently from fresh input; the
 "input + output + cache write" row is the figure to compare against a non-caching baseline.
 
 Phase 2 is a snapshot taken while the session was still open — writing this document is itself
 inside it — so re-running `measure.sh` will show that column a little larger. The figures above
-were taken at commit `85d2cfb`.
+were taken at the commit that completed the lower bound; Phase 2 now includes the whole
+Besicovitch-example formalization (the `Besicovitch/Example/` modules), three of which were written
+by parallel subagents whose tokens are included.
 
 **The comparison that matters.** Phase 1 spent **94%** of the non-cached tokens and **75%** of the
 wall clock, and contributed **no surviving line** to the final proof — its 24,274 lines were
@@ -111,7 +113,7 @@ completed; one of its ten charts admitted no certificate tree at all.
 
 ## 3. Lines of Lean
 
-87 files, **25,024 lines** total; **22,771** excluding blanks and comment-only lines.
+99 files, **27,232 lines** total; **24,675** excluding blanks and comment-only lines.
 
 | area | files | lines |
 |---|---:|---:|

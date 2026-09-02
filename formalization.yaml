@@ -65,15 +65,36 @@ sources:
     id: "arXiv:2607.05206"
     type: "article"
     location: "https://arxiv.org/abs/2607.05206"
-    relationship: "background"
+    relationship: "other"
     note: >-
-      Found by the literature search (submitted 2026-07-06). Constructs purely
-      unrectifiable sets with lower density 1/2, the classical floor for the
-      problem; it does not improve the upper bound 7/10 and does not overlap
-      with the present result. Cited as evidence that the search reached work
-      posted after the 7/10 paper.
+      Relationship other, explained here. The classical lower bound
+      1/2 <= sigma_1 compared by this submission is Besicovitch's example, and
+      its formalization follows the planar construction and estimates (E1),
+      (E2) of this paper's section 2 verbatim; the measure, density and
+      unrectifiability arguments are simplified where less is needed than the
+      paper proves. This is a formalization of a known result inside a
+      submission whose principal result is original, so the relationship is
+      recorded as other rather than formalizes, per the registry's rule that
+      result origins are not mixed. The paper does not improve the upper bound
+      7/10 and does not overlap with the original result.
     license: "unknown"
     author_endorsement: "not-contacted"
+  - title: >-
+      Study of extreme cases with respect to the densities of irregular
+      linearly measurable plane sets of points
+    authors:
+      - "D. B. Dickinson"
+    id: "Math. Ann. 116 (1939), 358-373"
+    type: "article"
+    relationship: "other"
+    note: >-
+      Relationship other, explained here: the original proof that Besicovitch's
+      example has lower density 1/2 almost everywhere, hence of the lower bound
+      formalized here. Not consulted directly; its content is taken from
+      Capdevila's account. Recorded as other rather than formalizes for the
+      reason given for that entry.
+    license: "unknown"
+    author_endorsement: "n/a"
   - title: "On Besicovitch's 1/2-problem"
     authors:
       - "David Preiss"
@@ -124,12 +145,15 @@ status:
     exceeds about 1.386850, so the admissible window is narrow and 6934/10000
     sits inside it.
 
-    Also not formalized: any lower bound on sigma_1, such as 1/2 <= sigma_1(R^2).
-    That requires exhibiting a purely unrectifiable set of finite positive
-    measure with lower density close to 1/2 and proving its pure
-    unrectifiability; Mathlib contains no notion of rectifiability and no such
-    set. This is work in progress; until it lands, sigma_1 is bounded only from
-    above, with the admissible set shown nonempty.
+    Formalized in full as a compared theorem: the lower bound 1/2 <= sigma_1(R^2),
+    Besicovitch.one_half_le_sigma_one_plane, by exhibiting Besicovitch's purely
+    unrectifiable graph with lower density at least 1/2 at every interior point.
+    Mathlib contains no notion of rectifiability and no purely unrectifiable
+    set, so the example and all three of its properties are constructed here
+    from scratch (Besicovitch/Example/). What is not proved about the example:
+    the matching upper density bound 1/2 (Capdevila's part D) and the sharp
+    equality of the graph's Hausdorff measure with its base measure; neither is
+    needed for the bound, and the crude constant 2 is used instead.
 
     Also not formalized: Besicovitch's conjecture itself, which remains open;
     no claim is made about it. The six-point method cannot reach below theta_6
@@ -261,8 +285,12 @@ review:
 
     The Comparator's first automated review, 2026-09-02, reported mechanical
     verification succeeded and asked for the admissible set to be shown
-    nonempty and for the novelty claim to be supported; both are addressed in
-    this revision.
+    nonempty and for the novelty claim to be supported. Both are addressed:
+    genuine admissible thresholds are compared (every threshold strictly above
+    the constant), the lower bound 1/2 is compared as well so the value is
+    pinned to [1/2, 6934/10000], sigmaOne is described as an infimum whose
+    attainment is not claimed, and the literature search above supports the
+    record claim with the novelty claim qualified accordingly.
 
 alignment:
   namespace: "Besicovitch"
@@ -287,6 +315,28 @@ alignment:
         Compared declaration. The genuine admissible thresholds behind the
         infimum bound; stated with strict inequality because the argument
         yields a margin and nothing is claimed at the constant itself.
+    - source: >-
+        Classical lower bound (Besicovitch 1938, Dickinson 1939): the planar
+        threshold is at least 1/2
+      lean: "Besicovitch.one_half_le_sigma_one_plane"
+      module: "Solution"
+      status: "proved"
+      note: >-
+        Compared declaration. Proved from Besicovitch's example following
+        Capdevila's account; the example is built from scratch in
+        Besicovitch/Example/ since Mathlib has no rectifiability theory.
+    - source: "Besicovitch's graph is not countably one-rectifiable"
+      lean: "Besicovitch.Example.not_isCountablyOneRectifiable_besicovitchSet"
+      module: "Besicovitch.Example.LowerBound"
+      status: "proved"
+      note: >-
+        The purely unrectifiable ingredient, proved by the elementary jump
+        argument rather than the projection theorem.
+    - source: "Besicovitch's graph has lower density at least 1/2 at every interior point"
+      lean: "Besicovitch.Example.one_half_le_lowerOneDensity_graphMap"
+      module: "Besicovitch.Example.LowerDensity"
+      status: "proved"
+      note: "Pointwise on the open base interval; the two endpoints are a null set."
     - source: >-
         Supporting bound: the exact six-point endpoint lies below the rational
         target

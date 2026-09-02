@@ -16,8 +16,8 @@ within `margin L n = cellLength n / (2 n (L + 1))`: two such points sit in adjac
 jumps by at least `cellLength n / n` between them by (E2), while the Lipschitz bound allows less.
 
 `avoid L n` is the set of points at distance at least `margin L n` from every level-`n` grid
-point.  Its intersection with any cell of level `m ≥ n` is order-connected, because every level-`n`
-grid point is a level-`m` grid point and hence lies outside the interior of that cell.
+point.  Its intersection with any cell of level `m ≥ n` is order-connected, because every
+level-`n` grid point is a level-`m` grid point and hence lies outside the interior of that cell.
 -/
 
 @[expose] public section
@@ -48,10 +48,12 @@ theorem margin_le_half {L : ℝ} (hL : 0 ≤ L) {n : ℕ} (hn : 1 ≤ n) :
   unfold margin
   have hn' : (1 : ℝ) ≤ n := by exact_mod_cast hn
   have hpos := cellLength_pos n
-  have h2 : (2 : ℝ) ≤ 2 * n * (L + 1) := by nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ n) hL]
+  have h2 : (2 : ℝ) ≤ 2 * n * (L + 1) := by
+    nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ n) hL]
   exact div_le_div_of_nonneg_left hpos.le (by norm_num) h2
 
-/-- The Lipschitz bound across a strip of width `2 * margin` is below the jump `cellLength n / n`. -/
+/-- The Lipschitz bound across a strip of width `2 * margin` is below the jump
+`cellLength n / n`. -/
 theorem lipschitz_strip_lt {L : ℝ} (hL : 0 ≤ L) {n : ℕ} (hn : 1 ≤ n) :
     L * (2 * margin L n) < cellLength n / n := by
   have hn' : (0 : ℝ) < n := by exact_mod_cast hn
@@ -138,7 +140,8 @@ theorem ordConnected_avoid_inter_cell (L : ℝ) {n m : ℕ} (hnm : n ≤ m) (j :
 theorem isClosed_avoid (L : ℝ) (n : ℕ) : IsClosed (avoid L n) := by
   unfold avoid
   rw [setOf_forall]
-  exact isClosed_iInter fun i ↦ isClosed_le continuous_const (continuous_id.sub continuous_const).abs
+  exact isClosed_iInter fun i ↦
+    isClosed_le continuous_const (continuous_id.sub continuous_const).abs
 
 theorem measurableSet_avoid (L : ℝ) (n : ℕ) : MeasurableSet (avoid L n) :=
   (isClosed_avoid L n).measurableSet

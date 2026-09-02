@@ -34,7 +34,8 @@ theorem measurable_squareWave (n : ℕ) : Measurable (squareWave n) := by
   exact (measurable_cellIndex n) (show MeasurableSet {i : ℤ | Even i} from trivial)
 
 theorem measurable_besicovitchFun : Measurable besicovitchFun := by
-  have hpartial : ∀ N : ℕ, Measurable fun x ↦ ∑ n ∈ Finset.range N, squareWave (n + 1) x :=
+  have hpartial : ∀ N : ℕ,
+      Measurable fun x ↦ ∑ n ∈ Finset.range N, squareWave (n + 1) x :=
     fun N ↦ Finset.measurable_sum _ fun n _ ↦ measurable_squareWave (n + 1)
   refine measurable_of_tendsto_metrizable hpartial ?_
   rw [tendsto_pi_nhds]

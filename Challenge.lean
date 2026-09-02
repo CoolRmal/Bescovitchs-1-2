@@ -54,6 +54,12 @@ theorem forcesOneRectifiability_plane_of_gt (β : ℝ) (hβ : 6934 / 10000 < β)
     ForcesOneRectifiability (EuclideanSpace ℝ (Fin 2)) (ENNReal.ofReal β) := by
   sorry
 
+/-- The planar threshold is at least `1 / 2`: Besicovitch's purely unrectifiable graph has lower
+density `1 / 2`. -/
+theorem one_half_le_sigma_one_plane :
+    (1 / 2 : ℝ) ≤ sigmaOne (EuclideanSpace ℝ (Fin 2)) := by
+  sorry
+
 /-- The planar threshold is at most `6934 / 10000`, below the published record `7 / 10`. -/
 theorem sigma_one_plane_le_6934_div_10000 :
     sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ 6934 / 10000 := by

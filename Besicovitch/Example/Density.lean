@@ -115,7 +115,8 @@ theorem ae_eventually_mem_avoid {L : ℝ≥0} {A : Set ℝ}
   have hmem : 2 * m ∈ Ioo 0 ρ := ⟨by linarith, hnρ⟩
   have hlt := hsub hmem
   simp only [Set.mem_setOf_eq] at hlt
-  rw [hballvol, ENNReal.lt_div_iff_mul_lt (Or.inl (by simp [hmpos])) (Or.inl ENNReal.ofReal_ne_top)] at hlt
+  rw [hballvol, ENNReal.lt_div_iff_mul_lt (Or.inl (by simp [hmpos]))
+    (Or.inl ENNReal.ofReal_ne_top)] at hlt
   rw [← ENNReal.ofReal_mul (by norm_num)] at hlt
   have hcontra := hlt.trans_le hkey
   rw [ENNReal.ofReal_lt_ofReal_iff (by positivity)] at hcontra

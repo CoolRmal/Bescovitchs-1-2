@@ -76,7 +76,8 @@ theorem tendsto_sum_Ioc_atTop (ha : ∀ n, 0 ≤ a n)
   exact h1.congr' ((eventually_ge_atTop N).mono fun n hn ↦ (hsplit n hn).symm)
 
 /-- The main recursion lemma. -/
-theorem tendsto_zero_of_recursive (hu : ∀ n, 0 ≤ u n) (ha : ∀ n, 0 ≤ a n) (ha1 : ∀ n, a n ≤ 1)
+theorem tendsto_zero_of_recursive (hu : ∀ n, 0 ≤ u n) (ha : ∀ n, 0 ≤ a n)
+    (ha1 : ∀ n, a n ≤ 1)
     (he : ∀ n, 0 ≤ e n) (hasum : Tendsto (fun n ↦ ∑ k ∈ range n, a k) atTop atTop)
     (hesum : Summable e)
     (h : ∀ n, u (n + 1) ≤ (1 - a (n + 1)) * u n + e (n + 1)) :

@@ -13,9 +13,9 @@ public import Mathlib.MeasureTheory.Measure.Regular
 
 An open set is the increasing union of the cells it contains; the graph over such a union of
 level-`n` cells has Hausdorff measure at most twice its Lebesgue measure by the cell bound, and
-the monotone-union limit carries this to the open set.  Outer regularity of Lebesgue measure then
-gives `μH[1] (graphMap '' A) ≤ 2 * volume A` for every `A ⊆ ℝ`; in particular the graph over a
-Lebesgue-null set is `μH[1]`-null.
+the monotone-union limit carries this to the open set.  Outer regularity of Lebesgue measure
+then gives `μH[1] (graphMap '' A) ≤ 2 * volume A` for every `A ⊆ ℝ`; in particular the
+graph over a Lebesgue-null set is `μH[1]`-null.
 -/
 
 @[expose] public section
@@ -70,7 +70,8 @@ theorem iUnion_cellHull_of_isOpen {U : Set ℝ} (hU : IsOpen U) : ⋃ n, cellHul
   obtain ⟨n, hn⟩ := (tendsto_cellLength.eventually (gt_mem_nhds hε)).exists
   refine mem_iUnion.mpr ⟨n, ?_⟩
   simp only [cellHull, mem_iUnion, mem_setOf_eq, exists_prop]
-  exact ⟨cellIndex n x, (cell_subset_ball n x).trans ((Metric.ball_subset_ball hn.le).trans hball),
+  exact ⟨cellIndex n x,
+    (cell_subset_ball n x).trans ((Metric.ball_subset_ball hn.le).trans hball),
     mem_cell_cellIndex n x⟩
 
 theorem volume_cellHull (n : ℕ) (U : Set ℝ) :
@@ -86,7 +87,8 @@ theorem hausdorffMeasure_graphMap_image_cell_le {n : ℕ} (i : ℤ) :
   have hpos := cellLength_pos n
   have h := hausdorffMeasure_graphMap_image_Ico_le
     (a := i * cellLength n) (b := (i + 1) * cellLength n) (by nlinarith)
-  have h2 : (2 : ℝ≥0∞) * ENNReal.ofReal (cellLength n) = ENNReal.ofReal (2 * cellLength n) := by
+  have h2 : (2 : ℝ≥0∞) * ENNReal.ofReal (cellLength n) =
+      ENNReal.ofReal (2 * cellLength n) := by
     rw [ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_ofNat]
   rw [volume_cell, h2]
   refine h.trans (le_of_eq ?_)

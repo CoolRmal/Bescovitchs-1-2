@@ -3,16 +3,19 @@
 A Lean 4 + Mathlib formalization of
 
 $$
-\sigma_1(\mathbb{R}^2) \le \frac{6934}{10000} = 0.6934,
+\frac{1}{2} \le \sigma_1(\mathbb{R}^2) \le \frac{6934}{10000} = 0.6934 .
 $$
 
-improving the published bound of $0.7$. The proof is complete: `Solution.lean` contains no
-`sorry`, and the target theorem depends on exactly the three axioms `propext`,
-`Classical.choice` and `Quot.sound`.
+The upper bound improves the published $0.7$; the lower bound is Besicovitch's classical one,
+formalized here so that the threshold is pinned to an explicit interval rather than merely
+bounded above. Both proofs are complete: `Solution.lean` contains no `sorry`, and every compared
+theorem depends on exactly the three axioms `propext`, `Classical.choice` and `Quot.sound`.
 
 ```
 theorem Besicovitch.sigma_one_plane_le_6934_div_10000 :
     sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ 6934 / 10000
+theorem Besicovitch.one_half_le_sigma_one_plane :
+    (1 / 2 : ℝ) ≤ sigmaOne (EuclideanSpace ℝ (Fin 2))
 ```
 
 📄 **[`paper/gram-certificate-bound.pdf`](paper/gram-certificate-bound.pdf)** — the proof of this
@@ -54,15 +57,42 @@ approach here is inspired by theirs.**
 
 ## What is compared
 
-Two statements, both proved in `Solution.lean`:
+Three statements, all proved in `Solution.lean`:
 
+- `sigma_one_plane_le_6934_div_10000` — the upper bound.
 - `forcesOneRectifiability_plane_of_gt` — every threshold strictly above $0.6934$ forces
-  rectifiability. This is the substantive content: genuine admissible thresholds, so the bound on
-  the infimum is not vacuous.
-- `sigma_one_plane_le_6934_div_10000` — the bound itself.
+  rectifiability: genuine admissible thresholds, so the bound on the infimum is not vacuous.
+- `one_half_le_sigma_one_plane` — the lower bound. Together with the first it pins
+  $\sigma_1(\mathbb{R}^2)$ to $[1/2, 0.6934]$; in particular the infimum is not the value Lean
+  assigns to an empty set.
 
-A lower bound $1/2 \le \sigma_1(\mathbb{R}^2)$, which would pin the threshold to
-$[1/2, 0.6934]$, is the next target; see [`effort/LOWER_BOUND_PLAN.md`](effort/LOWER_BOUND_PLAN.md).
+`sigmaOne` is an infimum, not a minimum: nothing here claims it is attained.
+
+## The lower bound
+
+$\sigma_1(\mathbb{R}^2) \ge 1/2$ needs a set of finite positive length that is *not* countably
+rectifiable yet has lower density at least $1/2$ almost everywhere. Besicovitch proposed one in
+1938 and Dickinson proved its properties in 1939; the formalization follows Capdevila's 2026
+account. The set is the graph over $[0,1]$ of
+
+$$
+g = \sum_{n \ge 1} f_n, \qquad f_n = \text{a square wave of period } 2 \cdot 2^{-n^2}
+\text{ and amplitude } 2^{-n^2}/n .
+$$
+
+Two estimates carry everything: inside a level-$n$ cell $g$ varies by at most
+$4 \cdot 2^{-(n+1)^2}/(n+1)$, and across a level-$n$ cell boundary it jumps by at least
+$2^{-n^2}/n$. The Hausdorff measure of the graph over any set lies between the Lebesgue measure of
+the base and twice it; the lower density is at least $1/2$ at every interior point because at
+every scale the graph is a near-flat segment through the point extending at least the radius to
+one side; and no Lipschitz curve meets the graph in positive measure, because a set on which $g$
+is Lipschitz cannot straddle a jump — the Lebesgue density theorem then forces almost every such
+point to stay clear of the grid on both sides at all fine levels, and the nested cell recursion,
+driven by $\sum 1/n = \infty$, makes that set null.
+
+The proof uses no projection theorem, no tangent theory and no area formula: it is elementary
+throughout, which is what made it feasible to formalize. The modules live in
+[`Besicovitch/Example/`](Besicovitch/Example/).
 
 ## Why 0.6934 and not the sharp constant
 
@@ -205,6 +235,7 @@ The project is pinned to Lean and Mathlib `v4.32.0`.
 | `Besicovitch/SixPoint/GramCertificateCover.lean` | the eight-band radius cover |
 | `Besicovitch/SixPoint/GramWeightedBound.lean` | the coordinate-free weighted bound |
 | `Besicovitch/Main/RationalBound.lean` | the reduction to the density bound |
+| `Besicovitch/Example/` | Besicovitch's set and the lower bound $1/2 \le \sigma_1$ |
 | `comparator.json` | permits only `propext`, `Quot.sound`, `Classical.choice` |
 
 `comparator.json` intentionally has no `definition_names` escape hatch: the definitions reachable
