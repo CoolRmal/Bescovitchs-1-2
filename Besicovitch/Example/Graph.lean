@@ -163,6 +163,14 @@ theorem cellIndex_eq_of_le {j n : ℕ} (hjn : j ≤ n) {x y : ℝ}
 
 /-! ### Summability and the tail bound -/
 
+theorem cellLength_le_geom (n : ℕ) : cellLength n ≤ (1 / 2) ^ n := by
+  unfold cellLength
+  exact pow_le_pow_of_le_one (by norm_num) (by norm_num) (Nat.le_self_pow two_ne_zero n)
+
+theorem tendsto_cellLength : Filter.Tendsto cellLength Filter.atTop (nhds 0) :=
+  squeeze_zero (fun n ↦ (cellLength_pos n).le) cellLength_le_geom
+    (tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num))
+
 theorem cellLength_succ_le_geom (n : ℕ) : cellLength (n + 1) ≤ (1 / 2) ^ n := by
   unfold cellLength
   exact pow_le_pow_of_le_one (by norm_num) (by norm_num) (by nlinarith)
