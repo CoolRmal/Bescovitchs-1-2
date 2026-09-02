@@ -11,7 +11,7 @@ rather than estimated.
 
 ## 1. Natural-language mathematics
 
-Done in a ChatGPT project, **"Bescovitch 1/2-Problem"**, before any Lean was written. This stage
+Done in a ChatGPT project, **"Besicovitch 1/2-Problem"**, before any Lean was written. This stage
 produced the six-point analysis, the sharp constant, the failure tree, and finally the
 Gram-certificate argument that the formalization actually uses.
 
@@ -51,7 +51,7 @@ reconstruction in SymPy, and a diagnostic sweep of 3000 random feasible configur
 ## 2. Lean formalization
 
 Done in Claude Code against this repository. Measured from the session transcripts at
-`~/.claude/projects/-Users-aaron-Downloads-Bescovitchs-1-2/`.
+`~/.claude/projects/-Users-aaron-Downloads-Besicovitchs-1-2/`.
 
 The work splits cleanly at **2026-09-02 05:41:44**, when the Gram-certificate document arrived.
 Before that point the target was pursued through six-variable Bernstein certificates; that route
@@ -122,7 +122,7 @@ completed; one of its ten charts admitted no certificate tree at all.
 | `Measure` | 5 | 735 |
 | `Geometry` | 2 | 218 |
 | `Topology` | 1 | 128 |
-| root (`Solution`, `Challenge`, `Bescovitch`, `Statement`) | 4 | 181 |
+| root (`Solution`, `Challenge`, `Besicovitch`, `Statement`) | 4 | 181 |
 | `Main` | 2 | 97 |
 | `Sigma` | 1 | 43 |
 | **total** | **87** | **25,024** |
@@ -131,10 +131,10 @@ The Gram-certificate proof proper — everything the analytic endpoint needs —
 
 | file | lines | contents |
 |---|---:|---|
-| `Bescovitch/SixPoint/GramCertificateData.lean` | 681 | the thirty certificates and their checks |
-| `Bescovitch/SixPoint/GramCertificateCore.lean` | 578 | the local certificate theorem |
-| `Bescovitch/SixPoint/GramCertificateCover.lean` | 217 | the eight-band radius cover |
-| `Bescovitch/SixPoint/GramWeightedBound.lean` | 72 | the coordinate-free weighted bound |
+| `Besicovitch/SixPoint/GramCertificateData.lean` | 681 | the thirty certificates and their checks |
+| `Besicovitch/SixPoint/GramCertificateCore.lean` | 578 | the local certificate theorem |
+| `Besicovitch/SixPoint/GramCertificateCover.lean` | 217 | the eight-band radius cover |
+| `Besicovitch/SixPoint/GramWeightedBound.lean` | 72 | the coordinate-free weighted bound |
 | **total** | **1,548** | |
 
 A further **24,274 lines across 84 modules** were deleted when the Gram argument made them

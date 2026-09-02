@@ -11,7 +11,7 @@ improving the published bound of $0.7$. The proof is complete: `Solution.lean` c
 `Classical.choice` and `Quot.sound`.
 
 ```
-theorem Bescovitch.sigma_one_plane_le_6934_div_10000 :
+theorem Besicovitch.sigma_one_plane_le_6934_div_10000 :
     sigmaOne (EuclideanSpace ℝ (Fin 2)) ≤ 6934 / 10000
 ```
 
@@ -168,14 +168,14 @@ To check the result yourself:
 
 ```sh
 echo 'import Solution
-#print axioms Bescovitch.sigma_one_plane_le_6934_div_10000' > /tmp/check.lean
+#print axioms Besicovitch.sigma_one_plane_le_6934_div_10000' > /tmp/check.lean
 lake env lean /tmp/check.lean
 ```
 
 which prints
 
 ```
-'Bescovitch.sigma_one_plane_le_6934_div_10000' depends on axioms:
+'Besicovitch.sigma_one_plane_le_6934_div_10000' depends on axioms:
   [propext, Classical.choice, Quot.sound]
 ```
 
@@ -187,12 +187,12 @@ The project is pinned to Lean and Mathlib `v4.32.0`.
 |---|---|
 | `Challenge.lean` | the problem statement, self-contained, with the theorem hole |
 | `Solution.lean` | the proved theorem |
-| `Bescovitch/Statement.lean` | the same definitions, for the modular development |
-| `Bescovitch/SixPoint/GramCertificateCore.lean` | the local certificate theorem |
-| `Bescovitch/SixPoint/GramCertificateData.lean` | the thirty certificates and their checks |
-| `Bescovitch/SixPoint/GramCertificateCover.lean` | the eight-band radius cover |
-| `Bescovitch/SixPoint/GramWeightedBound.lean` | the coordinate-free weighted bound |
-| `Bescovitch/Main/RationalBound.lean` | the reduction to the density bound |
+| `Besicovitch/Statement.lean` | the same definitions, for the modular development |
+| `Besicovitch/SixPoint/GramCertificateCore.lean` | the local certificate theorem |
+| `Besicovitch/SixPoint/GramCertificateData.lean` | the thirty certificates and their checks |
+| `Besicovitch/SixPoint/GramCertificateCover.lean` | the eight-band radius cover |
+| `Besicovitch/SixPoint/GramWeightedBound.lean` | the coordinate-free weighted bound |
+| `Besicovitch/Main/RationalBound.lean` | the reduction to the density bound |
 | `comparator.json` | permits only `propext`, `Quot.sound`, `Classical.choice` |
 
 `comparator.json` intentionally has no `definition_names` escape hatch: the definitions reachable

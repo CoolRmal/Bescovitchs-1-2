@@ -69,8 +69,8 @@ for dp, dn, fn in os.walk('.'):
         c = sum(1 for l in open(p, encoding='utf-8')
                 if l.strip() and not l.strip().startswith('--'))
         parts = p.split(os.sep)
-        area = parts[2] if len(parts) > 3 and parts[1] == 'Bescovitch' else 'root'
-        if f in ('Solution.lean', 'Challenge.lean', 'Bescovitch.lean'): area = 'root'
+        area = parts[2] if len(parts) > 3 and parts[1] == 'Besicovitch' else 'root'
+        if f in ('Solution.lean', 'Challenge.lean', 'Besicovitch.lean'): area = 'root'
         tot[area] += n; files[area] += 1; grand += n; grandf += 1; code += c
 for a, n in tot.most_common():
     print(f"  {a:<22}{files[a]:>4} files {n:>8,} lines")
@@ -85,4 +85,4 @@ echo "  latest             $(git log -1 --format='%ai')"
 
 echo
 echo "════ Machine verification cost (re-measure with a cold build)"
-echo "  rm -rf .lake/build/lib/lean/Bescovitch && time lake build Solution Challenge"
+echo "  rm -rf .lake/build/lib/lean/Besicovitch && time lake build Solution Challenge"

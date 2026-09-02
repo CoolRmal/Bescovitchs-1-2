@@ -27,7 +27,7 @@ jobs:
           use-mathlib-cache: true
 
       - name: Build the project and challenge
-        run: lake build Bescovitch Challenge Solution
+        run: lake build Besicovitch Challenge Solution
 
       - name: Check source hygiene
         shell: bash

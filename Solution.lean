@@ -5,8 +5,8 @@ Authors: Yongxi Lin
 -/
 module
 
-public import Bescovitch.Certificates.EndpointBridge
-public import Bescovitch.Main.RationalBound
+public import Besicovitch.Certificates.EndpointBridge
+public import Besicovitch.Main.RationalBound
 
 /-!
 # Solution: the planar Besicovitch threshold
@@ -18,7 +18,7 @@ below the same rational number.
 
 @[expose] public section
 
-namespace Bescovitch
+namespace Besicovitch
 
 /-- The planar one-dimensional rectifiability threshold is below the previous record. -/
 theorem sigma_one_plane_le_6934_div_10000 :
@@ -29,4 +29,4 @@ theorem sigma_one_plane_le_6934_div_10000 :
 theorem sStar_le_6934_div_10000 : sStar ≤ 6934 / 10000 :=
   sStar_le_6934_div_10000_certified
 
-end Bescovitch
+end Besicovitch

@@ -1,0 +1,298 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "A machine-checked bound of 0.6934 for Besicovitch's 1/2-problem"
+  description: >-
+    Besicovitch's 1/2-conjecture asserts that a Borel set in the plane with
+    finite one-dimensional Hausdorff measure whose lower density exceeds 1/2
+    almost everywhere is countably 1-rectifiable. Writing sigma_1(R^2) for the
+    least threshold that forces countable 1-rectifiability, the conjecture is
+    sigma_1(R^2) = 1/2. The previously published record is sigma_1(R^2) <= 7/10,
+    obtained by De Lellis, Glaudo, Massaccesi and Vittone by recasting the
+    problem as a family of finite-dimensional optimization problems.
+
+    This development proves, with a complete Lean 4 proof term,
+    sigma_1(R^2) <= 6934/10000 = 0.6934.
+
+    The proof solves the two-colour, six-centre instance of that finite family.
+    A packing failure tree reduces the failure of all nine packings at a matched
+    sibling endpoint to three scalar slacks q1 >= 0, q2 > 0, q3 > 0, and an
+    algebraic identity shows that for every pair of positive weights lambda, mu
+    the combination q1 + lambda q2 + mu q3 equals a coordinate-free weighted
+    score of the five configuration vectors. Choosing the small rational weights
+    lambda = 1/12 and mu = 13/14 makes every downstream coefficient rational.
+    On a rectangle of second-child radii, six quadratic norm tangents, four
+    radial secants and two separation multipliers turn the score into a
+    quadratic form in the five vectors; a rational 3-by-5 factor F, completed by
+    elementary two-vector squares, dominates that form, so the Schur product
+    theorem against the Gram matrix of the five vectors cancels every inner
+    product and leaves one exact rational number per rectangle. Thirty
+    rectangles cover every feasible pair of radii, and the worst of the thirty
+    upper bounds is -141718938311359411043/245112420775950000000000, which is
+    below -1/2000. Combined with the already formalized six-point transfer to
+    the Besicovitch pair condition and the standard rectifiability machinery,
+    this gives the stated bound.
+
+    The certificate parameters were found by an unverified numerical search and
+    are stored as exact rationals with denominator 10^4. Nothing about how they
+    were found enters the proof: Lean recomputes every coefficient from the
+    stored data in exact rational arithmetic and rechecks the sign conditions,
+    and positive semidefiniteness is a theorem proved from the rank-one
+    decomposition rather than a numerical test. The development uses no
+    native_decide, no Lean.ofReduceBool, no floating-point value and no custom
+    axiom; the target theorem depends only on propext, Classical.choice and
+    Quot.sound.
+
+    The bound proved here is not the sharp constant of the six-point problem.
+    That constant is an algebraic number theta_6 = 0.693306421825904872...,
+    and the formalized rational bound exceeds it by about 9.36e-5. Section
+    "scope" below records why.
+  authors:
+    - "Yongxi Lin"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Yongxi Lin"
+
+classification:
+  arxiv: ["math.CA", "math.MG"]
+  msc2020: ["28A75", "28A78", "49Q15", "68V20", "90C05"]
+
+sources:
+  - title: >-
+      The bound sigma_1(R^2) <= 6934/10000 for Besicovitch's 1/2-problem, via
+      thirty rational Gram certificates for the two-colour six-centre problem
+    type: original-proof
+    relationship: other
+    note: >-
+      Result origin declaration. The numerical bound 0.6934, the reduction of
+      the six-point endpoint to thirty local Gram certificates, and the
+      certificate data itself are first presented by this project; they have not
+      been published elsewhere. The surrounding six-point framework is not
+      original and is recorded below as background.
+  - title: "Besicovitch's 1/2 problem and linear programming"
+    authors:
+      - "Camillo De Lellis"
+      - "Federico Glaudo"
+      - "Annalisa Massaccesi"
+      - "Davide Vittone"
+    id: "arXiv:2404.17536"
+    type: "article"
+    location: "https://arxiv.org/abs/2404.17536"
+    relationship: "background"
+    note: >-
+      Supplies the structural framework this work builds on: the reduction of
+      the density hypothesis to a finite family of optimization problems about
+      disjoint balls at finitely many centres. That paper proves
+      sigma_1(R^2) <= 7/10; the present development proves a strictly stronger
+      bound by solving the two-colour six-centre instance of the same family.
+      No statement or proof is transcribed from it.
+    license: "unknown"
+    author_endorsement: "not-contacted"
+  - title: "On Besicovitch's 1/2-problem"
+    authors:
+      - "David Preiss"
+      - "Jaroslav Tiser"
+    id: "J. London Math. Soc. (2) 45 (1992), 279-287"
+    type: "article"
+    relationship: "background"
+    note: "Earlier record, sigma_1(R^2) <= (2 + sqrt 46)/12. Historical context only."
+    license: "unknown"
+    author_endorsement: "not-contacted"
+  - title: >-
+      On the fundamental geometrical properties of linearly measurable plane
+      sets of points, parts I and II
+    authors:
+      - "A. S. Besicovitch"
+    id: "Math. Ann. 98 (1928), 422-464; Math. Ann. 115 (1938), 296-329"
+    type: "article"
+    relationship: "background"
+    note: "Origin of the problem and of the 3/4 bound. Historical context only."
+    license: "unknown"
+    author_endorsement: "n/a"
+
+related_formalizations: []
+
+status:
+  scope: >-
+    Formalized in full: sigma_1(R^2) <= 6934/10000, stated as
+    Besicovitch.sigma_one_plane_le_6934_div_10000 over
+    EuclideanSpace R (Fin 2), with sigma_1 defined inside Challenge.lean as the
+    infimum of the thresholds that force countable 1-rectifiability. The proof
+    term is complete and uses only propext, Classical.choice and Quot.sound.
+    The supporting chain is formalized too: the geometric measure theory layer,
+    the Besicovitch pair condition, the six-point transfer, the packing failure
+    tree, the thirty Gram certificates and the radius cover.
+
+    Deliberately not formalized, and the reason. The sharp constant of the
+    two-colour six-centre problem is an algebraic number
+    theta_6 = 0.693306421825904872690678414403710951..., and the bound proved
+    here exceeds it by about 9.36e-5. The obstruction is not mathematical but
+    certificate-theoretic: at theta_6 the extremal configuration is attained,
+    three structurally different packing mechanisms tie simultaneously, and the
+    weighted score is exactly zero at an interior point with vanishing gradient,
+    so no strict certificate of the shape used here exists there. Moving the
+    chord to the rational value 3467/2500 breaks every tie and raises the
+    available margin from about 1e-8 to about 5.8e-4, which is what makes a
+    fixed family of thirty certificates sufficient. The constant is also bounded
+    above: the routing separators that prune the case tree fail once the chord
+    exceeds about 1.386850, so the admissible window is narrow and 6934/10000
+    sits inside it.
+
+    Also not formalized: Besicovitch's conjecture itself, which remains open;
+    no claim is made about it. The six-point method cannot reach below theta_6
+    however it is certified, so this development does not approach 1/2.
+
+    A companion theorem, Besicovitch.sStar_le_6934_div_10000, records that the
+    exact six-point endpoint lies below the rational target. It is not the
+    submitted Comparator declaration.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["OpenAI ChatGPT project sessions; exact model versions not recorded locally"]
+      framework: "ChatGPT project workspace with local file mirror"
+      tool_setup: >-
+        The mathematics was developed in a ChatGPT project before any Lean was
+        written: the six-point analysis, the sharp constant, the packing failure
+        tree, and finally the Gram-certificate argument and its thirty exact
+        rational certificates. Output comprised 246 markdown research notes
+        (about 618,000 words), 86 C++ search programs, 16 LaTeX write-ups and 53
+        Python verifiers. The certificate family was checked three ways before
+        formalization: an exact rational verifier, an independent symbolic
+        reconstruction in SymPy, and a diagnostic sweep of 3000 random feasible
+        configurations.
+      cost:
+        wall_time: "research output spans 2026-08-26 to 2026-08-31 (6 days); session wall time not recorded"
+        spend_usd: "subscription-based"
+        hardware: "API-only"
+      prompting_notes: >-
+        Human-directed exploration of the six-point optimization problem;
+        transcripts are not retained locally, so no representative prompts can
+        be quoted.
+    - method: "agent"
+      models: ["claude-opus-5", "claude-fable-5-1"]
+      framework: "Claude Code"
+      tool_setup: >-
+        The Lean 4 development was written by an agent in Claude Code against
+        Mathlib, with the human directing scope, supplying the Gram-certificate
+        document, and deciding to abandon the earlier route. Measured from the
+        session transcripts: 3,326 API calls, 2,462,393 output tokens, and
+        47,951,563 tokens of input plus output plus cache writes, over 19 h 58 m
+        of wall clock. The work splits at the point the Gram-certificate
+        document arrived: an earlier attempt to certify the sharp constant
+        through six-variable Bernstein certificates consumed 94 percent of those
+        tokens and 75 percent of the wall clock and left no surviving line, and
+        the delivered proof cost about 2.7 million tokens over 5 hours. The
+        repository folder effort/ documents this and ships a script that
+        regenerates the figures.
+      cost:
+        wall_time: "19 h 58 m of agent session wall clock"
+        spend_usd: "subscription-based"
+        hardware: "local machine for Lean builds, API-only for inference"
+      prompting_notes: >-
+        Goal-directed with periodic human review. The decisive human
+        interventions were rejecting the sharp-constant target as infeasible,
+        supplying the Gram-certificate document, and requiring that certificate
+        data be rechecked inside Lean rather than trusted.
+    - method: "manual"
+      models: []
+      framework: "n/a"
+      tool_setup: >-
+        Human direction, mathematical judgement and review throughout: choice of
+        target constant, acceptance of the weaker rational bound, and final
+        reading of the statement and its definitions.
+      cost:
+        wall_time: "not tracked separately from the sessions above"
+        spend_usd: "not tracked"
+        hardware: "local machine"
+      prompting_notes: "n/a"
+  spend_usd: "subscription-based; not separately tracked"
+  notes: >-
+    Two stages with a clean handover. The mathematics was produced first in a
+    ChatGPT project and delivered as a written argument together with thirty
+    exact rational certificates and two independent verifiers. The Lean
+    formalization was then produced by an agent in Claude Code. Before any
+    formalization the certificate data was re-derived from the definitions in
+    exact rational arithmetic by a third independent transcription, which
+    reproduced all thirty published upper bounds exactly; that agreement also
+    guards the transcription into Lean, since one mistyped integer changes the
+    computed bound. All figures above are measured from machine records, not
+    estimated; the folder effort/ states which quantities could not be recovered
+    rather than guessing them.
+
+fidelity:
+  divergences: >-
+    None from a cited source, since no source result is being formalized: the
+    background references supply framework and history only, and the bound
+    proved here is stated for the first time by this project.
+
+    Two qualifications a reader should carry. First, the theorem is weaker than
+    the optimum of the finite problem it solves, by about 9.36e-5; the reason is
+    recorded under scope. Second, the thirty certificates were discovered by an
+    unverified numerical search. That search is not part of the proof: Lean
+    recomputes each certificate's exact rational upper bound from the stored
+    integers and rechecks every sign condition, and the positive semidefiniteness
+    on which the argument rests is proved identically from a rank-one
+    decomposition, with no eigenvalue computation or numerical test anywhere.
+
+review:
+  status: "self-assessed"
+  reviewers:
+    - "none"
+  notes: >-
+    No external mathematical review. Checks performed by the authors. The
+    statement was audited by computing the transitive definition closure of the
+    submitted theorem and confirming it is identical between Challenge.lean and
+    Solution.lean: five constants, sigmaOne, ForcesOneRectifiability,
+    lowerOneDensity, IsCountablyOneRectifiable and one proof term. Axioms of the
+    submitted declaration were printed and are exactly propext,
+    Classical.choice and Quot.sound. The repository contains no native_decide,
+    no Lean.ofReduceBool, no admit and no axiom declaration. The certificate
+    data was verified three times independently before formalization, as
+    described under automation. The Comparator itself has not been run by the
+    authors; only the conditions it checks have been reproduced by hand.
+
+alignment:
+  namespace: "Besicovitch"
+  statements:
+    - source: >-
+        Original result: the planar one-dimensional rectifiability threshold
+        satisfies sigma_1(R^2) <= 6934/10000
+      lean: "Besicovitch.sigma_one_plane_le_6934_div_10000"
+      module: "Solution"
+      status: "proved"
+      note: >-
+        The submitted Comparator declaration, matching the hole in
+        Challenge.lean. Complete proof term, no sorry, axioms limited to
+        propext, Classical.choice and Quot.sound.
+    - source: >-
+        Supporting bound: the exact six-point endpoint lies below the rational
+        target
+      lean: "Besicovitch.sStar_le_6934_div_10000"
+      module: "Solution"
+      status: "proved"
+      note: >-
+        Not part of the Comparator submission. Recorded because it shows the
+        formalized rational constant is consistent with, and close to, the sharp
+        constant of the finite problem.
+    - source: >-
+        Analytic endpoint: the weighted score is at most -1/2000 for every
+        separated pair of sibling pairs in the unit ball
+      lean: "Besicovitch.weightedGeometricBound_gram"
+      module: "Besicovitch.SixPoint.GramWeightedBound"
+      status: "proved"
+      note: >-
+        The mathematical content that the thirty Gram certificates supply, and
+        the only new analytic input to the six-point argument.
+
+acknowledgements: >-
+  Built on Lean 4 and Mathlib. The structural approach, reducing the density
+  hypothesis to a finite family of optimization problems, is due to De Lellis,
+  Glaudo, Massaccesi and Vittone. The Lean formalization was carried out with
+  Claude Code; the underlying mathematics was developed with ChatGPT. Neither
+  system is listed as an author, in line with Palomar's human-authorship
+  requirement; their roles are recorded in the automation section above.
