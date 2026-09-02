@@ -59,13 +59,13 @@ was abandoned. The split is worth showing, because the two phases cost very diff
 
 | | Phase 1 — Bernstein (abandoned) | Phase 2 — Gram (delivered) | total |
 |---|---:|---:|---:|
-| wall clock | **14 h 54 m** | **10:11:05** | see note |
-| API calls | 3,037 | 763 | 3,800 |
-| output tokens | 1,963,539 | 2,361,573 | **4,325,112** |
-| input tokens | 162,015 | 578 | 162,593 |
-| cache writes | 43,101,010 | 2,225,567 | 45,326,577 |
-| cache reads | 1,088,642,799 | 100,472,049 | 1,189,114,848 |
-| **input + output + cache write** | **45,226,564** | **13,895,701** | **59,122,265** |
+| wall clock | **14 h 54 m** | **11:22:13** | see note |
+| API calls | 3,037 | 1,430 | 4,467 |
+| output tokens | 1,963,539 | 2,512,213 | **4,475,752** |
+| input tokens | 162,015 | 171,066 | 333,081 |
+| cache writes | 43,101,010 | 21,491,132 | 64,592,142 |
+| cache reads | 1,088,642,799 | 381,139,993 | 1,469,782,792 |
+| **input + output + cache write** | **45,226,564** | **24,174,411** | **69,400,975** |
 
 Cache reads are listed separately because they are billed differently from fresh input; the
 "input + output + cache write" row is the figure to compare against a non-caching baseline.
